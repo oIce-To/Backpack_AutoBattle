@@ -1,0 +1,21 @@
+{
+  "name": "BackpackAutoBattle.PlayMode.Tests",
+  "rootNamespace": "BackpackAutoBattle.Tests",
+  "references": [
+    "BackpackAutoBattle.Core",
+    "BackpackAutoBattle.Prototype",
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "BackpackAutoBattle.EditMode.Tests",
+  "rootNamespace": "BackpackAutoBattle.Tests",
+  "references": [
+    "BackpackAutoBattle.Core",
+    "BackpackAutoBattle.Prototype"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

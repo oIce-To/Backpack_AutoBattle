@@ -1,0 +1,19 @@
+{
+  "name": "BackpackAutoBattle.Editor",
+  "rootNamespace": "BackpackAutoBattle.Editor",
+  "references": [
+    "BackpackAutoBattle.Core",
+    "BackpackAutoBattle.Prototype"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
