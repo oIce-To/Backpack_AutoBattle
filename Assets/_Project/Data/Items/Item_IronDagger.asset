@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: iron_dagger
   _displayName: "\uCCA0 \uB2E8\uAC80"
-  _description: "\uC791\uACE0 \uAC12\uC2FC \uADFC\uC811 \uBB34\uAE30\uC785\uB2C8\uB2E4."
+  _description: "\uAC04\uB2E8\uD55C \uADFC\uC811 \uBB34\uAE30"
   _category: 0
   _purchasePrice: 3
   _displayColor: {r: 0.24, g: 0.66, b: 0.68, a: 1}

@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: throwing_axes
   _displayName: "\uC30D\uB3C4\uB07C"
-  _description: "\uAC00\uB85C \uB450 \uCE78\uC744 \uC0AC\uC6A9\uD558\uB294 \uACF5\uACA9
-    \uBB34\uAE30\uC785\uB2C8\uB2E4."
+  _description: "??? : \uD615\uC528\uB9C8\uC528\uC544! "
   _category: 0
   _purchasePrice: 5
   _displayColor: {r: 0.83, g: 0.55, b: 0.18, a: 1}

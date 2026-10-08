@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: swift_charm
   _displayName: "\uC2E0\uC18D\uC758 \uBD80\uC801"
-  _description: "L\uC790 \uD615\uD0DC\uC758 \uC2E0\uC18D \uACC4\uC5F4 \uC7A5\uC2E0\uAD6C\uC785\uB2C8\uB2E4."
+  _description: "\uC18C\uC9C0 \uC2DC \uD589\uB3D9 \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9C0\uB294
+    \uC2E0\uAE30\uD55C \uBD80\uC801"
   _category: 2
   _purchasePrice: 6
   _displayColor: {r: 0.56, g: 0.28, b: 0.76, a: 1}

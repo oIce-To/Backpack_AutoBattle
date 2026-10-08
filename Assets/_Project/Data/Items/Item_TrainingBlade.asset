@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: training_blade
   _displayName: "\uD6C8\uB828\uC6A9 \uAC80"
-  _description: "\uAE38\uCB49\uD55C \uAE30\uBCF8 \uBB34\uAE30\uC785\uB2C8\uB2E4."
+  _description: "\uC5B4\uB514\uC5D0\uC11C\uB4E0 \uC27D\uAC8C \uAD6C\uD560 \uC218
+    \uC788\uB294 \uBAA9\uAC80"
   _category: 0
   _purchasePrice: 4
   _displayColor: {r: 0.18, g: 0.48, b: 0.8, a: 1}

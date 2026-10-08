@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: fire_staff
   _displayName: "\uD654\uC5FC \uC9C0\uD321\uC774"
-  _description: "\uB3C5\uD2B9\uD55C \uD615\uD0DC\uC758 \uD654\uC0C1 \uACC4\uC5F4
-    \uBB34\uAE30\uC785\uB2C8\uB2E4."
+  _description: "\uD654\uC5FC \uB9C8\uBC95\uC744 \uAD6C\uC0AC\uD560 \uC218 \uC788\uB294
+    \uC9C0\uD321\uC774"
   _category: 0
   _purchasePrice: 8
   _displayColor: {r: 0.9, g: 0.3, b: 0.12, a: 1}
