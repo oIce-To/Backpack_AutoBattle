@@ -25,6 +25,13 @@ namespace BackpackAutoBattle.Tests.Items
             Assert.That(items.Count(item => item.Rarity == ItemRarity.Rare), Is.EqualTo(3));
             Assert.That(items.Count(item => item.Rarity == ItemRarity.Epic), Is.EqualTo(1));
             Assert.That(items.All(item => item.Rarity != ItemRarity.Legendary), Is.True);
+            ItemData[] weapons = items.Where(item => item.Category == ItemCategory.Weapon).ToArray();
+            Assert.That(weapons, Has.Length.EqualTo(4));
+            Assert.That(weapons.All(item => item.BaseWeaponStats != null && item.BaseWeaponStats.AttackDamage > 0f), Is.True);
+            Assert.That(weapons.All(item => item.BaseWeaponStats.CooldownSeconds >= 0.1f), Is.True);
+            Assert.That(weapons.All(item => item.BaseWeaponStats.AccuracyPercent >= 0f && item.BaseWeaponStats.AccuracyPercent <= 100f), Is.True);
+            Assert.That(weapons.All(item => item.BaseWeaponStats.CriticalChancePercent >= 0f && item.BaseWeaponStats.CriticalChancePercent <= 100f), Is.True);
+            Assert.That(weapons.All(item => item.BaseWeaponStats.CriticalDamagePercent >= 100f), Is.True);
         }
     }
 }

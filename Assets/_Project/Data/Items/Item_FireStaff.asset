@@ -19,6 +19,12 @@ MonoBehaviour:
   _category: 0
   _rarity: 3
   _purchasePrice: 8
+  _weaponStats:
+    _attackDamage: 12
+    _cooldownSeconds: 3.5
+    _accuracyPercent: 90
+    _criticalChancePercent: 10
+    _criticalDamagePercent: 220
   _displayColor: {r: 0.9, g: 0.3, b: 0.12, a: 1}
   _canRotate: 1
   _occupiedCells:

@@ -78,6 +78,7 @@ namespace BackpackAutoBattle.Editor
             }
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
+            serializedController.FindProperty("_enemyData").objectReferenceValue = PrototypeEnemyDataBuilder.CreateOrLoad();
 
             serializedController.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(controller);

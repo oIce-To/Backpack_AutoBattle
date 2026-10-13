@@ -170,6 +170,17 @@ namespace BackpackAutoBattle.Editor
             serializedItem.FindProperty("_displayColor").colorValue = definition.DisplayColor;
             serializedItem.FindProperty("_canRotate").boolValue = definition.CanRotate;
 
+            if (definition.Category == ItemCategory.Weapon)
+            {
+                WeaponStats stats = GetDefaultWeaponStats(definition.ItemId);
+                SerializedProperty weaponStats = serializedItem.FindProperty("_weaponStats");
+                weaponStats.FindPropertyRelative("_attackDamage").floatValue = stats.AttackDamage;
+                weaponStats.FindPropertyRelative("_cooldownSeconds").floatValue = stats.CooldownSeconds;
+                weaponStats.FindPropertyRelative("_accuracyPercent").floatValue = stats.AccuracyPercent;
+                weaponStats.FindPropertyRelative("_criticalChancePercent").floatValue = stats.CriticalChancePercent;
+                weaponStats.FindPropertyRelative("_criticalDamagePercent").floatValue = stats.CriticalDamagePercent;
+            }
+
             SerializedProperty occupiedCells = serializedItem.FindProperty("_occupiedCells");
             occupiedCells.arraySize = definition.OccupiedCells.Length;
             for (int index = 0; index < definition.OccupiedCells.Length; index++)
@@ -189,6 +200,18 @@ namespace BackpackAutoBattle.Editor
             {
                 AssetDatabase.CreateFolder(parentFolder, folderName);
             }
+        }
+
+        private static WeaponStats GetDefaultWeaponStats(string itemId)
+        {
+            return itemId switch
+            {
+                "training_blade" => new WeaponStats(5f, 2f, 90f, 10f, 200f),
+                "iron_dagger" => new WeaponStats(2f, 1f, 95f, 15f, 180f),
+                "throwing_axes" => new WeaponStats(8f, 3f, 85f, 20f, 200f),
+                "fire_staff" => new WeaponStats(12f, 3.5f, 90f, 10f, 220f),
+                _ => new WeaponStats()
+            };
         }
 
         private sealed class ItemDefinition

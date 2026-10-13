@@ -19,6 +19,9 @@ namespace BackpackAutoBattle.Items
         [Header("Shop")]
         [SerializeField, Min(0)] private int _purchasePrice = 1;
 
+        [Header("Weapon (Weapon category only)")]
+        [SerializeField] private WeaponStats _weaponStats = new();
+
         [Header("Backpack")]
         [SerializeField] private Color _displayColor = Color.white;
         [SerializeField] private bool _canRotate = true;
@@ -36,6 +39,8 @@ namespace BackpackAutoBattle.Items
 
         public int PurchasePrice => _purchasePrice;
 
+        public WeaponStats BaseWeaponStats => _weaponStats;
+
         public Color DisplayColor => _displayColor;
 
         public bool CanRotate => _canRotate;
@@ -50,6 +55,8 @@ namespace BackpackAutoBattle.Items
         private void OnValidate()
         {
             _purchasePrice = Mathf.Max(0, _purchasePrice);
+            _weaponStats ??= new WeaponStats();
+            _weaponStats.Validate();
 
             if (_occupiedCells == null || _occupiedCells.Count == 0)
             {
