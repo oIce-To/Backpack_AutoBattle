@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073ec47a2109b274dab1679dc5a183c4, type: 3}
+  m_Name: ShopRarityTable_Default
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Shop.ShopRarityTableData
+  _rounds:
+  - _common: 70
+    _uncommon: 20
+    _rare: 10
+    _epic: 0
+  - _common: 65
+    _uncommon: 22
+    _rare: 12
+    _epic: 1
+  - _common: 58
+    _uncommon: 25
+    _rare: 15
+    _epic: 2
+  - _common: 52
+    _uncommon: 27
+    _rare: 18
+    _epic: 3
+  - _common: 45
+    _uncommon: 30
+    _rare: 20
+    _epic: 5
+  - _common: 38
+    _uncommon: 30
+    _rare: 25
+    _epic: 7
+  - _common: 32
+    _uncommon: 29
+    _rare: 29
+    _epic: 10
+  - _common: 25
+    _uncommon: 28
+    _rare: 34
+    _epic: 13
+  - _common: 20
+    _uncommon: 27
+    _rare: 37
+    _epic: 16
+  - _common: 15
+    _uncommon: 25
+    _rare: 40
+    _epic: 20
+  - _common: 12
+    _uncommon: 23
+    _rare: 42
+    _epic: 23
+  - _common: 10
+    _uncommon: 20
+    _rare: 43
+    _epic: 27

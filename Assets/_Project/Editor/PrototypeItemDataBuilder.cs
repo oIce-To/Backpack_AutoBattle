@@ -22,6 +22,7 @@ namespace BackpackAutoBattle.Editor
                     "훈련용 검",
                     "길쭉한 기본 무기입니다.",
                     ItemCategory.Weapon,
+                    ItemRarity.Common,
                     4,
                     new Color(0.18f, 0.48f, 0.80f, 1f),
                     true,
@@ -32,6 +33,7 @@ namespace BackpackAutoBattle.Editor
                     "나무 방패",
                     "넓은 공간을 차지하는 기본 방어구입니다.",
                     ItemCategory.Armor,
+                    ItemRarity.Uncommon,
                     5,
                     new Color(0.70f, 0.43f, 0.18f, 1f),
                     true,
@@ -46,6 +48,7 @@ namespace BackpackAutoBattle.Editor
                     "신속의 부적",
                     "L자 형태의 신속 계열 장신구입니다.",
                     ItemCategory.Accessory,
+                    ItemRarity.Rare,
                     6,
                     new Color(0.56f, 0.28f, 0.76f, 1f),
                     true,
@@ -56,6 +59,7 @@ namespace BackpackAutoBattle.Editor
                     "철 단검",
                     "작고 값싼 근접 무기입니다.",
                     ItemCategory.Weapon,
+                    ItemRarity.Uncommon,
                     3,
                     new Color(0.24f, 0.66f, 0.68f, 1f),
                     true,
@@ -66,6 +70,7 @@ namespace BackpackAutoBattle.Editor
                     "회복 물약",
                     "한 칸만 사용하는 회복 소모품입니다.",
                     ItemCategory.Consumable,
+                    ItemRarity.Common,
                     3,
                     new Color(0.78f, 0.20f, 0.28f, 1f),
                     false,
@@ -76,6 +81,7 @@ namespace BackpackAutoBattle.Editor
                     "쌍도끼",
                     "가로 두 칸을 사용하는 공격 무기입니다.",
                     ItemCategory.Weapon,
+                    ItemRarity.Rare,
                     5,
                     new Color(0.83f, 0.55f, 0.18f, 1f),
                     true,
@@ -86,6 +92,7 @@ namespace BackpackAutoBattle.Editor
                     "화염 지팡이",
                     "독특한 형태의 화상 계열 무기입니다.",
                     ItemCategory.Weapon,
+                    ItemRarity.Epic,
                     8,
                     new Color(0.90f, 0.30f, 0.12f, 1f),
                     true,
@@ -100,6 +107,7 @@ namespace BackpackAutoBattle.Editor
                     "맹독 약병",
                     "중독 빌드를 위한 실험용 재료입니다.",
                     ItemCategory.Material,
+                    ItemRarity.Rare,
                     6,
                     new Color(0.32f, 0.72f, 0.24f, 1f),
                     true,
@@ -144,17 +152,20 @@ namespace BackpackAutoBattle.Editor
             string assetPath = $"{ItemFolder}/{definition.FileName}";
             ItemData itemData = AssetDatabase.LoadAssetAtPath<ItemData>(assetPath);
 
-            if (itemData == null)
+            if (itemData != null)
             {
-                itemData = ScriptableObject.CreateInstance<ItemData>();
-                AssetDatabase.CreateAsset(itemData, assetPath);
+                return itemData;
             }
+
+            itemData = ScriptableObject.CreateInstance<ItemData>();
+            AssetDatabase.CreateAsset(itemData, assetPath);
 
             var serializedItem = new SerializedObject(itemData);
             serializedItem.FindProperty("_itemId").stringValue = definition.ItemId;
             serializedItem.FindProperty("_displayName").stringValue = definition.DisplayName;
             serializedItem.FindProperty("_description").stringValue = definition.Description;
             serializedItem.FindProperty("_category").enumValueIndex = (int)definition.Category;
+            serializedItem.FindProperty("_rarity").enumValueIndex = (int)definition.Rarity;
             serializedItem.FindProperty("_purchasePrice").intValue = definition.PurchasePrice;
             serializedItem.FindProperty("_displayColor").colorValue = definition.DisplayColor;
             serializedItem.FindProperty("_canRotate").boolValue = definition.CanRotate;
@@ -188,6 +199,7 @@ namespace BackpackAutoBattle.Editor
                 string displayName,
                 string description,
                 ItemCategory category,
+                ItemRarity rarity,
                 int purchasePrice,
                 Color displayColor,
                 bool canRotate,
@@ -198,6 +210,7 @@ namespace BackpackAutoBattle.Editor
                 DisplayName = displayName;
                 Description = description;
                 Category = category;
+                Rarity = rarity;
                 PurchasePrice = purchasePrice;
                 DisplayColor = displayColor;
                 CanRotate = canRotate;
@@ -209,6 +222,7 @@ namespace BackpackAutoBattle.Editor
             public string DisplayName { get; }
             public string Description { get; }
             public ItemCategory Category { get; }
+            public ItemRarity Rarity { get; }
             public int PurchasePrice { get; }
             public Color DisplayColor { get; }
             public bool CanRotate { get; }

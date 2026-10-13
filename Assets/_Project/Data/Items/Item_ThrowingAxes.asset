@@ -16,6 +16,7 @@ MonoBehaviour:
   _displayName: "\uC30D\uB3C4\uB07C"
   _description: "??? : \uD615\uC528\uB9C8\uC528\uC544! "
   _category: 0
+  _rarity: 2
   _purchasePrice: 5
   _displayColor: {r: 0.83, g: 0.55, b: 0.18, a: 1}
   _canRotate: 1

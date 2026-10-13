@@ -16,6 +16,7 @@ MonoBehaviour:
   _displayName: "\uCCA0 \uB2E8\uAC80"
   _description: "\uAC04\uB2E8\uD55C \uADFC\uC811 \uBB34\uAE30"
   _category: 0
+  _rarity: 1
   _purchasePrice: 3
   _displayColor: {r: 0.24, g: 0.66, b: 0.68, a: 1}
   _canRotate: 1

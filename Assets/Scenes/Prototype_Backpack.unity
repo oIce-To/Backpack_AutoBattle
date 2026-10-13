@@ -157,7 +157,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 57865701bc71eee498e359294f5aeb69, type: 2}
   - {fileID: 11400000, guid: b191dd6d072b0f14daa18bea151b9bbc, type: 2}
   - {fileID: 11400000, guid: b5b4154c78d879d48ba15914b4930bee, type: 2}
+  _shopRarityTable: {fileID: 11400000, guid: 08f7d104cec8c7e4d845a744ebd2fd0e, type: 2}
   _shopSlotCount: 4
+  _startingGold: 20
+  _rerollCost: 1
+  _roundIncome: 5
+  _saleChance: 0.1
 --- !u!4 &564349285
 Transform:
   m_ObjectHideFlags: 0

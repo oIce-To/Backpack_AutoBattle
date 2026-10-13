@@ -1,4 +1,5 @@
 using BackpackAutoBattle.Prototype;
+using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -26,6 +27,22 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controllers, Has.Length.EqualTo(1));
             Assert.That(controllers[0].ItemCatalog.Count, Is.EqualTo(8));
             Assert.That(controllers[0].ItemCatalog, Is.All.Not.Null);
+            Assert.That(controllers[0].ShopRarityTable, Is.Not.Null);
+            Assert.That(controllers[0].ShopRarityTable.Rounds, Has.Count.EqualTo(ShopRarityTableData.MaximumRound));
+
+            RoundShopRarityWeights round1 = controllers[0].ShopRarityTable.GetWeights(1);
+            Assert.That(round1.Common, Is.EqualTo(70f));
+            Assert.That(round1.Uncommon, Is.EqualTo(20f));
+            Assert.That(round1.Rare, Is.EqualTo(10f));
+            Assert.That(round1.Epic, Is.Zero);
+            Assert.That(round1.Total, Is.EqualTo(100f));
+
+            RoundShopRarityWeights round10 = controllers[0].ShopRarityTable.GetWeights(10);
+            Assert.That(round10.Common, Is.EqualTo(15f));
+            Assert.That(round10.Uncommon, Is.EqualTo(25f));
+            Assert.That(round10.Rare, Is.EqualTo(40f));
+            Assert.That(round10.Epic, Is.EqualTo(20f));
+            Assert.That(round10.Total, Is.EqualTo(100f));
         }
     }
 }

@@ -20,6 +20,11 @@ namespace BackpackAutoBattle.Tests.Items
             Assert.That(items.All(item => !string.IsNullOrWhiteSpace(item.DisplayName)), Is.True);
             Assert.That(items.All(item => item.PurchasePrice >= 0), Is.True);
             Assert.That(items.All(item => item.CreateShape().BaseCells.Count > 0), Is.True);
+            Assert.That(items.Count(item => item.Rarity == ItemRarity.Common), Is.EqualTo(2));
+            Assert.That(items.Count(item => item.Rarity == ItemRarity.Uncommon), Is.EqualTo(2));
+            Assert.That(items.Count(item => item.Rarity == ItemRarity.Rare), Is.EqualTo(3));
+            Assert.That(items.Count(item => item.Rarity == ItemRarity.Epic), Is.EqualTo(1));
+            Assert.That(items.All(item => item.Rarity != ItemRarity.Legendary), Is.True);
         }
     }
 }

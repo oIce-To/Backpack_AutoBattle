@@ -17,6 +17,7 @@ MonoBehaviour:
   _description: "\uC5B4\uB514\uC5D0\uC11C\uB4E0 \uC27D\uAC8C \uAD6C\uD560 \uC218
     \uC788\uB294 \uBAA9\uAC80"
   _category: 0
+  _rarity: 0
   _purchasePrice: 4
   _displayColor: {r: 0.18, g: 0.48, b: 0.8, a: 1}
   _canRotate: 1

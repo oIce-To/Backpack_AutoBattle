@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
+using BackpackAutoBattle.Shop;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -22,38 +23,69 @@ namespace BackpackAutoBattle.Prototype
         private static readonly Color ValidPreviewColor = new(0.20f, 0.72f, 0.39f, 0.95f);
         private static readonly Color InvalidPreviewColor = new(0.88f, 0.25f, 0.28f, 0.95f);
 
+        [Header("Content")]
         [SerializeField] private ItemData[] _itemCatalog;
+        [SerializeField] private ShopRarityTableData _shopRarityTable;
+
+        [Header("Shop Rules")]
         [SerializeField, Min(1)] private int _shopSlotCount = 4;
+        [SerializeField, Min(0)] private int _startingGold = 20;
+        [SerializeField, Min(0)] private int _rerollCost = 1;
+        [SerializeField, Min(0)] private int _roundIncome = 5;
+        [SerializeField, Range(0f, 1f)] private float _saleChance = 0.10f;
 
         private readonly Dictionary<string, BackpackItemView> _itemViews = new();
+        private readonly Dictionary<string, PrototypeStorageItemView> _storageViews = new();
         private readonly List<PrototypeShopSlotView> _shopSlots = new();
         private readonly List<ItemData> _currentShopItems = new();
+        private readonly List<PrototypeStoredItem> _storedItems = new();
         private BackpackGrid _grid;
         private System.Random _shopRandom;
         private RectTransform _gridRoot;
+        private RectTransform _storageRoot;
+        private RectTransform _sellArea;
+        private Image _sellPreview;
+        private Text _sellPreviewText;
         private Image[,] _gridCells;
         private Text _statusText;
+        private Text _goldText;
+        private Text _roundText;
+        private Text _rarityOddsText;
+        private Text _rerollText;
+        private Text _nextRoundText;
         private BackpackItemView _selectedItem;
         private BackpackItemView _draggingItem;
+        private PrototypeStorageItemView _draggingStorageView;
+        private DragSource _dragSource;
+        private PrototypeShopSlotView _draggingShopSlot;
+        private ShopOffer _draggingShopOffer;
         private Vector2 _dragOffset;
         private Vector2Int _dragOrigin;
         private ItemRotation _dragRotation;
         private Vector2Int _previewOrigin;
+        private int _gold;
+        private int _currentRound = 1;
+        private int _nextPurchasedItemSequence;
 
         private float BoardSize => GridSize * CellPitch;
 
         public IReadOnlyList<ItemData> ItemCatalog => _itemCatalog;
-
         public IReadOnlyList<ItemData> CurrentShopItems => _currentShopItems;
+        public ShopRarityTableData ShopRarityTable => _shopRarityTable;
+        public int Gold => _gold;
+        public int CurrentRound => _currentRound;
+        public int StoredItemCount => _storedItems.Count;
 
         private void Awake()
         {
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
+            _gold = _startingGold;
             BuildInterface();
             CreateStartingItems();
-            RefreshShop();
-            SetStatus("아이템을 선택하세요. 좌클릭 드래그: 이동 / 우클릭 또는 R: 회전");
+            PopulateShop();
+            UpdateEconomyText();
+            SetStatus("상점 아이템을 가방이나 자유 보관함으로 드래그해 구매하세요.");
         }
 
         private void Update()
@@ -68,6 +100,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _selectedItem = itemView;
             string[] adjacentNames = _grid.GetAdjacentItemIds(itemView.InstanceId)
+                .Where(_itemViews.ContainsKey)
                 .Select(id => _itemViews[id].DisplayName)
                 .ToArray();
             string adjacency = adjacentNames.Length == 0 ? "없음" : string.Join(", ", adjacentNames);
@@ -76,18 +109,19 @@ namespace BackpackAutoBattle.Prototype
 
         public void BeginDrag(BackpackItemView itemView, PointerEventData eventData)
         {
+            if (_draggingItem != null)
+            {
+                return;
+            }
+
             SelectItem(itemView);
             _draggingItem = itemView;
+            _dragSource = DragSource.Backpack;
             _dragOrigin = itemView.Origin;
             _dragRotation = itemView.Rotation;
             itemView.transform.SetAsLastSibling();
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _gridRoot,
-                eventData.position,
-                eventData.pressEventCamera,
-                out Vector2 pointerPosition);
-            _dragOffset = pointerPosition - itemView.RectTransform.anchoredPosition;
+            SetDragOffset(itemView, eventData);
+            UpdateSellPreview(eventData);
         }
 
         public void Drag(BackpackItemView itemView, PointerEventData eventData)
@@ -107,30 +141,125 @@ namespace BackpackAutoBattle.Prototype
             itemView.RectTransform.anchoredPosition = proposedPosition;
             _previewOrigin = LocalPositionToGrid(proposedPosition);
             UpdatePlacementPreview(itemView, _previewOrigin);
+            UpdateSellPreview(eventData);
         }
 
-        public void EndDrag(BackpackItemView itemView)
+        public void EndDrag(BackpackItemView itemView, PointerEventData eventData)
         {
             if (_draggingItem != itemView)
             {
                 return;
             }
 
-            bool placed = _grid.TryPlace(itemView.InstanceId, itemView.Shape, _previewOrigin, itemView.Rotation);
+            if (_dragSource != DragSource.Shop && IsPointerInside(_sellArea, eventData))
+            {
+                SellDraggedItem(itemView);
+                FinishDrag();
+                return;
+            }
+
+            if (IsPointerInside(_storageRoot, eventData))
+            {
+                StoreDraggedItem(itemView, eventData);
+                FinishDrag();
+                return;
+            }
+
+            bool canAfford = _dragSource != DragSource.Shop || CanPurchaseDraggedOffer();
+            bool placed = canAfford && IsPointerInside(_gridRoot, eventData) && _grid.TryPlace(
+                itemView.InstanceId,
+                itemView.Shape,
+                _previewOrigin,
+                itemView.Rotation);
+
             if (placed)
             {
                 itemView.SetPlacement(_previewOrigin, itemView.Rotation);
-                SetStatus($"{itemView.DisplayName} 배치 완료: ({_previewOrigin.x}, {_previewOrigin.y})");
+                CompleteGridPlacement(itemView);
             }
             else
             {
-                itemView.SetPlacement(_dragOrigin, _dragRotation);
-                SetStatus("놓을 수 없는 위치입니다. 아이템을 원래 자리로 돌려놓았습니다.");
+                CancelGridPlacement(itemView, canAfford);
             }
 
-            itemView.ResetTint();
-            ResetGridColors();
-            _draggingItem = null;
+            FinishDrag();
+        }
+
+        public void BeginShopDrag(PrototypeShopSlotView slotView, PointerEventData eventData)
+        {
+            if (!slotView.CanPurchase || _draggingItem != null)
+            {
+                return;
+            }
+
+            ItemData itemData = slotView.ItemData;
+            string instanceId = CreatePurchasedInstanceId(itemData);
+            BackpackItemView itemView = CreateDragProxy(instanceId, itemData, eventData);
+            _draggingItem = itemView;
+            _selectedItem = itemView;
+            _dragSource = DragSource.Shop;
+            _draggingShopSlot = slotView;
+            _draggingShopOffer = slotView.Offer;
+            _dragRotation = ItemRotation.None;
+            SetDragOffsetFromPointer();
+            Drag(itemView, eventData);
+            SetStatus($"{itemData.DisplayName}: 가방 또는 자유 보관함에 놓으면 {_draggingShopOffer.PurchasePrice} G로 구매합니다.");
+        }
+
+        public void DragShopItem(PrototypeShopSlotView slotView, PointerEventData eventData)
+        {
+            if (_dragSource == DragSource.Shop && slotView == _draggingShopSlot)
+            {
+                Drag(_draggingItem, eventData);
+            }
+        }
+
+        public void EndShopDrag(PrototypeShopSlotView slotView, PointerEventData eventData)
+        {
+            if (_dragSource == DragSource.Shop
+                && slotView == _draggingShopSlot
+                && _draggingItem != null)
+            {
+                EndDrag(_draggingItem, eventData);
+            }
+        }
+
+        public void BeginStorageDrag(PrototypeStorageItemView storageView, PointerEventData eventData)
+        {
+            if (storageView.StoredItem == null || _draggingItem != null)
+            {
+                return;
+            }
+
+            PrototypeStoredItem storedItem = storageView.StoredItem;
+            BackpackItemView itemView = CreateDragProxy(storedItem.InstanceId, storedItem.ItemData, eventData);
+            _itemViews[storedItem.InstanceId] = itemView;
+            _draggingItem = itemView;
+            _selectedItem = itemView;
+            _draggingStorageView = storageView;
+            _dragSource = DragSource.Storage;
+            _dragRotation = ItemRotation.None;
+            storageView.SetDragging(true);
+            SetDragOffsetFromPointer();
+            Drag(itemView, eventData);
+        }
+
+        public void DragStorageItem(PrototypeStorageItemView storageView, PointerEventData eventData)
+        {
+            if (_dragSource == DragSource.Storage && storageView == _draggingStorageView)
+            {
+                Drag(_draggingItem, eventData);
+            }
+        }
+
+        public void EndStorageDrag(PrototypeStorageItemView storageView, PointerEventData eventData)
+        {
+            if (_dragSource == DragSource.Storage
+                && storageView == _draggingStorageView
+                && _draggingItem != null)
+            {
+                EndDrag(_draggingItem, eventData);
+            }
         }
 
         public void RotateItem(BackpackItemView itemView)
@@ -142,7 +271,6 @@ namespace BackpackAutoBattle.Prototype
             }
 
             ItemRotation nextRotation = NextRotation(itemView.Rotation);
-
             if (_draggingItem == itemView)
             {
                 itemView.SetPreviewRotation(nextRotation);
@@ -168,48 +296,65 @@ namespace BackpackAutoBattle.Prototype
             itemView.RectTransform.anchoredPosition = GridToLocalPosition(itemView.Origin);
         }
 
-        public void RefreshShop()
+        public void InspectStoredItem(PrototypeStoredItem storedItem)
         {
-            _currentShopItems.Clear();
-
-            if (_itemCatalog == null || _itemCatalog.Length == 0)
-            {
-                SetStatus("상점에 표시할 ItemData가 없습니다.");
-                return;
-            }
-
-            List<ItemData> candidates = _itemCatalog
-                .Where(itemData => itemData != null)
-                .ToList();
-
-            for (int index = candidates.Count - 1; index > 0; index--)
-            {
-                int swapIndex = _shopRandom.Next(index + 1);
-                (candidates[index], candidates[swapIndex]) = (candidates[swapIndex], candidates[index]);
-            }
-
-            int visibleCount = Mathf.Min(_shopSlots.Count, candidates.Count);
-            for (int index = 0; index < _shopSlots.Count; index++)
-            {
-                bool hasItem = index < visibleCount;
-                _shopSlots[index].gameObject.SetActive(hasItem);
-
-                if (!hasItem)
-                {
-                    continue;
-                }
-
-                ItemData itemData = candidates[index];
-                _currentShopItems.Add(itemData);
-                _shopSlots[index].Bind(itemData);
-            }
-
-            SetStatus($"상점 갱신 완료: {_currentShopItems.Count}개의 아이템이 무작위로 진열되었습니다.");
+            SetStatus($"보관함: {storedItem.ItemData.DisplayName}  |  가방으로 드래그하거나 상점에 놓아 판매하세요.");
         }
 
-        public void InspectShopItem(ItemData itemData)
+        public void InspectShopItem(ShopOffer offer)
         {
-            SetStatus($"상점 아이템: {itemData.DisplayName}  |  {itemData.PurchasePrice} G  |  {itemData.Description}");
+            ItemData itemData = offer.ItemData;
+            string saleLabel = offer.IsOnSale ? " · Sale!" : string.Empty;
+            SetStatus($"{itemData.Rarity.GetDisplayName()} · {itemData.DisplayName} · {offer.PurchasePrice} G{saleLabel}  |  {itemData.Description}");
+        }
+
+        public bool TryRerollShop()
+        {
+            if (_draggingItem != null)
+            {
+                return false;
+            }
+
+            if (_gold < _rerollCost)
+            {
+                SetStatus($"새로고침에 필요한 골드가 부족합니다. 필요: {_rerollCost} G");
+                return false;
+            }
+
+            _gold -= _rerollCost;
+            PopulateShop();
+            UpdateEconomyText();
+            SetStatus($"상점을 새로고침했습니다. (-{_rerollCost} G)");
+            return true;
+        }
+
+        public bool AdvanceRound()
+        {
+            if (_draggingItem != null)
+            {
+                return false;
+            }
+
+            if (_currentRound >= ShopRarityTableData.MaximumRound)
+            {
+                SetStatus("마지막 12라운드입니다.");
+                return false;
+            }
+
+            _currentRound++;
+            _gold += _roundIncome;
+            PopulateShop();
+            UpdateEconomyText();
+            SetStatus($"{_currentRound}라운드 시작. 라운드 수입 +{_roundIncome} G");
+            return true;
+        }
+
+        public void RefreshShopForTesting()
+        {
+            if (_draggingItem == null)
+            {
+                PopulateShop();
+            }
         }
 
         public static Text CreateText(
@@ -234,10 +379,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void BuildInterface()
         {
-            var eventSystemObject = new GameObject(
-                "EventSystem",
-                typeof(EventSystem),
-                typeof(InputSystemUIInputModule));
+            var eventSystemObject = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             eventSystemObject.transform.SetParent(transform, false);
 
             var canvasObject = new GameObject(
@@ -248,10 +390,9 @@ namespace BackpackAutoBattle.Prototype
                 typeof(GraphicRaycaster));
             canvasObject.transform.SetParent(transform, false);
 
-            var canvas = canvasObject.GetComponent<Canvas>();
+            Canvas canvas = canvasObject.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-            var scaler = canvasObject.GetComponent<CanvasScaler>();
+            CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1280f, 720f);
             scaler.matchWidthOrHeight = 0.5f;
@@ -259,45 +400,38 @@ namespace BackpackAutoBattle.Prototype
             Image background = CreateImage(canvasObject.transform, "Background", new Color(0.055f, 0.07f, 0.10f, 1f));
             Stretch(background.rectTransform);
 
-            Text title = CreateText(
-                canvasObject.transform,
-                "Title",
-                "BACKPACK SHOP & PLACEMENT PROTOTYPE",
-                30,
-                FontStyle.Bold,
-                TextAnchor.MiddleCenter);
-            SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -42f), new Vector2(720f, 52f));
+            Text title = CreateText(canvasObject.transform, "Title", "BACKPACK SHOP & PLACEMENT PROTOTYPE", 28, FontStyle.Bold, TextAnchor.MiddleCenter);
+            SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(720f, 46f));
 
             Text instructions = CreateText(
                 canvasObject.transform,
                 "Instructions",
-                "좌클릭 드래그: 이동    |    우클릭 / R: 회전    |    초록색: 배치 가능    |    빨간색: 배치 불가",
-                18,
+                "상점→가방/보관함: 구매  |  가방/보관함→상점: 판매  |  우클릭/R: 회전",
+                16,
                 FontStyle.Normal,
                 TextAnchor.MiddleCenter);
             instructions.color = new Color(0.67f, 0.73f, 0.82f, 1f);
-            SetRect(instructions.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -82f), new Vector2(980f, 38f));
+            SetRect(instructions.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -72f), new Vector2(980f, 30f));
 
             BuildShop(canvasObject.transform);
 
+            const float boardX = 170f;
+            const float boardY = 34f;
             Image boardFrame = CreateImage(canvasObject.transform, "Board Frame", new Color(0.08f, 0.10f, 0.14f, 1f));
-            SetRect(boardFrame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(170f, -8f), new Vector2(BoardSize + 28f, BoardSize + 28f));
+            SetRect(boardFrame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(boardX, boardY), new Vector2(BoardSize + 28f, BoardSize + 28f));
             boardFrame.raycastTarget = false;
 
             var gridObject = new GameObject("Backpack Grid", typeof(RectTransform));
             gridObject.transform.SetParent(canvasObject.transform, false);
             _gridRoot = (RectTransform)gridObject.transform;
-            SetRect(_gridRoot, new Vector2(0.5f, 0.5f), new Vector2(170f, -8f), Vector2.one * BoardSize);
+            SetRect(_gridRoot, new Vector2(0.5f, 0.5f), new Vector2(boardX, boardY), Vector2.one * BoardSize);
 
             _gridCells = new Image[GridSize, GridSize];
             for (int y = 0; y < GridSize; y++)
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    Image cell = CreateImage(
-                        _gridRoot,
-                        $"Grid Cell {x},{y}",
-                        (x + y) % 2 == 0 ? GridColorA : GridColorB);
+                    Image cell = CreateImage(_gridRoot, $"Grid Cell {x},{y}", (x + y) % 2 == 0 ? GridColorA : GridColorB);
                     RectTransform cellRect = cell.rectTransform;
                     cellRect.anchorMin = new Vector2(0.5f, 0.5f);
                     cellRect.anchorMax = new Vector2(0.5f, 0.5f);
@@ -311,12 +445,85 @@ namespace BackpackAutoBattle.Prototype
                 }
             }
 
-            Image statusPanel = CreateImage(canvasObject.transform, "Status Panel", new Color(0.10f, 0.13f, 0.18f, 1f));
-            SetRect(statusPanel.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 38f), new Vector2(1160f, 54f));
-            statusPanel.raycastTarget = false;
+            BuildStorage(canvasObject.transform);
 
-            _statusText = CreateText(statusPanel.transform, "Status", string.Empty, 18, FontStyle.Normal, TextAnchor.MiddleCenter);
-            Stretch(_statusText.rectTransform, 14f);
+            Image statusPanel = CreateImage(canvasObject.transform, "Status Panel", new Color(0.10f, 0.13f, 0.18f, 1f));
+            SetRect(statusPanel.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 34f), new Vector2(1160f, 48f));
+            statusPanel.raycastTarget = false;
+            _statusText = CreateText(statusPanel.transform, "Status", string.Empty, 16, FontStyle.Normal, TextAnchor.MiddleCenter);
+            Stretch(_statusText.rectTransform, 12f);
+        }
+
+        private void BuildShop(Transform canvasTransform)
+        {
+            Image shopPanel = CreateImage(canvasTransform, "Prototype Shop", new Color(0.08f, 0.10f, 0.14f, 1f));
+            SetRect(shopPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-405f, 12f), new Vector2(310f, 510f));
+            _sellArea = shopPanel.rectTransform;
+
+            Text shopTitle = CreateText(shopPanel.transform, "Shop Title", "상점", 23, FontStyle.Bold, TextAnchor.MiddleLeft);
+            SetRect(shopTitle.rectTransform, new Vector2(0f, 1f), new Vector2(20f, -28f), new Vector2(90f, 38f));
+            shopTitle.rectTransform.pivot = new Vector2(0f, 0.5f);
+
+            _goldText = CreateText(shopPanel.transform, "Gold", string.Empty, 20, FontStyle.Bold, TextAnchor.MiddleRight);
+            _goldText.color = new Color(1f, 0.80f, 0.24f, 1f);
+            SetRect(_goldText.rectTransform, new Vector2(1f, 1f), new Vector2(-70f, -28f), new Vector2(120f, 38f));
+
+            _roundText = CreateText(shopPanel.transform, "Round", string.Empty, 16, FontStyle.Bold, TextAnchor.MiddleCenter);
+            SetRect(_roundText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -62f), new Vector2(278f, 26f));
+
+            _rarityOddsText = CreateText(shopPanel.transform, "Rarity Odds", string.Empty, 11, FontStyle.Normal, TextAnchor.MiddleCenter);
+            _rarityOddsText.color = new Color(0.66f, 0.73f, 0.82f, 1f);
+            SetRect(_rarityOddsText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -86f), new Vector2(290f, 22f));
+
+            for (int index = 0; index < _shopSlotCount; index++)
+            {
+                var slotObject = new GameObject($"Shop Slot {index + 1}", typeof(RectTransform));
+                slotObject.transform.SetParent(shopPanel.transform, false);
+                SetRect(
+                    (RectTransform)slotObject.transform,
+                    new Vector2(0.5f, 1f),
+                    new Vector2(0f, -128f - index * 70f),
+                    new Vector2(278f, 62f));
+                PrototypeShopSlotView slotView = slotObject.AddComponent<PrototypeShopSlotView>();
+                slotView.Initialize(this, index);
+                _shopSlots.Add(slotView);
+            }
+
+            Button rerollButton = CreateButton(shopPanel.transform, "Reroll Button", new Vector2(-71f, 54f), new Vector2(136f, 40f), new Color(0.20f, 0.42f, 0.66f, 1f));
+            rerollButton.onClick.AddListener(() => TryRerollShop());
+            _rerollText = CreateText(rerollButton.transform, "Label", string.Empty, 15, FontStyle.Bold, TextAnchor.MiddleCenter);
+            _rerollText.raycastTarget = false;
+            Stretch(_rerollText.rectTransform);
+
+            Button nextRoundButton = CreateButton(shopPanel.transform, "Next Round Button", new Vector2(71f, 54f), new Vector2(136f, 40f), new Color(0.32f, 0.52f, 0.30f, 1f));
+            nextRoundButton.onClick.AddListener(() => AdvanceRound());
+            _nextRoundText = CreateText(nextRoundButton.transform, "Label", string.Empty, 14, FontStyle.Bold, TextAnchor.MiddleCenter);
+            _nextRoundText.raycastTarget = false;
+            Stretch(_nextRoundText.rectTransform);
+
+            Text shopHint = CreateText(shopPanel.transform, "Shop Hint", "카드를 끌어 구매 · 상점에 놓아 판매", 12, FontStyle.Normal, TextAnchor.MiddleCenter);
+            shopHint.color = new Color(0.56f, 0.63f, 0.73f, 1f);
+            SetRect(shopHint.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 19f), new Vector2(278f, 20f));
+
+            _sellPreview = CreateImage(shopPanel.transform, "Sell Preview", new Color(0.16f, 0.23f, 0.32f, 0.96f));
+            Stretch(_sellPreview.rectTransform);
+            _sellPreview.raycastTarget = false;
+            _sellPreviewText = CreateText(_sellPreview.transform, "Sell Price", string.Empty, 24, FontStyle.Bold, TextAnchor.MiddleCenter);
+            _sellPreviewText.raycastTarget = false;
+            Stretch(_sellPreviewText.rectTransform, 16f);
+            _sellPreview.gameObject.SetActive(false);
+        }
+
+        private void BuildStorage(Transform canvasTransform)
+        {
+            Image storagePanel = CreateImage(canvasTransform, "Freeform Storage", new Color(0.08f, 0.10f, 0.14f, 1f));
+            SetRect(storagePanel.rectTransform, new Vector2(0.5f, 0f), new Vector2(130f, 105f), new Vector2(520f, 70f));
+            _storageRoot = storagePanel.rectTransform;
+
+            Text storageLabel = CreateText(storagePanel.transform, "Storage Label", "자유 보관함 · 개수 제한 없음", 13, FontStyle.Bold, TextAnchor.UpperLeft);
+            storageLabel.color = new Color(0.58f, 0.66f, 0.77f, 1f);
+            storageLabel.raycastTarget = false;
+            Stretch(storageLabel.rectTransform, 7f);
         }
 
         private void CreateStartingItems()
@@ -335,58 +542,344 @@ namespace BackpackAutoBattle.Prototype
                 return;
             }
 
-            ItemShape shape = itemData.CreateShape();
-            if (!_grid.TryPlace(instanceId, shape, origin))
+            if (!_grid.TryPlace(instanceId, itemData.CreateShape(), origin))
             {
                 Debug.LogError($"Could not place prototype item: {instanceId}");
                 return;
             }
 
-            var itemObject = new GameObject(itemData.DisplayName, typeof(RectTransform), typeof(BackpackItemView));
-            itemObject.transform.SetParent(_gridRoot, false);
-            var itemView = itemObject.GetComponent<BackpackItemView>();
-            itemView.Initialize(this, instanceId, itemData, origin, ItemRotation.None);
+            BackpackItemView itemView = CreateItemView(instanceId, itemData, origin, ItemRotation.None);
             _itemViews.Add(instanceId, itemView);
             PositionItem(itemView);
         }
 
-        private void BuildShop(Transform canvasTransform)
+        private BackpackItemView CreateItemView(string instanceId, ItemData itemData, Vector2Int origin, ItemRotation rotation)
         {
-            Image shopPanel = CreateImage(canvasTransform, "Prototype Shop", new Color(0.08f, 0.10f, 0.14f, 1f));
-            SetRect(shopPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-405f, -8f), new Vector2(310f, 472f));
+            var itemObject = new GameObject(itemData.DisplayName, typeof(RectTransform), typeof(BackpackItemView));
+            itemObject.transform.SetParent(_gridRoot, false);
+            BackpackItemView itemView = itemObject.GetComponent<BackpackItemView>();
+            itemView.Initialize(this, instanceId, itemData, origin, rotation);
+            return itemView;
+        }
 
-            Text shopTitle = CreateText(shopPanel.transform, "Shop Title", "임시 상점", 24, FontStyle.Bold, TextAnchor.MiddleCenter);
-            SetRect(shopTitle.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(280f, 42f));
+        private BackpackItemView CreateDragProxy(string instanceId, ItemData itemData, PointerEventData eventData)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _gridRoot,
+                eventData.position,
+                eventData.pressEventCamera,
+                out Vector2 pointerPosition);
+            Vector2 initialPosition = pointerPosition + new Vector2(-ItemCellSize / 2f, ItemCellSize / 2f);
+            BackpackItemView itemView = CreateItemView(instanceId, itemData, LocalPositionToGrid(initialPosition), ItemRotation.None);
+            itemView.RectTransform.anchoredPosition = initialPosition;
+            return itemView;
+        }
 
-            Text shopHint = CreateText(shopPanel.transform, "Shop Hint", "카드를 누르면 ItemData 정보를 확인합니다", 13, FontStyle.Normal, TextAnchor.MiddleCenter);
-            shopHint.color = new Color(0.60f, 0.67f, 0.76f, 1f);
-            SetRect(shopHint.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -61f), new Vector2(280f, 26f));
+        private void PopulateShop()
+        {
+            _currentShopItems.Clear();
+            List<ItemData> candidates = _itemCatalog?
+                .Where(item => item != null && item.Rarity != ItemRarity.Legendary)
+                .ToList() ?? new List<ItemData>();
 
-            for (int index = 0; index < _shopSlotCount; index++)
+            if (candidates.Count == 0)
             {
-                var slotObject = new GameObject($"Shop Slot {index + 1}", typeof(RectTransform));
-                slotObject.transform.SetParent(shopPanel.transform, false);
-                var slotRect = (RectTransform)slotObject.transform;
-                SetRect(
-                    slotRect,
-                    new Vector2(0.5f, 1f),
-                    new Vector2(0f, -106f - index * 76f),
-                    new Vector2(278f, 66f));
-                var slotView = slotObject.AddComponent<PrototypeShopSlotView>();
-                slotView.Initialize(this, index);
-                _shopSlots.Add(slotView);
+                SetStatus("상점에 표시할 ItemData가 없습니다.");
+                return;
             }
 
-            var rerollObject = new GameObject("Reroll Button", typeof(RectTransform), typeof(Image), typeof(Button));
-            rerollObject.transform.SetParent(shopPanel.transform, false);
-            var rerollRect = (RectTransform)rerollObject.transform;
-            SetRect(rerollRect, new Vector2(0.5f, 0f), new Vector2(0f, 30f), new Vector2(278f, 44f));
-            rerollObject.GetComponent<Image>().color = new Color(0.20f, 0.42f, 0.66f, 1f);
-            rerollObject.GetComponent<Button>().onClick.AddListener(RefreshShop);
+            RoundShopRarityWeights weights = _shopRarityTable?.GetWeights(_currentRound) ?? new RoundShopRarityWeights();
+            int visibleCount = _shopSlots.Count;
+            for (int index = 0; index < visibleCount; index++)
+            {
+                ItemData selected = SelectWeightedItem(candidates, weights);
+                _currentShopItems.Add(selected);
+            }
 
-            Text rerollText = CreateText(rerollObject.transform, "Label", "리롤 (무료 테스트)", 17, FontStyle.Bold, TextAnchor.MiddleCenter);
-            rerollText.raycastTarget = false;
-            Stretch(rerollText.rectTransform);
+            for (int index = 0; index < _shopSlots.Count; index++)
+            {
+                bool hasItem = index < _currentShopItems.Count;
+                _shopSlots[index].gameObject.SetActive(hasItem);
+                if (hasItem)
+                {
+                    bool isOnSale = _shopRandom.NextDouble() < _saleChance;
+                    _shopSlots[index].Bind(new ShopOffer(_currentShopItems[index], isOnSale));
+                }
+            }
+
+            UpdateEconomyText();
+        }
+
+        private ItemData SelectWeightedItem(IReadOnlyList<ItemData> candidates, RoundShopRarityWeights weights)
+        {
+            ItemRarity[] shopRarities =
+            {
+                ItemRarity.Common,
+                ItemRarity.Uncommon,
+                ItemRarity.Rare,
+                ItemRarity.Epic
+            };
+
+            float total = 0f;
+            foreach (ItemRarity rarity in shopRarities)
+            {
+                if (candidates.Any(item => item.Rarity == rarity))
+                {
+                    total += Mathf.Max(0f, weights.GetWeight(rarity));
+                }
+            }
+
+            if (total <= 0f)
+            {
+                return candidates[_shopRandom.Next(candidates.Count)];
+            }
+
+            double roll = _shopRandom.NextDouble() * total;
+            foreach (ItemRarity rarity in shopRarities)
+            {
+                List<ItemData> rarityItems = candidates.Where(item => item.Rarity == rarity).ToList();
+                if (rarityItems.Count == 0)
+                {
+                    continue;
+                }
+
+                roll -= Mathf.Max(0f, weights.GetWeight(rarity));
+                if (roll <= 0d)
+                {
+                    return rarityItems[_shopRandom.Next(rarityItems.Count)];
+                }
+            }
+
+            return candidates[_shopRandom.Next(candidates.Count)];
+        }
+
+        private void StoreDraggedItem(BackpackItemView itemView, PointerEventData eventData)
+        {
+            if (_dragSource == DragSource.Shop && !CommitPurchase())
+            {
+                DestroyDragProxy(itemView);
+                SetStatus($"구매할 수 없습니다. 필요: {_draggingShopOffer.PurchasePrice} G");
+                return;
+            }
+
+            Vector2 position = GetClampedStoragePosition(eventData);
+            string displayName = itemView.DisplayName;
+            if (_dragSource == DragSource.Backpack)
+            {
+                _grid.Remove(itemView.InstanceId);
+                _itemViews.Remove(itemView.InstanceId);
+                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position);
+                _storedItems.Add(storedItem);
+                CreateStorageView(storedItem);
+                Destroy(itemView.gameObject);
+            }
+            else if (_dragSource == DragSource.Storage)
+            {
+                PrototypeStoredItem storedItem = _draggingStorageView.StoredItem;
+                storedItem.StoragePosition = position;
+                _draggingStorageView.SetPosition(position);
+                _itemViews.Remove(itemView.InstanceId);
+                Destroy(itemView.gameObject);
+            }
+            else
+            {
+                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position);
+                _storedItems.Add(storedItem);
+                CreateStorageView(storedItem);
+                Destroy(itemView.gameObject);
+            }
+
+            SetStatus($"{displayName}을(를) 자유 보관함에 놓았습니다.");
+        }
+
+        private void CompleteGridPlacement(BackpackItemView itemView)
+        {
+            if (_dragSource == DragSource.Shop)
+            {
+                if (!CommitPurchase())
+                {
+                    _grid.Remove(itemView.InstanceId);
+                    DestroyDragProxy(itemView);
+                    return;
+                }
+
+                _itemViews[itemView.InstanceId] = itemView;
+                SetStatus($"{itemView.DisplayName} 구매 및 가방 배치 완료.");
+            }
+            else if (_dragSource == DragSource.Storage)
+            {
+                RemoveStoredItem(_draggingStorageView.StoredItem.InstanceId);
+                SetStatus($"{itemView.DisplayName}을(를) 보관함에서 가방으로 옮겼습니다.");
+            }
+            else
+            {
+                SetStatus($"{itemView.DisplayName} 배치 완료: ({_previewOrigin.x}, {_previewOrigin.y})");
+            }
+        }
+
+        private void CancelGridPlacement(BackpackItemView itemView, bool canAfford)
+        {
+            if (_dragSource == DragSource.Backpack)
+            {
+                itemView.SetPlacement(_dragOrigin, _dragRotation);
+                SetStatus("놓을 수 없는 위치입니다. 아이템을 원래 자리로 돌려놓았습니다.");
+                return;
+            }
+
+            DestroyDragProxy(itemView);
+            SetStatus(canAfford
+                ? "가방이나 자유 보관함 안에 놓아야 구매할 수 있습니다."
+                : $"구매할 수 없습니다. 필요: {_draggingShopOffer.PurchasePrice} G");
+        }
+
+        private void SellDraggedItem(BackpackItemView itemView)
+        {
+            string displayName = itemView.DisplayName;
+            int salePrice = ShopPriceRules.HalfRoundedUp(itemView.Data.PurchasePrice);
+            if (_dragSource == DragSource.Backpack)
+            {
+                _grid.Remove(itemView.InstanceId);
+                _itemViews.Remove(itemView.InstanceId);
+                Destroy(itemView.gameObject);
+            }
+            else
+            {
+                RemoveStoredItem(itemView.InstanceId);
+                _itemViews.Remove(itemView.InstanceId);
+                Destroy(itemView.gameObject);
+            }
+
+            _gold += salePrice;
+            UpdateEconomyText();
+            SetStatus($"{displayName} 판매 완료 (+{salePrice} G)");
+        }
+
+        private bool CommitPurchase()
+        {
+            if (!CanPurchaseDraggedOffer() || !_draggingShopOffer.TryMarkPurchased())
+            {
+                return false;
+            }
+
+            _gold -= _draggingShopOffer.PurchasePrice;
+            _currentShopItems.Remove(_draggingShopOffer.ItemData);
+            _draggingShopSlot.ShowPurchased();
+            UpdateEconomyText();
+            return true;
+        }
+
+        private bool CanPurchaseDraggedOffer()
+        {
+            return _draggingShopSlot != null
+                   && _draggingShopOffer != null
+                   && _draggingShopSlot.Offer == _draggingShopOffer
+                   && !_draggingShopOffer.IsPurchased
+                   && _gold >= _draggingShopOffer.PurchasePrice;
+        }
+
+        private void CreateStorageView(PrototypeStoredItem storedItem)
+        {
+            var viewObject = new GameObject(storedItem.ItemData.DisplayName, typeof(RectTransform), typeof(PrototypeStorageItemView));
+            viewObject.transform.SetParent(_storageRoot, false);
+            PrototypeStorageItemView storageView = viewObject.GetComponent<PrototypeStorageItemView>();
+            storageView.Initialize(this, storedItem);
+            _storageViews[storedItem.InstanceId] = storageView;
+        }
+
+        private void RemoveStoredItem(string instanceId)
+        {
+            _storedItems.RemoveAll(item => item.InstanceId == instanceId);
+            if (_storageViews.Remove(instanceId, out PrototypeStorageItemView storageView) && storageView != null)
+            {
+                Destroy(storageView.gameObject);
+            }
+        }
+
+        private string CreatePurchasedInstanceId(ItemData itemData)
+        {
+            _nextPurchasedItemSequence++;
+            return $"purchased_{itemData.ItemId}_{_nextPurchasedItemSequence}";
+        }
+
+        private void DestroyDragProxy(BackpackItemView itemView)
+        {
+            _itemViews.Remove(itemView.InstanceId);
+            Destroy(itemView.gameObject);
+        }
+
+        private void FinishDrag()
+        {
+            if (_draggingItem != null)
+            {
+                _draggingItem.ResetTint();
+            }
+
+            if (_draggingStorageView != null)
+            {
+                _draggingStorageView.SetDragging(false);
+            }
+
+            ResetGridColors();
+            _draggingItem = null;
+            _draggingStorageView = null;
+            _draggingShopSlot = null;
+            _draggingShopOffer = null;
+            _dragSource = DragSource.None;
+            _sellPreview.gameObject.SetActive(false);
+        }
+
+        private void UpdateSellPreview(PointerEventData eventData)
+        {
+            bool canSell = _draggingItem != null
+                           && (_dragSource == DragSource.Backpack || _dragSource == DragSource.Storage);
+            _sellPreview.gameObject.SetActive(canSell);
+            if (!canSell)
+            {
+                return;
+            }
+
+            bool hoveringShop = IsPointerInside(_sellArea, eventData);
+            _sellPreview.color = hoveringShop
+                ? new Color(0.15f, 0.40f, 0.24f, 0.96f)
+                : new Color(0.16f, 0.23f, 0.32f, 0.96f);
+            int salePrice = ShopPriceRules.HalfRoundedUp(_draggingItem.Data.PurchasePrice);
+            _sellPreviewText.text = $"판매\n\n{_draggingItem.DisplayName}\n<color=#FFD65C>+{salePrice} G</color>\n\n<size=17>{(hoveringShop ? "놓으면 판매됩니다" : "상점 안에 놓아 판매하세요")}</size>";
+        }
+
+        private void SetDragOffset(BackpackItemView itemView, PointerEventData eventData)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _gridRoot,
+                eventData.position,
+                eventData.pressEventCamera,
+                out Vector2 pointerPosition);
+            _dragOffset = pointerPosition - itemView.RectTransform.anchoredPosition;
+        }
+
+        private void SetDragOffsetFromPointer()
+        {
+            _dragOffset = new Vector2(ItemCellSize / 2f, -ItemCellSize / 2f);
+        }
+
+        private bool IsPointerInside(RectTransform target, PointerEventData eventData)
+        {
+            return target != null
+                   && RectTransformUtility.RectangleContainsScreenPoint(target, eventData.position, eventData.pressEventCamera);
+        }
+
+        private Vector2 GetClampedStoragePosition(PointerEventData eventData)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _storageRoot,
+                eventData.position,
+                eventData.pressEventCamera,
+                out Vector2 localPosition);
+            Rect rect = _storageRoot.rect;
+            const float halfWidth = 34f;
+            const float halfHeight = 27f;
+            return new Vector2(
+                Mathf.Clamp(localPosition.x, rect.xMin + halfWidth, rect.xMax - halfWidth),
+                Mathf.Clamp(localPosition.y, rect.yMin + halfHeight, rect.yMax - halfHeight));
         }
 
         private void UpdatePlacementPreview(BackpackItemView itemView, Vector2Int origin)
@@ -406,8 +899,44 @@ namespace BackpackAutoBattle.Prototype
             }
         }
 
+        private void UpdateEconomyText()
+        {
+            if (_goldText != null)
+            {
+                _goldText.text = $"{_gold} G";
+            }
+
+            if (_roundText != null)
+            {
+                _roundText.text = $"ROUND {_currentRound} / {ShopRarityTableData.MaximumRound}";
+            }
+
+            if (_rerollText != null)
+            {
+                _rerollText.text = $"새로고침 {_rerollCost}G";
+            }
+
+            if (_nextRoundText != null)
+            {
+                _nextRoundText.text = _currentRound < ShopRarityTableData.MaximumRound
+                    ? $"다음 라운드 +{_roundIncome}G"
+                    : "마지막 라운드";
+            }
+
+            if (_rarityOddsText != null)
+            {
+                RoundShopRarityWeights weights = _shopRarityTable?.GetWeights(_currentRound) ?? new RoundShopRarityWeights();
+                _rarityOddsText.text = $"일 {weights.Common:0}% · 고 {weights.Uncommon:0}% · 희 {weights.Rare:0}% · 영 {weights.Epic:0}%";
+            }
+        }
+
         private void ResetGridColors()
         {
+            if (_gridCells == null)
+            {
+                return;
+            }
+
             for (int y = 0; y < GridSize; y++)
             {
                 for (int x = 0; x < GridSize; x++)
@@ -446,19 +975,31 @@ namespace BackpackAutoBattle.Prototype
 
         private void SetStatus(string message)
         {
-            _statusText.text = message;
+            if (_statusText != null)
+            {
+                _statusText.text = message;
+            }
+        }
+
+        private static Button CreateButton(Transform parent, string name, Vector2 position, Vector2 size, Color color)
+        {
+            var buttonObject = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            buttonObject.transform.SetParent(parent, false);
+            SetRect((RectTransform)buttonObject.transform, new Vector2(0.5f, 0f), position, size);
+            buttonObject.GetComponent<Image>().color = color;
+            return buttonObject.GetComponent<Button>();
         }
 
         private static Image CreateImage(Transform parent, string objectName, Color color)
         {
             var imageObject = new GameObject(objectName, typeof(RectTransform), typeof(Image));
             imageObject.transform.SetParent(parent, false);
-            var image = imageObject.GetComponent<Image>();
+            Image image = imageObject.GetComponent<Image>();
             image.color = color;
             return image;
         }
 
-        private static void SetRect(RectTransform rect, Vector2 anchor, Vector2 position, Vector2 size)
+        public static void SetRect(RectTransform rect, Vector2 anchor, Vector2 position, Vector2 size)
         {
             rect.anchorMin = anchor;
             rect.anchorMax = anchor;
@@ -467,12 +1008,20 @@ namespace BackpackAutoBattle.Prototype
             rect.sizeDelta = size;
         }
 
-        private static void Stretch(RectTransform rect, float inset = 0f)
+        public static void Stretch(RectTransform rect, float inset = 0f)
         {
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
             rect.offsetMin = Vector2.one * inset;
             rect.offsetMax = Vector2.one * -inset;
+        }
+
+        private enum DragSource
+        {
+            None,
+            Backpack,
+            Shop,
+            Storage
         }
     }
 }

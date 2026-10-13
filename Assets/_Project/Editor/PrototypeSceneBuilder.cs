@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Prototype;
+using BackpackAutoBattle.Shop;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -18,10 +19,11 @@ namespace BackpackAutoBattle.Editor
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             ItemData[] itemCatalog = PrototypeItemDataBuilder.CreateOrUpdateItems();
+            ShopRarityTableData rarityTable = PrototypeShopRarityTableBuilder.CreateOrLoad();
 
             var prototypeObject = new GameObject("Backpack Prototype");
             BackpackPrototypeController controller = prototypeObject.AddComponent<BackpackPrototypeController>();
-            AssignItemCatalog(controller, itemCatalog);
+            AssignContent(controller, itemCatalog, rarityTable);
 
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddSceneToBuildSettings();
@@ -34,6 +36,7 @@ namespace BackpackAutoBattle.Editor
         {
             Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             ItemData[] itemCatalog = PrototypeItemDataBuilder.CreateOrUpdateItems();
+            ShopRarityTableData rarityTable = PrototypeShopRarityTableBuilder.CreateOrLoad();
             BackpackPrototypeController controller = UnityEngine.Object.FindFirstObjectByType<BackpackPrototypeController>();
 
             if (controller == null)
@@ -42,18 +45,26 @@ namespace BackpackAutoBattle.Editor
                 controller = prototypeObject.AddComponent<BackpackPrototypeController>();
             }
 
-            AssignItemCatalog(controller, itemCatalog);
+            AssignContent(controller, itemCatalog, rarityTable);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             AddSceneToBuildSettings();
             Debug.Log($"Refreshed {itemCatalog.Length} ItemData assets and updated {ScenePath}");
         }
 
-        private static void AssignItemCatalog(BackpackPrototypeController controller, ItemData[] itemCatalog)
+        private static void AssignContent(
+            BackpackPrototypeController controller,
+            ItemData[] itemCatalog,
+            ShopRarityTableData rarityTable)
         {
             if (itemCatalog == null || itemCatalog.Any(itemData => itemData == null))
             {
                 throw new InvalidOperationException("The prototype ItemData catalog contains a missing asset reference.");
+            }
+
+            if (rarityTable == null)
+            {
+                throw new InvalidOperationException("The prototype shop rarity table is missing.");
             }
 
             var serializedController = new SerializedObject(controller);
@@ -65,6 +76,8 @@ namespace BackpackAutoBattle.Editor
             {
                 catalogProperty.GetArrayElementAtIndex(index).objectReferenceValue = itemCatalog[index];
             }
+
+            serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
 
             serializedController.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(controller);

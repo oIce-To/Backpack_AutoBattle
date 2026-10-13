@@ -14,6 +14,7 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private string _displayName = string.Empty;
         [SerializeField, TextArea] private string _description = string.Empty;
         [SerializeField] private ItemCategory _category;
+        [SerializeField] private ItemRarity _rarity;
 
         [Header("Shop")]
         [SerializeField, Min(0)] private int _purchasePrice = 1;
@@ -30,6 +31,8 @@ namespace BackpackAutoBattle.Items
         public string Description => _description;
 
         public ItemCategory Category => _category;
+
+        public ItemRarity Rarity => _rarity;
 
         public int PurchasePrice => _purchasePrice;
 

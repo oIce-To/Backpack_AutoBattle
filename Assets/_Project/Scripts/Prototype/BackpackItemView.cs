@@ -116,7 +116,7 @@ namespace BackpackAutoBattle.Prototype
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                _controller.EndDrag(this);
+                _controller.EndDrag(this, eventData);
             }
         }
 

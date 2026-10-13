@@ -16,6 +16,7 @@ MonoBehaviour:
   _displayName: "\uD68C\uBCF5 \uBB3C\uC57D"
   _description: "\uCCB4\uB825\uC744 1\uD68C \uD68C\uBCF5\uD558\uB294 \uC18C\uBAA8\uD488"
   _category: 3
+  _rarity: 0
   _purchasePrice: 3
   _displayColor: {r: 0.78, g: 0.2, b: 0.28, a: 1}
   _canRotate: 0
