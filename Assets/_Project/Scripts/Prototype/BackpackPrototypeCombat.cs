@@ -5,6 +5,7 @@ using BackpackAutoBattle.Enemies;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Shop;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Prototype
@@ -21,6 +22,7 @@ namespace BackpackAutoBattle.Prototype
         private PrototypeRunState _run;
         private PrototypeBattleController _battleController;
         private PrototypePreparationPanel _preparationPanel;
+        private PrototypeItemTooltip _itemTooltip;
         private RectTransform _shopScreenRoot;
         private CanvasGroup _shopInputGroup;
         private CanvasGroup _gridInputGroup;
@@ -31,6 +33,7 @@ namespace BackpackAutoBattle.Prototype
         public CombatSimulation ActiveCombat => _battleController?.Simulation;
         public PrototypeBattleController BattleController => _battleController;
         public EnemyData EnemyData => _enemyData;
+        public PrototypeItemTooltip ItemTooltip => _itemTooltip;
         public bool CanEditLoadout => _run.Phase == PrototypePhase.Preparation;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
@@ -62,6 +65,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
+            _itemTooltip.HideAll();
             _battleController.BeginBattle(player, enemy, _run.Round, _roundIncome, _maximumBattleSeconds);
             _run.Phase = PrototypePhase.Battle;
             _selectedItem = null;
@@ -94,7 +98,7 @@ namespace BackpackAutoBattle.Prototype
             var controllerObject = new GameObject("Battle Controller", typeof(PrototypeBattleController));
             controllerObject.transform.SetParent(transform, false);
             _battleController = controllerObject.GetComponent<PrototypeBattleController>();
-            _battleController.Initialize(canvas, OnBattleFinished, HandleCombatAction);
+            _battleController.Initialize(canvas, OnBattleFinished, HandleCombatAction, _itemTooltip);
         }
 
         private void OnBattleFinished(CombatResult result)
@@ -112,6 +116,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void RefreshCombatInterface()
         {
+            if (_shopScreenRoot.gameObject.activeSelf != CanEditLoadout) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(CanEditLoadout);
             _battleController.SetVisible(!CanEditLoadout);
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
@@ -122,7 +127,21 @@ namespace BackpackAutoBattle.Prototype
             if (CanEditLoadout) _preparationPanel.Render(_run.Round, _enemyData);
         }
 
-        private void ShowItemStats(ItemData item) => _preparationPanel.ShowItemStats(item);
+        public void ShowItemTooltip(Component owner, ItemData item, PointerEventData pointer)
+        {
+            if (!CanEditLoadout || _draggingItem != null || item == null) return;
+            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item), pointer.position, pointer.enterEventCamera);
+        }
+
+        public void MoveItemTooltip(Component owner, PointerEventData pointer)
+        {
+            if (_itemTooltip != null) _itemTooltip.Move(owner, pointer.position, pointer.enterEventCamera);
+        }
+
+        public void HideItemTooltip(Component owner)
+        {
+            if (_itemTooltip != null) _itemTooltip.Hide(owner);
+        }
 
         private static void SetInputEnabled(CanvasGroup group, bool enabled)
         {

@@ -13,6 +13,7 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private string _itemId = string.Empty;
         [SerializeField] private string _displayName = string.Empty;
         [SerializeField, TextArea] private string _description = string.Empty;
+        [SerializeField, TextArea(2, 6)] private string _effectDescription = string.Empty;
         [SerializeField] private ItemCategory _category;
         [SerializeField] private ItemRarity _rarity;
 
@@ -32,6 +33,8 @@ namespace BackpackAutoBattle.Items
         public string DisplayName => _displayName;
 
         public string Description => _description;
+
+        public string EffectDescription => _effectDescription;
 
         public ItemCategory Category => _category;
 

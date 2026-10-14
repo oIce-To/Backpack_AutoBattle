@@ -12,12 +12,14 @@ namespace BackpackAutoBattle.Prototype
         IPointerClickHandler,
         IBeginDragHandler,
         IDragHandler,
-        IEndDragHandler
+        IEndDragHandler,
+        IPointerEnterHandler,
+        IPointerExitHandler,
+        IPointerMoveHandler
     {
         private readonly List<Image> _cellImages = new();
         private BackpackPrototypeController _controller;
         private Color _baseColor;
-        private Text _label;
 
         public string InstanceId { get; private set; }
 
@@ -120,67 +122,15 @@ namespace BackpackAutoBattle.Prototype
             }
         }
 
+        public void OnPointerEnter(PointerEventData eventData) => _controller.ShowItemTooltip(this, Data, eventData);
+        public void OnPointerMove(PointerEventData eventData) => _controller.MoveItemTooltip(this, eventData);
+        public void OnPointerExit(PointerEventData eventData) => _controller.HideItemTooltip(this);
+        private void OnDisable() { if (_controller != null) _controller.HideItemTooltip(this); }
+
         private void RebuildVisual()
         {
-            foreach (Image cellImage in _cellImages)
-            {
-                if (cellImage != null)
-                {
-                    Destroy(cellImage.gameObject);
-                }
-            }
-
             _cellImages.Clear();
-
-            if (_label != null)
-            {
-                Destroy(_label.gameObject);
-            }
-
-            IReadOnlyList<Vector2Int> cells = Shape.GetCells(Rotation);
-            int width = 0;
-            int height = 0;
-
-            foreach (Vector2Int cell in cells)
-            {
-                width = Mathf.Max(width, cell.x + 1);
-                height = Mathf.Max(height, cell.y + 1);
-
-                var cellObject = new GameObject($"Cell {cell.x},{cell.y}", typeof(RectTransform), typeof(Image));
-                var cellRect = (RectTransform)cellObject.transform;
-                cellRect.SetParent(transform, false);
-                cellRect.anchorMin = new Vector2(0f, 1f);
-                cellRect.anchorMax = new Vector2(0f, 1f);
-                cellRect.pivot = new Vector2(0f, 1f);
-                cellRect.anchoredPosition = new Vector2(
-                    cell.x * BackpackPrototypeController.CellPitch,
-                    -cell.y * BackpackPrototypeController.CellPitch);
-                cellRect.sizeDelta = Vector2.one * BackpackPrototypeController.ItemCellSize;
-
-                var image = cellObject.GetComponent<Image>();
-                image.color = _baseColor;
-                _cellImages.Add(image);
-            }
-
-            RectTransform.sizeDelta = new Vector2(
-                width * BackpackPrototypeController.CellPitch,
-                height * BackpackPrototypeController.CellPitch);
-
-            _label = BackpackPrototypeController.CreateText(
-                transform,
-                "Label",
-                DisplayName,
-                17,
-                FontStyle.Bold,
-                TextAnchor.MiddleCenter);
-            _label.color = Color.white;
-            _label.raycastTarget = false;
-            RectTransform labelRect = _label.rectTransform;
-            labelRect.anchorMin = Vector2.zero;
-            labelRect.anchorMax = Vector2.one;
-            labelRect.offsetMin = Vector2.zero;
-            labelRect.offsetMax = Vector2.zero;
-            _label.transform.SetAsLastSibling();
+            _cellImages.AddRange(PrototypeItemShapeVisual.Rebuild(RectTransform, Data, Rotation));
         }
     }
 }

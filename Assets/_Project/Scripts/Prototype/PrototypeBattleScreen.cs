@@ -14,6 +14,10 @@ namespace BackpackAutoBattle.Prototype
         private readonly Image _enemyHealthFill;
         private readonly Text _playerHealthText;
         private readonly Text _enemyHealthText;
+        private readonly PrototypeArmorBadge _playerArmor;
+        private readonly PrototypeArmorBadge _enemyArmor;
+        private readonly Image _playerBagFrame;
+        private readonly Image _enemyBagFrame;
         private readonly Text _playerName;
         private readonly Text _enemyName;
         private readonly Text _title;
@@ -25,6 +29,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Button _continueButton;
         private readonly Text _continueText;
         private readonly Queue<string> _log = new();
+        private readonly PrototypeItemTooltip _tooltip;
         private CombatSimulation _combat;
         private int _round;
         private int _income;
@@ -33,35 +38,43 @@ namespace BackpackAutoBattle.Prototype
 
         public RectTransform Root { get; }
 
-        public PrototypeBattleScreen(Transform parent, Action continueAction)
+        public PrototypeBattleScreen(Transform parent, Action continueAction, PrototypeItemTooltip tooltip)
         {
+            _tooltip = tooltip;
             Image background = Image(parent, "Battle Screen", new Color(0.04f, 0.065f, 0.11f));
             Root = background.rectTransform;
             BackpackPrototypeController.Stretch(Root);
-            _title = Label(Root, "Battle Title", new Vector2(0f, 320f), new Vector2(800f, 44f), 28, TextAnchor.MiddleCenter);
-            _timer = Label(Root, "Combat Timer", new Vector2(0f, 286f), new Vector2(900f, 28f), 17, TextAnchor.MiddleCenter);
-            Image playerFrame = Frame(Root, "Player Battle Frame", -310f, new Color(0.07f, 0.13f, 0.20f));
-            Image enemyFrame = Frame(Root, "Enemy Battle Frame", 310f, new Color(0.17f, 0.10f, 0.10f));
-            _playerName = Label(playerFrame.transform, "Player Name", new Vector2(0f, 203f), new Vector2(440f, 34f), 22, TextAnchor.MiddleCenter);
-            _enemyName = Label(enemyFrame.transform, "Enemy Name", new Vector2(0f, 203f), new Vector2(440f, 34f), 22, TextAnchor.MiddleCenter);
-            _playerBag = new PrototypeBattleBagView(playerFrame.transform, "Player Battle Backpack");
-            _enemyBag = new PrototypeBattleBagView(enemyFrame.transform, "Enemy Battle Backpack");
-            _playerHealthFill = HealthBar(playerFrame.transform, "Player Health", new Color(0.20f, 0.67f, 0.37f));
-            _enemyHealthFill = HealthBar(enemyFrame.transform, "Enemy Health", new Color(0.80f, 0.27f, 0.25f));
-            _playerHealthText = Label(playerFrame.transform, "Player Health Text", new Vector2(0f, -192f), new Vector2(410f, 30f), 18, TextAnchor.MiddleCenter);
-            _enemyHealthText = Label(enemyFrame.transform, "Enemy Health Text", new Vector2(0f, -192f), new Vector2(410f, 30f), 18, TextAnchor.MiddleCenter);
-            _playerDamage = Label(playerFrame.transform, "Player Damage", new Vector2(0f, -155f), new Vector2(350f, 28f), 23, TextAnchor.MiddleCenter);
-            _enemyDamage = Label(enemyFrame.transform, "Enemy Damage", new Vector2(0f, -155f), new Vector2(350f, 28f), 23, TextAnchor.MiddleCenter);
-            _inspection = Label(Root, "Battle Item Details", new Vector2(0f, -194f), new Vector2(1180f, 30f), 16, TextAnchor.MiddleCenter);
+            _timer = Label(Root, "Combat Timer", new Vector2(0f, 318f), new Vector2(900f, 44f), 28, TextAnchor.MiddleCenter);
+            _title = Label(Root, "Battle Result", new Vector2(0f, 270f), new Vector2(900f, 36f), 24, TextAnchor.MiddleCenter);
+            _title.gameObject.SetActive(false);
+            RectTransform playerGroup = CombatantGroup(Root, "Player Combatant", -310f);
+            RectTransform enemyGroup = CombatantGroup(Root, "Enemy Combatant", 310f);
+            _playerBagFrame = Frame(playerGroup, "Player Battle Frame", new Color(0.07f, 0.13f, 0.20f));
+            _enemyBagFrame = Frame(enemyGroup, "Enemy Battle Frame", new Color(0.17f, 0.10f, 0.10f));
+            _playerBag = new PrototypeBattleBagView(playerGroup, "Player Battle Backpack");
+            _enemyBag = new PrototypeBattleBagView(enemyGroup, "Enemy Battle Backpack");
+            _playerName = Label(playerGroup, "Player Name", new Vector2(0f, -27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
+            _enemyName = Label(enemyGroup, "Enemy Name", new Vector2(0f, -27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
+            CharacterSpace(playerGroup, "Player Character Illustration");
+            CharacterSpace(enemyGroup, "Enemy Character Illustration");
+            _playerHealthFill = HealthBar(playerGroup, "Player Health", new Color(0.20f, 0.67f, 0.37f));
+            _enemyHealthFill = HealthBar(enemyGroup, "Enemy Health", new Color(0.80f, 0.27f, 0.25f));
+            _playerHealthText = Label(playerGroup, "Player Health Text", new Vector2(0f, -214f), new Vector2(280f, 28f), 18, TextAnchor.MiddleCenter);
+            _enemyHealthText = Label(enemyGroup, "Enemy Health Text", new Vector2(0f, -214f), new Vector2(280f, 28f), 18, TextAnchor.MiddleCenter);
+            _playerArmor = PrototypeArmorBadge.Create(playerGroup, "Player Armor Badge");
+            _enemyArmor = PrototypeArmorBadge.Create(enemyGroup, "Enemy Armor Badge");
+            _playerDamage = Label(playerGroup, "Player Damage", new Vector2(130f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
+            _enemyDamage = Label(enemyGroup, "Enemy Damage", new Vector2(-130f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
+            _inspection = Label(Root, "Battle Item Details", new Vector2(0f, -272f), new Vector2(1180f, 24f), 14, TextAnchor.MiddleCenter);
 
             Image logPanel = Image(Root, "Battle Log Panel", new Color(0.08f, 0.11f, 0.17f));
-            BackpackPrototypeController.SetRect(logPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-120f, -276f), new Vector2(950f, 120f));
-            _logText = BackpackPrototypeController.CreateText(logPanel.transform, "Combat Log", string.Empty, 16, FontStyle.Normal, TextAnchor.MiddleLeft);
+            BackpackPrototypeController.SetRect(logPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-120f, -320f), new Vector2(950f, 62f));
+            _logText = BackpackPrototypeController.CreateText(logPanel.transform, "Combat Log", string.Empty, 12, FontStyle.Normal, TextAnchor.MiddleLeft);
             _logText.raycastTarget = false;
-            BackpackPrototypeController.Stretch(_logText.rectTransform, 12f);
+            BackpackPrototypeController.Stretch(_logText.rectTransform, 6f);
 
             Image buttonImage = Image(Root, "Combat Action Button", new Color(0.23f, 0.46f, 0.68f));
-            BackpackPrototypeController.SetRect(buttonImage.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(500f, -276f), new Vector2(190f, 56f));
+            BackpackPrototypeController.SetRect(buttonImage.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(500f, -320f), new Vector2(190f, 50f));
             buttonImage.raycastTarget = true;
             _continueButton = buttonImage.gameObject.AddComponent<Button>();
             _continueButton.onClick.AddListener(() => continueAction());
@@ -76,14 +89,22 @@ namespace BackpackAutoBattle.Prototype
             _round = round;
             _income = income;
             _log.Clear();
-            _playerBag.Build(combat.Player.Loadout, CombatSide.Player, item => InspectItem(item, CombatSide.Player));
-            _enemyBag.Build(combat.Enemy.Loadout, CombatSide.Enemy, item => InspectItem(item, CombatSide.Enemy));
-            _playerName.text = $"{combat.Player.DisplayName} · {combat.Player.Loadout.Width}×{combat.Player.Loadout.Height}";
-            _enemyName.text = $"{combat.Enemy.DisplayName} · {combat.Enemy.Loadout.Width}×{combat.Enemy.Loadout.Height}";
-            _title.text = $"{combat.Player.DisplayName} VS {combat.Enemy.DisplayName}";
-            _inspection.text = "아이템을 클릭하면 전투 스탯을 확인할 수 있습니다. 전투 중 가방은 변경할 수 없습니다.";
+            _playerBag.Build(combat.Player.Loadout, CombatSide.Player, item => InspectItem(item, CombatSide.Player),
+                _tooltip, item => TooltipContent(item, CombatSide.Player));
+            _enemyBag.Build(combat.Enemy.Loadout, CombatSide.Enemy, item => InspectItem(item, CombatSide.Enemy),
+                _tooltip, item => TooltipContent(item, CombatSide.Enemy));
+            _playerBagFrame.rectTransform.sizeDelta = _playerBag.Root.sizeDelta + Vector2.one * 24f;
+            _enemyBagFrame.rectTransform.sizeDelta = _enemyBag.Root.sizeDelta + Vector2.one * 24f;
+            _playerName.text = combat.Player.DisplayName;
+            _enemyName.text = combat.Enemy.DisplayName;
+            _title.text = string.Empty;
+            _title.gameObject.SetActive(false);
+            _inspection.text = "아이템 위에 마우스를 올리면 전투 스탯을 확인합니다. 색이 위까지 차오르면 아이템을 사용합니다.";
             _logText.text = "첫 공격을 준비하고 있습니다…";
             _playerDamage.text = _enemyDamage.text = string.Empty;
+            // Combat armor is not implemented yet: zero means no visible badge, not a fake value.
+            _playerArmor.SetValue(0d);
+            _enemyArmor.SetValue(0d);
             _continueButton.interactable = false;
             _continueText.text = "전투 진행 중…";
             Render(combat);
@@ -91,7 +112,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Render(CombatSimulation combat)
         {
-            _timer.text = $"ROUND {_round} · {combat.ElapsedSeconds:0.0}초 · 자동 전투";
+            _timer.text = $"ROUND {_round} · {combat.ElapsedSeconds:0.0}초";
             SetHealth(_playerHealthFill, _playerHealthText, combat.PlayerHealth, combat.PlayerMaxHealth);
             SetHealth(_enemyHealthFill, _enemyHealthText, combat.EnemyHealth, combat.EnemyMaxHealth);
             _playerBag.RenderCooldowns(combat.PlayerWeapons, combat.ElapsedSeconds);
@@ -118,6 +139,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowResult(PrototypePhase phase)
         {
+            _title.gameObject.SetActive(true);
             _title.text = phase switch
             {
                 PrototypePhase.Victory => "승리!",
@@ -148,6 +170,14 @@ namespace BackpackAutoBattle.Prototype
             _inspection.text = $"{item.DisplayName} · 공격력 {stats.AttackDamage:0.#} · 쿨타임 {stats.CooldownSeconds:0.##}초 · 명중 {stats.AccuracyPercent:0.#}% · 치명타 {stats.CriticalChancePercent:0.#}% · 치명타 피해 {stats.CriticalDamagePercent:0.#}%";
         }
 
+        private ItemTooltipContent TooltipContent(CombatItemSnapshot item, CombatSide side)
+        {
+            IReadOnlyList<CombatWeapon> weapons = side == CombatSide.Player ? _combat.PlayerWeapons : _combat.EnemyWeapons;
+            foreach (CombatWeapon weapon in weapons)
+                if (weapon.InstanceId == item.InstanceId) return ItemTooltipContent.FromCombat(item, weapon.Stats);
+            return ItemTooltipContent.FromCombat(item, null);
+        }
+
         private static void SetHealth(Image fill, Text text, double health, double maximum)
         {
             fill.rectTransform.anchorMax = new Vector2((float)(health / maximum), 1f);
@@ -157,17 +187,48 @@ namespace BackpackAutoBattle.Prototype
         private static Image HealthBar(Transform parent, string name, Color color)
         {
             Image background = Image(parent, name, new Color(0.14f, 0.17f, 0.22f));
-            BackpackPrototypeController.SetRect(background.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0f, -192f), new Vector2(410f, 30f));
+            BackpackPrototypeController.SetRect(background.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0f, -214f), new Vector2(280f, 28f));
             Image fill = Image(background.transform, "Fill", color);
             BackpackPrototypeController.Stretch(fill.rectTransform);
             return fill;
         }
 
-        private static Image Frame(Transform parent, string name, float x, Color color)
+        private static RectTransform CombatantGroup(Transform parent, string name, float x)
+        {
+            var obj = new GameObject(name, typeof(RectTransform));
+            obj.transform.SetParent(parent, false);
+            RectTransform rect = (RectTransform)obj.transform;
+            BackpackPrototypeController.SetRect(rect, Vector2.one * 0.5f, new Vector2(x, 0f), new Vector2(480f, 510f));
+            return rect;
+        }
+
+        private static Image Frame(Transform parent, string name, Color color)
         {
             Image frame = Image(parent, name, color);
-            BackpackPrototypeController.SetRect(frame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(x, 50f), new Vector2(480f, 460f));
+            BackpackPrototypeController.SetRect(frame.rectTransform, Vector2.one * 0.5f, new Vector2(0f, 117f), Vector2.zero);
             return frame;
+        }
+
+        private static void CharacterSpace(Transform parent, string name)
+        {
+            var obj = new GameObject(name, typeof(RectTransform));
+            obj.transform.SetParent(parent, false);
+            RectTransform rect = (RectTransform)obj.transform;
+            BackpackPrototypeController.SetRect(rect, Vector2.one * 0.5f, new Vector2(0f, -119f), new Vector2(180f, 144f));
+            // No sprite or invented character art. The faint frame marks the future illustration area.
+            Color outline = new Color(0.49f, 0.57f, 0.67f, 0.22f);
+            for (int edge = 0; edge < 4; edge++)
+            {
+                Image line = Image(rect, $"Illustration Frame {edge}", outline);
+                bool horizontal = edge < 2;
+                Vector2 position = horizontal ? new Vector2(0f, edge == 0 ? 72f : -72f)
+                    : new Vector2(edge == 2 ? -90f : 90f, 0f);
+                BackpackPrototypeController.SetRect(line.rectTransform, Vector2.one * 0.5f, position,
+                    horizontal ? new Vector2(180f, 1f) : new Vector2(1f, 144f));
+            }
+            Text caption = Label(rect, "Illustration Placeholder", new Vector2(0f, -56f), new Vector2(170f, 20f), 11, TextAnchor.MiddleCenter);
+            caption.text = "일러스트 영역";
+            caption.color = new Color(0.49f, 0.57f, 0.67f, 0.48f);
         }
 
         private static Text Label(Transform parent, string name, Vector2 position, Vector2 size, int fontSize, TextAnchor alignment)

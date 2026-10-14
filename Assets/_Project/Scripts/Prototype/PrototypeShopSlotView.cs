@@ -9,10 +9,12 @@ using UnityEngine.UI;
 namespace BackpackAutoBattle.Prototype
 {
     public sealed class PrototypeShopSlotView : MonoBehaviour,
-        IPointerClickHandler,
         IBeginDragHandler,
         IDragHandler,
-        IEndDragHandler
+        IEndDragHandler,
+        IPointerEnterHandler,
+        IPointerExitHandler,
+        IPointerMoveHandler
     {
         private readonly List<GameObject> _shapeCells = new();
         private BackpackPrototypeController _controller;
@@ -77,6 +79,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Bind(ShopOffer offer)
         {
+            _controller.HideItemTooltip(this);
             Offer = offer;
             ItemData itemData = offer.ItemData;
             _shapeRoot.gameObject.SetActive(true);
@@ -100,19 +103,12 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowPurchased()
         {
+            _controller.HideItemTooltip(this);
             _shapeRoot.gameObject.SetActive(false);
             _rarityBadge.gameObject.SetActive(false);
             _originalPriceText.gameObject.SetActive(false);
             _priceText.gameObject.SetActive(false);
             _itemText.text = "<color=#8995A6>구매 완료</color>";
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (CanPurchase && eventData.button == PointerEventData.InputButton.Left)
-            {
-                _controller.InspectShopItem(Offer);
-            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -138,6 +134,14 @@ namespace BackpackAutoBattle.Prototype
                 _controller.EndShopDrag(this, eventData);
             }
         }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (CanPurchase) _controller.ShowItemTooltip(this, ItemData, eventData);
+        }
+        public void OnPointerMove(PointerEventData eventData) => _controller.MoveItemTooltip(this, eventData);
+        public void OnPointerExit(PointerEventData eventData) => _controller.HideItemTooltip(this);
+        private void OnDisable() { if (_controller != null) _controller.HideItemTooltip(this); }
 
         private void RebuildShape(ItemData itemData)
         {

@@ -15,8 +15,8 @@ namespace BackpackAutoBattle.Prototype
     public sealed partial class BackpackPrototypeController : MonoBehaviour
     {
         public const int GridSize = 6;
-        public const float CellPitch = 74f;
-        public const float ItemCellSize = 68f;
+        public const float CellPitch = 54f;
+        public const float ItemCellSize = 48f;
 
         private static readonly Color GridColorA = new(0.16f, 0.19f, 0.24f, 1f);
         private static readonly Color GridColorB = new(0.19f, 0.22f, 0.28f, 1f);
@@ -47,7 +47,6 @@ namespace BackpackAutoBattle.Prototype
         private Image _sellPreview;
         private Text _sellPreviewText;
         private Image[,] _gridCells;
-        private Text _statusText;
         private Text _goldText;
         private Text _roundText;
         private Text _rarityOddsText;
@@ -98,13 +97,6 @@ namespace BackpackAutoBattle.Prototype
         {
             if (!CanEditLoadout) return;
             _selectedItem = itemView;
-            string[] adjacentNames = _grid.GetAdjacentItemIds(itemView.InstanceId)
-                .Where(_itemViews.ContainsKey)
-                .Select(id => _itemViews[id].DisplayName)
-                .ToArray();
-            string adjacency = adjacentNames.Length == 0 ? "없음" : string.Join(", ", adjacentNames);
-            SetStatus($"선택: {itemView.DisplayName}  |  인접 아이템: {adjacency}");
-            ShowItemStats(itemView.Data);
         }
 
         public void BeginDrag(BackpackItemView itemView, PointerEventData eventData)
@@ -115,10 +107,12 @@ namespace BackpackAutoBattle.Prototype
             }
 
             SelectItem(itemView);
+            _itemTooltip.HideAll();
             _draggingItem = itemView;
             _dragSource = DragSource.Backpack;
             _dragOrigin = itemView.Origin;
             _dragRotation = itemView.Rotation;
+            _gridRoot.SetAsLastSibling(); // Dragged shapes must stay above the enlarged storage panel.
             itemView.transform.SetAsLastSibling();
             SetDragOffset(itemView, eventData);
             UpdateSellPreview(eventData);
@@ -193,6 +187,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             ItemData itemData = slotView.ItemData;
+            _itemTooltip.HideAll();
             string instanceId = CreatePurchasedInstanceId(itemData);
             BackpackItemView itemView = CreateDragProxy(instanceId, itemData, eventData);
             _draggingItem = itemView;
@@ -232,13 +227,14 @@ namespace BackpackAutoBattle.Prototype
             }
 
             PrototypeStoredItem storedItem = storageView.StoredItem;
-            BackpackItemView itemView = CreateDragProxy(storedItem.InstanceId, storedItem.ItemData, eventData);
+            _itemTooltip.HideAll();
+            BackpackItemView itemView = CreateDragProxy(storedItem.InstanceId, storedItem.ItemData, eventData, storedItem.Rotation);
             _itemViews[storedItem.InstanceId] = itemView;
             _draggingItem = itemView;
             _selectedItem = itemView;
             _draggingStorageView = storageView;
             _dragSource = DragSource.Storage;
-            _dragRotation = ItemRotation.None;
+            _dragRotation = storedItem.Rotation;
             storageView.SetDragging(true);
             SetDragOffsetFromPointer();
             Drag(itemView, eventData);
@@ -295,22 +291,6 @@ namespace BackpackAutoBattle.Prototype
         public void PositionItem(BackpackItemView itemView)
         {
             itemView.RectTransform.anchoredPosition = GridToLocalPosition(itemView.Origin);
-        }
-
-        public void InspectStoredItem(PrototypeStoredItem storedItem)
-        {
-            if (!CanEditLoadout) return;
-            SetStatus($"보관함: {storedItem.ItemData.DisplayName}  |  가방으로 드래그하거나 상점에 놓아 판매하세요.");
-            ShowItemStats(storedItem.ItemData);
-        }
-
-        public void InspectShopItem(ShopOffer offer)
-        {
-            if (!CanEditLoadout) return;
-            ItemData itemData = offer.ItemData;
-            string saleLabel = offer.IsOnSale ? " · Sale!" : string.Empty;
-            SetStatus($"{itemData.Rarity.GetDisplayName()} · {itemData.DisplayName} · {offer.PurchasePrice} G{saleLabel}  |  {itemData.Description}");
-            ShowItemStats(itemData);
         }
 
         public bool TryRerollShop()
@@ -406,6 +386,7 @@ namespace BackpackAutoBattle.Prototype
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1280f, 720f);
             scaler.matchWidthOrHeight = 0.5f;
+            _itemTooltip = PrototypeItemTooltip.Create(canvasObject.transform);
 
             var shopScreen = new GameObject("Shop Screen", typeof(RectTransform));
             shopScreen.transform.SetParent(canvasObject.transform, false);
@@ -431,7 +412,7 @@ namespace BackpackAutoBattle.Prototype
             BuildShop(_shopScreenRoot);
 
             const float boardX = 140f;
-            const float boardY = 34f;
+            const float boardY = 94f;
             Image boardFrame = CreateImage(_shopScreenRoot, "Board Frame", new Color(0.08f, 0.10f, 0.14f, 1f));
             SetRect(boardFrame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(boardX, boardY), new Vector2(BoardSize + 28f, BoardSize + 28f));
             boardFrame.raycastTarget = false;
@@ -465,11 +446,6 @@ namespace BackpackAutoBattle.Prototype
             _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot);
             InitializeBattleScreen(canvasObject.transform);
 
-            Image statusPanel = CreateImage(_shopScreenRoot, "Status Panel", new Color(0.10f, 0.13f, 0.18f, 1f));
-            SetRect(statusPanel.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 34f), new Vector2(1160f, 48f));
-            statusPanel.raycastTarget = false;
-            _statusText = CreateText(statusPanel.transform, "Status", string.Empty, 16, FontStyle.Normal, TextAnchor.MiddleCenter);
-            Stretch(_statusText.rectTransform, 12f);
         }
 
         private void BuildShop(Transform canvasTransform)
@@ -538,14 +514,15 @@ namespace BackpackAutoBattle.Prototype
         private void BuildStorage(Transform canvasTransform)
         {
             Image storagePanel = CreateImage(canvasTransform, "Freeform Storage", new Color(0.08f, 0.10f, 0.14f, 1f));
-            SetRect(storagePanel.rectTransform, new Vector2(0.5f, 0f), new Vector2(130f, 105f), new Vector2(520f, 70f));
+            SetRect(storagePanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(75f, -192f), new Vector2(610f, 208f));
             _storageRoot = storagePanel.rectTransform;
             _storageInputGroup = storagePanel.gameObject.AddComponent<CanvasGroup>();
 
             Text storageLabel = CreateText(storagePanel.transform, "Storage Label", "자유 보관함 · 개수 제한 없음", 13, FontStyle.Bold, TextAnchor.UpperLeft);
             storageLabel.color = new Color(0.58f, 0.66f, 0.77f, 1f);
             storageLabel.raycastTarget = false;
-            Stretch(storageLabel.rectTransform, 7f);
+            SetRect(storageLabel.rectTransform, new Vector2(0f, 1f), new Vector2(10f, -18f), new Vector2(580f, 20f));
+            storageLabel.rectTransform.pivot = new Vector2(0f, 0.5f);
         }
 
         private void CreateStartingItems()
@@ -584,15 +561,16 @@ namespace BackpackAutoBattle.Prototype
             return itemView;
         }
 
-        private BackpackItemView CreateDragProxy(string instanceId, ItemData itemData, PointerEventData eventData)
+        private BackpackItemView CreateDragProxy(string instanceId, ItemData itemData, PointerEventData eventData, ItemRotation rotation = ItemRotation.None)
         {
+            _gridRoot.SetAsLastSibling();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 _gridRoot,
                 eventData.position,
                 eventData.pressEventCamera,
                 out Vector2 pointerPosition);
             Vector2 initialPosition = pointerPosition + new Vector2(-ItemCellSize / 2f, ItemCellSize / 2f);
-            BackpackItemView itemView = CreateItemView(instanceId, itemData, LocalPositionToGrid(initialPosition), ItemRotation.None);
+            BackpackItemView itemView = CreateItemView(instanceId, itemData, LocalPositionToGrid(initialPosition), rotation);
             itemView.RectTransform.anchoredPosition = initialPosition;
             return itemView;
         }
@@ -684,13 +662,13 @@ namespace BackpackAutoBattle.Prototype
                 return;
             }
 
-            Vector2 position = GetClampedStoragePosition(eventData);
+            Vector2 position = GetClampedStoragePosition(itemView);
             string displayName = itemView.DisplayName;
             if (_dragSource == DragSource.Backpack)
             {
                 _grid.Remove(itemView.InstanceId);
                 _itemViews.Remove(itemView.InstanceId);
-                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position);
+                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position, itemView.Rotation);
                 _storedItems.Add(storedItem);
                 CreateStorageView(storedItem);
                 Destroy(itemView.gameObject);
@@ -699,13 +677,15 @@ namespace BackpackAutoBattle.Prototype
             {
                 PrototypeStoredItem storedItem = _draggingStorageView.StoredItem;
                 storedItem.StoragePosition = position;
+                storedItem.Rotation = itemView.Rotation;
+                _draggingStorageView.RefreshShape();
                 _draggingStorageView.SetPosition(position);
                 _itemViews.Remove(itemView.InstanceId);
                 Destroy(itemView.gameObject);
             }
             else
             {
-                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position);
+                PrototypeStoredItem storedItem = new(itemView.InstanceId, itemView.Data, position, itemView.Rotation);
                 _storedItems.Add(storedItem);
                 CreateStorageView(storedItem);
                 Destroy(itemView.gameObject);
@@ -889,20 +869,20 @@ namespace BackpackAutoBattle.Prototype
                    && RectTransformUtility.RectangleContainsScreenPoint(target, eventData.position, eventData.pressEventCamera);
         }
 
-        private Vector2 GetClampedStoragePosition(PointerEventData eventData)
+        private Vector2 GetClampedStoragePosition(BackpackItemView itemView)
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _storageRoot,
-                eventData.position,
-                eventData.pressEventCamera,
-                out Vector2 localPosition);
+            // Keep the dragged shape's center at its current location; never snap to a grid.
+            Vector2 localPosition = _storageRoot.InverseTransformPoint(
+                itemView.RectTransform.TransformPoint(itemView.RectTransform.rect.center));
             Rect rect = _storageRoot.rect;
-            const float halfWidth = 34f;
-            const float halfHeight = 27f;
+            Vector2 halfSize = itemView.RectTransform.sizeDelta * 0.5f;
             return new Vector2(
-                Mathf.Clamp(localPosition.x, rect.xMin + halfWidth, rect.xMax - halfWidth),
-                Mathf.Clamp(localPosition.y, rect.yMin + halfHeight, rect.yMax - halfHeight));
+                ClampStorageAxis(localPosition.x, rect.xMin + halfSize.x + 8f, rect.xMax - halfSize.x - 8f),
+                ClampStorageAxis(localPosition.y, rect.yMin + halfSize.y + 8f, rect.yMax - halfSize.y - 32f));
         }
+
+        private static float ClampStorageAxis(float value, float minimum, float maximum)
+            => minimum <= maximum ? Mathf.Clamp(value, minimum, maximum) : (minimum + maximum) * 0.5f;
 
         private void UpdatePlacementPreview(BackpackItemView itemView, Vector2Int origin)
         {
@@ -997,10 +977,8 @@ namespace BackpackAutoBattle.Prototype
 
         private void SetStatus(string message)
         {
-            if (_statusText != null)
-            {
-                _statusText.text = message;
-            }
+            // Diagnostics remain available in the Console without an on-screen status strip.
+            Debug.Log(message, this);
         }
 
         private static Button CreateButton(Transform parent, string name, Vector2 position, Vector2 size, Color color)

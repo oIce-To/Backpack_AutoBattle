@@ -14,10 +14,10 @@ namespace BackpackAutoBattle.Prototype
         public bool AutoTick { get; set; } = true;
         public RectTransform ScreenRoot => _screen.Root;
 
-        public void Initialize(Transform canvas, Action<CombatResult> finished, Action continueAction)
+        public void Initialize(Transform canvas, Action<CombatResult> finished, Action continueAction, PrototypeItemTooltip tooltip)
         {
             _finished = finished;
-            _screen = new PrototypeBattleScreen(canvas, continueAction);
+            _screen = new PrototypeBattleScreen(canvas, continueAction, tooltip);
             SetVisible(false);
         }
 

@@ -15,6 +15,9 @@ namespace BackpackAutoBattle.Combat
             InstanceId = instanceId;
             ItemId = data.ItemId;
             DisplayName = data.DisplayName;
+            Description = data.Description;
+            EffectDescription = data.EffectDescription;
+            Rarity = data.Rarity;
             Category = data.Category;
             DisplayColor = data.DisplayColor;
             Origin = origin;
@@ -26,6 +29,9 @@ namespace BackpackAutoBattle.Combat
         public string InstanceId { get; }
         public string ItemId { get; }
         public string DisplayName { get; }
+        public string Description { get; }
+        public string EffectDescription { get; }
+        public ItemRarity Rarity { get; }
         public ItemCategory Category { get; }
         public Color DisplayColor { get; }
         public Vector2Int Origin { get; }

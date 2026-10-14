@@ -10,16 +10,18 @@ namespace BackpackAutoBattle.Prototype
     {
         private readonly RectTransform _root;
         private readonly Dictionary<string, PrototypeBattleItemView> _items = new();
+        public RectTransform Root => _root;
 
         public PrototypeBattleBagView(Transform parent, string name)
         {
             var obj = new GameObject(name, typeof(RectTransform));
             obj.transform.SetParent(parent, false);
             _root = (RectTransform)obj.transform;
-            BackpackPrototypeController.SetRect(_root, new Vector2(0.5f, 0.5f), new Vector2(0f, 12f), Vector2.zero);
+            BackpackPrototypeController.SetRect(_root, new Vector2(0.5f, 0.5f), new Vector2(0f, 117f), Vector2.zero);
         }
 
-        public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect)
+        public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
+            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content)
         {
             foreach (Transform child in _root)
             {
@@ -27,7 +29,7 @@ namespace BackpackAutoBattle.Prototype
                 UnityEngine.Object.Destroy(child.gameObject);
             }
             _items.Clear();
-            float pitch = Mathf.Min(74f, 336f / Mathf.Max(loadout.Width, loadout.Height));
+            float pitch = Mathf.Min(50f, 228f / Mathf.Max(loadout.Width, loadout.Height));
             Vector2 boardSize = new(loadout.Width * pitch, loadout.Height * pitch);
             _root.sizeDelta = boardSize;
             for (int y = 0; y < loadout.Height; y++)
@@ -53,7 +55,7 @@ namespace BackpackAutoBattle.Prototype
                 rect.anchoredPosition = new Vector2(-boardSize.x / 2f + item.Origin.x * pitch + 3f,
                     boardSize.y / 2f - item.Origin.y * pitch - 3f);
                 PrototypeBattleItemView view = obj.GetComponent<PrototypeBattleItemView>();
-                view.Initialize(item, side, pitch, inspect);
+                view.Initialize(item, side, pitch, inspect, tooltip, () => content(item));
                 _items.Add(item.InstanceId, view);
             }
         }
