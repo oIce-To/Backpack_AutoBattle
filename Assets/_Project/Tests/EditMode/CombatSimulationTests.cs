@@ -42,7 +42,7 @@ namespace BackpackAutoBattle.Tests.Combat
             SetField("_weaponStats", new WeaponStats(5f, 2f, accuracy, criticalChance, 200f));
             CombatSimulation combat = CreateCombat();
             Assert.That(combat.Advance(1d), Is.Empty);
-            CombatAttackEvent attack = combat.Advance(1d).Single();
+            CombatItemEvent attack = combat.Advance(1d).Single();
             Assert.That(attack.Hit, Is.EqualTo(expectedHit));
             Assert.That(attack.Critical, Is.EqualTo(expectedCritical));
             Assert.That(attack.Damage, Is.EqualTo(expectedDamage));
@@ -56,7 +56,7 @@ namespace BackpackAutoBattle.Tests.Combat
             CombatSimulation combat = CreateCombat(new SequenceRandom(0.95d, 0.5d, 0.05d));
             Assert.That(combat.Advance(2d).Single().Hit, Is.False);
             Assert.That(combat.Advance(1d), Is.Empty);
-            CombatAttackEvent nextAttack = combat.Advance(1d).Single();
+            CombatItemEvent nextAttack = combat.Advance(1d).Single();
             Assert.That(nextAttack.Time, Is.EqualTo(4d));
             Assert.That(nextAttack.Critical, Is.True);
             Assert.That(nextAttack.Damage, Is.EqualTo(10d));
@@ -93,9 +93,10 @@ namespace BackpackAutoBattle.Tests.Combat
         }
 
         [Test]
-        public void NonWeaponItems_DoNotAttack()
+        public void PassiveItems_DoNotActivate()
         {
             SetField("_category", ItemCategory.Armor);
+            SetField("_activation", new ItemActivationData());
             CombatSimulation combat = CreateCombat();
             Assert.That(combat.PlayerWeapons, Is.Empty);
             Assert.That(combat.Advance(10d), Is.Empty);
@@ -108,7 +109,7 @@ namespace BackpackAutoBattle.Tests.Combat
             CombatSimulation large = CreateBattle(Snapshot("a", "b"), 1000d, 1000d, enemy, new System.Random(123));
             CombatSimulation small = CreateBattle(Snapshot("a", "b"), 1000d, 1000d, enemy, new System.Random(123));
             var largeEvents = large.Advance(10d);
-            var smallEvents = new List<CombatAttackEvent>();
+            var smallEvents = new List<CombatItemEvent>();
             for (int step = 0; step < 20; step++) smallEvents.AddRange(small.Advance(0.5d));
             Assert.That(small.PlayerHealth, Is.EqualTo(large.PlayerHealth));
             Assert.That(small.EnemyHealth, Is.EqualTo(large.EnemyHealth));
@@ -161,6 +162,7 @@ namespace BackpackAutoBattle.Tests.Combat
         {
             typeof(ItemData).GetField("_weaponStats", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(_enemyWeapon, new WeaponStats(5f, 1f, 100f, 0f, 200f));
+            ConfigureEnemyActivation(1f);
             var first = new CombatItemSnapshot("club_a", _enemyWeapon, Vector2Int.zero,
                 ItemRotation.None, new[] { Vector2Int.zero });
             var second = new CombatItemSnapshot("club_b", _enemyWeapon, Vector2Int.right,
@@ -179,6 +181,7 @@ namespace BackpackAutoBattle.Tests.Combat
             double enemyHealth, WeaponStats enemyStats, System.Random random = null, double maximumDuration = 120d)
         {
             typeof(ItemData).GetField("_weaponStats", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(_enemyWeapon, enemyStats);
+            ConfigureEnemyActivation(enemyStats.CooldownSeconds);
             var enemyItem = new CombatItemSnapshot("enemy_weapon", _enemyWeapon, Vector2Int.zero,
                 ItemRotation.None, new[] { Vector2Int.zero });
             return new CombatSimulation(new CombatantSnapshot("Player", playerHealth, loadout),
@@ -197,7 +200,13 @@ namespace BackpackAutoBattle.Tests.Combat
         private void SetField(string name, object value)
         {
             typeof(ItemData).GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).SetValue(_weapon, value);
+            if (name == "_weaponStats")
+                SetField("_activation", new ItemActivationData(((WeaponStats)value).CooldownSeconds, new ItemActivationEffect(ItemEffectKind.Attack)));
         }
+
+        private void ConfigureEnemyActivation(float seconds) => typeof(ItemData)
+            .GetField("_activation", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(_enemyWeapon,
+                new ItemActivationData(seconds, new ItemActivationEffect(ItemEffectKind.Attack)));
 
         private sealed class SequenceRandom : System.Random
         {

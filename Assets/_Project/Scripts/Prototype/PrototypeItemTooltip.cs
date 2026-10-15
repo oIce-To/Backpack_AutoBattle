@@ -18,6 +18,8 @@ namespace BackpackAutoBattle.Prototype
         private Image _divider;
         private Text _description;
         private readonly Text[] _values = new Text[5];
+        private readonly RectTransform[] _statIcons = new RectTransform[5];
+        private readonly Text[] _statCaptions = new Text[5];
         private Component _owner;
         private Func<ItemTooltipContent> _content;
         private Vector2 _pointer;
@@ -76,10 +78,12 @@ namespace BackpackAutoBattle.Prototype
                 icon.color = new Color(0.90f, 0.94f, 1f);
                 icon.raycastTarget = false;
                 Place((RectTransform)iconObject.transform, x, y, 31f, 31f);
+                _statIcons[index] = (RectTransform)iconObject.transform;
                 _values[index] = Label(_statsRoot, $"{names[index]} Value", 20, FontStyle.Bold);
                 Place(_values[index].rectTransform, x + 36f, y, 78f, 32f);
                 Text caption = Label(_statsRoot, $"{names[index]} Caption", 12, FontStyle.Normal);
                 caption.text = captions[index];
+                _statCaptions[index] = caption;
                 caption.color = new Color(0.67f, 0.75f, 0.86f);
                 Place(caption.rectTransform, x + 2f, y - 29f, 114f, 20f);
             }
@@ -139,13 +143,25 @@ namespace BackpackAutoBattle.Prototype
             _context.text = "전투 중 실제 스탯";
             _context.gameObject.SetActive(item.IsRuntime);
             _statsRoot.anchoredPosition = new Vector2(0f, item.IsRuntime ? 0f : 18f);
-            _statsRoot.gameObject.SetActive(item.HasWeaponStats);
+            _statsRoot.gameObject.SetActive(item.HasWeaponStats || item.HasCycle);
+            for (int index = 0; index < 5; index++)
+            {
+                bool visible = item.HasWeaponStats || (item.HasCycle && index == 1);
+                _statIcons[index].gameObject.SetActive(visible);
+                _values[index].gameObject.SetActive(visible);
+                _statCaptions[index].gameObject.SetActive(visible);
+                float x = Padding + (item.HasWeaponStats ? index % 3 * 119f : 0f);
+                float y = index < 3 ? -101f : -161f;
+                Place(_statIcons[index], x, y, 31f, 31f);
+                Place(_values[index].rectTransform, x + 36f, y, 78f, 32f);
+                Place(_statCaptions[index].rectTransform, x + 2f, y - 29f, 114f, 20f);
+            }
             _values[0].text = $"{item.AttackDamage:0.#}";
             _values[1].text = $"{item.CooldownSeconds:0.0#}s";
             _values[2].text = $"{item.AccuracyPercent:0.#}%";
             _values[3].text = $"{item.CriticalChancePercent:0.#}%";
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
-            float descriptionTop = (item.HasWeaponStats ? 211f : 84f) - (item.IsRuntime ? 0f : 18f);
+            float descriptionTop = (item.HasWeaponStats ? 211f : item.HasCycle ? 151f : 84f) - (item.IsRuntime ? 0f : 18f);
             string description = item.Description ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(item.EffectDescription))
                 description = string.IsNullOrWhiteSpace(description) ? item.EffectDescription : $"{item.EffectDescription}\n\n{description}";

@@ -16,11 +16,15 @@ namespace BackpackAutoBattle.Items
         [SerializeField, TextArea(2, 6)] private string _effectDescription = string.Empty;
         [SerializeField] private ItemCategory _category;
         [SerializeField] private ItemRarity _rarity;
+        [SerializeField] private ItemTags _tags;
+
+        [Header("Activation (all item categories)")]
+        [SerializeField] private ItemActivationData _activation = new();
 
         [Header("Shop")]
         [SerializeField, Min(0)] private int _purchasePrice = 1;
 
-        [Header("Weapon (Weapon category only)")]
+        [Header("Attack effect stats")]
         [SerializeField] private WeaponStats _weaponStats = new();
 
         [Header("Backpack")]
@@ -43,6 +47,8 @@ namespace BackpackAutoBattle.Items
         public int PurchasePrice => _purchasePrice;
 
         public WeaponStats BaseWeaponStats => _weaponStats;
+        public ItemTags Tags => _tags;
+        public ItemActivationData Activation => _activation;
 
         public Color DisplayColor => _displayColor;
 
@@ -59,6 +65,7 @@ namespace BackpackAutoBattle.Items
         {
             _purchasePrice = Mathf.Max(0, _purchasePrice);
             _weaponStats ??= new WeaponStats();
+            _activation ??= new ItemActivationData();
             _weaponStats.Validate();
 
             if (_occupiedCells == null || _occupiedCells.Count == 0)

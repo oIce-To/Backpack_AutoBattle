@@ -43,7 +43,7 @@ namespace BackpackAutoBattle.Prototype
             RectTransform rect = (RectTransform)transform;
             rect.pivot = new Vector2(0f, 1f);
             rect.sizeDelta = new Vector2(width * pitch - 6f, _itemHeight);
-            bool hasCycle = item.Category == ItemCategory.Weapon;
+            bool hasCycle = item.Activation.HasCycle;
             Color.RGBToHSV(item.DisplayColor, out float hue, out float saturation, out float brightness);
             Color muted = Color.HSVToRGB(hue, saturation * 0.18f, Mathf.Lerp(brightness, 0.65f, 0.3f));
             muted.a = item.DisplayColor.a;
@@ -83,10 +83,9 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.Stretch(_label.rectTransform, 3f);
         }
 
-        public void RenderCooldown(CombatWeapon weapon, double elapsed)
+        public void RenderCooldown(CombatItem item, double elapsed)
         {
-            double remaining = Math.Max(0d, weapon.NextAttackAt - elapsed);
-            CycleProgress = Mathf.Clamp01(1f - (float)(remaining / weapon.Stats.CooldownSeconds));
+            CycleProgress = (float)item.Cycle.ProgressAt(elapsed);
             float fillHeight = _itemHeight * CycleProgress;
             foreach (var fill in _colorFills)
             {

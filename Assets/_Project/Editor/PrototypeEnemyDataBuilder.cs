@@ -36,6 +36,8 @@ namespace BackpackAutoBattle.Editor
                 stats.FindPropertyRelative("_accuracyPercent").floatValue = 100f;
                 stats.FindPropertyRelative("_criticalChancePercent").floatValue = 0f;
                 stats.FindPropertyRelative("_criticalDamagePercent").floatValue = 200f;
+                PrototypeItemDataBuilder.ConfigureActivation(item, 2f, ItemEffectKind.Attack);
+                item.FindProperty("_tags").intValue = (int)ItemTags.Melee;
                 item.ApplyModifiedPropertiesWithoutUndo();
                 EditorUtility.SetDirty(club);
             }

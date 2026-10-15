@@ -60,7 +60,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             weapon.Stats.AccuracyPercent = 100f;
             weapon.Stats.CriticalChancePercent = 0f;
             controller.TickCombat(2f);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(35d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(36d));
             PrototypeBattleItemView enemyView = controller.GetComponentsInChildren<PrototypeBattleItemView>()
                 .Single(view => view.Side == CombatSide.Enemy);
             enemyView.OnPointerClick(pointer);

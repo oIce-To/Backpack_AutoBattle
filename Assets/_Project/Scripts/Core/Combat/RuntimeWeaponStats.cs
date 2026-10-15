@@ -7,15 +7,15 @@ namespace BackpackAutoBattle.Combat
     public sealed class RuntimeWeaponStats
     {
         private float _attackDamage;
-        private float _cooldownSeconds;
+        private readonly RuntimeItemCycle _cycle;
         private float _accuracyPercent;
         private float _criticalChancePercent;
         private float _criticalDamagePercent;
 
-        public RuntimeWeaponStats(WeaponStats baseStats)
+        public RuntimeWeaponStats(WeaponStats baseStats, RuntimeItemCycle cycle)
         {
+            _cycle = cycle;
             AttackDamage = baseStats.AttackDamage;
-            CooldownSeconds = baseStats.CooldownSeconds;
             AccuracyPercent = baseStats.AccuracyPercent;
             CriticalChancePercent = baseStats.CriticalChancePercent;
             CriticalDamagePercent = baseStats.CriticalDamagePercent;
@@ -29,8 +29,8 @@ namespace BackpackAutoBattle.Combat
 
         public float CooldownSeconds
         {
-            get => _cooldownSeconds;
-            set => _cooldownSeconds = Mathf.Max(0.1f, WeaponStats.FiniteOrDefault(value, 2f));
+            get => (float)_cycle.IntervalSeconds;
+            set => _cycle.SetBaseInterval(value);
         }
 
         public float AccuracyPercent

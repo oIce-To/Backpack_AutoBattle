@@ -35,7 +35,7 @@ namespace BackpackAutoBattle.Prototype
         public void TickCombat(float deltaSeconds)
         {
             if (Simulation == null || Simulation.Result != CombatResult.Running) return;
-            foreach (CombatAttackEvent attack in Simulation.Advance(deltaSeconds)) _screen.ShowAttack(attack);
+            foreach (CombatItemEvent itemEvent in Simulation.Advance(deltaSeconds)) _screen.ShowAttack(itemEvent);
             _screen.Render(Simulation);
             if (Simulation.Result != CombatResult.Running) _finished(Simulation.Result);
         }

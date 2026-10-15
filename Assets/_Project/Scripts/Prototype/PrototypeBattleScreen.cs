@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BackpackAutoBattle.Combat;
+using BackpackAutoBattle.Items;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -102,7 +103,7 @@ namespace BackpackAutoBattle.Prototype
             _inspection.text = "아이템 위에 마우스를 올리면 전투 스탯을 확인합니다. 색이 위까지 차오르면 아이템을 사용합니다.";
             _logText.text = "첫 공격을 준비하고 있습니다…";
             _playerDamage.text = _enemyDamage.text = string.Empty;
-            // Combat armor is not implemented yet: zero means no visible badge, not a fake value.
+            // Each battle starts at zero armor; item activations then feed the real HUD values.
             _playerArmor.SetValue(0d);
             _enemyArmor.SetValue(0d);
             _continueButton.interactable = false;
@@ -115,24 +116,43 @@ namespace BackpackAutoBattle.Prototype
             _timer.text = $"ROUND {_round} · {combat.ElapsedSeconds:0.0}초";
             SetHealth(_playerHealthFill, _playerHealthText, combat.PlayerHealth, combat.PlayerMaxHealth);
             SetHealth(_enemyHealthFill, _enemyHealthText, combat.EnemyHealth, combat.EnemyMaxHealth);
-            _playerBag.RenderCooldowns(combat.PlayerWeapons, combat.ElapsedSeconds);
-            _enemyBag.RenderCooldowns(combat.EnemyWeapons, combat.ElapsedSeconds);
+            _playerArmor.SetValue(combat.PlayerArmor);
+            _enemyArmor.SetValue(combat.EnemyArmor);
+            _playerBag.RenderCooldowns(combat.PlayerItems, combat.ElapsedSeconds);
+            _enemyBag.RenderCooldowns(combat.EnemyItems, combat.ElapsedSeconds);
             if (Time.unscaledTime > _playerDamageExpiry) _playerDamage.text = string.Empty;
             if (Time.unscaledTime > _enemyDamageExpiry) _enemyDamage.text = string.Empty;
         }
 
-        public void ShowAttack(CombatAttackEvent attack)
+        public void ShowAttack(CombatItemEvent attack)
         {
             bool fromPlayer = attack.Side == CombatSide.Player;
             (fromPlayer ? _playerBag : _enemyBag).ShowAttack(attack);
+            string attacker = fromPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+            if (attack.Kind == ItemEffectKind.GainArmor)
+            {
+                Text gain = fromPlayer ? _playerDamage : _enemyDamage;
+                gain.text = $"+{attack.ArmorGained:0.#}";
+                gain.color = new Color(0.15f, 0.78f, 1f);
+                if (fromPlayer) _playerDamageExpiry = Time.unscaledTime + 0.65f;
+                else _enemyDamageExpiry = Time.unscaledTime + 0.65f;
+                AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → 방어도 +{attack.ArmorGained:0.#}");
+                return;
+            }
             Text damage = fromPlayer ? _enemyDamage : _playerDamage;
-            damage.text = !attack.Hit ? "MISS" : $"{(attack.Critical ? "CRIT " : "")}-{attack.Damage:0.#}";
+            damage.text = !attack.Hit ? "MISS" : attack.ArmorAbsorbed > 0d && attack.HealthDamage == 0d ? "BLOCK"
+                : $"{(attack.Critical ? "CRIT " : "")}-{attack.HealthDamage:0.#}";
             damage.color = attack.Critical ? new Color(1f, 0.80f, 0.20f) : Color.white;
             if (fromPlayer) _enemyDamageExpiry = Time.unscaledTime + 0.65f;
             else _playerDamageExpiry = Time.unscaledTime + 0.65f;
-            string attacker = fromPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
             string outcome = !attack.Hit ? "빗나감" : $"{(attack.Critical ? "치명타" : "명중")} {attack.Damage:0.#} 피해";
-            _log.Enqueue($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {outcome}");
+            if (attack.ArmorAbsorbed > 0d) outcome += $" (방어도 {attack.ArmorAbsorbed:0.#} 흡수 · 체력 {attack.HealthDamage:0.#})";
+            AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {outcome}");
+        }
+
+        private void AppendLog(string message)
+        {
+            _log.Enqueue(message);
             while (_log.Count > 4) _log.Dequeue();
             _logText.text = string.Join("\n", _log);
         }
@@ -163,6 +183,12 @@ namespace BackpackAutoBattle.Prototype
             foreach (CombatWeapon candidate in weapons) if (candidate.InstanceId == item.InstanceId) weapon = candidate;
             if (weapon == null)
             {
+                foreach (CombatItem runtime in _combat.GetItems(side))
+                    if (runtime.InstanceId == item.InstanceId)
+                    {
+                        _inspection.text = $"{item.DisplayName} · {ItemTooltipContent.FromCombat(item, runtime).EffectDescription}";
+                        return;
+                    }
                 _inspection.text = $"{item.DisplayName} · 이 아이템의 전투 효과는 아직 구현되지 않았습니다.";
                 return;
             }
@@ -172,9 +198,8 @@ namespace BackpackAutoBattle.Prototype
 
         private ItemTooltipContent TooltipContent(CombatItemSnapshot item, CombatSide side)
         {
-            IReadOnlyList<CombatWeapon> weapons = side == CombatSide.Player ? _combat.PlayerWeapons : _combat.EnemyWeapons;
-            foreach (CombatWeapon weapon in weapons)
-                if (weapon.InstanceId == item.InstanceId) return ItemTooltipContent.FromCombat(item, weapon.Stats);
+            foreach (CombatItem runtime in _combat.GetItems(side))
+                if (runtime.InstanceId == item.InstanceId) return ItemTooltipContent.FromCombat(item, runtime);
             return ItemTooltipContent.FromCombat(item, null);
         }
 

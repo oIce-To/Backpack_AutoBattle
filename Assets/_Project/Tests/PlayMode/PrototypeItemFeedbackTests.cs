@@ -149,16 +149,16 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             Color mutedColor = muted.color;
             controller.TickCombat(0.5f);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(35d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(36d));
             Assert.That(club.CycleProgress, Is.Zero);
             Assert.That(upper.anchorMax.y, Is.Zero);
             Assert.That(lower.anchorMax.y, Is.Zero);
             yield return new WaitForSeconds(0.2f);
             Assert.That(muted.color, Is.EqualTo(mutedColor));
-            PrototypeBattleItemView shield = controller.GetComponentsInChildren<PrototypeBattleItemView>()
-                .Single(view => view.Snapshot.ItemId == "wooden_shield");
-            Assert.That(shield.GetComponentsInChildren<Transform>().Any(child => child.name == "Cycle Color"), Is.False);
-            Assert.That(shield.transform.Find("Shape Cell 0,0").GetComponent<Image>().color, Is.EqualTo(shield.Snapshot.DisplayColor));
+            PrototypeBattleItemView passive = controller.GetComponentsInChildren<PrototypeBattleItemView>()
+                .Single(view => view.Snapshot.ItemId == "swift_charm");
+            Assert.That(passive.GetComponentsInChildren<Transform>().Any(child => child.name == "Cycle Color"), Is.False);
+            Assert.That(passive.transform.Find("Shape Cell 0,0").GetComponent<Image>().color, Is.EqualTo(passive.Snapshot.DisplayColor));
         }
 
         [UnityTest]

@@ -17,6 +17,13 @@ MonoBehaviour:
   _description: "\uACE0\uBE14\uB9B0\uC774 \uC0AC\uC6A9\uD558\uB294 \uC801 \uC804\uC6A9
     \uBABD\uB465\uC774."
   _category: 0
+  _tags: 1
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2
+    _effects:
+    - _kind: 0
+      _amount: 1
   _rarity: 0
   _purchasePrice: 0
   _weaponStats:

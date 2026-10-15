@@ -179,7 +179,11 @@ namespace BackpackAutoBattle.Editor
                 weaponStats.FindPropertyRelative("_accuracyPercent").floatValue = stats.AccuracyPercent;
                 weaponStats.FindPropertyRelative("_criticalChancePercent").floatValue = stats.CriticalChancePercent;
                 weaponStats.FindPropertyRelative("_criticalDamagePercent").floatValue = stats.CriticalDamagePercent;
+                ConfigureActivation(serializedItem, stats.CooldownSeconds, ItemEffectKind.Attack);
+                serializedItem.FindProperty("_tags").intValue = (int)(definition.ItemId == "fire_staff" ? ItemTags.Magic
+                    : definition.ItemId == "throwing_axes" ? ItemTags.Ranged : ItemTags.Melee);
             }
+            else if (definition.ItemId == "wooden_shield") ConfigureActivation(serializedItem, 2f, ItemEffectKind.GainArmor);
 
             SerializedProperty occupiedCells = serializedItem.FindProperty("_occupiedCells");
             occupiedCells.arraySize = definition.OccupiedCells.Length;
@@ -191,6 +195,17 @@ namespace BackpackAutoBattle.Editor
             serializedItem.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(itemData);
             return itemData;
+        }
+
+        public static void ConfigureActivation(SerializedObject item, float seconds, ItemEffectKind kind)
+        {
+            SerializedProperty activation = item.FindProperty("_activation");
+            activation.FindPropertyRelative("_enabled").boolValue = true;
+            activation.FindPropertyRelative("_cooldownSeconds").floatValue = seconds;
+            SerializedProperty effects = activation.FindPropertyRelative("_effects");
+            effects.arraySize = 1;
+            effects.GetArrayElementAtIndex(0).FindPropertyRelative("_kind").enumValueIndex = (int)kind;
+            effects.GetArrayElementAtIndex(0).FindPropertyRelative("_amount").floatValue = 1f;
         }
 
         private static void EnsureFolder(string parentFolder, string folderName)

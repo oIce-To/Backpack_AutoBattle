@@ -16,7 +16,7 @@ namespace BackpackAutoBattle.Prototype
             obj.transform.SetParent(parent, false);
             PrototypeArmorBadge badge = obj.GetComponent<PrototypeArmorBadge>();
             BackpackPrototypeController.SetRect(badge.rectTransform, Vector2.one * 0.5f,
-                new Vector2(-157f, -214f), new Vector2(44f, 48f));
+                new Vector2(-140f, -214f), new Vector2(44f, 48f));
             badge.color = new Color(0.02f, 0.66f, 0.93f);
             badge.raycastTarget = false;
             badge._value = BackpackPrototypeController.CreateText(obj.transform, "Armor Value", string.Empty,
@@ -43,9 +43,10 @@ namespace BackpackAutoBattle.Prototype
             Rect rect = GetPixelAdjustedRect();
             Vector2[] outline =
             {
-                new(-0.48f, 0.46f), new(-0.27f, 0.29f), new(0f, 0.37f),
-                new(0.27f, 0.29f), new(0.48f, 0.46f), new(0.41f, -0.18f),
-                new(0.23f, -0.38f), new(0f, -0.49f), new(-0.23f, -0.38f), new(-0.41f, -0.18f)
+                new(0f, 0.46f), new(0.46f, 0.27f), new(0.45f, 0f),
+                new(0.40f, -0.19f), new(0.29f, -0.34f), new(0.14f, -0.44f),
+                new(0f, -0.49f), new(-0.14f, -0.44f), new(-0.29f, -0.34f),
+                new(-0.40f, -0.19f), new(-0.45f, 0f), new(-0.46f, 0.27f)
             };
             vh.AddVert(rect.center, color, Vector2.zero);
             foreach (Vector2 point in outline)

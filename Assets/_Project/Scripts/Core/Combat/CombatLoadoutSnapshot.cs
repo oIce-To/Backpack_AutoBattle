@@ -19,6 +19,8 @@ namespace BackpackAutoBattle.Combat
             EffectDescription = data.EffectDescription;
             Rarity = data.Rarity;
             Category = data.Category;
+            Tags = data.Tags;
+            Activation = data.Activation?.Copy() ?? new ItemActivationData();
             DisplayColor = data.DisplayColor;
             Origin = origin;
             Rotation = rotation;
@@ -33,6 +35,8 @@ namespace BackpackAutoBattle.Combat
         public string EffectDescription { get; }
         public ItemRarity Rarity { get; }
         public ItemCategory Category { get; }
+        public ItemTags Tags { get; }
+        public ItemActivationData Activation { get; }
         public Color DisplayColor { get; }
         public Vector2Int Origin { get; }
         public ItemRotation Rotation { get; }

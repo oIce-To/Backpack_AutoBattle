@@ -163,15 +163,28 @@ namespace BackpackAutoBattle.Tests.Prototype
             controller.BattleController.AutoTick = false;
             Assert.That(controller.TryStartBattle(), Is.True);
             PrototypeArmorBadge badge = Rect(controller, "Player Armor Badge").GetComponent<PrototypeArmorBadge>();
-            RectTransform health = Rect(controller, "Player Health");
             Assert.That(badge.gameObject.activeSelf, Is.False);
             badge.SetValue(45d); // Presentation preview only; no simulated armor is granted.
+            var enemyBadge = Rect(controller, "Enemy Armor Badge").GetComponent<PrototypeArmorBadge>();
+            enemyBadge.SetValue(12d);
             Canvas.ForceUpdateCanvases();
             Assert.That(badge.gameObject.activeSelf, Is.True);
             Assert.That(badge.GetComponentInChildren<Text>().text, Is.EqualTo("45"));
-            Assert.That(badge.rectTransform.anchoredPosition.y, Is.EqualTo(health.anchoredPosition.y));
-            Assert.That(badge.rectTransform.anchoredPosition.x, Is.LessThan(health.anchoredPosition.x - health.sizeDelta.x / 2f));
-            Assert.That(badge.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(0));
+            foreach (string side in new[] { "Player", "Enemy" })
+            {
+                var shield = Rect(controller, $"{side} Armor Badge").GetComponent<PrototypeArmorBadge>();
+                RectTransform health = Rect(controller, $"{side} Health");
+                Vector3 shieldCenter = shield.rectTransform.TransformPoint(shield.rectTransform.rect.center);
+                Vector3 healthLeft = health.TransformPoint(new Vector2(health.rect.xMin, health.rect.center.y));
+                Assert.That(Vector3.Distance(shieldCenter, healthLeft), Is.LessThan(0.01f),
+                    "The shield center should overlap the HP bar's left endpoint on both sides.");
+                Vector3[] vertices = shield.canvasRenderer.GetMesh().vertices;
+                Assert.That(vertices.Length, Is.GreaterThan(0));
+                float peakY = vertices.Max(vertex => vertex.y);
+                Assert.That(vertices.Where(vertex => Mathf.Abs(vertex.y - peakY) < 0.01f)
+                    .All(vertex => Mathf.Abs(vertex.x) < 0.01f), Is.True,
+                    "The shield should have a single central peak, not raised horns at either side.");
+            }
             Assert.That(badge.GetComponentsInChildren<Graphic>().All(graphic => !graphic.raycastTarget), Is.True);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "ArmorBadgePreview.png");
             foreach (double empty in new[] { 0d, -1d, double.NaN, double.PositiveInfinity })

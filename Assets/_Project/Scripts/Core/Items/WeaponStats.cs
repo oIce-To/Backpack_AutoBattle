@@ -7,7 +7,8 @@ namespace BackpackAutoBattle.Items
     public sealed class WeaponStats
     {
         [SerializeField, Min(0f)] private float _attackDamage = 5f;
-        [SerializeField, Min(0.1f)] private float _cooldownSeconds = 2f;
+        // Legacy serialized/import seed only. ItemActivationData is the authoritative definition of timing.
+        [SerializeField, HideInInspector] private float _cooldownSeconds = 2f;
         [SerializeField, Range(0f, 100f)] private float _accuracyPercent = 90f;
         [SerializeField, Range(0f, 100f)] private float _criticalChancePercent = 10f;
         [Tooltip("Total damage on a critical hit. 200% means twice the normal damage.")]

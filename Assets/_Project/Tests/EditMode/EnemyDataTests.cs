@@ -24,7 +24,7 @@ namespace BackpackAutoBattle.Tests.Enemies
             Assert.That(club.DisplayName, Is.EqualTo("고블린 몽둥이"));
             Assert.That(club.OccupiedCells, Is.EqualTo(new[] { Vector2Int.zero, new Vector2Int(0, 1) }));
             Assert.That(club.BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
-            Assert.That(club.BaseWeaponStats.CooldownSeconds, Is.EqualTo(2f));
+            Assert.That(club.Activation.CooldownSeconds, Is.EqualTo(2f));
             Assert.That(club.BaseWeaponStats.AccuracyPercent, Is.EqualTo(100f));
             Assert.That(club.BaseWeaponStats.CriticalChancePercent, Is.Zero);
             Assert.That(club.BaseWeaponStats.CriticalDamagePercent, Is.EqualTo(200f));
@@ -34,7 +34,7 @@ namespace BackpackAutoBattle.Tests.Enemies
             var combat = new CombatSimulation(new CombatantSnapshot("Player", 40d,
                 new CombatLoadoutSnapshot(System.Array.Empty<CombatItemSnapshot>())), snapshot);
             Assert.That(combat.Advance(1.9d), Is.Empty);
-            CombatAttackEvent attack = combat.Advance(0.2d).Single();
+            CombatItemEvent attack = combat.Advance(0.2d).Single();
             Assert.That(attack.Side, Is.EqualTo(CombatSide.Enemy));
             Assert.That(attack.DisplayName, Is.EqualTo("고블린 몽둥이"));
             Assert.That(attack.Damage, Is.EqualTo(5d));

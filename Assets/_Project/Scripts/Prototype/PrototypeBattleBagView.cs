@@ -60,13 +60,13 @@ namespace BackpackAutoBattle.Prototype
             }
         }
 
-        public void RenderCooldowns(IReadOnlyList<CombatWeapon> weapons, double elapsed)
+        public void RenderCooldowns(IReadOnlyList<CombatItem> items, double elapsed)
         {
-            foreach (CombatWeapon weapon in weapons)
-                if (_items.TryGetValue(weapon.InstanceId, out var view)) view.RenderCooldown(weapon, elapsed);
+            foreach (CombatItem item in items)
+                if (_items.TryGetValue(item.InstanceId, out var view)) view.RenderCooldown(item, elapsed);
         }
 
-        public void ShowAttack(CombatAttackEvent attack)
+        public void ShowAttack(CombatItemEvent attack)
         {
             if (_items.TryGetValue(attack.InstanceId, out var view)) view.PulseAttack(attack.Hit, attack.Critical);
         }

@@ -28,7 +28,7 @@ namespace BackpackAutoBattle.Tests.Items
             ItemData[] weapons = items.Where(item => item.Category == ItemCategory.Weapon).ToArray();
             Assert.That(weapons, Has.Length.EqualTo(4));
             Assert.That(weapons.All(item => item.BaseWeaponStats != null && item.BaseWeaponStats.AttackDamage > 0f), Is.True);
-            Assert.That(weapons.All(item => item.BaseWeaponStats.CooldownSeconds >= 0.1f), Is.True);
+            Assert.That(weapons.All(item => item.Activation.HasEffect(ItemEffectKind.Attack) && item.Activation.CooldownSeconds >= 0.1f), Is.True);
             Assert.That(weapons.All(item => item.BaseWeaponStats.AccuracyPercent >= 0f && item.BaseWeaponStats.AccuracyPercent <= 100f), Is.True);
             Assert.That(weapons.All(item => item.BaseWeaponStats.CriticalChancePercent >= 0f && item.BaseWeaponStats.CriticalChancePercent <= 100f), Is.True);
             Assert.That(weapons.All(item => item.BaseWeaponStats.CriticalDamagePercent >= 100f), Is.True);
