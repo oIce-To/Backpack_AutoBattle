@@ -34,6 +34,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             controller.BattleController.AutoTick = false;
             controller.TryStartBattle();
             CombatSimulation combat = controller.ActiveCombat;
+            // This fixture checks the unmodified 2s shield. Status-specific acceleration has its own fixture.
+            combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Freeze, combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste));
             combat.PlayerWeapons.Single().Stats.AccuracyPercent = 100f;
             combat.PlayerWeapons.Single().Stats.CriticalChancePercent = 0f;
             // Slow the opponent only for this UI test, so armor remains visible between attacks.

@@ -17,6 +17,8 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _enemyHealthText;
         private readonly PrototypeArmorBadge _playerArmor;
         private readonly PrototypeArmorBadge _enemyArmor;
+        private readonly PrototypeStatusArea _playerStatuses;
+        private readonly PrototypeStatusArea _enemyStatuses;
         private readonly Image _playerBagFrame;
         private readonly Image _enemyBagFrame;
         private readonly Text _playerName;
@@ -64,8 +66,10 @@ namespace BackpackAutoBattle.Prototype
             _enemyHealthText = Label(enemyGroup, "Enemy Health Text", new Vector2(0f, -214f), new Vector2(280f, 28f), 18, TextAnchor.MiddleCenter);
             _playerArmor = PrototypeArmorBadge.Create(playerGroup, "Player Armor Badge");
             _enemyArmor = PrototypeArmorBadge.Create(enemyGroup, "Enemy Armor Badge");
-            _playerDamage = Label(playerGroup, "Player Damage", new Vector2(130f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
-            _enemyDamage = Label(enemyGroup, "Enemy Damage", new Vector2(-130f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
+            _playerStatuses = new PrototypeStatusArea(Root, "Player", true);
+            _enemyStatuses = new PrototypeStatusArea(Root, "Enemy", false);
+            _playerDamage = Label(playerGroup, "Player Damage", new Vector2(0f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
+            _enemyDamage = Label(enemyGroup, "Enemy Damage", new Vector2(0f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
             _inspection = Label(Root, "Battle Item Details", new Vector2(0f, -272f), new Vector2(1180f, 24f), 14, TextAnchor.MiddleCenter);
 
             Image logPanel = Image(Root, "Battle Log Panel", new Color(0.08f, 0.11f, 0.17f));
@@ -94,6 +98,8 @@ namespace BackpackAutoBattle.Prototype
                 _tooltip, item => TooltipContent(item, CombatSide.Player));
             _enemyBag.Build(combat.Enemy.Loadout, CombatSide.Enemy, item => InspectItem(item, CombatSide.Enemy),
                 _tooltip, item => TooltipContent(item, CombatSide.Enemy));
+            _playerStatuses.Bind(combat, CombatSide.Player, _tooltip);
+            _enemyStatuses.Bind(combat, CombatSide.Enemy, _tooltip);
             _playerBagFrame.rectTransform.sizeDelta = _playerBag.Root.sizeDelta + Vector2.one * 24f;
             _enemyBagFrame.rectTransform.sizeDelta = _enemyBag.Root.sizeDelta + Vector2.one * 24f;
             _playerName.text = combat.Player.DisplayName;
@@ -118,6 +124,8 @@ namespace BackpackAutoBattle.Prototype
             SetHealth(_enemyHealthFill, _enemyHealthText, combat.EnemyHealth, combat.EnemyMaxHealth);
             _playerArmor.SetValue(combat.PlayerArmor);
             _enemyArmor.SetValue(combat.EnemyArmor);
+            _playerStatuses.Render();
+            _enemyStatuses.Render();
             _playerBag.RenderCooldowns(combat.PlayerItems, combat.ElapsedSeconds);
             _enemyBag.RenderCooldowns(combat.EnemyItems, combat.ElapsedSeconds);
             if (Time.unscaledTime > _playerDamageExpiry) _playerDamage.text = string.Empty;
@@ -129,6 +137,13 @@ namespace BackpackAutoBattle.Prototype
             bool fromPlayer = attack.Side == CombatSide.Player;
             (fromPlayer ? _playerBag : _enemyBag).ShowAttack(attack);
             string attacker = fromPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+            if (attack.Kind == ItemEffectKind.ApplyStatus)
+            {
+                string target = attack.TargetSide == CombatSide.Player ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+                AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {target} "
+                    + $"{_combat.GetStatusDefinition(attack.StatusKind).DisplayName} +{attack.StatusStacks}");
+                return;
+            }
             if (attack.Kind == ItemEffectKind.GainArmor)
             {
                 Text gain = fromPlayer ? _playerDamage : _enemyDamage;
@@ -189,7 +204,9 @@ namespace BackpackAutoBattle.Prototype
                         _inspection.text = $"{item.DisplayName} · {ItemTooltipContent.FromCombat(item, runtime).EffectDescription}";
                         return;
                     }
-                _inspection.text = $"{item.DisplayName} · 이 아이템의 전투 효과는 아직 구현되지 않았습니다.";
+                _inspection.text = item.BattleStartStatuses.Count > 0
+                    ? $"{item.DisplayName} · {ItemTooltipContent.FromCombat(item, null).EffectDescription}"
+                    : $"{item.DisplayName} · 이 아이템의 전투 효과는 아직 구현되지 않았습니다.";
                 return;
             }
             RuntimeWeaponStats stats = weapon.Stats;

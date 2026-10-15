@@ -37,11 +37,13 @@ namespace BackpackAutoBattle.Combat
     {
         public CombatItemEvent(double time, CombatSide side, CombatItem item, ItemEffectKind kind,
             bool hit = true, bool critical = false, double damage = 0d, double armorAbsorbed = 0d,
-            double healthDamage = 0d, double armorGained = 0d)
+            double healthDamage = 0d, double armorGained = 0d, StatusEffectKind statusKind = StatusEffectKind.Haste,
+            int statusStacks = 0, CombatSide targetSide = CombatSide.Player)
         {
             Time = time; Side = side; InstanceId = item.InstanceId; DisplayName = item.DisplayName;
             Kind = kind; Hit = hit; Critical = critical; Damage = damage;
             ArmorAbsorbed = armorAbsorbed; HealthDamage = healthDamage; ArmorGained = armorGained;
+            StatusKind = statusKind; StatusStacks = statusStacks; TargetSide = targetSide;
         }
         public double Time { get; }
         public CombatSide Side { get; }
@@ -54,17 +56,20 @@ namespace BackpackAutoBattle.Combat
         public double ArmorAbsorbed { get; }
         public double HealthDamage { get; }
         public double ArmorGained { get; }
+        public StatusEffectKind StatusKind { get; }
+        public int StatusStacks { get; }
+        public CombatSide TargetSide { get; }
     }
 
     /// <summary>Chronological, category-independent item activations; no UI or frame-rate dependencies.</summary>
-    public sealed class CombatSimulation
+    public sealed partial class CombatSimulation
     {
         private readonly Random _random;
         private readonly double _maximumDuration;
         private readonly Dictionary<(CombatSide side, string source), (float percent, ItemTargetFilter filter)> _speedModifiers = new();
 
         public CombatSimulation(CombatantSnapshot player, CombatantSnapshot enemy, Random random = null,
-            double maximumDuration = 120d)
+            double maximumDuration = 120d, IEnumerable<StatusEffectData> statusEffects = null)
         {
             if (maximumDuration <= 0d || double.IsNaN(maximumDuration) || double.IsInfinity(maximumDuration))
                 throw new ArgumentOutOfRangeException(nameof(maximumDuration));
@@ -79,6 +84,7 @@ namespace BackpackAutoBattle.Combat
             EnemyWeapons = Array.AsReadOnly(EnemyItems.OfType<CombatWeapon>().ToArray());
             _random = random ?? new Random();
             _maximumDuration = maximumDuration;
+            InitializeStatuses(statusEffects);
         }
 
         public CombatantSnapshot Player { get; }
@@ -118,7 +124,7 @@ namespace BackpackAutoBattle.Combat
         {
             foreach (CombatItem item in GetItems(side))
             {
-                double rate = 1d;
+                double rate = 1d + StatusSpeedPercent(side) / 100d;
                 foreach (var modifier in _speedModifiers)
                     if (modifier.Key.side == side && modifier.Value.filter.Matches(item.Snapshot.Category, item.Snapshot.Tags))
                         rate += modifier.Value.percent / 100d;
@@ -154,6 +160,14 @@ namespace BackpackAutoBattle.Combat
                         if (side == CombatSide.Player) PlayerArmor += effect.Amount;
                         else EnemyArmor += effect.Amount;
                         events.Add(new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind, armorGained: effect.Amount));
+                    }
+                    else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
+                    {
+                        StatusApplication status = effect.Status;
+                        CombatSide target = TargetSide(side, status.Target);
+                        ApplyStatus(target, status.Kind, status.Stacks);
+                        events.Add(new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind,
+                            statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
                     }
                     if (Result != CombatResult.Running) break;
                 }

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_GoblinFrostCharm
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: goblin_frost_charm
+  _displayName: "빙결 시험 부적"
+  _description: "빙결과 신속 상쇄를 확인하기 위한 적 전용 시험 아이템입니다."
+  _category: 2
+  _battleStartStatuses:
+  - _kind: 1
+    _target: 1
+    _stacks: 15
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 3
+    _effects:
+    - _kind: 2
+      _amount: 1
+      _status:
+        _kind: 1
+        _target: 1
+        _stacks: 5
+  _rarity: 0
+  _purchasePrice: 0
+  _displayColor: {r: 0.24, g: 0.60, b: 0.90, a: 1}
+  _canRotate: 0
+  _occupiedCells:
+  - {x: 0, y: 0}

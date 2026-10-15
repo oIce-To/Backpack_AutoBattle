@@ -16,6 +16,7 @@ namespace BackpackAutoBattle.Prototype
         [Header("Combat Prototype")]
         [SerializeField, Min(1)] private int _playerMaxHealth = 40;
         [SerializeField] private EnemyData _enemyData;
+        [SerializeField] private StatusEffectData[] _statusEffects = Array.Empty<StatusEffectData>();
         [SerializeField, Min(1f)] private float _maximumBattleSeconds = 120f;
         [SerializeField] private bool _enableDebugRoundAdvance = true;
 
@@ -66,7 +67,7 @@ namespace BackpackAutoBattle.Prototype
 
             var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
             _itemTooltip.HideAll();
-            _battleController.BeginBattle(player, enemy, _run.Round, _roundIncome, _maximumBattleSeconds);
+            _battleController.BeginBattle(player, enemy, _run.Round, _roundIncome, _maximumBattleSeconds, _statusEffects);
             _run.Phase = PrototypePhase.Battle;
             _selectedItem = null;
             _sellPreview.gameObject.SetActive(false);

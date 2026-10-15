@@ -79,6 +79,11 @@ namespace BackpackAutoBattle.Editor
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
             serializedController.FindProperty("_enemyData").objectReferenceValue = PrototypeEnemyDataBuilder.CreateOrLoad();
+            StatusEffectData[] statuses = PrototypeStatusDataBuilder.CreateOrLoad();
+            SerializedProperty statusProperty = serializedController.FindProperty("_statusEffects");
+            statusProperty.arraySize = statuses.Length;
+            for (int index = 0; index < statuses.Length; index++)
+                statusProperty.GetArrayElementAtIndex(index).objectReferenceValue = statuses[index];
 
             serializedController.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(controller);

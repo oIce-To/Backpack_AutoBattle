@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: swift_charm
   _displayName: "\uC2E0\uC18D\uC758 \uBD80\uC801"
-  _description: "\uC18C\uC9C0 \uC2DC \uD589\uB3D9 \uC18D\uB3C4\uAC00 \uBE68\uB77C\uC9C0\uB294
-    \uC2E0\uAE30\uD55C \uBD80\uC801"
+  _description: "L자 형태의 신속 계열 장신구입니다."
+  _battleStartStatuses:
+  - _kind: 0
+    _target: 0
+    _stacks: 10
   _category: 2
   _rarity: 2
   _purchasePrice: 6

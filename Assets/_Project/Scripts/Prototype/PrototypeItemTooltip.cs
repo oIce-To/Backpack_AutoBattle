@@ -22,6 +22,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text[] _statCaptions = new Text[5];
         private Component _owner;
         private Func<ItemTooltipContent> _content;
+        private Func<StatusTooltipContent> _statusContent;
         private Vector2 _pointer;
         private Camera _eventCamera;
 
@@ -99,6 +100,19 @@ namespace BackpackAutoBattle.Prototype
         {
             _owner = owner;
             _content = content;
+            _statusContent = null;
+            _pointer = pointer;
+            _eventCamera = eventCamera;
+            gameObject.SetActive(true);
+            transform.SetAsLastSibling();
+            Refresh();
+        }
+
+        public void ShowStatus(Component owner, Func<StatusTooltipContent> content, Vector2 pointer, Camera eventCamera)
+        {
+            _owner = owner;
+            _content = null;
+            _statusContent = content;
             _pointer = pointer;
             _eventCamera = eventCamera;
             gameObject.SetActive(true);
@@ -123,6 +137,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _owner = null;
             _content = null;
+            _statusContent = null;
             gameObject.SetActive(false);
         }
 
@@ -130,14 +145,36 @@ namespace BackpackAutoBattle.Prototype
 
         public void Refresh()
         {
-            if (_owner == null || !_owner.gameObject.activeInHierarchy || _content == null)
+            if (_owner == null || !_owner.gameObject.activeInHierarchy || (_content == null && _statusContent == null))
             {
                 HideAll();
+                return;
+            }
+            if (_statusContent != null)
+            {
+                StatusTooltipContent status = _statusContent();
+                if (status == null) { HideAll(); return; }
+                _name.text = status.Title;
+                Place(_name.rectTransform, Padding, -26f, 264f, 36f);
+                _border.color = status.Color;
+                _rarity.gameObject.SetActive(false);
+                _context.gameObject.SetActive(false);
+                _statsRoot.gameObject.SetActive(false);
+                _divider.gameObject.SetActive(false);
+                _description.text = status.Description;
+                Place(_description.rectTransform, Padding, -80f, 264f, 56f);
+                float statusHeight = Mathf.Max(28f, _description.preferredHeight);
+                Place(_description.rectTransform, Padding, -56f - statusHeight / 2f, 264f, statusHeight);
+                RectTransform.sizeDelta = new Vector2(300f, 56f + statusHeight + Padding);
+                Position();
                 return;
             }
             ItemTooltipContent item = _content();
             if (item == null) { HideAll(); return; }
             _name.text = item.DisplayName;
+            Place(_name.rectTransform, Padding, -26f, 245f, 36f);
+            _rarity.gameObject.SetActive(true);
+            _divider.gameObject.SetActive(true);
             _rarity.text = item.Rarity.GetDisplayName();
             _rarity.color = _border.color = item.Rarity.GetDisplayColor();
             _context.text = "전투 중 실제 스탯";
@@ -150,6 +187,12 @@ namespace BackpackAutoBattle.Prototype
                 _statIcons[index].gameObject.SetActive(visible);
                 _values[index].gameObject.SetActive(visible);
                 _statCaptions[index].gameObject.SetActive(visible);
+                _values[index].color = item.GetStatChange((WeaponStatIcon)index) switch
+                {
+                    ItemStatChange.Improved => new Color(0.35f, 0.90f, 0.50f),
+                    ItemStatChange.Reduced => new Color(1f, 0.36f, 0.34f),
+                    _ => new Color(0.91f, 0.94f, 0.98f)
+                };
                 float x = Padding + (item.HasWeaponStats ? index % 3 * 119f : 0f);
                 float y = index < 3 ? -101f : -161f;
                 Place(_statIcons[index], x, y, 31f, 31f);
@@ -182,8 +225,9 @@ namespace BackpackAutoBattle.Prototype
             float px = pointer.x - canvas.xMin;
             float py = pointer.y - canvas.yMin;
             float x = px + 20f;
-            if (x + Width > canvas.width - 8f) x = px - Width - 20f;
-            x = Mathf.Clamp(x, 8f, Mathf.Max(8f, canvas.width - Width - 8f));
+            float width = RectTransform.sizeDelta.x;
+            if (x + width > canvas.width - 8f) x = px - width - 20f;
+            x = Mathf.Clamp(x, 8f, Mathf.Max(8f, canvas.width - width - 8f));
             float y = Mathf.Clamp(py + 18f, RectTransform.sizeDelta.y + 8f, canvas.height - 8f);
             RectTransform.anchoredPosition = new Vector2(x, y);
         }

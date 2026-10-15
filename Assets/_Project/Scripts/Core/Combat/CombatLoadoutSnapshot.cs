@@ -21,6 +21,8 @@ namespace BackpackAutoBattle.Combat
             Category = data.Category;
             Tags = data.Tags;
             Activation = data.Activation?.Copy() ?? new ItemActivationData();
+            BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
+                .Select(status => status.Copy()).ToArray());
             DisplayColor = data.DisplayColor;
             Origin = origin;
             Rotation = rotation;
@@ -37,6 +39,7 @@ namespace BackpackAutoBattle.Combat
         public ItemCategory Category { get; }
         public ItemTags Tags { get; }
         public ItemActivationData Activation { get; }
+        public IReadOnlyList<StatusApplication> BattleStartStatuses { get; }
         public Color DisplayColor { get; }
         public Vector2Int Origin { get; }
         public ItemRotation Rotation { get; }

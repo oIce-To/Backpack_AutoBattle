@@ -150,6 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Prototype::BackpackAutoBattle.Prototype.BackpackPrototypeController
   _playerMaxHealth: 40
   _enemyData: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  _statusEffects:
+  - {fileID: 11400000, guid: e8bbaad020414757be8a50d0e8d9f86b, type: 2}
+  - {fileID: 11400000, guid: b142d9733f224ce5a1eb80ff2b04a1ef, type: 2}
   _maximumBattleSeconds: 120
   _enableDebugRoundAdvance: 1
   _itemCatalog:

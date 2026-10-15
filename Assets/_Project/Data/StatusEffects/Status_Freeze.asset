@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394cd291cc0c41cfb56c29e58c68a142, type: 3}
+  m_Name: Status_Freeze
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.StatusEffectData
+  _kind: 1
+  _displayName: "빙결"
+  _percentPerStack: 1
+  _maximumStacks: 0

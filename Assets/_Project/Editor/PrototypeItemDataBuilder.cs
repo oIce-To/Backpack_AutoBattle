@@ -184,6 +184,15 @@ namespace BackpackAutoBattle.Editor
                     : definition.ItemId == "throwing_axes" ? ItemTags.Ranged : ItemTags.Melee);
             }
             else if (definition.ItemId == "wooden_shield") ConfigureActivation(serializedItem, 2f, ItemEffectKind.GainArmor);
+            else if (definition.ItemId == "swift_charm")
+            {
+                SerializedProperty statuses = serializedItem.FindProperty("_battleStartStatuses");
+                statuses.arraySize = 1;
+                SerializedProperty status = statuses.GetArrayElementAtIndex(0);
+                status.FindPropertyRelative("_kind").enumValueIndex = (int)StatusEffectKind.Haste;
+                status.FindPropertyRelative("_target").enumValueIndex = (int)StatusTarget.Self;
+                status.FindPropertyRelative("_stacks").intValue = 10;
+            }
 
             SerializedProperty occupiedCells = serializedItem.FindProperty("_occupiedCells");
             occupiedCells.arraySize = definition.OccupiedCells.Length;

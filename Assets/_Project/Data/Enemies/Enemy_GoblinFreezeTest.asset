@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
+  m_Name: Enemy_GoblinFreezeTest
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyData
+  _enemyId: goblin_freeze_test
+  _displayName: "고블린 · 빙결 시험"
+  _maximumHealth: 30
+  _backpackWidth: 3
+  _backpackHeight: 3
+  _items:
+  - _item: {fileID: 11400000, guid: 0adce1fc9f447e042b814d046c2bfde5, type: 2}
+    _origin: {x: 1, y: 0}
+    _rotation: 0
+  - _item: {fileID: 11400000, guid: 8ead7b18fb5c49858adac418b7f86bd4, type: 2}
+    _origin: {x: 0, y: 0}
+    _rotation: 0

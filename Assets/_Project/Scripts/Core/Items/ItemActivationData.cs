@@ -7,7 +7,7 @@ namespace BackpackAutoBattle.Items
 {
     [Flags]
     public enum ItemTags { None = 0, Melee = 1, Ranged = 2, Magic = 4, Summon = 8 }
-    public enum ItemEffectKind { Attack, GainArmor }
+    public enum ItemEffectKind { Attack, GainArmor, ApplyStatus }
 
     [Serializable]
     public sealed class ItemActivationEffect
@@ -15,10 +15,14 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private ItemEffectKind _kind;
         [Tooltip("Used by GainArmor. Attack uses the item's weapon stats.")]
         [SerializeField, Min(0f)] private float _amount = 1f;
+        [Tooltip("Used only by ApplyStatus.")]
+        [SerializeField] private StatusApplication _status = new(StatusEffectKind.Haste, 1);
         public ItemEffectKind Kind => _kind;
         public float Amount => Mathf.Max(0f, WeaponStats.FiniteOrDefault(_amount, 0f));
+        public StatusApplication Status => _status;
         public ItemActivationEffect(ItemEffectKind kind, float amount = 1f) { _kind = kind; _amount = amount; }
-        public ItemActivationEffect Copy() => new(Kind, Amount);
+        public ItemActivationEffect(StatusApplication status) { _kind = ItemEffectKind.ApplyStatus; _status = status.Copy(); }
+        public ItemActivationEffect Copy() => new(Kind, Amount) { _status = _status?.Copy() };
     }
 
     /// <summary>One shared activation clock and effect list, independent of item category.</summary>

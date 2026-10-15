@@ -1,5 +1,6 @@
 using System;
 using BackpackAutoBattle.Combat;
+using BackpackAutoBattle.Items;
 using UnityEngine;
 
 namespace BackpackAutoBattle.Prototype
@@ -21,9 +22,10 @@ namespace BackpackAutoBattle.Prototype
             SetVisible(false);
         }
 
-        public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds)
+        public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds,
+            StatusEffectData[] statusEffects = null)
         {
-            Simulation = new CombatSimulation(player, enemy, maximumDuration: maximumSeconds);
+            Simulation = new CombatSimulation(player, enemy, maximumDuration: maximumSeconds, statusEffects: statusEffects);
             _screen.Begin(Simulation, round, income);
         }
 
