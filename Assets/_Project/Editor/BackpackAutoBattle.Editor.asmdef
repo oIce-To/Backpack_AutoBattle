@@ -3,7 +3,8 @@
   "rootNamespace": "BackpackAutoBattle.Editor",
   "references": [
     "BackpackAutoBattle.Core",
-    "BackpackAutoBattle.Prototype"
+    "BackpackAutoBattle.Prototype",
+    "Unity.TextMeshPro"
   ],
   "includePlatforms": [
     "Editor"

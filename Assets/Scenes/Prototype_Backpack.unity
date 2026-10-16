@@ -156,6 +156,7 @@ MonoBehaviour:
   _maximumBattleSeconds: 120
   _enableDebugRoundAdvance: 1
   _itemCatalog:
+  - {fileID: 11400000, guid: e48d25b6f51943e79a109ef232080b83, type: 2}
   - {fileID: 11400000, guid: 4c6d35a5a2cf49a45ace1c0c10b87744, type: 2}
   - {fileID: 11400000, guid: ef94bfebc7f1d2543a4ca69da58cdc7a, type: 2}
   - {fileID: 11400000, guid: b85cd6b945a991545b46e07124ddebc0, type: 2}

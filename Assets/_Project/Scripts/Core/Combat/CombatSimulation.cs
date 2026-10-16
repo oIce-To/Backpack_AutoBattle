@@ -82,6 +82,8 @@ namespace BackpackAutoBattle.Combat
             // These are references into the common item lists, never separately ticked copies.
             PlayerWeapons = Array.AsReadOnly(PlayerItems.OfType<CombatWeapon>().ToArray());
             EnemyWeapons = Array.AsReadOnly(EnemyItems.OfType<CombatWeapon>().ToArray());
+            ApplyPlacementBonuses(Player.Loadout, PlayerWeapons);
+            ApplyPlacementBonuses(Enemy.Loadout, EnemyWeapons);
             _random = random ?? new Random();
             _maximumDuration = maximumDuration;
             InitializeStatuses(statusEffects);
@@ -103,6 +105,13 @@ namespace BackpackAutoBattle.Combat
         public double ElapsedSeconds { get; private set; }
         public CombatResult Result { get; private set; } = CombatResult.Running;
         public IReadOnlyList<CombatItem> GetItems(CombatSide side) => side == CombatSide.Player ? PlayerItems : EnemyItems;
+
+        private static void ApplyPlacementBonuses(CombatLoadoutSnapshot loadout, IReadOnlyList<CombatWeapon> weapons)
+        {
+            IReadOnlyDictionary<string, float> bonuses = PlacementEffectResolver.GetAttackBonuses(loadout);
+            foreach (CombatWeapon weapon in weapons)
+                if (bonuses.TryGetValue(weapon.InstanceId, out float bonus)) weapon.Stats.AttackDamage += bonus;
+        }
 
         /// <summary>+50 means 1.5x activation speed. Sources add; replacing/removing a source does not stack it twice.</summary>
         public void SetActivationSpeedModifier(CombatSide side, string sourceId, float percent, ItemTargetFilter filter = null)

@@ -1,5 +1,6 @@
 using System;
 using BackpackAutoBattle.Items;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace BackpackAutoBattle.Prototype
         private Text _context;
         private RectTransform _statsRoot;
         private Image _divider;
-        private Text _description;
+        private TextMeshProUGUI _description;
         private readonly Text[] _values = new Text[5];
         private readonly RectTransform[] _statIcons = new RectTransform[5];
         private readonly Text[] _statCaptions = new Text[5];
@@ -90,9 +91,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             _divider = CreateImage(transform, "Divider", new Color(0.28f, 0.35f, 0.44f));
-            _description = Label(transform, "Tooltip Description", 16, FontStyle.Normal);
-            _description.alignment = TextAnchor.UpperLeft;
-            _description.horizontalOverflow = HorizontalWrapMode.Wrap;
+            _description = PrototypeTooltipText.Create(transform);
             gameObject.SetActive(false);
         }
 
@@ -163,7 +162,7 @@ namespace BackpackAutoBattle.Prototype
                 _divider.gameObject.SetActive(false);
                 _description.text = status.Description;
                 Place(_description.rectTransform, Padding, -80f, 264f, 56f);
-                float statusHeight = Mathf.Max(28f, _description.preferredHeight);
+                float statusHeight = Mathf.Max(28f, _description.GetPreferredValues(status.Description, 264f, Mathf.Infinity).y);
                 Place(_description.rectTransform, Padding, -56f - statusHeight / 2f, 264f, statusHeight);
                 RectTransform.sizeDelta = new Vector2(300f, 56f + statusHeight + Padding);
                 Position();
@@ -205,15 +204,14 @@ namespace BackpackAutoBattle.Prototype
             _values[3].text = $"{item.CriticalChancePercent:0.#}%";
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
             float descriptionTop = (item.HasWeaponStats ? 211f : item.HasCycle ? 151f : 84f) - (item.IsRuntime ? 0f : 18f);
-            string description = item.Description ?? string.Empty;
-            if (!string.IsNullOrWhiteSpace(item.EffectDescription))
-                description = string.IsNullOrWhiteSpace(description) ? item.EffectDescription : $"{item.EffectDescription}\n\n{description}";
-            _description.text = string.IsNullOrWhiteSpace(description) ? "추가 설명 없음" : description;
+            float dividerTop = descriptionTop;
+            _description.text = item.GetDescriptionText();
             float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - Padding * 2f);
             Place(_description.rectTransform, Padding, -descriptionTop - available / 2f, Width - Padding * 2f, available);
-            float height = Mathf.Clamp(_description.preferredHeight, 32f, Mathf.Min(available, 260f));
+            float height = Mathf.Clamp(_description.GetPreferredValues(_description.text, Width - Padding * 2f, Mathf.Infinity).y,
+                32f, available);
             Place(_description.rectTransform, Padding, -descriptionTop - height / 2f, Width - Padding * 2f, height);
-            Place(_divider.rectTransform, Padding, -descriptionTop + 12f, Width - Padding * 2f, 1f);
+            Place(_divider.rectTransform, Padding, -dividerTop + 12f, Width - Padding * 2f, 1f);
             RectTransform.sizeDelta = new Vector2(Width, descriptionTop + height + Padding);
             Position();
         }

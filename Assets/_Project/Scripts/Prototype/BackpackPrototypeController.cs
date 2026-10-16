@@ -115,6 +115,10 @@ namespace BackpackAutoBattle.Prototype
             _gridRoot.SetAsLastSibling(); // Dragged shapes must stay above the enlarged storage panel.
             itemView.transform.SetAsLastSibling();
             SetDragOffset(itemView, eventData);
+            _previewOrigin = itemView.Origin;
+            _dragRangeInsideGrid = IsPointerInside(_gridRoot, eventData);
+            ClearPlacementOverlay();
+            RefreshDragPlacementOverlay();
             UpdateSellPreview(eventData);
         }
 
@@ -134,6 +138,7 @@ namespace BackpackAutoBattle.Prototype
             Vector2 proposedPosition = pointerPosition - _dragOffset;
             itemView.RectTransform.anchoredPosition = proposedPosition;
             _previewOrigin = LocalPositionToGrid(proposedPosition);
+            _dragRangeInsideGrid = IsPointerInside(_gridRoot, eventData);
             UpdatePlacementPreview(itemView, _previewOrigin);
             UpdateSellPreview(eventData);
         }
@@ -279,6 +284,7 @@ namespace BackpackAutoBattle.Prototype
             if (_grid.TryPlace(itemView.InstanceId, itemView.Shape, itemView.Origin, nextRotation))
             {
                 itemView.SetPlacement(itemView.Origin, nextRotation);
+                RefreshPlacementHover();
                 SetStatus($"{itemView.DisplayName} 회전 완료");
                 SelectItem(itemView);
                 return;
@@ -811,6 +817,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void FinishDrag()
         {
+            ClearPlacementOverlay();
             if (_draggingItem != null)
             {
                 _draggingItem.ResetTint();
@@ -886,6 +893,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void UpdatePlacementPreview(BackpackItemView itemView, Vector2Int origin)
         {
+            RefreshDragPlacementOverlay();
             bool valid = _grid.CanPlace(itemView.InstanceId, itemView.Shape, origin, itemView.Rotation);
             Color previewColor = valid ? ValidPreviewColor : InvalidPreviewColor;
             itemView.SetTint(previewColor);

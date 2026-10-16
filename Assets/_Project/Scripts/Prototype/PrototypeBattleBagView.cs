@@ -10,6 +10,7 @@ namespace BackpackAutoBattle.Prototype
     {
         private readonly RectTransform _root;
         private readonly Dictionary<string, PrototypeBattleItemView> _items = new();
+        private PrototypePlacementOverlay _placementOverlay;
         public RectTransform Root => _root;
 
         public PrototypeBattleBagView(Transform parent, string name)
@@ -55,9 +56,11 @@ namespace BackpackAutoBattle.Prototype
                 rect.anchoredPosition = new Vector2(-boardSize.x / 2f + item.Origin.x * pitch + 3f,
                     boardSize.y / 2f - item.Origin.y * pitch - 3f);
                 PrototypeBattleItemView view = obj.GetComponent<PrototypeBattleItemView>();
-                view.Initialize(item, side, pitch, inspect, tooltip, () => content(item));
+                view.Initialize(item, side, pitch, inspect, tooltip, () => content(item),
+                    () => _placementOverlay.Show(view, loadout, item), () => _placementOverlay.Hide(view));
                 _items.Add(item.InstanceId, view);
             }
+            _placementOverlay = new PrototypePlacementOverlay(_root, pitch);
         }
 
         public void RenderCooldowns(IReadOnlyList<CombatItem> items, double elapsed)

@@ -1,6 +1,7 @@
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BackpackAutoBattle.Prototype
@@ -9,12 +10,16 @@ namespace BackpackAutoBattle.Prototype
 
     public sealed class ItemTooltipContent
     {
+        public const string PlacementIconName = "placement_cell";
+        public const string PlacementIconTag = "<sprite name=\"" + PlacementIconName + "\">";
+
         private WeaponStats _baseStats;
         private float _baseCooldownSeconds;
         public string DisplayName { get; private set; }
         public ItemRarity Rarity { get; private set; }
         public string Description { get; private set; }
         public string EffectDescription { get; private set; }
+        public IReadOnlyList<string> PlacementDescriptions { get; private set; } = System.Array.Empty<string>();
         public bool HasWeaponStats { get; private set; }
         public bool HasCycle { get; private set; }
         public bool IsRuntime { get; private set; }
@@ -23,6 +28,14 @@ namespace BackpackAutoBattle.Prototype
         public float AccuracyPercent { get; private set; }
         public float CriticalChancePercent { get; private set; }
         public float CriticalDamagePercent { get; private set; }
+
+        public string GetDescriptionText()
+        {
+            var paragraphs = new List<string>(PlacementDescriptions);
+            if (!string.IsNullOrWhiteSpace(EffectDescription)) paragraphs.Add(EffectDescription);
+            if (!string.IsNullOrWhiteSpace(Description)) paragraphs.Add(Description);
+            return paragraphs.Count == 0 ? "추가 설명 없음" : string.Join("\n\n", paragraphs);
+        }
 
         public ItemStatChange GetStatChange(WeaponStatIcon stat)
         {
@@ -55,6 +68,7 @@ namespace BackpackAutoBattle.Prototype
             result.SetStats(item.BaseWeaponStats, null);
             result.SetActivation(item.Activation, item.Activation.CooldownSeconds);
             result.SetBattleStart(item.BattleStartStatuses);
+            result.SetPlacement(item.PlacementEffects);
             return result;
         }
 
@@ -73,6 +87,7 @@ namespace BackpackAutoBattle.Prototype
             result.SetStats(item.BaseWeaponStats, (runtime as CombatWeapon)?.Stats);
             result.SetActivation(item.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds));
             result.SetBattleStart(item.BattleStartStatuses);
+            result.SetPlacement(item.PlacementEffects);
             return result;
         }
 
@@ -106,6 +121,28 @@ namespace BackpackAutoBattle.Prototype
 
         private void AppendEffect(string text)
             => EffectDescription = string.IsNullOrWhiteSpace(EffectDescription) ? text : EffectDescription + "\n" + text;
+
+        private void SetPlacement(IEnumerable<ItemPlacementEffect> effects)
+        {
+            PlacementDescriptions = effects.Where(effect => effect != null).Select(effect =>
+                $"{PlacementIconTag}에 배치되어 있는 {TargetLabel(effect.TargetFilter)}의 공격력을 {Mathf.Abs(effect.AttackDamageBonus):0.#} "
+                + $"{(effect.AttackDamageBonus >= 0f ? "증가" : "감소")}시킵니다.").ToArray();
+        }
+
+        private static string TargetLabel(ItemTargetFilter filter)
+        {
+            var tags = new List<string>();
+            foreach (var pair in new[] { (ItemTags.Melee, "근접"), (ItemTags.Ranged, "원거리"), (ItemTags.Magic, "마법"), (ItemTags.Summon, "소환") })
+                if (filter != null && (filter.RequiredTags & pair.Item1) != 0) tags.Add(pair.Item2);
+            string category = filter?.Category switch
+            {
+                ItemCategory.Weapon => "무기", ItemCategory.Armor => "방어구", ItemCategory.Accessory => "장신구",
+                ItemCategory.Consumable => "소모품", ItemCategory.Material => "재료", ItemCategory.Pet => "펫", ItemCategory.Bag => "가방",
+                _ => "공격 아이템"
+            };
+            tags.Add(category);
+            return string.Join(" ", tags);
+        }
 
         private static string DescribeStatus(StatusApplication status)
             => $"{(status.Target == StatusTarget.Self ? "자신에게" : "상대에게")} "

@@ -5,6 +5,7 @@ using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Prototype;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -194,7 +195,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         private static PrototypeStatusIcon Icon(BackpackPrototypeController controller, CombatSide side, StatusEffectKind kind)
             => controller.GetComponentsInChildren<PrototypeStatusIcon>(true).Single(icon => icon.Side == side && icon.Kind == kind);
         private static string Description(BackpackPrototypeController controller)
-            => controller.ItemTooltip.GetComponentsInChildren<Text>(true).Single(text => text.name == "Tooltip Description").text;
+            => controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>(true).text;
         private static RectTransform Rect(BackpackPrototypeController controller, string name)
             => (RectTransform)controller.GetComponentsInChildren<Transform>(true).Single(child => child.name == name);
         private static Rect Bounds(RectTransform rect)

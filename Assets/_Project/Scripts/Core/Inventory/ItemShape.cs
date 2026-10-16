@@ -30,6 +30,19 @@ namespace BackpackAutoBattle.Inventory
 
         public IReadOnlyList<Vector2Int> BaseCells => _baseCells;
 
+        /// <summary>Rotates an arbitrary offset using the FOOTPRINT's normalization, never the effect range's bounds.</summary>
+        public Vector2Int TransformOffset(Vector2Int cell, ItemRotation rotation)
+        {
+            Vector2Int[] footprint = _baseCells.Select(point => Rotate(point, rotation)).ToArray();
+            return Rotate(cell, rotation) - new Vector2Int(footprint.Min(point => point.x), footprint.Min(point => point.y));
+        }
+
+        private static Vector2Int Rotate(Vector2Int cell, ItemRotation rotation)
+        {
+            for (int turn = 0; turn < (int)rotation; turn++) cell = new Vector2Int(-cell.y, cell.x);
+            return cell;
+        }
+
         public IReadOnlyList<Vector2Int> GetCells(ItemRotation rotation)
         {
             Vector2Int[] rotatedCells = new Vector2Int[_baseCells.Length];

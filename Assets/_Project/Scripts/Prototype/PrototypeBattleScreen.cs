@@ -204,7 +204,7 @@ namespace BackpackAutoBattle.Prototype
                         _inspection.text = $"{item.DisplayName} · {ItemTooltipContent.FromCombat(item, runtime).EffectDescription}";
                         return;
                     }
-                _inspection.text = item.BattleStartStatuses.Count > 0
+                _inspection.text = item.BattleStartStatuses.Count > 0 || item.PlacementEffects.Count > 0
                     ? $"{item.DisplayName} · {ItemTooltipContent.FromCombat(item, null).EffectDescription}"
                     : $"{item.DisplayName} · 이 아이템의 전투 효과는 아직 구현되지 않았습니다.";
                 return;

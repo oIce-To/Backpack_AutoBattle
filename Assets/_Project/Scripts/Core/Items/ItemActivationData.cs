@@ -54,6 +54,8 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private bool _filterByCategory;
         [SerializeField] private ItemCategory _category;
         [SerializeField] private ItemTags _requiredTags;
+        public ItemCategory? Category => _filterByCategory ? _category : null;
+        public ItemTags RequiredTags => _requiredTags;
         public ItemTargetFilter(ItemCategory? category = null, ItemTags requiredTags = ItemTags.None)
         { _filterByCategory = category.HasValue; _category = category.GetValueOrDefault(); _requiredTags = requiredTags; }
         public bool Matches(ItemCategory category, ItemTags tags)

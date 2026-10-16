@@ -4,7 +4,8 @@
   "references": [
     "BackpackAutoBattle.Core",
     "BackpackAutoBattle.Prototype",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "Unity.TextMeshPro"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

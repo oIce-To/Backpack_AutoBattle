@@ -21,19 +21,24 @@ namespace BackpackAutoBattle.Prototype
         private float _itemHeight;
         private float _cellSize;
         private Coroutine _pulse;
+        private Action _showPlacement;
+        private Action _hidePlacement;
 
         public CombatItemSnapshot Snapshot { get; private set; }
         public CombatSide Side { get; private set; }
         public float CycleProgress { get; private set; }
 
         public void Initialize(CombatItemSnapshot item, CombatSide side, float pitch,
-            Action<CombatItemSnapshot> inspect, PrototypeItemTooltip tooltip, Func<ItemTooltipContent> tooltipContent)
+            Action<CombatItemSnapshot> inspect, PrototypeItemTooltip tooltip, Func<ItemTooltipContent> tooltipContent,
+            Action showPlacement = null, Action hidePlacement = null)
         {
             Snapshot = item;
             Side = side;
             _inspect = inspect;
             _tooltip = tooltip;
             _tooltipContent = tooltipContent;
+            _showPlacement = showPlacement;
+            _hidePlacement = hidePlacement;
             gameObject.name = $"Battle Item {item.InstanceId}";
             Vector2Int[] cells = item.OccupiedCells.Select(cell => cell - item.Origin).ToArray();
             int width = cells.Max(cell => cell.x) + 1;
@@ -118,6 +123,7 @@ namespace BackpackAutoBattle.Prototype
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_tooltip != null) _tooltip.Show(this, _tooltipContent, eventData.position, eventData.enterEventCamera);
+            _showPlacement?.Invoke();
         }
         public void OnPointerMove(PointerEventData eventData)
         {
@@ -126,10 +132,12 @@ namespace BackpackAutoBattle.Prototype
         public void OnPointerExit(PointerEventData eventData)
         {
             if (_tooltip != null) _tooltip.Hide(this);
+            _hidePlacement?.Invoke();
         }
         private void OnDisable()
         {
             if (_tooltip != null) _tooltip.Hide(this);
+            _hidePlacement?.Invoke();
         }
     }
 }

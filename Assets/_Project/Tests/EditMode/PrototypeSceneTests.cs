@@ -25,7 +25,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             Assert.That(scene.isLoaded, Is.True);
             Assert.That(controllers, Has.Length.EqualTo(1));
-            Assert.That(controllers[0].ItemCatalog.Count, Is.EqualTo(8));
+            Assert.That(controllers[0].ItemCatalog.Count, Is.EqualTo(9));
             Assert.That(controllers[0].ItemCatalog, Is.All.Not.Null);
             Assert.That(controllers[0].EnemyData, Is.Not.Null);
             Assert.That(controllers[0].EnemyData.DisplayName, Is.EqualTo("고블린"));

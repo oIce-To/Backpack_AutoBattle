@@ -16,6 +16,9 @@ namespace BackpackAutoBattle.Editor
 
             ItemDefinition[] definitions =
             {
+                new("Item_Whetstone.asset", "whetstone", "숫돌", "무기를 손질하는 작은 숫돌입니다.",
+                    ItemCategory.Accessory, ItemRarity.Common, 2, new Color(0.52f, 0.55f, 0.58f), true,
+                    new[] { Vector2Int.zero }),
                 new(
                     "Item_TrainingBlade.asset",
                     "training_blade",
@@ -192,6 +195,21 @@ namespace BackpackAutoBattle.Editor
                 status.FindPropertyRelative("_kind").enumValueIndex = (int)StatusEffectKind.Haste;
                 status.FindPropertyRelative("_target").enumValueIndex = (int)StatusTarget.Self;
                 status.FindPropertyRelative("_stacks").intValue = 10;
+            }
+            else if (definition.ItemId == "whetstone")
+            {
+                SerializedProperty effects = serializedItem.FindProperty("_placementEffects");
+                effects.arraySize = 1;
+                SerializedProperty effect = effects.GetArrayElementAtIndex(0);
+                SerializedProperty cells = effect.FindPropertyRelative("_cells");
+                cells.arraySize = 2;
+                cells.GetArrayElementAtIndex(0).vector2IntValue = Vector2Int.left;
+                cells.GetArrayElementAtIndex(1).vector2IntValue = Vector2Int.right;
+                SerializedProperty filter = effect.FindPropertyRelative("_targetFilter");
+                filter.FindPropertyRelative("_filterByCategory").boolValue = true;
+                filter.FindPropertyRelative("_category").enumValueIndex = (int)ItemCategory.Weapon;
+                filter.FindPropertyRelative("_requiredTags").intValue = (int)ItemTags.Melee;
+                effect.FindPropertyRelative("_attackDamageBonus").floatValue = 1f;
             }
 
             SerializedProperty occupiedCells = serializedItem.FindProperty("_occupiedCells");

@@ -67,6 +67,7 @@ namespace BackpackAutoBattle.Prototype
 
             var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
             _itemTooltip.HideAll();
+            ClearPlacementOverlay();
             _battleController.BeginBattle(player, enemy, _run.Round, _roundIncome, _maximumBattleSeconds, _statusEffects);
             _run.Phase = PrototypePhase.Battle;
             _selectedItem = null;
@@ -132,6 +133,7 @@ namespace BackpackAutoBattle.Prototype
         {
             if (!CanEditLoadout || _draggingItem != null || item == null) return;
             _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item), pointer.position, pointer.enterEventCamera);
+            ShowPreparationPlacement(owner);
         }
 
         public void MoveItemTooltip(Component owner, PointerEventData pointer)
@@ -142,6 +144,7 @@ namespace BackpackAutoBattle.Prototype
         public void HideItemTooltip(Component owner)
         {
             if (_itemTooltip != null) _itemTooltip.Hide(owner);
+            if (_draggingItem == null && _placementHoverOwner == owner) ClearPlacementOverlay();
         }
 
         private static void SetInputEnabled(CanvasGroup group, bool enabled)

@@ -4,6 +4,7 @@ using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Prototype;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -27,7 +28,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             pointer.position = Screen(preparationShield.transform);
             preparationShield.OnPointerEnter(pointer);
             Assert.That(Text(controller.ItemTooltip, "Cooldown Value").text, Is.EqualTo("2.0s"));
-            Assert.That(Text(controller.ItemTooltip, "Tooltip Description").text, Does.Contain("방어도를 1"));
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("방어도를 1"));
             Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Has.Length.EqualTo(1));
             preparationShield.OnPointerExit(pointer);
 
@@ -75,7 +76,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             view.OnPointerEnter(pointer);
             controller.ItemTooltip.Refresh();
             Assert.That(Text(controller.ItemTooltip, "Cooldown Value").text, Is.EqualTo("1.0s"));
-            Assert.That(Text(controller.ItemTooltip, "Tooltip Description").text, Does.Contain("1.0초마다"));
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("1.0초마다"));
             Assert.That(definition.Activation.CooldownSeconds, Is.EqualTo(2f));
             controller.TickCombat(0.5f);
             Assert.That(combat.PlayerArmor, Is.EqualTo(1d));

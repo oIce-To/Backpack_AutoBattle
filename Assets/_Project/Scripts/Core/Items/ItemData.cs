@@ -24,6 +24,9 @@ namespace BackpackAutoBattle.Items
         [Header("Battle start (once per equipped instance)")]
         [SerializeField] private List<StatusApplication> _battleStartStatuses = new();
 
+        [Header("Placement effects (relative cells rotate with the item)")]
+        [SerializeField] private List<ItemPlacementEffect> _placementEffects = new();
+
         [Header("Shop")]
         [SerializeField, Min(0)] private int _purchasePrice = 1;
 
@@ -53,6 +56,7 @@ namespace BackpackAutoBattle.Items
         public ItemTags Tags => _tags;
         public ItemActivationData Activation => _activation;
         public IReadOnlyList<StatusApplication> BattleStartStatuses => _battleStartStatuses;
+        public IReadOnlyList<ItemPlacementEffect> PlacementEffects => _placementEffects;
 
         public Color DisplayColor => _displayColor;
 
@@ -71,6 +75,7 @@ namespace BackpackAutoBattle.Items
             _weaponStats ??= new WeaponStats();
             _activation ??= new ItemActivationData();
             _battleStartStatuses ??= new List<StatusApplication>();
+            _placementEffects ??= new List<ItemPlacementEffect>();
             _weaponStats.Validate();
 
             if (_occupiedCells == null || _occupiedCells.Count == 0)

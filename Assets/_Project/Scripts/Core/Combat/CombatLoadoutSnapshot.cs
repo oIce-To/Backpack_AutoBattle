@@ -20,6 +20,8 @@ namespace BackpackAutoBattle.Combat
             Rarity = data.Rarity;
             Category = data.Category;
             Tags = data.Tags;
+            Shape = data.CreateShape();
+            PlacementEffects = Array.AsReadOnly(data.PlacementEffects.Where(effect => effect != null).Select(effect => effect.Copy()).ToArray());
             Activation = data.Activation?.Copy() ?? new ItemActivationData();
             BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
                 .Select(status => status.Copy()).ToArray());
@@ -38,6 +40,8 @@ namespace BackpackAutoBattle.Combat
         public ItemRarity Rarity { get; }
         public ItemCategory Category { get; }
         public ItemTags Tags { get; }
+        public ItemShape Shape { get; }
+        public IReadOnlyList<ItemPlacementEffect> PlacementEffects { get; }
         public ItemActivationData Activation { get; }
         public IReadOnlyList<StatusApplication> BattleStartStatuses { get; }
         public Color DisplayColor { get; }
