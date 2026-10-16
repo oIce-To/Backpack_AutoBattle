@@ -45,6 +45,13 @@ namespace BackpackAutoBattle.Items
             result._enabled = _enabled;
             return result;
         }
+
+        public ItemActivationData CopyWithCooldown(float interval)
+        {
+            ItemActivationData result = Copy();
+            result._cooldownSeconds = Mathf.Max(0.1f, WeaponStats.FiniteOrDefault(interval, CooldownSeconds));
+            return result;
+        }
     }
 
     /// <summary>Category and required tags are ANDed. No category/tags means all periodic items.</summary>

@@ -124,7 +124,7 @@ namespace BackpackAutoBattle.Tests.Combat
         [Test]
         public void FreezeTestEnemy_GrantsFifteenAtStartThenFiveEveryThreeSeconds()
         {
-            EnemyData enemy = AssetDatabase.LoadAssetAtPath<EnemyData>("Assets/_Project/Data/Enemies/Enemy_GoblinFreezeTest.asset");
+            EnemyEncounterData enemy = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>("Assets/_Project/Data/Enemies/Enemy_GoblinFreezeTest.asset");
             ItemData charm = AssetDatabase.LoadAssetAtPath<ItemData>("Assets/_Project/Data/Items/Item_SwiftCharm.asset");
             CombatSimulation combat = new(Unit(new[] { charm, Armor() }), enemy.CreateCombatantSnapshot());
             Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.Zero);
@@ -135,7 +135,7 @@ namespace BackpackAutoBattle.Tests.Combat
             Assert.That(status.StatusKind, Is.EqualTo(StatusEffectKind.Freeze));
             Assert.That(status.StatusStacks, Is.EqualTo(5));
             Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Freeze), Is.EqualTo(10));
-            Assert.That(AssetDatabase.LoadAssetAtPath<EnemyData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset").Items, Has.Count.EqualTo(1));
+            Assert.That(AssetDatabase.LoadAssetAtPath<EnemyEncounterData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset").Items, Has.Count.EqualTo(1));
         }
 
         [Test]

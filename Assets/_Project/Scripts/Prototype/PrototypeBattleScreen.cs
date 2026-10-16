@@ -180,7 +180,7 @@ namespace BackpackAutoBattle.Prototype
                 PrototypePhase.Victory => "승리!",
                 PrototypePhase.Defeat => "패배 · 가방을 재정비하고 재도전하세요",
                 PrototypePhase.Draw => "시간 초과",
-                _ => "12라운드 완료!"
+                _ => "스테이지 클리어!"
             };
             _continueButton.interactable = phase != PrototypePhase.Completed;
             _continueText.text = phase switch
@@ -189,6 +189,12 @@ namespace BackpackAutoBattle.Prototype
                 PrototypePhase.Defeat or PrototypePhase.Draw => "상점으로 돌아가기",
                 _ => "모든 라운드 완료"
             };
+        }
+
+        public void ShowConfigurationError(string error)
+        {
+            _inspection.text = error.Split('\n')[0];
+            _continueText.text = "적 설정 확인 후 재시도";
         }
 
         private void InspectItem(CombatItemSnapshot item, CombatSide side)

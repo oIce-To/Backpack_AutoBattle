@@ -269,7 +269,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(TooltipText(tooltip, "Attack Value").text, Is.EqualTo("12"));
             Assert.That(TooltipText(tooltip, "Critical Chance Value").text, Is.EqualTo("25%"));
             Assert.That(club.Snapshot.BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
-            Assert.That(controller.EnemyData.Items[0].Item.BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
+            Assert.That(controller.CurrentEnemyEncounter.Items[0].Item.BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
             club.OnPointerExit(pointer);
             Assert.That(tooltip.IsVisible, Is.False);
 

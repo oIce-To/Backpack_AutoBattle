@@ -1,4 +1,5 @@
-using BackpackAutoBattle.Enemies;
+using System.Linq;
+using BackpackAutoBattle.Combat;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ namespace BackpackAutoBattle.Prototype
     public sealed class PrototypePreparationPanel
     {
         private readonly Text _enemyText;
+        private readonly Button _startButton;
 
         public PrototypePreparationPanel(BackpackPrototypeController controller, Transform parent)
         {
@@ -16,21 +18,29 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.SetRect((RectTransform)panelObject.transform, new Vector2(0.5f, 0.5f), new Vector2(500f, 34f), new Vector2(220f, 472f));
             Text title = Label(panelObject.transform, "Title", "전투 준비", -30f, 42f, 22);
             title.alignment = TextAnchor.MiddleCenter;
-            _enemyText = Label(panelObject.transform, "Next Enemy", string.Empty, -100f, 90f, 16);
+            _enemyText = Label(panelObject.transform, "Next Enemy", string.Empty, -192f, 270f, 15);
 
             var buttonObject = new GameObject("Start Battle Button", typeof(RectTransform), typeof(Image), typeof(Button));
             buttonObject.transform.SetParent(panelObject.transform, false);
             buttonObject.GetComponent<Image>().color = new Color(0.24f, 0.48f, 0.70f, 1f);
             BackpackPrototypeController.SetRect((RectTransform)buttonObject.transform, new Vector2(0.5f, 0f), new Vector2(0f, 38f), new Vector2(194f, 46f));
-            buttonObject.GetComponent<Button>().onClick.AddListener(() => controller.TryStartBattle());
+            _startButton = buttonObject.GetComponent<Button>();
+            _startButton.onClick.AddListener(() => controller.TryStartBattle());
             Text label = BackpackPrototypeController.CreateText(buttonObject.transform, "Label", "전투 시작", 18, FontStyle.Bold, TextAnchor.MiddleCenter);
             label.raycastTarget = false;
             BackpackPrototypeController.Stretch(label.rectTransform);
         }
 
-        public void Render(int round, EnemyData enemy)
+        public void Render(string stageName, int round, CombatantSnapshot enemy, string error, bool isBoss, bool isDebug)
         {
-            _enemyText.text = enemy == null ? "적 데이터가 없습니다." : $"ROUND {round}\n상대: {enemy.DisplayName}\n체력 {enemy.MaximumHealth} · 가방 {enemy.BackpackWidth}×{enemy.BackpackHeight}";
+            _startButton.interactable = enemy != null;
+            _enemyText.text = enemy == null ? $"적 설정 오류\n{error}" :
+                $"{stageName}\nROUND {round}{(isBoss ? " · 보스" : "")}\n상대: {enemy.DisplayName}\n"
+                + $"체력 {enemy.MaximumHealth:0.#} · 가방 {enemy.Loadout.Width}×{enemy.Loadout.Height}\n"
+                + (isDebug ? "[시험 적 사용 중]\n" : "")
+                + "\n" + string.Join("\n", enemy.Loadout.Items.Select(item => item.Activation.HasEffect(BackpackAutoBattle.Items.ItemEffectKind.Attack)
+                    ? $"{item.DisplayName}\n공격력 {item.BaseWeaponStats.AttackDamage:0.#} · {item.Activation.CooldownSeconds:0.0#}s"
+                    : item.DisplayName));
         }
 
         private static Text Label(Transform parent, string name, string content, float y, float height, int fontSize)

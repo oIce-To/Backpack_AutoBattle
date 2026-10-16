@@ -13,12 +13,12 @@ namespace BackpackAutoBattle.Tests.Enemies
         [Test]
         public void GoblinAsset_HasRequestedBackpackWeaponAndCombatStats()
         {
-            EnemyData goblin = AssetDatabase.LoadAssetAtPath<EnemyData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset");
+            EnemyEncounterData goblin = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset");
             Assert.That(goblin, Is.Not.Null);
             Assert.That(goblin.DisplayName, Is.EqualTo("고블린"));
             Assert.That(goblin.MaximumHealth, Is.EqualTo(30));
-            Assert.That(goblin.BackpackWidth, Is.EqualTo(3));
-            Assert.That(goblin.BackpackHeight, Is.EqualTo(3));
+            Assert.That(goblin.BackpackWidth, Is.EqualTo(6));
+            Assert.That(goblin.BackpackHeight, Is.EqualTo(6));
             Assert.That(goblin.Items, Has.Count.EqualTo(1));
             ItemData club = goblin.Items[0].Item;
             Assert.That(club.DisplayName, Is.EqualTo("고블린 몽둥이"));
@@ -46,13 +46,13 @@ namespace BackpackAutoBattle.Tests.Enemies
         [Test]
         public void InvalidEnemyPlacement_IsRejectedWithoutChangingAsset()
         {
-            EnemyData original = AssetDatabase.LoadAssetAtPath<EnemyData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset");
-            EnemyData copy = Object.Instantiate(original);
+            EnemyEncounterData original = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset");
+            EnemyEncounterData copy = Object.Instantiate(original);
             try
             {
                 var data = new SerializedObject(copy);
                 data.FindProperty("_items").GetArrayElementAtIndex(0).FindPropertyRelative("_origin")
-                    .vector2IntValue = new Vector2Int(2, 2);
+                    .vector2IntValue = new Vector2Int(5, 5);
                 data.ApplyModifiedPropertiesWithoutUndo();
                 Assert.Throws<System.InvalidOperationException>(() => copy.CreateCombatantSnapshot());
                 Assert.That(original.Items[0].Origin, Is.EqualTo(new Vector2Int(1, 0)));

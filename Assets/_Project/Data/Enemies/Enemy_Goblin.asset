@@ -11,13 +11,28 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
   m_Name: Enemy_Goblin
-  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyData
-  _enemyId: goblin
-  _displayName: "\uACE0\uBE14\uB9B0"
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyEncounterData
+  _encounterId: goblin
+  _enemy: {fileID: 11400000, guid: 981d24588e09bb74283211cb7267e6d0, type: 2}
   _maximumHealth: 30
-  _backpackWidth: 3
-  _backpackHeight: 3
   _items:
-  - _item: {fileID: 11400000, guid: 0adce1fc9f447e042b814d046c2bfde5, type: 2}
+  - _slotId: club
+    _item: {fileID: 11400000, guid: 0adce1fc9f447e042b814d046c2bfde5, type: 2}
     _origin: {x: 1, y: 0}
     _rotation: 0
+    _stats:
+      _attackDamage:
+        _enabled: 0
+        _value: 0
+      _cooldownSeconds:
+        _enabled: 0
+        _value: 0
+      _accuracyPercent:
+        _enabled: 0
+        _value: 0
+      _criticalChancePercent:
+        _enabled: 0
+        _value: 0
+      _criticalDamagePercent:
+        _enabled: 0
+        _value: 0

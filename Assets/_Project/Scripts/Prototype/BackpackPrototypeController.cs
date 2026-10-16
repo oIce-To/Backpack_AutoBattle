@@ -69,15 +69,17 @@ namespace BackpackAutoBattle.Prototype
         public IReadOnlyList<ItemData> CurrentShopItems => _currentShopItems;
         public ShopRarityTableData ShopRarityTable => _shopRarityTable;
         public int Gold => _run.Gold;
-        public int CurrentRound => _run.Round;
+        public int CurrentRound => _run?.Round ?? 1;
+        public string CurrentStageId => _run?.StageId ?? _stageData?.StageId;
         public int StoredItemCount => _storedItems.Count;
 
         private void Awake()
         {
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
-            _run = new PrototypeRunState(_startingGold);
+            _run = new PrototypeRunState(_startingGold, _stageData?.StageId);
             BuildInterface();
+            RefreshEncounterPreview();
             CreateStartingItems();
             PopulateShop();
             UpdateEconomyText();
@@ -327,13 +329,29 @@ namespace BackpackAutoBattle.Prototype
                 return false;
             }
 
-            if (_run.Round >= ShopRarityTableData.MaximumRound)
+            if (_run.Round >= StageRoundCount)
             {
                 SetStatus("마지막 12라운드입니다.");
                 return false;
             }
 
+            // Resolve first so missing/invalid content cannot consume income or advance progress.
+            if (!TryResolveEnemy(_run.Round + 1, out var nextEnemy, out string error))
+            {
+                SetStatus(error);
+                _enemyConfigurationError = error;
+                if (CanEditLoadout)
+                {
+                    _preparedEnemy = null;
+                    RenderEncounterPreview();
+                    if (_debugNextRoundButton != null) _debugNextRoundButton.interactable = false;
+                }
+                else _battleController.ShowConfigurationError(error);
+                return false;
+            }
             _run.Round++;
+            _preparedEnemy = nextEnemy;
+            _enemyConfigurationError = null;
             _run.Gold += _roundIncome;
             _run.Phase = PrototypePhase.Preparation;
             _battleController.EndBattle();
@@ -918,7 +936,7 @@ namespace BackpackAutoBattle.Prototype
 
             if (_roundText != null)
             {
-                _roundText.text = $"ROUND {_run.Round} / {ShopRarityTableData.MaximumRound}";
+                _roundText.text = $"ROUND {_run.Round} / {StageRoundCount}";
             }
 
             if (_rerollText != null)
@@ -928,7 +946,7 @@ namespace BackpackAutoBattle.Prototype
 
             if (_nextRoundText != null)
             {
-                _nextRoundText.text = _run.Round < ShopRarityTableData.MaximumRound
+                _nextRoundText.text = _run.Round < StageRoundCount
                     ? $"테스트 다음 +{_roundIncome}G"
                     : "마지막 라운드";
             }

@@ -3,6 +3,7 @@ using System.Linq;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Prototype;
 using BackpackAutoBattle.Shop;
+using BackpackAutoBattle.Stages;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -67,6 +68,7 @@ namespace BackpackAutoBattle.Editor
                 throw new InvalidOperationException("The prototype shop rarity table is missing.");
             }
 
+            StageData stage = controller.Stage != null ? controller.Stage : PrototypeStageDataBuilder.CreateOrLoad();
             var serializedController = new SerializedObject(controller);
             serializedController.Update();
             SerializedProperty catalogProperty = serializedController.FindProperty("_itemCatalog");
@@ -78,7 +80,8 @@ namespace BackpackAutoBattle.Editor
             }
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
-            serializedController.FindProperty("_enemyData").objectReferenceValue = PrototypeEnemyDataBuilder.CreateOrLoad();
+            if (serializedController.FindProperty("_stageData").objectReferenceValue == null)
+                serializedController.FindProperty("_stageData").objectReferenceValue = stage;
             StatusEffectData[] statuses = PrototypeStatusDataBuilder.CreateOrLoad();
             SerializedProperty statusProperty = serializedController.FindProperty("_statusEffects");
             statusProperty.arraySize = statuses.Length;

@@ -43,6 +43,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void ShowResult(PrototypePhase phase) => _screen.ShowResult(phase);
+        public void ShowConfigurationError(string error) => _screen.ShowConfigurationError(error);
         public void SetVisible(bool visible) => _screen.Root.gameObject.SetActive(visible);
 
         public void EndBattle()

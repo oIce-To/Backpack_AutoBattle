@@ -4,9 +4,11 @@ using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Enemies;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Shop;
+using BackpackAutoBattle.Stages;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 namespace BackpackAutoBattle.Prototype
 {
@@ -15,7 +17,10 @@ namespace BackpackAutoBattle.Prototype
     {
         [Header("Combat Prototype")]
         [SerializeField, Min(1)] private int _playerMaxHealth = 40;
-        [SerializeField] private EnemyData _enemyData;
+        [SerializeField] private StageData _stageData;
+        [Tooltip("Optional test encounter. Leave empty for normal stage/round progression. Ignores round stat overrides.")]
+        [FormerlySerializedAs("_enemyData")]
+        [SerializeField] private EnemyEncounterData _debugEnemyOverride;
         [SerializeField] private StatusEffectData[] _statusEffects = Array.Empty<StatusEffectData>();
         [SerializeField, Min(1f)] private float _maximumBattleSeconds = 120f;
         [SerializeField] private bool _enableDebugRoundAdvance = true;
@@ -29,11 +34,18 @@ namespace BackpackAutoBattle.Prototype
         private CanvasGroup _gridInputGroup;
         private CanvasGroup _storageInputGroup;
         private Button _debugNextRoundButton;
+        private CombatantSnapshot _preparedEnemy;
+        private string _enemyConfigurationError;
 
         public PrototypePhase Phase => _run.Phase;
         public CombatSimulation ActiveCombat => _battleController?.Simulation;
         public PrototypeBattleController BattleController => _battleController;
-        public EnemyData EnemyData => _enemyData;
+        public StageData Stage => _stageData;
+        public int StageRoundCount => _stageData?.RoundCount ?? 0;
+        public EnemyEncounterData CurrentEnemyEncounter => _debugEnemyOverride != null ? _debugEnemyOverride
+            : _stageData != null && CurrentRound >= 1 && CurrentRound <= StageRoundCount ? _stageData.GetRound(CurrentRound).Encounter : null;
+        public CombatantSnapshot PreparedEnemy => _preparedEnemy;
+        public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
         public bool CanEditLoadout => _run.Phase == PrototypePhase.Preparation;
 
@@ -51,24 +63,17 @@ namespace BackpackAutoBattle.Prototype
         public bool TryStartBattle()
         {
             if (!CanEditLoadout || _draggingItem != null) return false;
-            if (_enemyData == null)
+            if (_preparedEnemy == null)
             {
-                SetStatus("Enemy Data가 연결되지 않았습니다. 프로토타입 데이터 갱신을 실행하세요.");
-                return false;
-            }
-
-            CombatantSnapshot enemy;
-            try { enemy = _enemyData.CreateCombatantSnapshot(); }
-            catch (InvalidOperationException exception)
-            {
-                SetStatus($"적 가방 배치를 확인하세요: {exception.Message}");
+                SetStatus(_enemyConfigurationError ?? "스테이지의 적 설정을 확인하세요.");
                 return false;
             }
 
             var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
-            _battleController.BeginBattle(player, enemy, _run.Round, _roundIncome, _maximumBattleSeconds, _statusEffects);
+            // Use exactly the same resolved snapshot shown in preparation, never the source ItemData values.
+            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, _roundIncome, _maximumBattleSeconds, _statusEffects);
             _run.Phase = PrototypePhase.Battle;
             _selectedItem = null;
             _sellPreview.gameObject.SetActive(false);
@@ -107,7 +112,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _run.Phase = result switch
             {
-                CombatResult.Victory => _run.Round == ShopRarityTableData.MaximumRound
+                CombatResult.Victory => _run.Round == StageRoundCount
                     ? PrototypePhase.Completed : PrototypePhase.Victory,
                 CombatResult.Defeat => PrototypePhase.Defeat,
                 _ => PrototypePhase.Draw
@@ -125,8 +130,40 @@ namespace BackpackAutoBattle.Prototype
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
             if (_debugNextRoundButton != null)
-                _debugNextRoundButton.interactable = CanEditLoadout && _run.Round < ShopRarityTableData.MaximumRound;
-            if (CanEditLoadout) _preparationPanel.Render(_run.Round, _enemyData);
+                _debugNextRoundButton.interactable = CanEditLoadout && _preparedEnemy != null && _run.Round < StageRoundCount;
+            if (CanEditLoadout) RenderEncounterPreview();
+        }
+
+        /// <summary>Explicitly reload edited SO values during preparation. Does not spend gold or advance the round.</summary>
+        public bool RefreshEncounterPreview()
+        {
+            if (!CanEditLoadout || _draggingItem != null) return false;
+            bool valid = TryResolveEnemy(_run.Round, out _preparedEnemy, out _enemyConfigurationError);
+            RenderEncounterPreview();
+            if (_debugNextRoundButton != null) _debugNextRoundButton.interactable = valid && _run.Round < StageRoundCount;
+            return valid;
+        }
+
+        private bool TryResolveEnemy(int round, out CombatantSnapshot enemy, out string error)
+        {
+            enemy = null;
+            try
+            {
+                if (_stageData == null) throw new InvalidOperationException("Stage Data를 지정하세요.");
+                _stageData.ValidateOrThrow();
+                StageRoundData definition = _stageData.GetRound(round);
+                enemy = _debugEnemyOverride != null ? _debugEnemyOverride.CreateCombatantSnapshot() : definition.CreateEnemySnapshot();
+                error = null;
+                return true;
+            }
+            catch (InvalidOperationException exception) { error = exception.Message; return false; }
+        }
+
+        private void RenderEncounterPreview()
+        {
+            _preparationPanel.Render(_stageData?.DisplayName, _run.Round, _preparedEnemy, _enemyConfigurationError,
+                _preparedEnemy != null && _stageData != null && _run.Round <= StageRoundCount && _stageData.GetRound(_run.Round).IsBoss,
+                _debugEnemyOverride != null);
         }
 
         public void ShowItemTooltip(Component owner, ItemData item, PointerEventData pointer)

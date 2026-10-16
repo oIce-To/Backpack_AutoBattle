@@ -166,10 +166,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Find(controller, "Battle Screen").gameObject.activeSelf, Is.True);
             Assert.That(battle.Enemy.DisplayName, Is.EqualTo("고블린"));
             Assert.That(battle.EnemyMaxHealth, Is.EqualTo(30d));
-            Assert.That(battle.Enemy.Loadout.Width, Is.EqualTo(3));
-            Assert.That(battle.Enemy.Loadout.Height, Is.EqualTo(3));
+            Assert.That(battle.Enemy.Loadout.Width, Is.EqualTo(6));
+            Assert.That(battle.Enemy.Loadout.Height, Is.EqualTo(6));
             Assert.That(Find(controller, "Enemy Battle Backpack").GetComponentsInChildren<Transform>()
-                .Count(child => child.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(9));
+                .Count(child => child.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(36));
             Assert.That(Find(controller, "Player Battle Backpack").GetComponentsInChildren<Transform>()
                 .Count(child => child.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(36));
             PrototypeBattleItemView[] battleViews = controller.GetComponentsInChildren<PrototypeBattleItemView>();

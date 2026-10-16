@@ -10,7 +10,8 @@ namespace BackpackAutoBattle.Combat
     public sealed class CombatItemSnapshot
     {
         public CombatItemSnapshot(string instanceId, ItemData data, Vector2Int origin,
-            ItemRotation rotation, IEnumerable<Vector2Int> occupiedCells)
+            ItemRotation rotation, IEnumerable<Vector2Int> occupiedCells, WeaponStats baseStats = null,
+            ItemActivationData activation = null)
         {
             InstanceId = instanceId;
             ItemId = data.ItemId;
@@ -22,14 +23,14 @@ namespace BackpackAutoBattle.Combat
             Tags = data.Tags;
             Shape = data.CreateShape();
             PlacementEffects = Array.AsReadOnly(data.PlacementEffects.Where(effect => effect != null).Select(effect => effect.Copy()).ToArray());
-            Activation = data.Activation?.Copy() ?? new ItemActivationData();
+            Activation = (activation ?? data.Activation)?.Copy() ?? new ItemActivationData();
             BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
                 .Select(status => status.Copy()).ToArray());
             DisplayColor = data.DisplayColor;
             Origin = origin;
             Rotation = rotation;
             OccupiedCells = Array.AsReadOnly(occupiedCells.ToArray());
-            BaseWeaponStats = data.BaseWeaponStats?.Copy() ?? new WeaponStats();
+            BaseWeaponStats = (baseStats ?? data.BaseWeaponStats)?.Copy() ?? new WeaponStats();
         }
 
         public string InstanceId { get; }

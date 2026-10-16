@@ -1,0 +1,293 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad86875f50194b7459145ff310e652f9, type: 3}
+  m_Name: Stage_08_Example
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.StageData
+  _stageId: stage_08_example
+  _displayName: "8\uC2A4\uD14C\uC774\uC9C0 \xB7 \uAC15\uD654 \uC608\uC2DC"
+  _rounds:
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 180
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 25
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 190
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 26
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 200
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 27
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 210
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 28
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 220
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 29
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 230
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 30
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 240
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 31
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 250
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 32
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 260
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 33
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 270
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 34
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 748c69f954e693940bdb9ec0467dc430, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 280
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 35
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 38d5ac4be6f04c940991d123239ab6a4, type: 2}
+    _isBoss: 1
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 290
+      _items:
+      - _slotId: club
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 36
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0

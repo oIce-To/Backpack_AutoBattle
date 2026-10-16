@@ -10,7 +10,7 @@ namespace BackpackAutoBattle.Editor
         public const string EnemyPath = "Assets/_Project/Data/Enemies/Enemy_Goblin.asset";
         public const string ClubPath = "Assets/_Project/Data/Enemies/Items/Item_GoblinClub.asset";
 
-        public static EnemyData CreateOrLoad()
+        public static EnemyEncounterData CreateOrLoad()
         {
             EnsureFolder("Assets/_Project/Data", "Enemies");
             EnsureFolder("Assets/_Project/Data/Enemies", "Items");
@@ -42,17 +42,15 @@ namespace BackpackAutoBattle.Editor
                 EditorUtility.SetDirty(club);
             }
 
-            EnemyData enemy = AssetDatabase.LoadAssetAtPath<EnemyData>(EnemyPath);
+            EnemyData species = CreateType("EnemyType_Goblin", "goblin", "고블린");
+            EnemyEncounterData enemy = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>(EnemyPath);
             if (enemy == null)
             {
-                enemy = ScriptableObject.CreateInstance<EnemyData>();
+                enemy = ScriptableObject.CreateInstance<EnemyEncounterData>();
                 AssetDatabase.CreateAsset(enemy, EnemyPath);
                 var data = new SerializedObject(enemy);
-                data.FindProperty("_enemyId").stringValue = "goblin";
-                data.FindProperty("_displayName").stringValue = "고블린";
+                data.FindProperty("_encounterId").stringValue = "goblin";
                 data.FindProperty("_maximumHealth").intValue = 30;
-                data.FindProperty("_backpackWidth").intValue = 3;
-                data.FindProperty("_backpackHeight").intValue = 3;
                 SerializedProperty items = data.FindProperty("_items");
                 items.arraySize = 1;
                 SerializedProperty placement = items.GetArrayElementAtIndex(0);
@@ -63,8 +61,40 @@ namespace BackpackAutoBattle.Editor
                 EditorUtility.SetDirty(enemy);
             }
 
+            // Upgrade existing prototype encounters without changing health, items, positions or item stats.
+            foreach (string guid in AssetDatabase.FindAssets("t:EnemyEncounterData", new[] { "Assets/_Project/Data/Enemies" }))
+            {
+                var existing = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>(AssetDatabase.GUIDToAssetPath(guid));
+                var data = new SerializedObject(existing);
+                if (existing.Enemy == null) data.FindProperty("_enemy").objectReferenceValue = species;
+                SerializedProperty placements = data.FindProperty("_items");
+                for (int index = 0; index < placements.arraySize; index++)
+                {
+                    SerializedProperty placement = placements.GetArrayElementAtIndex(index);
+                    SerializedProperty slotId = placement.FindPropertyRelative("_slotId");
+                    if (string.IsNullOrWhiteSpace(slotId.stringValue))
+                        slotId.stringValue = index == 0 ? "club" : $"slot_{index}";
+                }
+                data.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(existing);
+            }
+
             AssetDatabase.SaveAssets();
             return enemy;
+        }
+
+        public static EnemyData CreateType(string fileName, string id, string displayName)
+        {
+            string path = $"Assets/_Project/Data/Enemies/{fileName}.asset";
+            EnemyData result = AssetDatabase.LoadAssetAtPath<EnemyData>(path);
+            if (result != null) return result;
+            result = ScriptableObject.CreateInstance<EnemyData>();
+            var data = new SerializedObject(result);
+            data.FindProperty("_enemyId").stringValue = id;
+            data.FindProperty("_displayName").stringValue = displayName;
+            data.ApplyModifiedPropertiesWithoutUndo();
+            AssetDatabase.CreateAsset(result, path);
+            return result;
         }
 
         private static void EnsureFolder(string parent, string name)

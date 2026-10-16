@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
+  m_Name: Encounter_GoblinCaptain
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyEncounterData
+  _encounterId: goblin_captain
+  _enemy: {fileID: 11400000, guid: d3bc31f4b33e7154c819a3a39dbdd8f0, type: 2}
+  _maximumHealth: 85
+  _items:
+  - _slotId: club
+    _item: {fileID: 11400000, guid: 0adce1fc9f447e042b814d046c2bfde5, type: 2}
+    _origin: {x: 1, y: 0}
+    _rotation: 0
+    _stats:
+      _attackDamage:
+        _enabled: 0
+        _value: 0
+      _cooldownSeconds:
+        _enabled: 0
+        _value: 0
+      _accuracyPercent:
+        _enabled: 0
+        _value: 0
+      _criticalChancePercent:
+        _enabled: 0
+        _value: 0
+      _criticalDamagePercent:
+        _enabled: 0
+        _value: 0
+  - _slotId: shield
+    _item: {fileID: 11400000, guid: ef94bfebc7f1d2543a4ca69da58cdc7a, type: 2}
+    _origin: {x: 3, y: 1}
+    _rotation: 0
+    _stats:
+      _attackDamage:
+        _enabled: 0
+        _value: 0
+      _cooldownSeconds:
+        _enabled: 0
+        _value: 0
+      _accuracyPercent:
+        _enabled: 0
+        _value: 0
+      _criticalChancePercent:
+        _enabled: 0
+        _value: 0
+      _criticalDamagePercent:
+        _enabled: 0
+        _value: 0
