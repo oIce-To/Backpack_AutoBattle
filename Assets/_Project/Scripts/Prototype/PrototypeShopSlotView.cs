@@ -14,7 +14,8 @@ namespace BackpackAutoBattle.Prototype
         IEndDragHandler,
         IPointerEnterHandler,
         IPointerExitHandler,
-        IPointerMoveHandler
+        IPointerMoveHandler,
+        IPointerClickHandler
     {
         private readonly List<GameObject> _shapeCells = new();
         private BackpackPrototypeController _controller;
@@ -24,6 +25,8 @@ namespace BackpackAutoBattle.Prototype
         private Text _originalPriceText;
         private Text _priceText;
         private Image _priceStrike;
+        private Image _lockShade;
+        private PrototypeShopLockIcon _lockIcon;
 
         public ShopOffer Offer { get; private set; }
         public ItemData ItemData => Offer?.ItemData;
@@ -75,12 +78,32 @@ namespace BackpackAutoBattle.Prototype
             _priceText = BackpackPrototypeController.CreateText(transform, "Purchase Price", string.Empty, 14, FontStyle.Bold, TextAnchor.MiddleLeft);
             SetPriceRect(_priceText.rectTransform, 82f, 188f);
             _priceText.raycastTarget = false;
+
+            var shadeObject = new GameObject("Locked Offer Shade", typeof(RectTransform), typeof(Image));
+            shadeObject.transform.SetParent(transform, false);
+            _lockShade = shadeObject.GetComponent<Image>();
+            _lockShade.color = new Color(0f, 0f, 0f, 0.42f);
+            _lockShade.raycastTarget = false;
+            BackpackPrototypeController.Stretch(_lockShade.rectTransform);
+            var lockObject = new GameObject("Offer Lock Icon", typeof(RectTransform), typeof(PrototypeShopLockIcon));
+            lockObject.transform.SetParent(transform, false);
+            _lockIcon = lockObject.GetComponent<PrototypeShopLockIcon>();
+            _lockIcon.color = new Color(0.95f, 0.97f, 1f);
+            _lockIcon.raycastTarget = false;
+            BackpackPrototypeController.SetRect(_lockIcon.rectTransform, new Vector2(1f, 0.5f), new Vector2(-17f, 0f), new Vector2(22f, 26f));
+            RefreshLockVisual();
         }
 
         public void Bind(ShopOffer offer)
         {
             _controller.HideItemTooltip(this);
             Offer = offer;
+            if (offer == null || offer.IsPurchased)
+            {
+                ShowPurchased();
+                if (offer == null) _itemText.text = string.Empty;
+                return;
+            }
             ItemData itemData = offer.ItemData;
             _shapeRoot.gameObject.SetActive(true);
             _rarityBadge.gameObject.SetActive(true);
@@ -99,6 +122,7 @@ namespace BackpackAutoBattle.Prototype
             _priceText.color = offer.IsOnSale ? new Color(1f, 0.28f, 0.28f, 1f) : Color.white;
             _priceText.text = offer.IsOnSale ? $"{offer.PurchasePrice} G  Sale!" : $"{offer.PurchasePrice} G";
             RebuildShape(itemData);
+            RefreshLockVisual();
         }
 
         public void ShowPurchased()
@@ -109,6 +133,21 @@ namespace BackpackAutoBattle.Prototype
             _originalPriceText.gameObject.SetActive(false);
             _priceText.gameObject.SetActive(false);
             _itemText.text = "<color=#8995A6>구매 완료</color>";
+            RefreshLockVisual();
+        }
+
+        public void RefreshLockVisual()
+        {
+            bool locked = CanPurchase && Offer.IsLocked;
+            _lockShade.gameObject.SetActive(locked);
+            _lockIcon.gameObject.SetActive(locked);
+            _itemText.rectTransform.offsetMax = new Vector2(locked ? -36f : -8f, -2f);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right && !eventData.dragging)
+                _controller.TryToggleShopLock(this);
         }
 
         public void OnBeginDrag(PointerEventData eventData)

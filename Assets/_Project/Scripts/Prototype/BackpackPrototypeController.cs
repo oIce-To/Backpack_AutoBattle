@@ -321,6 +321,14 @@ namespace BackpackAutoBattle.Prototype
             return true;
         }
 
+        public bool TryToggleShopLock(PrototypeShopSlotView slot)
+        {
+            if (!CanEditLoadout || _draggingItem != null || slot == null || !_shopSlots.Contains(slot)
+                || !slot.CanPurchase || !slot.Offer.TryToggleLock()) return false;
+            slot.RefreshLockVisual();
+            return true;
+        }
+
         public bool AdvanceRound()
         {
             if (_draggingItem != null || (_run.Phase != PrototypePhase.Victory
@@ -426,7 +434,7 @@ namespace BackpackAutoBattle.Prototype
             Text instructions = CreateText(
                 _shopScreenRoot,
                 "Instructions",
-                "상점→가방/보관함: 구매  |  가방/보관함→상점: 판매  |  우클릭/R: 회전",
+                "상점→가방/보관함: 구매  |  가방/보관함→상점: 판매  |  가방 우클릭/R: 회전",
                 16,
                 FontStyle.Normal,
                 TextAnchor.MiddleCenter);
@@ -522,7 +530,7 @@ namespace BackpackAutoBattle.Prototype
             _nextRoundText.raycastTarget = false;
             Stretch(_nextRoundText.rectTransform);
 
-            Text shopHint = CreateText(shopPanel.transform, "Shop Hint", "카드를 끌어 구매 · 상점에 놓아 판매", 12, FontStyle.Normal, TextAnchor.MiddleCenter);
+            Text shopHint = CreateText(shopPanel.transform, "Shop Hint", "상점 상품 우클릭: 잠금 / 해제", 12, FontStyle.Normal, TextAnchor.MiddleCenter);
             shopHint.color = new Color(0.56f, 0.63f, 0.73f, 1f);
             SetRect(shopHint.rectTransform, new Vector2(0.5f, 0f), new Vector2(0f, 19f), new Vector2(278f, 20f));
 
@@ -606,31 +614,25 @@ namespace BackpackAutoBattle.Prototype
                 .Where(item => item != null && item.Rarity != ItemRarity.Legendary)
                 .ToList() ?? new List<ItemData>();
 
-            if (candidates.Count == 0)
-            {
-                SetStatus("상점에 표시할 ItemData가 없습니다.");
-                return;
-            }
-
             RoundShopRarityWeights weights = _shopRarityTable?.GetWeights(_run.Round) ?? new RoundShopRarityWeights();
-            int visibleCount = _shopSlots.Count;
-            for (int index = 0; index < visibleCount; index++)
+            foreach (PrototypeShopSlotView slot in _shopSlots)
             {
+                // Preserve the actual shelf offer, including its sale roll and captured price.
+                // A purchased locked offer is cleared on purchase and must be replaced normally.
+                if (slot.CanPurchase && slot.Offer.IsLocked)
+                {
+                    slot.gameObject.SetActive(true);
+                    _currentShopItems.Add(slot.ItemData);
+                    continue;
+                }
+                bool hasItem = candidates.Count > 0;
+                slot.gameObject.SetActive(hasItem);
+                if (!hasItem) { slot.Bind(null); continue; }
                 ItemData selected = SelectWeightedItem(candidates, weights);
                 _currentShopItems.Add(selected);
+                slot.Bind(new ShopOffer(selected, _shopRandom.NextDouble() < _saleChance));
             }
-
-            for (int index = 0; index < _shopSlots.Count; index++)
-            {
-                bool hasItem = index < _currentShopItems.Count;
-                _shopSlots[index].gameObject.SetActive(hasItem);
-                if (hasItem)
-                {
-                    bool isOnSale = _shopRandom.NextDouble() < _saleChance;
-                    _shopSlots[index].Bind(new ShopOffer(_currentShopItems[index], isOnSale));
-                }
-            }
-
+            if (candidates.Count == 0) SetStatus("상점에 표시할 ItemData가 없습니다. 잠긴 상품만 유지합니다.");
             UpdateEconomyText();
         }
 

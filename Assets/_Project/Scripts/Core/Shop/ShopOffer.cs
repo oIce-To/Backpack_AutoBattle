@@ -19,6 +19,14 @@ namespace BackpackAutoBattle.Shop
         public int PurchasePrice { get; }
         public bool IsOnSale { get; }
         public bool IsPurchased { get; private set; }
+        public bool IsLocked { get; private set; }
+
+        public bool TryToggleLock()
+        {
+            if (IsPurchased) return false;
+            IsLocked = !IsLocked;
+            return true;
+        }
 
         public bool TryMarkPurchased()
         {
@@ -28,6 +36,7 @@ namespace BackpackAutoBattle.Shop
             }
 
             IsPurchased = true;
+            IsLocked = false;
             return true;
         }
     }
