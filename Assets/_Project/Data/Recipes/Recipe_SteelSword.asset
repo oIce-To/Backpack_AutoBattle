@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec65e5478f446869185103371cf821a, type: 3}
+  m_Name: Recipe_SteelSword
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.FusionRecipeData
+  _centerItem: {fileID: 11400000, guid: 4c6d35a5a2cf49a45ace1c0c10b87744, type: 2}
+  _ingredients:
+  - _item: {fileID: 11400000, guid: e48d25b6f51943e79a109ef232080b83, type: 2}
+    _quantity: 1
+  _resultItem: {fileID: 11400000, guid: eb151abb60254f63843a52716af70e45, type: 2}

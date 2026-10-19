@@ -70,6 +70,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
+            CapturePendingFusions();
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
             // Use exactly the same resolved snapshot shown in preparation, never the source ItemData values.
@@ -86,6 +87,7 @@ namespace BackpackAutoBattle.Prototype
         public bool ReturnToPreparation()
         {
             if (Phase != PrototypePhase.Defeat && Phase != PrototypePhase.Draw) return false;
+            ApplyPendingFusions();
             _run.Phase = PrototypePhase.Preparation;
             _battleController.EndBattle();
             RefreshCombatInterface();
@@ -169,7 +171,8 @@ namespace BackpackAutoBattle.Prototype
         public void ShowItemTooltip(Component owner, ItemData item, PointerEventData pointer)
         {
             if (!CanEditLoadout || _draggingItem != null || item == null) return;
-            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item), pointer.position, pointer.enterEventCamera);
+            _fusionHoverOwner = owner;
+            _itemTooltip.Show(owner, () => PreparationTooltip(owner, item), pointer.position, pointer.enterEventCamera);
             ShowPreparationPlacement(owner);
         }
 
@@ -180,6 +183,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void HideItemTooltip(Component owner)
         {
+            if (_fusionHoverOwner == owner) _fusionHoverOwner = null;
             if (_itemTooltip != null) _itemTooltip.Hide(owner);
             if (_draggingItem == null && _placementHoverOwner == owner) ClearPlacementOverlay();
         }

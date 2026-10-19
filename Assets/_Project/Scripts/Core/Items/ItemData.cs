@@ -28,6 +28,7 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private List<ItemPlacementEffect> _placementEffects = new();
 
         [Header("Shop")]
+        [SerializeField] private bool _excludeFromShop;
         [SerializeField, Min(0)] private int _purchasePrice = 1;
 
         [Header("Attack effect stats")]
@@ -51,6 +52,7 @@ namespace BackpackAutoBattle.Items
         public ItemRarity Rarity => _rarity;
 
         public int PurchasePrice => _purchasePrice;
+        public bool ExcludeFromShop => _excludeFromShop;
 
         public WeaponStats BaseWeaponStats => _weaponStats;
         public ItemTags Tags => _tags;

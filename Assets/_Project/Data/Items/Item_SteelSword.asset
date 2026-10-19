@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_SteelSword
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: steel_sword
+  _displayName: 강철 검
+  _description: 단단하게 벼려낸 근접 무기입니다.
+  _effectDescription:
+  _category: 0
+  _rarity: 1
+  _tags: 1
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 1.8
+    _effects:
+    - _kind: 0
+      _amount: 1
+  _battleStartStatuses: []
+  _placementEffects: []
+  _excludeFromShop: 1
+  _purchasePrice: 6
+  _weaponStats:
+    _attackDamage: 8
+    _cooldownSeconds: 1.8
+    _accuracyPercent: 95
+    _criticalChancePercent: 15
+    _criticalDamagePercent: 200
+  _displayColor: {r: 0.40, g: 0.66, b: 0.76, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}

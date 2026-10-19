@@ -185,7 +185,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(TooltipText(tooltip, "Accuracy Value").text, Is.EqualTo("90%"));
             Assert.That(TooltipText(tooltip, "Critical Chance Value").text, Is.EqualTo("10%"));
             Assert.That(TooltipText(tooltip, "Critical Damage Value").text, Is.EqualTo("200%"));
-            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Is.EqualTo(swordData.Description));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain(swordData.Description));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("훈련용 검 + 숫돌 → 강철 검"));
             Assert.That(tooltip.GetComponentsInChildren<PrototypeStatIcon>(), Has.Length.EqualTo(5));
             Assert.That(TooltipText(tooltip, "Attack Caption").text, Is.EqualTo("공격력"));
             Assert.That(TooltipText(tooltip, "Critical Damage Caption").text, Is.EqualTo("치명타 피해"));

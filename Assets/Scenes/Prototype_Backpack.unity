@@ -172,6 +172,8 @@ MonoBehaviour:
   _rerollCost: 1
   _roundIncome: 5
   _saleChance: 0.1
+  _fusionRecipes:
+  - {fileID: 11400000, guid: 246dac336711432082c03af8c32c41fe, type: 2}
 --- !u!4 &564349285
 Transform:
   m_ObjectHideFlags: 0

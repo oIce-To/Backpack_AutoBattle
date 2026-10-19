@@ -11,7 +11,8 @@ namespace BackpackAutoBattle.Prototype
         IEndDragHandler,
         IPointerEnterHandler,
         IPointerExitHandler,
-        IPointerMoveHandler
+        IPointerMoveHandler,
+        IPointerClickHandler
     {
         private BackpackPrototypeController _controller;
         private CanvasGroup _canvasGroup;
@@ -72,6 +73,11 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void OnPointerEnter(PointerEventData eventData) => _controller.ShowItemTooltip(this, StoredItem.ItemData, eventData);
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right && !eventData.dragging
+                && BackpackPrototypeController.FusionLockModifier) _controller.TryToggleFusionLock(StoredItem.InstanceId);
+        }
         public void OnPointerMove(PointerEventData eventData) => _controller.MoveItemTooltip(this, eventData);
         public void OnPointerExit(PointerEventData eventData) => _controller.HideItemTooltip(this);
         private void OnDisable() { if (_controller != null) _controller.HideItemTooltip(this); }

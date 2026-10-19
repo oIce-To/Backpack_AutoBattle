@@ -92,9 +92,10 @@ namespace BackpackAutoBattle.Prototype
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Right)
+            if (eventData.button == PointerEventData.InputButton.Right && !eventData.dragging)
             {
-                _controller.RotateItem(this);
+                if (BackpackPrototypeController.FusionLockModifier) _controller.TryToggleFusionLock(InstanceId);
+                else _controller.RotateItem(this);
             }
         }
 

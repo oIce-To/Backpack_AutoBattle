@@ -80,6 +80,12 @@ namespace BackpackAutoBattle.Editor
             }
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
+            SerializedProperty recipes = serializedController.FindProperty("_fusionRecipes");
+            if (recipes.arraySize == 0)
+            {
+                var recipe = AssetDatabase.LoadAssetAtPath<FusionRecipeData>("Assets/_Project/Data/Recipes/Recipe_SteelSword.asset");
+                if (recipe != null) { recipes.arraySize = 1; recipes.GetArrayElementAtIndex(0).objectReferenceValue = recipe; }
+            }
             if (serializedController.FindProperty("_stageData").objectReferenceValue == null)
                 serializedController.FindProperty("_stageData").objectReferenceValue = stage;
             StatusEffectData[] statuses = PrototypeStatusDataBuilder.CreateOrLoad();

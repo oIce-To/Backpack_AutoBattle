@@ -29,6 +29,7 @@ namespace BackpackAutoBattle.Prototype
         private PrototypeShopLockIcon _lockIcon;
 
         public ShopOffer Offer { get; private set; }
+        public RectTransform ShapeRect => _shapeRoot;
         public ItemData ItemData => Offer?.ItemData;
         public bool CanPurchase => Offer != null && !Offer.IsPurchased;
         public int PurchasePrice => Offer?.PurchasePrice ?? 0;

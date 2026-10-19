@@ -37,6 +37,8 @@ namespace BackpackAutoBattle.Prototype
             return paragraphs.Count == 0 ? "추가 설명 없음" : string.Join("\n\n", paragraphs);
         }
 
+        public void AddDescription(string text) => AppendEffect(text);
+
         public ItemStatChange GetStatChange(WeaponStatIcon stat)
         {
             if (!IsRuntime) return ItemStatChange.Unchanged;

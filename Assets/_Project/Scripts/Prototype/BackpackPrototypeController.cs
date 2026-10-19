@@ -357,6 +357,7 @@ namespace BackpackAutoBattle.Prototype
                 else _battleController.ShowConfigurationError(error);
                 return false;
             }
+            if (_run.Phase == PrototypePhase.Victory) ApplyPendingFusions();
             _run.Round++;
             _preparedEnemy = nextEnemy;
             _enemyConfigurationError = null;
@@ -434,7 +435,7 @@ namespace BackpackAutoBattle.Prototype
             Text instructions = CreateText(
                 _shopScreenRoot,
                 "Instructions",
-                "상점→가방/보관함: 구매  |  가방/보관함→상점: 판매  |  가방 우클릭/R: 회전",
+                "드래그: 구매/배치/판매  |  가방 우클릭/R: 회전  |  가방/보관함 Shift+우클릭: 합성 잠금",
                 16,
                 FontStyle.Normal,
                 TextAnchor.MiddleCenter);
@@ -611,7 +612,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _currentShopItems.Clear();
             List<ItemData> candidates = _itemCatalog?
-                .Where(item => item != null && item.Rarity != ItemRarity.Legendary)
+                .Where(item => item != null && !item.ExcludeFromShop && item.Rarity != ItemRarity.Legendary)
                 .ToList() ?? new List<ItemData>();
 
             RoundShopRarityWeights weights = _shopRarityTable?.GetWeights(_run.Round) ?? new RoundShopRarityWeights();
@@ -762,6 +763,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void SellDraggedItem(BackpackItemView itemView)
         {
+            _fusionLocks.Remove(itemView.InstanceId);
             string displayName = itemView.DisplayName;
             int salePrice = ShopPriceRules.HalfRoundedUp(itemView.Data.PurchasePrice);
             if (_dragSource == DragSource.Backpack)

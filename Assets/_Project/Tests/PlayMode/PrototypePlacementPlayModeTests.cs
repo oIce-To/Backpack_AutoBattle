@@ -138,6 +138,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return null;
             BackpackItemView stone = Stone(controller);
             controller.BattleController.AutoTick = false;
+            Assert.That(controller.TryToggleFusionLock(stone.InstanceId), Is.True, "Keep the whetstone for the placement-effect test across rounds.");
             controller.TryStartBattle();
             CombatWeapon weapon = controller.ActiveCombat.PlayerWeapons.Single();
             Assert.That(weapon.Stats.AttackDamage, Is.EqualTo(6f));
