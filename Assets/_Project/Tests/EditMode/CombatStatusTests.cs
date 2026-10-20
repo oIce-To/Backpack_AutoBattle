@@ -89,17 +89,17 @@ namespace BackpackAutoBattle.Tests.Combat
         }
 
         [Test]
-        public void DefinitionSOs_AreCopiedPerBattleAndCapsCanBeConfigured()
+        public void DefinitionSOs_AreCopiedPerBattleAndStacksHaveNoGameplayCap()
         {
             var data = ScriptableObject.CreateInstance<StatusEffectData>(); _temporary.Add(data);
-            Set(data, "_percentPerStack", 2.5f); Set(data, "_maximumStacks", 8);
+            Set(data, "_percentPerStack", 2.5f);
             ItemData armor = Armor();
             CombatSimulation combat = Battle(new[] { armor }, definitions: new[] { data });
             Set(data, "_percentPerStack", 10f);
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, 20);
-            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.EqualTo(8));
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.EqualTo(20));
             Assert.That(combat.GetStatusDefinition(StatusEffectKind.Haste).PercentPerStack, Is.EqualTo(2.5f));
-            Assert.That(combat.PlayerItems.Single().Cycle.IntervalSeconds, Is.EqualTo(2d / 1.2d).Within(1e-9));
+            Assert.That(combat.PlayerItems.Single().Cycle.IntervalSeconds, Is.EqualTo(2d / 1.5d).Within(1e-9));
             Assert.That(armor.Activation.CooldownSeconds, Is.EqualTo(2f));
             CombatSimulation fresh = Battle(new[] { armor }, definitions: new[] { data });
             Assert.That(fresh.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.Zero);
@@ -169,9 +169,11 @@ namespace BackpackAutoBattle.Tests.Combat
             CombatSimulation combat = Battle(new[] { Armor() });
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Freeze, int.MaxValue);
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Freeze, int.MaxValue);
-            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Freeze), Is.EqualTo(int.MaxValue));
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Freeze), Is.EqualTo(2L * int.MaxValue));
             Assert.That(combat.PlayerItems.Single().Cycle.IntervalSeconds, Is.EqualTo(40d));
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, int.MaxValue);
+            combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, int.MaxValue);
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Freeze), Is.Zero);
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, int.MaxValue);
             Assert.That(combat.PlayerItems.Single().Cycle.IntervalSeconds, Is.EqualTo(0.1d));
             Assert.Throws<ArgumentOutOfRangeException>(() => combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, -1));

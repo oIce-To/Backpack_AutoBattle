@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_PrecisionCharm
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: precision_charm
+  _displayName: 정밀의 부적
+  _description:
+  _effectDescription:
+  _category: 2
+  _rarity: 1
+  _tags: 0
+  _activation:
+    _enabled: 0
+    _cooldownSeconds: 2
+    _effects: []
+  _battleStartStatuses:
+  - _kind: 2
+    _target: 0
+    _stacks: 20
+  _placementEffects: []
+  _excludeFromShop: 0
+  _purchasePrice: 4
+  _weaponStats:
+    _attackDamage: 0
+    _cooldownSeconds: 2
+    _accuracyPercent: 90
+    _criticalChancePercent: 0
+    _criticalDamagePercent: 200
+  _displayColor: {r: 0.35, g: .68, b: .5, a: 1}
+  _canRotate: 0
+  _occupiedCells:
+  - {x: 0, y: 0}

@@ -9,8 +9,8 @@ namespace BackpackAutoBattle.Items
         [SerializeField, Min(0f)] private float _attackDamage = 5f;
         // Legacy serialized/import seed only. ItemActivationData is the authoritative definition of timing.
         [SerializeField, HideInInspector] private float _cooldownSeconds = 2f;
-        [SerializeField, Range(0f, 100f)] private float _accuracyPercent = 90f;
-        [SerializeField, Range(0f, 100f)] private float _criticalChancePercent = 10f;
+        [SerializeField, Range(30f, 100f)] private float _accuracyPercent = 90f;
+        [SerializeField, Min(0f)] private float _criticalChancePercent = 10f;
         [Tooltip("Total damage on a critical hit. 200% means twice the normal damage.")]
         [SerializeField, Min(100f)] private float _criticalDamagePercent = 200f;
 
@@ -43,8 +43,8 @@ namespace BackpackAutoBattle.Items
         {
             _attackDamage = Mathf.Max(0f, FiniteOrDefault(_attackDamage, 0f));
             _cooldownSeconds = Mathf.Max(0.1f, FiniteOrDefault(_cooldownSeconds, 2f));
-            _accuracyPercent = Mathf.Clamp(FiniteOrDefault(_accuracyPercent, 90f), 0f, 100f);
-            _criticalChancePercent = Mathf.Clamp(FiniteOrDefault(_criticalChancePercent, 0f), 0f, 100f);
+            _accuracyPercent = Mathf.Clamp(FiniteOrDefault(_accuracyPercent, 90f), 30f, 100f);
+            _criticalChancePercent = Mathf.Max(0f, FiniteOrDefault(_criticalChancePercent, 0f));
             _criticalDamagePercent = Mathf.Max(100f, FiniteOrDefault(_criticalDamagePercent, 200f));
         }
 

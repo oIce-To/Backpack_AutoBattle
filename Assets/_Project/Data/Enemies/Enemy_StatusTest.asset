@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
+  m_Name: Enemy_StatusTest
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyEncounterData
+  _encounterId: goblin_status_test
+  _enemy: {fileID: 11400000, guid: 981d24588e09bb74283211cb7267e6d0, type: 2}
+  _maximumHealth: 80
+  _items:
+  - _slotId: club
+    _item: {fileID: 11400000, guid: 0adce1fc9f447e042b814d046c2bfde5, type: 2}
+    _origin: {x: 1, y: 0}
+    _rotation: 0
+    _stats:
+      _accuracyPercent:
+        _enabled: 1
+        _value: 70
+  - _slotId: precision
+    _item: {fileID: 11400000, guid: d73c6c88c9444a2d8d45761dfddcc462, type: 2}
+    _origin: {x: 3, y: 0}
+    _rotation: 0
+  - _slotId: focus
+    _item: {fileID: 11400000, guid: 22328651421249b4961935ccfb271fe5, type: 2}
+    _origin: {x: 4, y: 0}
+    _rotation: 0
+  - _slotId: agility
+    _item: {fileID: 11400000, guid: c3440320608a42ce9a4615fc27680174, type: 2}
+    _origin: {x: 5, y: 0}
+    _rotation: 0
+  - _slotId: blindness
+    _item: {fileID: 11400000, guid: 6f8a7418ac324b57867e027aeab3bcd0, type: 2}
+    _origin: {x: 5, y: 1}
+    _rotation: 0

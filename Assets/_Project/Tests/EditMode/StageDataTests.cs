@@ -154,10 +154,10 @@ namespace BackpackAutoBattle.Tests.Stages
         [Test]
         public void ZeroOverrides_AreRealValuesAndDisabledFieldsUseTheOriginal()
         {
-            var changes = new EnemyItemStatOverrides(attackDamage: 0f, accuracyPercent: 0f, criticalChancePercent: 0f);
+            var changes = new EnemyItemStatOverrides(attackDamage: 0f, accuracyPercent: 30f, criticalChancePercent: 0f);
             CombatItemSnapshot item = Goblin.CreateCombatantSnapshot(new(null, new EnemyItemOverride("club", changes))).Loadout.Items.Single();
             Assert.That(item.BaseWeaponStats.AttackDamage, Is.Zero);
-            Assert.That(item.BaseWeaponStats.AccuracyPercent, Is.Zero);
+            Assert.That(item.BaseWeaponStats.AccuracyPercent, Is.EqualTo(30f));
             Assert.That(item.BaseWeaponStats.CriticalChancePercent, Is.Zero);
             Assert.That(item.BaseWeaponStats.CriticalDamagePercent, Is.EqualTo(200f));
             Assert.That(item.Activation.CooldownSeconds, Is.EqualTo(2f));

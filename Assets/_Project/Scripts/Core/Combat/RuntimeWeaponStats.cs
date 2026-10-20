@@ -11,6 +11,7 @@ namespace BackpackAutoBattle.Combat
         private float _accuracyPercent;
         private float _criticalChancePercent;
         private float _criticalDamagePercent;
+        private double _statusAccuracyBonus, _statusCriticalBonus;
 
         public RuntimeWeaponStats(WeaponStats baseStats, RuntimeItemCycle cycle)
         {
@@ -35,15 +36,19 @@ namespace BackpackAutoBattle.Combat
 
         public float AccuracyPercent
         {
-            get => _accuracyPercent;
-            set => _accuracyPercent = Mathf.Clamp(WeaponStats.FiniteOrDefault(value, 0f), 0f, 100f);
+            get => (float)System.Math.Clamp(_accuracyPercent + _statusAccuracyBonus, 30d, 100d);
+            set => _accuracyPercent = WeaponStats.FiniteOrDefault(value, 30f);
         }
 
         public float CriticalChancePercent
         {
-            get => _criticalChancePercent;
-            set => _criticalChancePercent = Mathf.Clamp(WeaponStats.FiniteOrDefault(value, 0f), 0f, 100f);
+            get => (float)System.Math.Clamp(_criticalChancePercent + _statusCriticalBonus, 0d, float.MaxValue);
+            set => _criticalChancePercent = Mathf.Max(0f, WeaponStats.FiniteOrDefault(value, 0f));
         }
+
+        // Replace this contribution instead of incrementing effective stats (avoids drift at caps).
+        internal void SetStatusModifiers(double accuracy, double precision)
+        { _statusAccuracyBonus = accuracy; _statusCriticalBonus = precision; }
 
         public float CriticalDamagePercent
         {

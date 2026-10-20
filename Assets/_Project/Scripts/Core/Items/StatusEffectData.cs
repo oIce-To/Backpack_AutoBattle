@@ -3,8 +3,34 @@ using UnityEngine;
 
 namespace BackpackAutoBattle.Items
 {
-    public enum StatusEffectKind { Haste, Freeze }
+    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility }
+    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion }
     public enum StatusTarget { Self, Opponent }
+
+    public static class StatusEffectRules
+    {
+        public static string DisplayName(StatusEffectKind kind) => kind switch
+        {
+            StatusEffectKind.Haste => "신속", StatusEffectKind.Freeze => "빙결", StatusEffectKind.Precision => "정밀",
+            StatusEffectKind.Focus => "집중", StatusEffectKind.Blindness => "실명", StatusEffectKind.Agility => "민첩",
+            _ => throw new ArgumentOutOfRangeException(nameof(kind))
+        };
+        public static bool IsDebuff(StatusEffectKind kind) => kind == StatusEffectKind.Freeze || kind == StatusEffectKind.Blindness;
+        public static StatusStat AffectedStat(StatusEffectKind kind) => kind switch
+        {
+            StatusEffectKind.Haste or StatusEffectKind.Freeze => StatusStat.ActivationSpeed,
+            StatusEffectKind.Precision => StatusStat.CriticalChance,
+            StatusEffectKind.Focus or StatusEffectKind.Blindness => StatusStat.Accuracy,
+            StatusEffectKind.Agility => StatusStat.Evasion,
+            _ => throw new ArgumentOutOfRangeException(nameof(kind))
+        };
+        public static StatusEffectKind? Opposite(StatusEffectKind kind) => kind switch
+        {
+            StatusEffectKind.Haste => StatusEffectKind.Freeze, StatusEffectKind.Freeze => StatusEffectKind.Haste,
+            StatusEffectKind.Focus => StatusEffectKind.Blindness, StatusEffectKind.Blindness => StatusEffectKind.Focus,
+            _ => null
+        };
+    }
 
     [CreateAssetMenu(menuName = "Backpack AutoBattle/Status Effect", fileName = "Status_")]
     public sealed class StatusEffectData : ScriptableObject
@@ -12,12 +38,9 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private StatusEffectKind _kind;
         [SerializeField] private string _displayName = "신속";
         [SerializeField, Min(0f)] private float _percentPerStack = 1f;
-        [Tooltip("0 means no stack cap. Activation speed still uses the common clock's safety limits.")]
-        [SerializeField, Min(0)] private int _maximumStacks;
         public StatusEffectKind Kind => _kind;
         public string DisplayName => _displayName;
         public float PercentPerStack => Mathf.Max(0f, WeaponStats.FiniteOrDefault(_percentPerStack, 1f));
-        public int MaximumStacks => Math.Max(0, _maximumStacks);
     }
 
     /// <summary>Used by battle-start grants and periodic item effects alike.</summary>

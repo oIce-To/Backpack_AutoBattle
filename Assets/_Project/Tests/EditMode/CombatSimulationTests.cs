@@ -35,12 +35,12 @@ namespace BackpackAutoBattle.Tests.Combat
 
         [TestCase(100f, 0f, true, false, 5d)]
         [TestCase(100f, 100f, true, true, 10d)]
-        [TestCase(0f, 100f, false, false, 0d)]
+        [TestCase(30f, 100f, false, false, 0d)]
         public void Attack_ResolvesAccuracyAndCriticalDamage(float accuracy, float criticalChance,
             bool expectedHit, bool expectedCritical, double expectedDamage)
         {
             SetField("_weaponStats", new WeaponStats(5f, 2f, accuracy, criticalChance, 200f));
-            CombatSimulation combat = CreateCombat();
+            CombatSimulation combat = CreateCombat(new SequenceRandom(.95d, .5d));
             Assert.That(combat.Advance(1d), Is.Empty);
             CombatItemEvent attack = combat.Advance(1d).Single();
             Assert.That(attack.Hit, Is.EqualTo(expectedHit));

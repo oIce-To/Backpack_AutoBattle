@@ -107,14 +107,14 @@ namespace BackpackAutoBattle.Tests.Inventory
         }
 
         [Test]
-        public void OutputMustFit_SelectsTheMaterialInItsFootprint()
+        public void OutputFootprint_DoesNotRestrictFusionOrChangeSpatialIngredientPriority()
         {
             var a = Item(Vector2Int.zero); var b = Item(Vector2Int.zero); var wide = Item(Vector2Int.zero, Vector2Int.right);
             var recipe = Recipe(a, wide, new FusionIngredient(b));
             var plans = Plan(recipe, At("a", a, 1, 1), At("left", b, 0, 1), At("right", b, 2, 1));
-            Assert.That(plans.Single().Materials[1].Id, Is.EqualTo("right"));
-            Assert.That(Plan(recipe, At("a", a, 5, 1), At("left", b, 4, 1)), Is.Empty, "Out of bounds result must not consume anything.");
-            Assert.That(Plan(recipe, At("a", a, 1, 1), At("left", b, 0, 1), At("obstacle", wide, 2, 1)), Is.Empty);
+            Assert.That(plans.Single().Materials[1].Id, Is.EqualTo("left"));
+            Assert.That(Plan(recipe, At("a", a, 5, 1), At("left", b, 4, 1)).Count, Is.EqualTo(1), "An output extending outside the bag is delivered to storage.");
+            Assert.That(Plan(recipe, At("a", a, 1, 1), At("left", b, 0, 1), At("obstacle", wide, 2, 1)).Count, Is.EqualTo(1));
         }
 
         [Test]

@@ -16,6 +16,9 @@ namespace BackpackAutoBattle.Prototype
         private IReadOnlyList<FusionPlan> _pendingFusions = Array.Empty<FusionPlan>();
         private Component _fusionHoverOwner;
         private PrototypeFusionOverlay _fusionOverlay;
+        private PrototypeFusionAnimation _fusionAnimation;
+        public bool IsFusionPresenting => _fusionAnimation != null;
+        public bool AutoTickFusionPresentation { get; set; } = true;
         public IReadOnlyList<FusionRecipeData> FusionRecipes => _fusionRecipes;
         public bool IsFusionLocked(string instanceId) => _fusionLocks.Contains(instanceId);
         public static bool FusionLockModifier => Keyboard.current != null
@@ -42,23 +45,37 @@ namespace BackpackAutoBattle.Prototype
 
         private void CapturePendingFusions() => _pendingFusions = GetReadyFusions();
 
-        private void ApplyPendingFusions()
+        private void BeginFusionPresentation()
         {
-            // Validate every consumed instance and the complete final footprint before changing any inventory.
+            // Commit inventory once, then animate independent visual copies. Interrupting a presentation
+            // only reveals the already-owned outputs; it can never repeat consumption or lose a result.
             var pending = _pendingFusions;
             if (pending.Count == 0) return;
             var consumed = new HashSet<string>(pending.SelectMany(plan => plan.Materials).Select(item => item.Id));
-            var finalGrid = new BackpackGrid(GridSize, GridSize);
+            if (consumed.Count != pending.Sum(plan => plan.Materials.Count))
+            { Debug.LogError("합성 재료가 중복되어 합성을 보류했습니다."); return; }
             foreach (var material in pending.SelectMany(plan => plan.Materials))
                 if (!_itemViews.TryGetValue(material.Id, out var view) || view.Data != material.Data
                     || view.Origin != material.Origin || view.Rotation != material.Rotation)
                 { Debug.LogError("합성 재료가 전투 시작 시점과 달라 합성을 보류했습니다."); return; }
-            foreach (var view in _itemViews.Values.Where(view => !consumed.Contains(view.InstanceId)))
-                if (!finalGrid.TryPlace(view.InstanceId, view.Shape, view.Origin, view.Rotation)) return;
+            var jobs = new List<PrototypeFusionAnimation.Job>();
             foreach (var plan in pending)
-                if (!finalGrid.TryPlace(plan.Center.Id, plan.Result.CreateShape(), plan.Center.Origin, plan.Center.Rotation))
-                { Debug.LogWarning("합성 결과를 놓을 공간이 없어 재료를 유지했습니다."); return; }
-
+            {
+                var materials = plan.Materials.Select(item =>
+                {
+                    RectTransform rect = _itemViews[item.Id].RectTransform;
+                    Vector2 position = _shopScreenRoot.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
+                    return new PrototypeFusionAnimation.Material(item.Data, item.Rotation, position);
+                }).ToArray();
+                Vector2 positionInStorage = FindFusionStoragePosition(plan.Result, plan.Center.Rotation);
+                string id = CreatePurchasedInstanceId(plan.Result);
+                var stored = new PrototypeStoredItem(id, plan.Result, positionInStorage, plan.Center.Rotation);
+                _storedItems.Add(stored); CreateStorageView(stored);
+                var storedView = _storageViews[id];
+                storedView.gameObject.SetActive(false);
+                Vector2 destination = _shopScreenRoot.InverseTransformPoint(_storageRoot.TransformPoint(positionInStorage));
+                jobs.Add(new PrototypeFusionAnimation.Job(materials, plan.Result, plan.Center.Rotation, destination, storedView));
+            }
             _pendingFusions = Array.Empty<FusionPlan>();
             _itemTooltip.HideAll(); _fusionHoverOwner = null; ClearPlacementOverlay(); _selectedItem = null;
             foreach (string id in consumed)
@@ -67,36 +84,70 @@ namespace BackpackAutoBattle.Prototype
                 _itemViews.Remove(id); _grid.Remove(id); _fusionLocks.Remove(id);
                 view.gameObject.SetActive(false); Destroy(view.gameObject);
             }
-            foreach (var plan in pending)
-            {
-                string id = CreatePurchasedInstanceId(plan.Result);
-                _grid.TryPlace(id, plan.Result.CreateShape(), plan.Center.Origin, plan.Center.Rotation);
-                var view = CreateItemView(id, plan.Result, plan.Center.Origin, plan.Center.Rotation);
-                _itemViews.Add(id, view); PositionItem(view);
-                SetStatus($"합성 완료: {plan.Result.DisplayName}");
-            }
+            _run.Phase = PrototypePhase.Fusion;
+            _fusionOverlay?.Clear();
+            _fusionAnimation = new PrototypeFusionAnimation(_shopScreenRoot, jobs);
         }
 
-        private ItemTooltipContent PreparationTooltip(Component owner, ItemData item)
+        // Uses continuous UI positions, not backpack cells. Existing storage items never move.
+        private Vector2 FindFusionStoragePosition(ItemData result, ItemRotation rotation)
         {
-            var content = ItemTooltipContent.FromItem(item);
-            var recipes = _fusionRecipes.Where(recipe => recipe != null && recipe.Contains(item)).ToArray();
-            if (recipes.Length == 0) return content;
-            foreach (var recipe in recipes)
-                content.AddDescription($"합성: {recipe.CenterItem.DisplayName} + "
-                    + string.Join(" + ", recipe.Ingredients.Select(ingredient => ingredient.Item.DisplayName + (ingredient.Quantity > 1 ? $" ×{ingredient.Quantity}" : "")))
-                    + $" → {recipe.ResultItem.DisplayName}");
-            string id = owner is BackpackItemView bag ? bag.InstanceId : (owner as PrototypeStorageItemView)?.StoredItem.InstanceId;
-            content.AddDescription(id == null ? "중심 아이템에 재료를 인접 배치하고 전투를 마치면 합성됩니다."
-                : $"합성 {(IsFusionLocked(id) ? "잠금 중" : "허용")} · Shift + 우클릭으로 전환\n중심 아이템에 재료를 인접 배치하고 전투를 마치면 합성됩니다.");
-            return content;
+            var cells = result.CreateShape().GetCells(rotation);
+            Vector2 half = new Vector2(cells.Max(cell => cell.x) + 1, cells.Max(cell => cell.y) + 1) * CellPitch * .5f;
+            Rect rect = _storageRoot.rect;
+            float left = ClampStorageAxis(rect.xMin + half.x + 8f, rect.xMin + half.x + 8f, rect.xMax - half.x - 8f);
+            float right = ClampStorageAxis(rect.xMax - half.x - 8f, rect.xMin + half.x + 8f, rect.xMax - half.x - 8f);
+            float bottom = ClampStorageAxis(rect.yMin + half.y + 8f, rect.yMin + half.y + 8f, rect.yMax - half.y - 32f);
+            float top = ClampStorageAxis(rect.yMax - half.y - 32f, rect.yMin + half.y + 8f, rect.yMax - half.y - 32f);
+            int columns = Mathf.Max(1, Mathf.CeilToInt((right - left) / 18f));
+            int rows = Mathf.Max(1, Mathf.CeilToInt((top - bottom) / 18f));
+            Vector2 best = new(left, top);
+            float leastOverlap = float.PositiveInfinity;
+            for (int y = 0; y <= rows; y++)
+                for (int x = 0; x <= columns; x++)
+                {
+                    Vector2 position = new(Mathf.Lerp(left, right, (float)x / columns), Mathf.Lerp(top, bottom, (float)y / rows));
+                    Rect candidate = new(position - half, half * 2f);
+                    float overlap = 0f;
+                    foreach (var view in _storageViews.Values)
+                    {
+                        Vector2 size = ((RectTransform)view.transform).rect.size;
+                        Rect other = new(view.StoredItem.StoragePosition - size * .5f, size);
+                        overlap += Mathf.Max(0, Mathf.Min(candidate.xMax, other.xMax) - Mathf.Max(candidate.xMin, other.xMin))
+                            * Mathf.Max(0, Mathf.Min(candidate.yMax, other.yMax) - Mathf.Max(candidate.yMin, other.yMin));
+                    }
+                    if (overlap >= leastOverlap) continue;
+                    best = position; leastOverlap = overlap;
+                    if (overlap == 0f) return best;
+                }
+            return best; // Unlimited freeform storage: use the least covered location when crowded.
         }
+
+        public void TickFusionPresentation(float deltaSeconds)
+        {
+            if (_fusionAnimation == null) return;
+            if (_fusionAnimation.Tick(deltaSeconds)) CompleteFusionPresentation();
+        }
+
+        private void CompleteFusionPresentation()
+        {
+            if (_fusionAnimation == null) return;
+            _fusionAnimation.Dispose(); _fusionAnimation = null;
+            _run.Phase = PrototypePhase.Preparation;
+            if (_shopScreenRoot != null && _battleController != null) RefreshCombatInterface();
+        }
+
+        private void OnDisable() => CompleteFusionPresentation();
 
         private void LateUpdate() => RefreshFusionVisuals();
 
         public void RefreshFusionVisuals()
         {
             if (_shopScreenRoot == null) return;
+            foreach (var view in _itemViews.Values)
+                PrototypeItemShapeVisual.SetFusionLocked(view.RectTransform, IsFusionLocked(view.InstanceId));
+            foreach (var view in _storageViews.Values)
+                PrototypeItemShapeVisual.SetFusionLocked((RectTransform)view.transform, IsFusionLocked(view.StoredItem.InstanceId));
             if (_fusionOverlay == null)
             {
                 var obj = new GameObject("Fusion Connections", typeof(RectTransform), typeof(PrototypeFusionOverlay));
@@ -104,18 +155,15 @@ namespace BackpackAutoBattle.Prototype
                 _fusionOverlay = obj.GetComponent<PrototypeFusionOverlay>();
                 Stretch(_fusionOverlay.rectTransform); _fusionOverlay.raycastTarget = false;
             }
+            if (!CanEditLoadout || _draggingItem != null) { _fusionOverlay.Clear(); return; }
             _fusionOverlay.transform.SetAsLastSibling();
             _fusionOverlay.Begin();
-            if (!CanEditLoadout || _draggingItem != null) { _fusionOverlay.End(); return; }
             var nodes = new List<(Component owner, ItemData data, string id, RectTransform rect)>();
             foreach (var view in _itemViews.Values) nodes.Add((view, view.Data, view.InstanceId, view.RectTransform));
             foreach (var view in _storageViews.Values) nodes.Add((view, view.StoredItem.ItemData, view.StoredItem.InstanceId, (RectTransform)view.transform));
             foreach (var slot in _shopSlots.Where(slot => slot.CanPurchase && slot.gameObject.activeInHierarchy))
                 nodes.Add((slot, slot.ItemData, null, slot.ShapeRect));
             Vector2 Point(RectTransform rect) => _fusionOverlay.rectTransform.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
-            foreach (var node in nodes.Where(node => node.id != null && IsFusionLocked(node.id)))
-                _fusionOverlay.AddLock(_fusionOverlay.rectTransform.InverseTransformPoint(node.rect.TransformPoint(
-                    new Vector2(node.rect.rect.xMax - 10f, node.rect.rect.yMax - 12f))));
             var hovered = nodes.Find(node => node.owner == _fusionHoverOwner);
             var plans = GetReadyFusions();
             bool ReadyPair(string first, string second) => first != null && second != null && plans.Any(plan =>
@@ -125,14 +173,15 @@ namespace BackpackAutoBattle.Prototype
                 foreach (var node in nodes)
                     if (node.owner != hovered.owner && !ReadyPair(hovered.id, node.id)
                         && _fusionRecipes.Any(recipe => IsRecipePair(recipe, hovered.data, node.data)))
-                        _fusionOverlay.AddLink(Point(hovered.rect), Point(node.rect), false);
+                        _fusionOverlay.AddLink(Point(hovered.rect), Point(node.rect), false, hovered.owner.GetInstanceID(), node.owner.GetInstanceID());
             foreach (var plan in plans)
             {
                 Vector2 center = Point(_itemViews[plan.Center.Id].RectTransform), label = Vector2.zero;
                 foreach (var item in plan.Materials.Skip(1))
                 {
                     Vector2 end = Point(_itemViews[item.Id].RectTransform);
-                    _fusionOverlay.AddLink(center, end, true); label += (center + end) * .5f;
+                    _fusionOverlay.AddLink(center, end, true, _itemViews[plan.Center.Id].GetInstanceID(), _itemViews[item.Id].GetInstanceID());
+                    label += PrototypeFusionOverlay.CurvePoint(center, end, .5f);
                 }
                 _fusionOverlay.AddLabel(label / (plan.Materials.Count - 1), plan.Result.DisplayName);
             }

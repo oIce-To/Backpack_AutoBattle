@@ -10,7 +10,7 @@ namespace BackpackAutoBattle.Editor
         {
             const string folder = "Assets/_Project/Data/StatusEffects";
             if (!AssetDatabase.IsValidFolder(folder)) AssetDatabase.CreateFolder("Assets/_Project/Data", "StatusEffects");
-            var result = new StatusEffectData[2];
+            var result = new StatusEffectData[System.Enum.GetValues(typeof(StatusEffectKind)).Length];
             for (int index = 0; index < result.Length; index++)
             {
                 string path = $"{folder}/Status_{(StatusEffectKind)index}.asset";
@@ -19,7 +19,7 @@ namespace BackpackAutoBattle.Editor
                 result[index] = ScriptableObject.CreateInstance<StatusEffectData>();
                 var data = new SerializedObject(result[index]);
                 data.FindProperty("_kind").enumValueIndex = index;
-                data.FindProperty("_displayName").stringValue = index == 0 ? "신속" : "빙결";
+                data.FindProperty("_displayName").stringValue = StatusEffectRules.DisplayName((StatusEffectKind)index);
                 data.ApplyModifiedPropertiesWithoutUndo();
                 AssetDatabase.CreateAsset(result[index], path);
             }

@@ -47,8 +47,8 @@ namespace BackpackAutoBattle.Enemies
             float cooldown = Resolve(_cooldownSeconds, activation.CooldownSeconds, 0.1f, float.MaxValue, "사용 주기");
             stats = new WeaponStats(
                 Resolve(_attackDamage, stats.AttackDamage, 0f, float.MaxValue, "공격력"), cooldown,
-                Resolve(_accuracyPercent, stats.AccuracyPercent, 0f, 100f, "명중률"),
-                Resolve(_criticalChancePercent, stats.CriticalChancePercent, 0f, 100f, "치명타 확률"),
+                Resolve(_accuracyPercent, stats.AccuracyPercent, 30f, 100f, "명중률"),
+                Resolve(_criticalChancePercent, stats.CriticalChancePercent, 0f, float.MaxValue, "치명타 확률"),
                 Resolve(_criticalDamagePercent, stats.CriticalDamagePercent, 100f, float.MaxValue, "치명타 피해"));
             activation = activation.CopyWithCooldown(cooldown);
         }

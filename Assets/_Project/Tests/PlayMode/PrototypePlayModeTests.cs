@@ -31,7 +31,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(canvas, Is.Not.Null);
             Assert.That(eventSystem, Is.Not.Null);
             Assert.That(Object.FindObjectsByType<BackpackItemView>(FindObjectsSortMode.None), Has.Length.EqualTo(3));
-            Assert.That(controller.ItemCatalog.Count, Is.EqualTo(9));
+            Assert.That(controller.ItemCatalog.Count, Is.EqualTo(13));
             Assert.That(shopSlots, Has.Length.EqualTo(4));
             Assert.That(controller.CurrentShopItems, Has.Count.EqualTo(4));
             Assert.That(controller.CurrentShopItems.All(item => item.Rarity != ItemRarity.Epic), Is.True);

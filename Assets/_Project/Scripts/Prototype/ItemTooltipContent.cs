@@ -37,8 +37,6 @@ namespace BackpackAutoBattle.Prototype
             return paragraphs.Count == 0 ? "추가 설명 없음" : string.Join("\n\n", paragraphs);
         }
 
-        public void AddDescription(string text) => AppendEffect(text);
-
         public ItemStatChange GetStatChange(WeaponStatIcon stat)
         {
             if (!IsRuntime) return ItemStatChange.Unchanged;
@@ -148,6 +146,6 @@ namespace BackpackAutoBattle.Prototype
 
         private static string DescribeStatus(StatusApplication status)
             => $"{(status.Target == StatusTarget.Self ? "자신에게" : "상대에게")} "
-                + $"{(status.Kind == StatusEffectKind.Haste ? "신속" : "빙결")} {status.Stacks}중첩을 부여합니다.";
+                + $"{StatusEffectRules.DisplayName(status.Kind)} {status.Stacks}중첩을 부여합니다.";
     }
 }

@@ -53,33 +53,14 @@ namespace BackpackAutoBattle.Inventory
                     var required = recipe.Ingredients.GroupBy(ingredient => ingredient.Item)
                         .ToDictionary(group => group.Key, group => group.Sum(ingredient => ingredient.Quantity));
                     var selected = new List<FusionItem> { center };
-                    var mandatory = new HashSet<string>();
-                    bool fits = true;
-                    foreach (var offset in recipe.ResultItem.CreateShape().GetCells(center.Rotation))
-                    {
-                        var cell = center.Origin + offset;
-                        if (!grid.IsInside(cell)) { fits = false; break; }
-                        if (grid.TryGetItemAt(cell, out string occupant) && occupant != center.Id) mandatory.Add(occupant);
-                    }
-                    if (!fits || mandatory.Any(id => !candidates.Any(candidate => candidate.Id == id))) continue;
-                    // Materials under the output footprint must be consumed. Select those first, then fill
-                    // remaining quantities in stable spatial order. This avoids factorial permutation searches.
-                    foreach (var candidate in candidates.Where(candidate => mandatory.Contains(candidate.Id)))
-                    {
-                        if (!required.TryGetValue(candidate.Data, out int remaining) || remaining == 0) { fits = false; break; }
-                        selected.Add(candidate); required[candidate.Data]--;
-                    }
-                    if (!fits) continue;
-                    foreach (var candidate in candidates.Where(candidate => !mandatory.Contains(candidate.Id)))
+                    // Outputs go to freeform storage, so their footprint never constrains the recipe.
+                    foreach (var candidate in candidates)
                         if (required.TryGetValue(candidate.Data, out int remaining) && remaining > 0)
                         { selected.Add(candidate); required[candidate.Data]--; }
                     if (required.Values.Any(remaining => remaining != 0)) continue;
                     var plan = new FusionPlan(recipe, selected);
                     plans.Add(plan);
                     foreach (var item in selected) { used.Add(item.Id); grid.Remove(item.Id); }
-                    // Reserve the output footprint; it is not a candidate for another fusion in this battle.
-                    grid.TryPlace(center.Id, recipe.ResultItem.CreateShape(), center.Origin, center.Rotation);
-
                 }
             }
             return plans;

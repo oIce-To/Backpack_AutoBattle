@@ -43,6 +43,8 @@ namespace BackpackAutoBattle.Prototype
                     : item.DisplayName));
         }
 
+        public void SetInputEnabled(bool enabled) => _startButton.interactable = enabled;
+
         private static Text Label(Transform parent, string name, string content, float y, float height, int fontSize)
         {
             Text text = BackpackPrototypeController.CreateText(parent, name, content, fontSize, FontStyle.Normal, TextAnchor.UpperLeft);

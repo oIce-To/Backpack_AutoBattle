@@ -1,6 +1,6 @@
 namespace BackpackAutoBattle.Prototype
 {
-    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed }
+    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed, Fusion }
 
     /// <summary>Run progress lives independently of both screen roots.</summary>
     public sealed class PrototypeRunState

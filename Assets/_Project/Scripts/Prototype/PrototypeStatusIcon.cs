@@ -39,7 +39,7 @@ namespace BackpackAutoBattle.Prototype
                 Feather(new(-8f, -7f), new(-2f, -2f), new(6f, 1f), new(4f, -4f), new(0f, -6f));
                 Feather(new(-8f, -7f), new(-3f, -4f), new(3f, -3f), new(1f, -8f), new(-3f, -9f));
             }
-            else
+            else if (Kind == StatusEffectKind.Freeze)
             {
                 for (int index = 0; index < 6; index++)
                 {
@@ -50,6 +50,33 @@ namespace BackpackAutoBattle.Prototype
                     Line(axis * 4.5f, axis * 6.5f + normal * 2f, 1.3f);
                     Line(axis * 4.5f, axis * 6.5f - normal * 2f, 1.3f);
                 }
+            }
+            else if (Kind == StatusEffectKind.Precision)
+            {
+                // Sharp four-point glint, distinct from the weapon-stat critical damage glyph.
+                Vector2[] points = { new(0, 9), new(2, 2), new(9, 0), new(2, -2), new(0, -9), new(-2, -2), new(-9, 0), new(-2, 2) };
+                int first = vh.currentVertCount;
+                vh.AddVert(rect.center, color, Vector2.zero);
+                foreach (var point in points) vh.AddVert(rect.center + point * scale, color, Vector2.zero);
+                for (int i = 0; i < points.Length; i++) vh.AddTriangle(first, first + i + 1, first + (i + 1) % points.Length + 1);
+            }
+            else if (Kind == StatusEffectKind.Focus || Kind == StatusEffectKind.Blindness)
+            {
+                Vector2[] eye = { new(-9, 0), new(-5, 4), new(0, 5.5f), new(5, 4), new(9, 0), new(5, -4), new(0, -5.5f), new(-5, -4) };
+                for (int i = 0; i < eye.Length; i++) Line(eye[i], eye[(i + 1) % eye.Length], 1.3f);
+                for (int i = 0; i < 16; i++)
+                {
+                    float a = Mathf.PI * i / 8f, b = Mathf.PI * (i + 1) / 8f;
+                    Line(new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * 2.2f, new Vector2(Mathf.Cos(b), Mathf.Sin(b)) * 2.2f, 1.4f);
+                }
+                if (Kind == StatusEffectKind.Blindness) Line(new(-8, 8), new(8, -8), 2.1f);
+                else { Line(new(0, 8.5f), new(0, 6.5f), 1.3f); Line(new(0, -8.5f), new(0, -6.5f), 1.3f); }
+            }
+            else if (Kind == StatusEffectKind.Agility)
+            {
+                Line(new(-3, 7), new(4, 7), 2.7f); Line(new(4, 7), new(1, 1), 3.2f);
+                Line(new(1, 1), new(7, 1), 2.7f); Line(new(7, 1), new(-3, -9), 2.8f);
+                Line(new(-9, 4), new(-5, 4), 1.4f); Line(new(-10, 0), new(-5, 0), 1.4f); Line(new(-9, -4), new(-5, -4), 1.4f);
             }
         }
     }
@@ -62,7 +89,7 @@ namespace BackpackAutoBattle.Prototype
         private Text _count;
         public CombatSide Side { get; private set; }
         public StatusEffectKind Kind { get; private set; }
-        public int Stacks => _combat.GetStatusStacks(Side, Kind);
+        public long Stacks => _combat.GetStatusStacks(Side, Kind);
         public bool IsDebuff => _combat.GetStatusDefinition(Kind).IsDebuff;
 
         public static PrototypeStatusIcon Create(Transform parent, CombatSimulation combat, CombatSide side,

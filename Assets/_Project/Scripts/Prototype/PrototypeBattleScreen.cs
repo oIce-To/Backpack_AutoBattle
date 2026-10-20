@@ -155,12 +155,13 @@ namespace BackpackAutoBattle.Prototype
                 return;
             }
             Text damage = fromPlayer ? _enemyDamage : _playerDamage;
-            damage.text = !attack.Hit ? "MISS" : attack.ArmorAbsorbed > 0d && attack.HealthDamage == 0d ? "BLOCK"
+            damage.text = !attack.Hit ? (attack.AttackOutcome == AttackOutcome.Evaded ? "DODGE" : "MISS") : attack.ArmorAbsorbed > 0d && attack.HealthDamage == 0d ? "BLOCK"
                 : $"{(attack.Critical ? "CRIT " : "")}-{attack.HealthDamage:0.#}";
             damage.color = attack.Critical ? new Color(1f, 0.80f, 0.20f) : Color.white;
             if (fromPlayer) _enemyDamageExpiry = Time.unscaledTime + 0.65f;
             else _playerDamageExpiry = Time.unscaledTime + 0.65f;
-            string outcome = !attack.Hit ? "빗나감" : $"{(attack.Critical ? "치명타" : "명중")} {attack.Damage:0.#} 피해";
+            string outcome = !attack.Hit ? (attack.AttackOutcome == AttackOutcome.Evaded ? "회피" : "명중 실패 · 회피 효과 발동")
+                : $"{(attack.Critical ? "치명타" : "명중")} {attack.Damage:0.#} 피해";
             if (attack.ArmorAbsorbed > 0d) outcome += $" (방어도 {attack.ArmorAbsorbed:0.#} 흡수 · 체력 {attack.HealthDamage:0.#})";
             AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {outcome}");
         }

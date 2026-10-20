@@ -189,7 +189,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return null;
             Assert.That(controller.ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.EqualTo(10));
             Assert.That(controller.ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Freeze), Is.Zero);
-            Assert.That(controller.GetComponentsInChildren<PrototypeStatusIcon>(true), Has.Length.EqualTo(4));
+            Assert.That(controller.GetComponentsInChildren<PrototypeStatusIcon>(true),
+                Has.Length.EqualTo(System.Enum.GetValues(typeof(StatusEffectKind)).Length * 2));
         }
 
         private static PrototypeStatusIcon Icon(BackpackPrototypeController controller, CombatSide side, StatusEffectKind kind)

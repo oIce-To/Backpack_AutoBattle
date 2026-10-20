@@ -89,6 +89,8 @@ namespace BackpackAutoBattle.Prototype
 
         private void Update()
         {
+            // A slow screen-switch frame must not skip most of the visible fusion sequence.
+            if (AutoTickFusionPresentation) TickFusionPresentation(Mathf.Min(Time.unscaledDeltaTime, .05f));
             if (CanEditLoadout && _selectedItem != null && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
             {
                 RotateItem(_selectedItem);
@@ -357,7 +359,7 @@ namespace BackpackAutoBattle.Prototype
                 else _battleController.ShowConfigurationError(error);
                 return false;
             }
-            if (_run.Phase == PrototypePhase.Victory) ApplyPendingFusions();
+            bool processFusions = _run.Phase == PrototypePhase.Victory;
             _run.Round++;
             _preparedEnemy = nextEnemy;
             _enemyConfigurationError = null;
@@ -367,6 +369,7 @@ namespace BackpackAutoBattle.Prototype
             _selectedItem = null;
             PopulateShop();
             UpdateEconomyText();
+            if (processFusions) BeginFusionPresentation();
             RefreshCombatInterface();
             SetStatus($"{_run.Round}라운드 시작. 라운드 수입 +{_roundIncome} G");
             return true;

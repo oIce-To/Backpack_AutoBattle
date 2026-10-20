@@ -16,6 +16,14 @@ namespace BackpackAutoBattle.Editor
 
             ItemDefinition[] definitions =
             {
+                new("Item_PrecisionCharm.asset", "precision_charm", "정밀의 부적", "", ItemCategory.Accessory, ItemRarity.Uncommon,
+                    4, new Color(.35f, .68f, .5f), false, new[] { Vector2Int.zero }),
+                new("Item_FocusCharm.asset", "focus_charm", "집중의 부적", "", ItemCategory.Accessory, ItemRarity.Uncommon,
+                    4, new Color(.35f, .68f, .5f), false, new[] { Vector2Int.zero }),
+                new("Item_BlindingDust.asset", "blinding_dust", "실명의 가루", "", ItemCategory.Accessory, ItemRarity.Uncommon,
+                    4, new Color(.35f, .36f, .5f), false, new[] { Vector2Int.zero }),
+                new("Item_AgilityCharm.asset", "agility_charm", "민첩의 부적", "", ItemCategory.Accessory, ItemRarity.Uncommon,
+                    4, new Color(.35f, .68f, .8f), false, new[] { Vector2Int.zero }),
                 new("Item_Whetstone.asset", "whetstone", "숫돌", "무기를 손질하는 작은 숫돌입니다.",
                     ItemCategory.Accessory, ItemRarity.Common, 2, new Color(0.52f, 0.55f, 0.58f), true,
                     new[] { Vector2Int.zero }),
@@ -187,14 +195,22 @@ namespace BackpackAutoBattle.Editor
                     : definition.ItemId == "throwing_axes" ? ItemTags.Ranged : ItemTags.Melee);
             }
             else if (definition.ItemId == "wooden_shield") ConfigureActivation(serializedItem, 2f, ItemEffectKind.GainArmor);
-            else if (definition.ItemId == "swift_charm")
+            else if (definition.ItemId is "swift_charm" or "precision_charm" or "focus_charm" or "blinding_dust" or "agility_charm")
             {
+                var grant = definition.ItemId switch
+                {
+                    "precision_charm" => (StatusEffectKind.Precision, 20, StatusTarget.Self),
+                    "focus_charm" => (StatusEffectKind.Focus, 20, StatusTarget.Self),
+                    "blinding_dust" => (StatusEffectKind.Blindness, 20, StatusTarget.Opponent),
+                    "agility_charm" => (StatusEffectKind.Agility, 30, StatusTarget.Self),
+                    _ => (StatusEffectKind.Haste, 10, StatusTarget.Self)
+                };
                 SerializedProperty statuses = serializedItem.FindProperty("_battleStartStatuses");
                 statuses.arraySize = 1;
                 SerializedProperty status = statuses.GetArrayElementAtIndex(0);
-                status.FindPropertyRelative("_kind").enumValueIndex = (int)StatusEffectKind.Haste;
-                status.FindPropertyRelative("_target").enumValueIndex = (int)StatusTarget.Self;
-                status.FindPropertyRelative("_stacks").intValue = 10;
+                status.FindPropertyRelative("_kind").enumValueIndex = (int)grant.Item1;
+                status.FindPropertyRelative("_target").enumValueIndex = (int)grant.Item3;
+                status.FindPropertyRelative("_stacks").intValue = grant.Item2;
             }
             else if (definition.ItemId == "whetstone")
             {

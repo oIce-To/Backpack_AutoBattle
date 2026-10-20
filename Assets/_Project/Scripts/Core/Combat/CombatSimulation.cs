@@ -38,12 +38,15 @@ namespace BackpackAutoBattle.Combat
         public CombatItemEvent(double time, CombatSide side, CombatItem item, ItemEffectKind kind,
             bool hit = true, bool critical = false, double damage = 0d, double armorAbsorbed = 0d,
             double healthDamage = 0d, double armorGained = 0d, StatusEffectKind statusKind = StatusEffectKind.Haste,
-            int statusStacks = 0, CombatSide targetSide = CombatSide.Player)
+            int statusStacks = 0, CombatSide targetSide = CombatSide.Player, AttackOutcome? attackOutcome = null)
         {
             Time = time; Side = side; InstanceId = item.InstanceId; DisplayName = item.DisplayName;
             Kind = kind; Hit = hit; Critical = critical; Damage = damage;
             ArmorAbsorbed = armorAbsorbed; HealthDamage = healthDamage; ArmorGained = armorGained;
             StatusKind = statusKind; StatusStacks = statusStacks; TargetSide = targetSide;
+            AttackOutcome = kind == ItemEffectKind.Attack
+                ? attackOutcome ?? (hit ? global::BackpackAutoBattle.Combat.AttackOutcome.Hit : global::BackpackAutoBattle.Combat.AttackOutcome.AccuracyMiss)
+                : global::BackpackAutoBattle.Combat.AttackOutcome.NotAttack;
         }
         public double Time { get; }
         public CombatSide Side { get; }
@@ -59,6 +62,9 @@ namespace BackpackAutoBattle.Combat
         public StatusEffectKind StatusKind { get; }
         public int StatusStacks { get; }
         public CombatSide TargetSide { get; }
+        public AttackOutcome AttackOutcome { get; }
+        public bool TriggersAvoidance => AttackOutcome == global::BackpackAutoBattle.Combat.AttackOutcome.AccuracyMiss
+            || AttackOutcome == global::BackpackAutoBattle.Combat.AttackOutcome.Evaded;
     }
 
     /// <summary>Chronological, category-independent item activations; no UI or frame-rate dependencies.</summary>
@@ -67,6 +73,10 @@ namespace BackpackAutoBattle.Combat
         private readonly Random _random;
         private readonly double _maximumDuration;
         private readonly Dictionary<(CombatSide side, string source), (float percent, ItemTargetFilter filter)> _speedModifiers = new();
+        private readonly Dictionary<CombatSide, long> _avoidanceCounts = new();
+        public event Action<CombatItemEvent> AttackAvoided;
+        public event Action<CombatDamageEvent> DamageApplied;
+        public long GetAvoidanceCount(CombatSide side) => _avoidanceCounts.TryGetValue(side, out long count) ? count : 0;
 
         public CombatSimulation(CombatantSnapshot player, CombatantSnapshot enemy, Random random = null,
             double maximumDuration = 120d, IEnumerable<StatusEffectData> statusEffects = null)
@@ -197,16 +207,51 @@ namespace BackpackAutoBattle.Combat
 
         private void ResolveAttack(CombatWeapon weapon, CombatSide side, ICollection<CombatItemEvent> events)
         {
-            bool hit = _random.NextDouble() * 100d < weapon.Stats.AccuracyPercent;
-            bool critical = hit && _random.NextDouble() * 100d < weapon.Stats.CriticalChancePercent;
+            CombatSide target = side == CombatSide.Player ? CombatSide.Enemy : CombatSide.Player;
+            AttackResolution attack = AttackResolver.Resolve(weapon.Stats.AccuracyPercent, GetEvasionPercent(target),
+                weapon.Stats.CriticalChancePercent, _random);
+            bool hit = attack.Hit, critical = attack.Critical;
             double damage = hit ? weapon.Stats.AttackDamage * (critical ? weapon.Stats.CriticalDamagePercent / 100d : 1d) : 0d;
-            bool hitsEnemy = side == CombatSide.Player;
-            DamageResolution result = DamageResolver.Resolve(damage, hitsEnemy ? EnemyArmor : PlayerArmor,
-                hitsEnemy ? EnemyHealth : PlayerHealth);
-            if (hitsEnemy) { EnemyArmor = result.ArmorRemaining; EnemyHealth = result.HealthRemaining; }
-            else { PlayerArmor = result.ArmorRemaining; PlayerHealth = result.HealthRemaining; }
-            events.Add(new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
-                damage, result.ArmorAbsorbed, result.HealthDamage));
+            DamageResolution result = hit ? DealDamage(side, target, damage, CombatDamageKind.AttackItem, weapon.InstanceId)
+                : DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
+            var itemEvent = new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
+                damage, result.ArmorAbsorbed, result.HealthDamage, targetSide: target, attackOutcome: attack.Outcome);
+            events.Add(itemEvent);
+            if (itemEvent.TriggersAvoidance)
+            {
+                _avoidanceCounts[target] = checked(GetAvoidanceCount(target) + 1);
+                AttackAvoided?.Invoke(itemEvent);
+            }
+            UpdateCombatResult();
+        }
+
+        /// <summary>Periodic status damage and reflected/other damage never roll accuracy, evasion or critical,
+        /// and never publish an AttackAvoided event. Attack-item damage must use the item activation path.</summary>
+        public DamageResolution ApplyNonAttackDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind)
+        {
+            if (kind == CombatDamageKind.AttackItem || !Enum.IsDefined(typeof(CombatDamageKind), kind))
+                throw new ArgumentOutOfRangeException(nameof(kind));
+            if (!Enum.IsDefined(typeof(CombatSide), source) || !Enum.IsDefined(typeof(CombatSide), target))
+                throw new ArgumentOutOfRangeException(nameof(target));
+            if (Result != CombatResult.Running)
+                return DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
+            var result = DealDamage(source, target, damage, kind, null);
+            UpdateCombatResult();
+            return result;
+        }
+
+        private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId)
+        {
+            DamageResolution result = DamageResolver.Resolve(damage, target == CombatSide.Player ? PlayerArmor : EnemyArmor,
+                target == CombatSide.Player ? PlayerHealth : EnemyHealth);
+            if (target == CombatSide.Player) { PlayerArmor = result.ArmorRemaining; PlayerHealth = result.HealthRemaining; }
+            else { EnemyArmor = result.ArmorRemaining; EnemyHealth = result.HealthRemaining; }
+            DamageApplied?.Invoke(new CombatDamageEvent(source, target, kind, damage, result, itemId));
+            return result;
+        }
+
+        private void UpdateCombatResult()
+        {
             if (EnemyHealth <= 0d) Result = CombatResult.Victory;
             else if (PlayerHealth <= 0d) Result = CombatResult.Defeat;
         }

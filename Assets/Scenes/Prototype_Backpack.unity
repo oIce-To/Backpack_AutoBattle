@@ -154,6 +154,10 @@ MonoBehaviour:
   _statusEffects:
   - {fileID: 11400000, guid: e8bbaad020414757be8a50d0e8d9f86b, type: 2}
   - {fileID: 11400000, guid: b142d9733f224ce5a1eb80ff2b04a1ef, type: 2}
+  - {fileID: 11400000, guid: b475c86ee6bf4f63a11dde2885d6c7b2, type: 2}
+  - {fileID: 11400000, guid: c245bc16cdb748849ca41143c3c3c77a, type: 2}
+  - {fileID: 11400000, guid: 43cbb0eb8fe1499887497ac5b90d1208, type: 2}
+  - {fileID: 11400000, guid: e92cfe2213f74d66a4c4b78a4703290a, type: 2}
   _maximumBattleSeconds: 120
   _enableDebugRoundAdvance: 1
   _itemCatalog:
@@ -166,6 +170,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 57865701bc71eee498e359294f5aeb69, type: 2}
   - {fileID: 11400000, guid: b191dd6d072b0f14daa18bea151b9bbc, type: 2}
   - {fileID: 11400000, guid: b5b4154c78d879d48ba15914b4930bee, type: 2}
+  - {fileID: 11400000, guid: d73c6c88c9444a2d8d45761dfddcc462, type: 2}
+  - {fileID: 11400000, guid: 22328651421249b4961935ccfb271fe5, type: 2}
+  - {fileID: 11400000, guid: 6f8a7418ac324b57867e027aeab3bcd0, type: 2}
+  - {fileID: 11400000, guid: c3440320608a42ce9a4615fc27680174, type: 2}
   _shopRarityTable: {fileID: 11400000, guid: 08f7d104cec8c7e4d845a744ebd2fd0e, type: 2}
   _shopSlotCount: 4
   _startingGold: 20

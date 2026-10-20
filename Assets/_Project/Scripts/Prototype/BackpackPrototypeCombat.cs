@@ -87,11 +87,11 @@ namespace BackpackAutoBattle.Prototype
         public bool ReturnToPreparation()
         {
             if (Phase != PrototypePhase.Defeat && Phase != PrototypePhase.Draw) return false;
-            ApplyPendingFusions();
             _run.Phase = PrototypePhase.Preparation;
             _battleController.EndBattle();
+            BeginFusionPresentation();
             RefreshCombatInterface();
-            SetStatus("가방을 재배치하고 재도전하세요. 라운드·골드·보관함은 유지됩니다.");
+            SetStatus("가방을 재배치하고 재도전하세요. 라운드와 골드는 유지됩니다.");
             return true;
         }
 
@@ -125,15 +125,17 @@ namespace BackpackAutoBattle.Prototype
 
         private void RefreshCombatInterface()
         {
-            if (_shopScreenRoot.gameObject.activeSelf != CanEditLoadout) _itemTooltip.HideAll();
-            _shopScreenRoot.gameObject.SetActive(CanEditLoadout);
-            _battleController.SetVisible(!CanEditLoadout);
+            bool showShop = CanEditLoadout || Phase == PrototypePhase.Fusion;
+            if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
+            _shopScreenRoot.gameObject.SetActive(showShop);
+            _battleController.SetVisible(!showShop);
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
             if (_debugNextRoundButton != null)
                 _debugNextRoundButton.interactable = CanEditLoadout && _preparedEnemy != null && _run.Round < StageRoundCount;
-            if (CanEditLoadout) RenderEncounterPreview();
+            if (showShop) RenderEncounterPreview();
+            _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null);
         }
 
         /// <summary>Explicitly reload edited SO values during preparation. Does not spend gold or advance the round.</summary>
@@ -172,7 +174,7 @@ namespace BackpackAutoBattle.Prototype
         {
             if (!CanEditLoadout || _draggingItem != null || item == null) return;
             _fusionHoverOwner = owner;
-            _itemTooltip.Show(owner, () => PreparationTooltip(owner, item), pointer.position, pointer.enterEventCamera);
+            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item), pointer.position, pointer.enterEventCamera);
             ShowPreparationPlacement(owner);
         }
 
