@@ -15,6 +15,8 @@ namespace BackpackAutoBattle.Prototype
         private readonly Image _enemyHealthFill;
         private readonly Text _playerHealthText;
         private readonly Text _enemyHealthText;
+        private readonly Text _playerEvasion;
+        private readonly Text _enemyEvasion;
         private readonly PrototypeArmorBadge _playerArmor;
         private readonly PrototypeArmorBadge _enemyArmor;
         private readonly PrototypeStatusArea _playerStatuses;
@@ -60,6 +62,8 @@ namespace BackpackAutoBattle.Prototype
             _enemyName = Label(enemyGroup, "Enemy Name", new Vector2(0f, -27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
             CharacterSpace(playerGroup, "Player Character Illustration");
             CharacterSpace(enemyGroup, "Enemy Character Illustration");
+            _playerEvasion = EvasionReadout(playerGroup, "Player", -166f);
+            _enemyEvasion = EvasionReadout(enemyGroup, "Enemy", 166f);
             _playerHealthFill = HealthBar(playerGroup, "Player Health", new Color(0.20f, 0.67f, 0.37f));
             _enemyHealthFill = HealthBar(enemyGroup, "Enemy Health", new Color(0.80f, 0.27f, 0.25f));
             _playerHealthText = Label(playerGroup, "Player Health Text", new Vector2(0f, -214f), new Vector2(280f, 28f), 18, TextAnchor.MiddleCenter);
@@ -124,6 +128,8 @@ namespace BackpackAutoBattle.Prototype
             SetHealth(_enemyHealthFill, _enemyHealthText, combat.EnemyHealth, combat.EnemyMaxHealth);
             _playerArmor.SetValue(combat.PlayerArmor);
             _enemyArmor.SetValue(combat.EnemyArmor);
+            _playerEvasion.text = $"{combat.GetEvasionPercent(CombatSide.Player):0.##}%";
+            _enemyEvasion.text = $"{combat.GetEvasionPercent(CombatSide.Enemy):0.##}%";
             _playerStatuses.Render();
             _enemyStatuses.Render();
             _playerBag.RenderCooldowns(combat.PlayerItems, combat.ElapsedSeconds);
@@ -256,6 +262,23 @@ namespace BackpackAutoBattle.Prototype
             Image frame = Image(parent, name, color);
             BackpackPrototypeController.SetRect(frame.rectTransform, Vector2.one * 0.5f, new Vector2(0f, 117f), Vector2.zero);
             return frame;
+        }
+
+        private static Text EvasionReadout(Transform parent, string side, float x)
+        {
+            var obj = new GameObject($"{side} Evasion", typeof(RectTransform));
+            obj.transform.SetParent(parent, false);
+            BackpackPrototypeController.SetRect((RectTransform)obj.transform, Vector2.one * 0.5f,
+                new Vector2(x, -119f), new Vector2(104f, 36f));
+            var glyphObject = new GameObject("Evasion Glyph", typeof(RectTransform), typeof(PrototypeStatusGlyph));
+            glyphObject.transform.SetParent(obj.transform, false);
+            PrototypeStatusGlyph glyph = glyphObject.GetComponent<PrototypeStatusGlyph>();
+            glyph.Kind = StatusEffectKind.Agility;
+            glyph.color = PrototypeStatusGlyph.ColorFor(StatusEffectKind.Agility);
+            glyph.raycastTarget = false;
+            BackpackPrototypeController.SetRect(glyph.rectTransform, Vector2.one * 0.5f,
+                new Vector2(-35f, 0f), new Vector2(30f, 30f));
+            return Label(obj.transform, "Evasion Value", new Vector2(18f, 0f), new Vector2(64f, 36f), 21, TextAnchor.MiddleLeft);
         }
 
         private static void CharacterSpace(Transform parent, string name)

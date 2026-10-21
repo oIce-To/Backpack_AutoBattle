@@ -6,11 +6,19 @@ using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Prototype
 {
-    /// <summary>White code-native glyph; the stack label belongs to the slot, not the glyph.</summary>
+    /// <summary>Code-native status glyph; the stack label belongs to the slot, not the glyph.</summary>
     [RequireComponent(typeof(CanvasRenderer))]
     public sealed class PrototypeStatusGlyph : MaskableGraphic
     {
         public StatusEffectKind Kind { get; set; }
+        public static Color ColorFor(StatusEffectKind kind) => kind switch
+        {
+            StatusEffectKind.Precision => new Color(1f, 0.85f, 0.20f),
+            StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
+            StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
+            StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
+            _ => Color.white
+        };
         public PrototypeStatusGlyph() { useLegacyMeshGeneration = false; }
         protected override void OnPopulateMesh(VertexHelper vh)
         {
@@ -74,9 +82,19 @@ namespace BackpackAutoBattle.Prototype
             }
             else if (Kind == StatusEffectKind.Agility)
             {
-                Line(new(-3, 7), new(4, 7), 2.7f); Line(new(4, 7), new(1, 1), 3.2f);
-                Line(new(1, 1), new(7, 1), 2.7f); Line(new(7, 1), new(-3, -9), 2.8f);
-                Line(new(-9, 4), new(-5, 4), 1.4f); Line(new(-10, 0), new(-5, 0), 1.4f); Line(new(-9, -4), new(-5, -4), 1.4f);
+                // Split the concave boot silhouette at the ankle into two convex polygons.
+                // This keeps its tapered shaft and rounded, right-facing toe cleanly filled.
+                void BootPart(params Vector2[] points)
+                {
+                    int first = vh.currentVertCount;
+                    foreach (Vector2 point in points) vh.AddVert(rect.center + point * scale, color, Vector2.zero);
+                    for (int i = 1; i < points.Length - 1; i++) vh.AddTriangle(first, first + i, first + i + 1);
+                }
+                BootPart(new(-1, 9), new(6, 8), new(2, 1), new(-5, -5.5f));
+                BootPart(new(-5, -5.5f), new(2, 1), new(5, 0), new(7, -2), new(8.5f, -5), new(8.5f, -7.5f), new(3.5f, -7.5f));
+                Line(new(-10, 4), new(-4.5f, 4), 1.3f);
+                Line(new(-10, 0), new(-5.5f, 0), 1.3f);
+                Line(new(-10, -4), new(-6.5f, -4), 1.3f);
             }
         }
     }
@@ -100,7 +118,7 @@ namespace BackpackAutoBattle.Prototype
             PrototypeStatusIcon icon = obj.GetComponent<PrototypeStatusIcon>();
             icon._combat = combat; icon._tooltip = tooltip; icon.Side = side; icon.Kind = kind;
             Image background = obj.GetComponent<Image>();
-            background.color = Color.clear; // Invisible hover target; only the white glyph and stack count are drawn.
+            background.color = Color.clear; // Invisible hover target; only the glyph and stack count are drawn.
             background.raycastTarget = true;
             RectTransform rect = (RectTransform)obj.transform;
             rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);
@@ -109,7 +127,7 @@ namespace BackpackAutoBattle.Prototype
             var glyphObject = new GameObject("Status Glyph", typeof(RectTransform), typeof(PrototypeStatusGlyph));
             glyphObject.transform.SetParent(obj.transform, false);
             PrototypeStatusGlyph glyph = glyphObject.GetComponent<PrototypeStatusGlyph>();
-            glyph.Kind = kind; glyph.color = Color.white; glyph.raycastTarget = false;
+            glyph.Kind = kind; glyph.color = PrototypeStatusGlyph.ColorFor(kind); glyph.raycastTarget = false;
             BackpackPrototypeController.Stretch(glyph.rectTransform, 6f);
             icon._count = BackpackPrototypeController.CreateText(obj.transform, "Status Stacks", string.Empty, 20,
                 FontStyle.Bold, TextAnchor.LowerRight);
