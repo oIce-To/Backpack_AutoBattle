@@ -172,6 +172,19 @@ namespace BackpackAutoBattle.Prototype
             AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {outcome}");
         }
 
+        public void ShowStatusDamage(PeriodicStatusTickEvent tick)
+        {
+            bool targetPlayer = tick.Target == CombatSide.Player;
+            Text damage = targetPlayer ? _playerDamage : _enemyDamage;
+            damage.text = tick.Resolution.HealthDamage == 0 && tick.Resolution.ArmorAbsorbed > 0 ? "BLOCK" : $"-{tick.Resolution.HealthDamage:0.##}";
+            damage.color = PrototypeStatusGlyph.ColorFor(tick.Kind);
+            if (targetPlayer) _playerDamageExpiry = Time.unscaledTime + 0.65f;
+            else _enemyDamageExpiry = Time.unscaledTime + 0.65f;
+            string target = targetPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+            AppendLog($"{tick.Time:0.0}s {target} · {_combat.GetStatusDefinition(tick.Kind).DisplayName} {tick.Stacks}중첩 → {tick.Damage:0.##} 피해"
+                + (tick.Resolution.ArmorAbsorbed > 0 ? $" (방어도 {tick.Resolution.ArmorAbsorbed:0.##} 흡수 · 체력 {tick.Resolution.HealthDamage:0.##})" : ""));
+        }
+
         private void AppendLog(string message)
         {
             _log.Enqueue(message);

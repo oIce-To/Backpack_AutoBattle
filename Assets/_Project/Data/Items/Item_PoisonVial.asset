@@ -16,6 +16,16 @@ MonoBehaviour:
   _displayName: "\uB9F9\uB3C5 \uC57D\uBCD1"
   _description: "\uC0C1\uB300\uB97C \uC911\uB3C5\uC2DC\uD0A4\uB294 \uB3C5\uC57D"
   _category: 4
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 3
+    _effects:
+    - _kind: 2
+      _amount: 0
+      _status:
+        _kind: 7
+        _target: 1
+        _stacks: 2
   _rarity: 2
   _purchasePrice: 6
   _displayColor: {r: 0.32, g: 0.72, b: 0.24, a: 1}

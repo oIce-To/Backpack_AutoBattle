@@ -77,7 +77,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
-            _run = new PrototypeRunState(_startingGold, _stageData?.StageId);
+            _run = new PrototypeRunState(_startingGold, _stageData?.StageId, _characterData?.CaptureStats(), _characterData != null ? _characterData.DisplayName : "플레이어");
             BuildInterface();
             RefreshEncounterPreview();
             CreateStartingItems();

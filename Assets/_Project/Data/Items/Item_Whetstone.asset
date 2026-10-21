@@ -31,3 +31,6 @@ MonoBehaviour:
       _category: 0
       _requiredTags: 1
     _attackDamageBonus: 1
+    _attackScaling:
+      _stat: 1
+      _coefficient: 0.1

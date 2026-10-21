@@ -76,6 +76,7 @@ namespace BackpackAutoBattle.Combat
         private readonly Dictionary<CombatSide, long> _avoidanceCounts = new();
         public event Action<CombatItemEvent> AttackAvoided;
         public event Action<CombatDamageEvent> DamageApplied;
+        public event Action<CombatItemEvent> ItemActivated;
         public long GetAvoidanceCount(CombatSide side) => _avoidanceCounts.TryGetValue(side, out long count) ? count : 0;
 
         public CombatSimulation(CombatantSnapshot player, CombatantSnapshot enemy, Random random = null,
@@ -167,6 +168,16 @@ namespace BackpackAutoBattle.Combat
                     if (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt) { next = item; side = CombatSide.Player; }
                 foreach (CombatItem item in EnemyItems)
                     if (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt) { next = item; side = CombatSide.Enemy; }
+                PeriodicState periodic = NextPeriodicTick();
+                // Existing item ordering wins exact ties; status ties use target side, then status kind.
+                if (periodic != null && (next == null || periodic.NextTickAt < next.Cycle.NextActivationAt))
+                {
+                    if (periodic.NextTickAt > targetTime + 1e-9d) break;
+                    ElapsedSeconds = periodic.NextTickAt;
+                    targetTime = Math.Max(targetTime, ElapsedSeconds);
+                    ResolvePeriodicTick(periodic);
+                    continue;
+                }
                 if (next == null || next.Cycle.NextActivationAt > targetTime + 1e-9d) break;
                 ElapsedSeconds = next.Cycle.NextActivationAt;
                 // Snap sub-nanosecond partition error forward, never move time backward after firing.
@@ -178,14 +189,14 @@ namespace BackpackAutoBattle.Combat
                     {
                         if (side == CombatSide.Player) PlayerArmor += effect.Amount;
                         else EnemyArmor += effect.Amount;
-                        events.Add(new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind, armorGained: effect.Amount));
+                        RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind, armorGained: effect.Amount));
                     }
                     else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
                     {
                         StatusApplication status = effect.Status;
                         CombatSide target = TargetSide(side, status.Target);
-                        ApplyStatus(target, status.Kind, status.Stacks);
-                        events.Add(new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind,
+                        ApplyStatus(target, status.Kind, status.Stacks, side);
+                        RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind,
                             statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
                     }
                     if (Result != CombatResult.Running) break;
@@ -216,7 +227,7 @@ namespace BackpackAutoBattle.Combat
                 : DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
             var itemEvent = new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
                 damage, result.ArmorAbsorbed, result.HealthDamage, targetSide: target, attackOutcome: attack.Outcome);
-            events.Add(itemEvent);
+            RecordItemEvent(events, itemEvent);
             if (itemEvent.TriggersAvoidance)
             {
                 _avoidanceCounts[target] = checked(GetAvoidanceCount(target) + 1);
@@ -249,6 +260,9 @@ namespace BackpackAutoBattle.Combat
             DamageApplied?.Invoke(new CombatDamageEvent(source, target, kind, damage, result, itemId));
             return result;
         }
+
+        private void RecordItemEvent(ICollection<CombatItemEvent> events, CombatItemEvent itemEvent)
+        { events.Add(itemEvent); ItemActivated?.Invoke(itemEvent); }
 
         private void UpdateCombatResult()
         {

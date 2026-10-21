@@ -2,6 +2,8 @@
 
 ## 이번 범위
 
+외부 능력치 연동과 화상·중독의 설정/규칙은 [외부 능력치와 화상·중독](CHARACTER_SCALING_AND_PERIODIC_DAMAGE.md)을 참고한다. 화상·중독은 실제 주기 피해까지 구현했고, 가시·흡혈은 아직 미구현이다.
+
 신속·빙결에 정밀·집중·실명·민첩을 추가했습니다. `Assets/_Project/Data/StatusEffects/Status_*.asset`의 중첩당 수치는 모두 1입니다. SO는 전투 시작 시 복사하며 전투 도중 SO를 수정해도 진행 중인 전투에는 반영하지 않습니다.
 
 | 효과 | 중첩당 효과 | 실제 수치 제한 |
@@ -31,7 +33,7 @@
 
 피해 종류는 `AttackItem`, `StatusEffect`, `Other`로 구분합니다. 공격 아이템 피해는 아이템 발동의 명중/회피/치명타 경로를 사용합니다.
 `ApplyNonAttackDamage(source, target, amount, kind)`는 상태 이상 피해와 그 외 피해에 사용하며, 명중·회피·치명타 난수를 사용하지 않습니다. 방어도/HP에 피해를 적용하지만 회피 횟수나 `AttackAvoided` 이벤트를 발생시키지 않습니다.
-이 경로에 화상·중독은 `StatusEffect`, 가시 반사는 `Other`를 사용합니다. 이번에는 이 피해 분류와 경로만 준비했으며 화상·중독·가시 자체의 효과는 아직 추가하지 않았습니다. `DamageApplied` 이벤트의 Kind와 source/target, 실제 방어도/HP 피해를 사용해 이후 흡혈·가시 등을 연결할 수 있습니다.
+이 경로에 화상·중독은 `StatusEffect`, 향후 가시 반사는 `Other`를 사용합니다. 화상·중독은 부여자의 기준 공격력에 비례하는 실제 주기 피해까지 구현했습니다. `DamageApplied` 이벤트의 Kind와 source/target, 실제 방어도/HP 피해를 사용해 이후 흡혈·가시 등을 연결할 수 있습니다.
 
 ## 게임에서 확인
 

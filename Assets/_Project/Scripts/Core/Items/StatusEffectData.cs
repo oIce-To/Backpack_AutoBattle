@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace BackpackAutoBattle.Items
 {
-    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility }
-    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion }
+    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison }
+    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage }
     public enum StatusTarget { Self, Opponent }
 
     public static class StatusEffectRules
@@ -13,15 +13,17 @@ namespace BackpackAutoBattle.Items
         {
             StatusEffectKind.Haste => "신속", StatusEffectKind.Freeze => "빙결", StatusEffectKind.Precision => "정밀",
             StatusEffectKind.Focus => "집중", StatusEffectKind.Blindness => "실명", StatusEffectKind.Agility => "민첩",
+            StatusEffectKind.Burn => "화상", StatusEffectKind.Poison => "중독",
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
-        public static bool IsDebuff(StatusEffectKind kind) => kind == StatusEffectKind.Freeze || kind == StatusEffectKind.Blindness;
+        public static bool IsDebuff(StatusEffectKind kind) => kind is StatusEffectKind.Freeze or StatusEffectKind.Blindness or StatusEffectKind.Burn or StatusEffectKind.Poison;
         public static StatusStat AffectedStat(StatusEffectKind kind) => kind switch
         {
             StatusEffectKind.Haste or StatusEffectKind.Freeze => StatusStat.ActivationSpeed,
             StatusEffectKind.Precision => StatusStat.CriticalChance,
             StatusEffectKind.Focus or StatusEffectKind.Blindness => StatusStat.Accuracy,
             StatusEffectKind.Agility => StatusStat.Evasion,
+            StatusEffectKind.Burn or StatusEffectKind.Poison => StatusStat.PeriodicDamage,
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static StatusEffectKind? Opposite(StatusEffectKind kind) => kind switch
@@ -38,9 +40,16 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private StatusEffectKind _kind;
         [SerializeField] private string _displayName = "신속";
         [SerializeField, Min(0f)] private float _percentPerStack = 1f;
+        [Header("Periodic damage only (independent of item clocks)")]
+        [SerializeField] private StatScaling _damageScaling = new();
+        [SerializeField, Min(0.01f)] private float _tickIntervalSeconds = 1f;
+        [SerializeField, Min(0)] private int _stacksLostPerTick;
         public StatusEffectKind Kind => _kind;
         public string DisplayName => _displayName;
         public float PercentPerStack => Mathf.Max(0f, WeaponStats.FiniteOrDefault(_percentPerStack, 1f));
+        public StatScaling DamageScaling => _damageScaling;
+        public float TickIntervalSeconds => Mathf.Max(0.01f, WeaponStats.FiniteOrDefault(_tickIntervalSeconds, 1));
+        public int StacksLostPerTick => Math.Max(0, _stacksLostPerTick);
     }
 
     /// <summary>Used by battle-start grants and periodic item effects alike.</summary>

@@ -32,6 +32,7 @@ namespace BackpackAutoBattle.Editor
                 shape.GetArrayElementAtIndex(1).vector2IntValue = new Vector2Int(0, 1);
                 SerializedProperty stats = item.FindProperty("_weaponStats");
                 stats.FindPropertyRelative("_attackDamage").floatValue = 5f;
+                PrototypeItemDataBuilder.ConfigureScaling(item.FindProperty("_attackScaling"), StatReference.Attack, .5f);
                 stats.FindPropertyRelative("_cooldownSeconds").floatValue = 2f;
                 stats.FindPropertyRelative("_accuracyPercent").floatValue = 100f;
                 stats.FindPropertyRelative("_criticalChancePercent").floatValue = 0f;

@@ -150,7 +150,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             Color mutedColor = muted.color;
             controller.TickCombat(0.5f);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(36d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(47.5d));
             Assert.That(club.CycleProgress, Is.Zero);
             Assert.That(upper.anchorMax.y, Is.Zero);
             Assert.That(lower.anchorMax.y, Is.Zero);

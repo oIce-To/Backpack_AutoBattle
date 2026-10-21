@@ -33,7 +33,7 @@ namespace BackpackAutoBattle.Prototype
             if (_draggingItem == null || !_dragRangeInsideGrid) { _placementOverlay?.Hide(); return; }
             BackpackItemView item = _draggingItem;
             var source = new CombatItemSnapshot(item.InstanceId, item.Data, _previewOrigin, item.Rotation,
-                item.Shape.GetCells(item.Rotation).Select(cell => cell + _previewOrigin));
+                item.Shape.GetCells(item.Rotation).Select(cell => cell + _previewOrigin), ownerStats: _run.PlayerStats);
             CombatLoadoutSnapshot current = CaptureCombatSnapshot();
             // Remove the dragged instance's OLD footprint so its previous position never acts as a ghost target.
             var targets = new CombatLoadoutSnapshot(current.Items.Where(entry => entry.InstanceId != item.InstanceId), GridSize, GridSize);

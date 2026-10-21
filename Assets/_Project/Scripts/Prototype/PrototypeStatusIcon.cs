@@ -17,6 +17,8 @@ namespace BackpackAutoBattle.Prototype
             StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
             StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
             StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
+            StatusEffectKind.Burn => new Color(1f, 0.46f, 0.15f),
+            StatusEffectKind.Poison => new Color(0.70f, 0.90f, 0.24f),
             _ => Color.white
         };
         public PrototypeStatusGlyph() { useLegacyMeshGeneration = false; }
@@ -34,7 +36,17 @@ namespace BackpackAutoBattle.Prototype
                 vh.AddTriangle(offset, offset + 1, offset + 2);
                 vh.AddTriangle(offset, offset + 2, offset + 3);
             }
-            if (Kind == StatusEffectKind.Haste)
+            if (Kind is StatusEffectKind.Burn or StatusEffectKind.Poison)
+            {
+                Vector2[] points = Kind == StatusEffectKind.Burn
+                    ? new Vector2[] { new(0, 9), new(-1, 3), new(-5, 5), new(-7, -1), new(-6, -6), new(0, -9), new(6, -6), new(7, -1), new(4, 5), new(3, 0) }
+                    : new Vector2[] { new(0, 9), new(-6, -1), new(-6, -5), new(-3, -8), new(3, -8), new(6, -5), new(6, -1) };
+                int first = vh.currentVertCount;
+                vh.AddVert(rect.center + new Vector2(0, -2) * scale, color, Vector2.zero);
+                foreach (Vector2 point in points) vh.AddVert(rect.center + point * scale, color, Vector2.zero);
+                for (int i = 0; i < points.Length; i++) vh.AddTriangle(first, first + i + 1, first + (i + 1) % points.Length + 1);
+            }
+            else if (Kind == StatusEffectKind.Haste)
             {
                 // Three overlapping feathers share a tapered root; transparent gaps separate the tips.
                 void Feather(params Vector2[] points)

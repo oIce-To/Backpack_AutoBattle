@@ -16,7 +16,7 @@ namespace BackpackAutoBattle.Prototype
     public sealed partial class BackpackPrototypeController
     {
         [Header("Combat Prototype")]
-        [SerializeField, Min(1)] private int _playerMaxHealth = 40;
+        [SerializeField] private CharacterData _characterData;
         [SerializeField] private StageData _stageData;
         [Tooltip("Optional test encounter. Leave empty for normal stage/round progression. Ignores round stat overrides.")]
         [FormerlySerializedAs("_enemyData")]
@@ -48,6 +48,7 @@ namespace BackpackAutoBattle.Prototype
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
         public bool CanEditLoadout => _run.Phase == PrototypePhase.Preparation;
+        public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
         {
@@ -55,7 +56,7 @@ namespace BackpackAutoBattle.Prototype
             foreach (BackpackItemView view in _itemViews.Values)
             {
                 if (_grid.TryGetOccupiedCells(view.InstanceId, out var occupiedCells))
-                    snapshots.Add(new CombatItemSnapshot(view.InstanceId, view.Data, view.Origin, view.Rotation, occupiedCells));
+                    snapshots.Add(new CombatItemSnapshot(view.InstanceId, view.Data, view.Origin, view.Rotation, occupiedCells, ownerStats: _run.PlayerStats));
             }
             return new CombatLoadoutSnapshot(snapshots, GridSize, GridSize);
         }
@@ -69,7 +70,7 @@ namespace BackpackAutoBattle.Prototype
                 return false;
             }
 
-            var player = new CombatantSnapshot("플레이어", _playerMaxHealth, CaptureCombatSnapshot());
+            var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack);
             CapturePendingFusions();
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
@@ -174,7 +175,7 @@ namespace BackpackAutoBattle.Prototype
         {
             if (!CanEditLoadout || _draggingItem != null || item == null) return;
             _fusionHoverOwner = owner;
-            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item), pointer.position, pointer.enterEventCamera);
+            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item, _run.PlayerStats), pointer.position, pointer.enterEventCamera);
             ShowPreparationPlacement(owner);
         }
 
@@ -199,7 +200,6 @@ namespace BackpackAutoBattle.Prototype
 
         private void OnValidate()
         {
-            _playerMaxHealth = Mathf.Max(1, _playerMaxHealth);
             _maximumBattleSeconds = float.IsNaN(_maximumBattleSeconds) || float.IsInfinity(_maximumBattleSeconds)
                 ? 120f : Mathf.Max(1f, _maximumBattleSeconds);
         }

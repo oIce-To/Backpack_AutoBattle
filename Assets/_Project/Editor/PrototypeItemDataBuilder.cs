@@ -190,11 +190,24 @@ namespace BackpackAutoBattle.Editor
                 weaponStats.FindPropertyRelative("_accuracyPercent").floatValue = stats.AccuracyPercent;
                 weaponStats.FindPropertyRelative("_criticalChancePercent").floatValue = stats.CriticalChancePercent;
                 weaponStats.FindPropertyRelative("_criticalDamagePercent").floatValue = stats.CriticalDamagePercent;
+                ConfigureScaling(serializedItem.FindProperty("_attackScaling"), StatReference.Attack, stats.AttackDamage / 10f);
                 ConfigureActivation(serializedItem, stats.CooldownSeconds, ItemEffectKind.Attack);
+                if (definition.ItemId == "fire_staff") ConfigurePeriodicStatus(serializedItem, StatusEffectKind.Burn, 2);
                 serializedItem.FindProperty("_tags").intValue = (int)(definition.ItemId == "fire_staff" ? ItemTags.Magic
                     : definition.ItemId == "throwing_axes" ? ItemTags.Ranged : ItemTags.Melee);
             }
-            else if (definition.ItemId == "wooden_shield") ConfigureActivation(serializedItem, 2f, ItemEffectKind.GainArmor);
+            else if (definition.ItemId == "wooden_shield")
+            {
+                ConfigureActivation(serializedItem, 2f, ItemEffectKind.GainArmor);
+                ConfigureScaling(serializedItem.FindProperty("_activation").FindPropertyRelative("_effects").GetArrayElementAtIndex(0)
+                    .FindPropertyRelative("_amountScaling"), StatReference.MaximumHealth, .05f);
+            }
+            else if (definition.ItemId == "poison_vial")
+            {
+                ConfigureActivation(serializedItem, 3f, ItemEffectKind.ApplyStatus);
+                serializedItem.FindProperty("_activation").FindPropertyRelative("_effects").arraySize = 0;
+                ConfigurePeriodicStatus(serializedItem, StatusEffectKind.Poison, 2);
+            }
             else if (definition.ItemId is "swift_charm" or "precision_charm" or "focus_charm" or "blinding_dust" or "agility_charm")
             {
                 var grant = definition.ItemId switch
@@ -226,6 +239,7 @@ namespace BackpackAutoBattle.Editor
                 filter.FindPropertyRelative("_category").enumValueIndex = (int)ItemCategory.Weapon;
                 filter.FindPropertyRelative("_requiredTags").intValue = (int)ItemTags.Melee;
                 effect.FindPropertyRelative("_attackDamageBonus").floatValue = 1f;
+                ConfigureScaling(effect.FindPropertyRelative("_attackScaling"), StatReference.Attack, .1f);
             }
 
             SerializedProperty occupiedCells = serializedItem.FindProperty("_occupiedCells");
@@ -249,6 +263,24 @@ namespace BackpackAutoBattle.Editor
             effects.arraySize = 1;
             effects.GetArrayElementAtIndex(0).FindPropertyRelative("_kind").enumValueIndex = (int)kind;
             effects.GetArrayElementAtIndex(0).FindPropertyRelative("_amount").floatValue = 1f;
+        }
+
+        public static void ConfigureScaling(SerializedProperty scaling, StatReference stat, float coefficient)
+        {
+            scaling.FindPropertyRelative("_stat").enumValueIndex = (int)stat;
+            scaling.FindPropertyRelative("_coefficient").floatValue = coefficient;
+        }
+
+        private static void ConfigurePeriodicStatus(SerializedObject item, StatusEffectKind kind, int stacks)
+        {
+            var effects = item.FindProperty("_activation").FindPropertyRelative("_effects");
+            int index = effects.arraySize; effects.arraySize++;
+            var effect = effects.GetArrayElementAtIndex(index);
+            effect.FindPropertyRelative("_kind").enumValueIndex = (int)ItemEffectKind.ApplyStatus;
+            var status = effect.FindPropertyRelative("_status");
+            status.FindPropertyRelative("_kind").enumValueIndex = (int)kind;
+            status.FindPropertyRelative("_target").enumValueIndex = (int)StatusTarget.Opponent;
+            status.FindPropertyRelative("_stacks").intValue = stacks;
         }
 
         private static void EnsureFolder(string parentFolder, string folderName)

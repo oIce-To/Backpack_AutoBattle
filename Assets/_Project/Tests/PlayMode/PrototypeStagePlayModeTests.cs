@@ -47,7 +47,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 "Round scaling is the enemy's baseline, not an in-battle buff.");
             PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound2BattleTooltip.png");
             controller.TickCombat(2f);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(35d), "6 attack minus the player's 1 armor must deal 5 HP damage.");
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(46.5d), "6 attack minus the player's 2.5 armor must deal 3.5 HP damage.");
             Assert.That(first.MaximumHealth, Is.EqualTo(30d));
             Assert.That(first.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
             Assert.That(controller.CurrentEnemyEncounter.MaximumHealth, Is.EqualTo(30));
@@ -70,7 +70,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(controller.GetComponentsInChildren<Transform>().Single(transform => transform.name == side + " Battle Backpack")
                     .GetComponentsInChildren<Transform>().Count(transform => transform.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(36));
             controller.TickCombat(2f);
-            Assert.That(controller.ActiveCombat.EnemyArmor, Is.EqualTo(1d));
+            Assert.That(controller.ActiveCombat.EnemyArmor, Is.EqualTo(2.5d));
             PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound5GuardBattle.png");
         }
 

@@ -28,7 +28,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             pointer.position = Screen(preparationShield.transform);
             preparationShield.OnPointerEnter(pointer);
             Assert.That(Text(controller.ItemTooltip, "Cooldown Value").text, Is.EqualTo("2.0s"));
-            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("방어도를 1"));
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("방어도를 2.5"));
             Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Has.Length.EqualTo(1));
             preparationShield.OnPointerExit(pointer);
 
@@ -51,19 +51,19 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(view.CycleProgress, Is.EqualTo(0.5f));
             controller.TickCombat(1f);
             Assert.That(view.CycleProgress, Is.Zero);
-            Assert.That(combat.PlayerArmor, Is.EqualTo(1d));
+            Assert.That(combat.PlayerArmor, Is.EqualTo(2.5d));
             Assert.That(badge.gameObject.activeSelf, Is.True);
-            Assert.That(badge.GetComponentInChildren<Text>().text, Is.EqualTo("1"));
+            Assert.That(badge.GetComponentInChildren<Text>().text, Is.EqualTo("2.5"));
             pointer.position = Screen(view.transform);
             view.OnPointerEnter(pointer);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "ShieldDefaultCycle.png");
             view.OnPointerExit(pointer);
             controller.TickCombat(2f);
             Assert.That(combat.PlayerArmor, Is.Zero);
-            Assert.That(combat.PlayerHealth, Is.EqualTo(37d));
+            Assert.That(combat.PlayerHealth, Is.EqualTo(50d));
             Assert.That(badge.gameObject.activeSelf, Is.False);
             Assert.That(controller.GetComponentsInChildren<Text>().Single(text => text.name == "Combat Log").text,
-                Does.Contain("방어도 2 흡수"));
+                Does.Contain("방어도 5 흡수"));
 
             combat.SetActivationSpeedModifier(CombatSide.Player, "qa_global", 100f);
             combat.SetActivationSpeedModifier(CombatSide.Player, "qa_melee", 100f,
@@ -79,7 +79,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("1.0초마다"));
             Assert.That(definition.Activation.CooldownSeconds, Is.EqualTo(2f));
             controller.TickCombat(0.5f);
-            Assert.That(combat.PlayerArmor, Is.EqualTo(1d));
+            Assert.That(combat.PlayerArmor, Is.EqualTo(2.5d));
             Assert.That(badge.gameObject.activeSelf, Is.True);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "ShieldCombat.png");
         }

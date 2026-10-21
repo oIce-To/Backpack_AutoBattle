@@ -24,8 +24,17 @@ MonoBehaviour:
     _effects:
     - _kind: 0
       _amount: 1
+    - _kind: 2
+      _amount: 0
+      _status:
+        _kind: 6
+        _target: 1
+        _stacks: 2
   _rarity: 3
   _purchasePrice: 8
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1.2
   _weaponStats:
     _attackDamage: 12
     _cooldownSeconds: 3.5

@@ -25,7 +25,10 @@ namespace BackpackAutoBattle.Prototype
         public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds,
             StatusEffectData[] statusEffects = null)
         {
+            UnbindSimulation();
             Simulation = new CombatSimulation(player, enemy, maximumDuration: maximumSeconds, statusEffects: statusEffects);
+            Simulation.ItemActivated += _screen.ShowAttack;
+            Simulation.StatusTicked += _screen.ShowStatusDamage;
             _screen.Begin(Simulation, round, income);
         }
 
@@ -37,7 +40,7 @@ namespace BackpackAutoBattle.Prototype
         public void TickCombat(float deltaSeconds)
         {
             if (Simulation == null || Simulation.Result != CombatResult.Running) return;
-            foreach (CombatItemEvent itemEvent in Simulation.Advance(deltaSeconds)) _screen.ShowAttack(itemEvent);
+            Simulation.Advance(deltaSeconds);
             _screen.Render(Simulation);
             if (Simulation.Result != CombatResult.Running) _finished(Simulation.Result);
         }
@@ -48,8 +51,17 @@ namespace BackpackAutoBattle.Prototype
 
         public void EndBattle()
         {
+            UnbindSimulation();
             Simulation = null;
             SetVisible(false);
         }
+
+        private void UnbindSimulation()
+        {
+            if (Simulation == null) return;
+            Simulation.ItemActivated -= _screen.ShowAttack;
+            Simulation.StatusTicked -= _screen.ShowStatusDamage;
+        }
+        private void OnDestroy() => UnbindSimulation();
     }
 }

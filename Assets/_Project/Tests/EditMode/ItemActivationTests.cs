@@ -17,7 +17,7 @@ namespace BackpackAutoBattle.Tests.Combat
         [TearDown] public void Cleanup() { foreach (ItemData item in _data) UnityEngine.Object.DestroyImmediate(item); _data.Clear(); }
 
         [Test]
-        public void WoodenShieldAsset_GainsOneArmorEveryTwoSecondsAndCopiesItsDefinition()
+        public void WoodenShieldAsset_GainsFivePercentMaxHealthEveryTwoSecondsAndCopiesItsDefinition()
         {
             ItemData shield = AssetDatabase.LoadAssetAtPath<ItemData>("Assets/_Project/Data/Items/Item_WoodenShield.asset");
             Assert.That(shield.Category, Is.EqualTo(ItemCategory.Armor));
@@ -27,10 +27,10 @@ namespace BackpackAutoBattle.Tests.Combat
             CombatSimulation combat = Battle(new[] { shield });
             Assert.That(combat.PlayerWeapons, Is.Empty);
             Assert.That(combat.Advance(1.9d), Is.Empty);
-            Assert.That(combat.Advance(0.1d).Single().ArmorGained, Is.EqualTo(1d));
-            Assert.That(combat.PlayerArmor, Is.EqualTo(1d));
+            Assert.That(combat.Advance(0.1d).Single().ArmorGained, Is.EqualTo(5d));
+            Assert.That(combat.PlayerArmor, Is.EqualTo(5d));
             Assert.That(combat.Advance(4d).Select(item => item.Time), Is.EqualTo(new[] { 4d, 6d }));
-            Assert.That(combat.PlayerArmor, Is.EqualTo(3d));
+            Assert.That(combat.PlayerArmor, Is.EqualTo(15d));
             Assert.That(combat.PlayerItems.Single().Activation, Is.Not.SameAs(shield.Activation));
             Assert.That(shield.Activation.CooldownSeconds, Is.EqualTo(2f));
         }
@@ -224,7 +224,7 @@ namespace BackpackAutoBattle.Tests.Combat
         private static CombatSimulation Battle(IEnumerable<ItemData> player, IEnumerable<ItemData> enemy = null)
         {
             CombatantSnapshot Unit(IEnumerable<ItemData> items) => new("Test", 100d, new CombatLoadoutSnapshot(items.Select((data, index) =>
-                new CombatItemSnapshot($"item_{index}", data, Vector2Int.zero, ItemRotation.None, new[] { Vector2Int.zero }))));
+                new CombatItemSnapshot($"item_{index}", data, Vector2Int.zero, ItemRotation.None, new[] { Vector2Int.zero }, ownerStats: new CharacterStatsSnapshot(100, 10)))));
             return new CombatSimulation(Unit(player), Unit(enemy ?? Array.Empty<ItemData>()), new System.Random(123));
         }
     }

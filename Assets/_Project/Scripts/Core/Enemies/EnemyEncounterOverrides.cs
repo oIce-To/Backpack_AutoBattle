@@ -71,10 +71,14 @@ namespace BackpackAutoBattle.Enemies
     {
         [SerializeField] private bool _overrideMaximumHealth;
         [SerializeField, Min(1)] private int _maximumHealth = 30;
+        [SerializeField] private EnemyStatOverride _attack = new();
         [SerializeField] private List<EnemyItemOverride> _items = new();
         public EnemyEncounterOverrides() { }
         public EnemyEncounterOverrides(int? maximumHealth, params EnemyItemOverride[] items)
         { _overrideMaximumHealth = maximumHealth.HasValue; _maximumHealth = maximumHealth ?? 30; _items = new(items); }
+        public EnemyEncounterOverrides(int? maximumHealth, float attack, params EnemyItemOverride[] items) : this(maximumHealth, items)
+        { _attack = new(attack); }
+        internal float ResolveAttack(float original) => _attack?.Resolve(original, 0, float.MaxValue, "기준 공격력") ?? original;
         internal int ResolveHealth(int original)
         {
             if (!_overrideMaximumHealth) return original;

@@ -38,6 +38,8 @@ namespace BackpackAutoBattle.Enemies
         [SerializeField] private string _encounterId = "goblin";
         [SerializeField] private EnemyData _enemy;
         [SerializeField, Min(1)] private int _maximumHealth = 30;
+        [Tooltip("Owner stat for proportional item effects and periodic damage. Item overrides remain final values.")]
+        [SerializeField, Min(0)] private float _attack = 10;
         [SerializeField] private List<EnemyItemPlacement> _items = new();
 
         public string EncounterId => _encounterId;
@@ -61,6 +63,10 @@ namespace BackpackAutoBattle.Enemies
                     throw new InvalidOperationException($"{name}: 장비 슬롯 ID가 비어 있거나 중복되었습니다.");
             Dictionary<string, EnemyItemStatOverrides> roundStats = overrides?.ValidateSlots(slotIds)
                 ?? new Dictionary<string, EnemyItemStatOverrides>(StringComparer.Ordinal);
+            float attack = overrides?.ResolveAttack(_attack) ?? _attack;
+            if (float.IsNaN(attack) || float.IsInfinity(attack) || attack < 0)
+                throw new InvalidOperationException($"{name}: 기준 공격력은 유효한 0 이상의 수치여야 합니다.");
+            var owner = new CharacterStatsSnapshot(overrides?.ResolveHealth(MaximumHealth) ?? MaximumHealth, attack);
             var grid = new BackpackGrid(BackpackWidth, BackpackHeight);
             var snapshots = new List<CombatItemSnapshot>();
             for (int index = 0; index < _items.Count; index++)
@@ -77,17 +83,17 @@ namespace BackpackAutoBattle.Enemies
                 if (!grid.TryPlace(instanceId, shape, placement.Origin, placement.Rotation))
                     throw new InvalidOperationException($"{DisplayName}: item {index + 1} overlaps or is outside its backpack.");
                 grid.TryGetOccupiedCells(instanceId, out var occupiedCells);
-                WeaponStats stats = placement.Item.BaseWeaponStats?.Copy() ?? new WeaponStats();
-                ItemActivationData activation = placement.Item.Activation?.Copy() ?? new ItemActivationData();
+                WeaponStats stats = placement.Item.ResolveWeaponStats(owner);
+                ItemActivationData activation = placement.Item.Activation?.Resolve(owner) ?? new ItemActivationData();
                 placement.Stats?.Apply(ref stats, ref activation);
                 if (roundStats.TryGetValue(placement.SlotId, out EnemyItemStatOverrides modifier))
                     modifier?.Apply(ref stats, ref activation);
                 snapshots.Add(new CombatItemSnapshot(instanceId, placement.Item, placement.Origin,
-                    placement.Rotation, occupiedCells, stats, activation));
+                    placement.Rotation, occupiedCells, stats, activation, owner));
             }
 
-            return new CombatantSnapshot(DisplayName, overrides?.ResolveHealth(MaximumHealth) ?? MaximumHealth,
-                new CombatLoadoutSnapshot(snapshots, BackpackWidth, BackpackHeight));
+            return new CombatantSnapshot(DisplayName, owner.MaximumHealth,
+                new CombatLoadoutSnapshot(snapshots, BackpackWidth, BackpackHeight), owner.Attack);
         }
 
         private void OnValidate()

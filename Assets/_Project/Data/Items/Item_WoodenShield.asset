@@ -23,6 +23,9 @@ MonoBehaviour:
     _effects:
     - _kind: 1
       _amount: 1
+      _amountScaling:
+        _stat: 2
+        _coefficient: 0.05
   _rarity: 1
   _purchasePrice: 5
   _displayColor: {r: 0.7, g: 0.43, b: 0.18, a: 1}

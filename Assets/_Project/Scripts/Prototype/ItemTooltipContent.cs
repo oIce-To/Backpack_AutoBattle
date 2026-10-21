@@ -54,23 +54,9 @@ namespace BackpackAutoBattle.Prototype
             return improved ? ItemStatChange.Improved : ItemStatChange.Reduced;
         }
 
-        public static ItemTooltipContent FromItem(ItemData item)
-        {
-            var result = new ItemTooltipContent
-            {
-                DisplayName = item.DisplayName,
-                Rarity = item.Rarity,
-                Description = item.Description,
-                EffectDescription = item.EffectDescription,
-                HasWeaponStats = item.Activation.HasEffect(ItemEffectKind.Attack),
-                HasCycle = item.Activation.HasCycle
-            };
-            result.SetStats(item.BaseWeaponStats, null);
-            result.SetActivation(item.Activation, item.Activation.CooldownSeconds);
-            result.SetBattleStart(item.BattleStartStatuses);
-            result.SetPlacement(item.PlacementEffects);
-            return result;
-        }
+        public static ItemTooltipContent FromItem(ItemData item, CharacterStatsSnapshot owner = null)
+            => FromCombat(new CombatItemSnapshot("tooltip", item, Vector2Int.zero, Inventory.ItemRotation.None,
+                item.OccupiedCells, ownerStats: owner ?? CharacterStatsSnapshot.Default), null);
 
         public static ItemTooltipContent FromCombat(CombatItemSnapshot item, CombatItem runtime)
         {

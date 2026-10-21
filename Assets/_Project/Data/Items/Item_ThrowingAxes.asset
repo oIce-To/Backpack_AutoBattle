@@ -25,6 +25,9 @@ MonoBehaviour:
       _amount: 1
   _rarity: 2
   _purchasePrice: 5
+  _attackScaling:
+    _stat: 1
+    _coefficient: 0.8
   _weaponStats:
     _attackDamage: 8
     _cooldownSeconds: 3

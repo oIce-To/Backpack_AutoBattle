@@ -60,7 +60,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             weapon.Stats.AccuracyPercent = 100f;
             weapon.Stats.CriticalChancePercent = 0f;
             controller.TickCombat(2f);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(36d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(47.5d));
             PrototypeBattleItemView enemyView = controller.GetComponentsInChildren<PrototypeBattleItemView>()
                 .Single(view => view.Side == CombatSide.Enemy);
             enemyView.OnPointerClick(pointer);
@@ -227,7 +227,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.TryStartBattle(), Is.True);
             Assert.That(controller.ActiveCombat.PlayerWeapons.Single(weapon => weapon.InstanceId == sword.InstanceId).Stats.AttackDamage,
                 Is.EqualTo(sword.Data.BaseWeaponStats.AttackDamage));
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(40d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(50d));
         }
 
         [UnityTest]
@@ -252,7 +252,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.CurrentRound, Is.EqualTo(1));
             Assert.That(controller.Gold, Is.EqualTo(goldBefore));
             Assert.That(controller.TryStartBattle(), Is.True);
-            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(40d));
+            Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(50d));
         }
 
         [UnityTest]

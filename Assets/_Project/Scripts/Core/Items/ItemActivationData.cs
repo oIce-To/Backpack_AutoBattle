@@ -15,6 +15,7 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private ItemEffectKind _kind;
         [Tooltip("Used by GainArmor. Attack uses the item's weapon stats.")]
         [SerializeField, Min(0f)] private float _amount = 1f;
+        [SerializeField] private StatScaling _amountScaling = new();
         [Tooltip("Used only by ApplyStatus.")]
         [SerializeField] private StatusApplication _status = new(StatusEffectKind.Haste, 1);
         public ItemEffectKind Kind => _kind;
@@ -22,7 +23,9 @@ namespace BackpackAutoBattle.Items
         public StatusApplication Status => _status;
         public ItemActivationEffect(ItemEffectKind kind, float amount = 1f) { _kind = kind; _amount = amount; }
         public ItemActivationEffect(StatusApplication status) { _kind = ItemEffectKind.ApplyStatus; _status = status.Copy(); }
-        public ItemActivationEffect Copy() => new(Kind, Amount) { _status = _status?.Copy() };
+        public ItemActivationEffect Copy() => new(Kind, Amount) { _status = _status?.Copy(), _amountScaling = _amountScaling?.Copy() };
+        public ItemActivationEffect Resolve(CharacterStatsSnapshot owner)
+            => new(Kind, _amountScaling?.Resolve(Amount, owner) ?? Amount) { _status = _status?.Copy() };
     }
 
     /// <summary>One shared activation clock and effect list, independent of item category.</summary>
@@ -50,6 +53,13 @@ namespace BackpackAutoBattle.Items
         {
             ItemActivationData result = Copy();
             result._cooldownSeconds = Mathf.Max(0.1f, WeaponStats.FiniteOrDefault(interval, CooldownSeconds));
+            return result;
+        }
+
+        public ItemActivationData Resolve(CharacterStatsSnapshot owner)
+        {
+            ItemActivationData result = Copy();
+            result._effects = Effects.Where(effect => effect != null).Select(effect => effect.Resolve(owner)).ToList();
             return result;
         }
     }

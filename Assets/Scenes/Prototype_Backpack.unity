@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7387d5b10ad75ee43a814955f941cdb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BackpackAutoBattle.Prototype::BackpackAutoBattle.Prototype.BackpackPrototypeController
-  _playerMaxHealth: 40
+  _characterData: {fileID: 11400000, guid: 860bc943e6d94bc19a1f4cf60d610f7c, type: 2}
   _stageData: {fileID: 11400000, guid: 11c76e0ca6ea19b4982f773cdae8e84e, type: 2}
   _debugEnemyOverride: {fileID: 0}
   _statusEffects:
@@ -158,6 +158,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c245bc16cdb748849ca41143c3c3c77a, type: 2}
   - {fileID: 11400000, guid: 43cbb0eb8fe1499887497ac5b90d1208, type: 2}
   - {fileID: 11400000, guid: e92cfe2213f74d66a4c4b78a4703290a, type: 2}
+  - {fileID: 11400000, guid: 67fd8153d5d34eb4b527d87f8badbfbc, type: 2}
+  - {fileID: 11400000, guid: 33dc35743b2147fd8ecb6431619a0c78, type: 2}
   _maximumBattleSeconds: 120
   _enableDebugRoundAdvance: 1
   _itemCatalog:

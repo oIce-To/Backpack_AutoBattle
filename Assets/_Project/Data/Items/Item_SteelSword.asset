@@ -29,6 +29,9 @@ MonoBehaviour:
   _placementEffects: []
   _excludeFromShop: 1
   _purchasePrice: 6
+  _attackScaling:
+    _stat: 1
+    _coefficient: 0.8
   _weaponStats:
     _attackDamage: 8
     _cooldownSeconds: 1.8

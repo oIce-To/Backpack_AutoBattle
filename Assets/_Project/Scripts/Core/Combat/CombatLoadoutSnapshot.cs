@@ -11,8 +11,9 @@ namespace BackpackAutoBattle.Combat
     {
         public CombatItemSnapshot(string instanceId, ItemData data, Vector2Int origin,
             ItemRotation rotation, IEnumerable<Vector2Int> occupiedCells, WeaponStats baseStats = null,
-            ItemActivationData activation = null)
+            ItemActivationData activation = null, CharacterStatsSnapshot ownerStats = null)
         {
+            ownerStats ??= CharacterStatsSnapshot.Default;
             InstanceId = instanceId;
             ItemId = data.ItemId;
             DisplayName = data.DisplayName;
@@ -22,15 +23,15 @@ namespace BackpackAutoBattle.Combat
             Category = data.Category;
             Tags = data.Tags;
             Shape = data.CreateShape();
-            PlacementEffects = Array.AsReadOnly(data.PlacementEffects.Where(effect => effect != null).Select(effect => effect.Copy()).ToArray());
-            Activation = (activation ?? data.Activation)?.Copy() ?? new ItemActivationData();
+            PlacementEffects = Array.AsReadOnly(data.PlacementEffects.Where(effect => effect != null).Select(effect => effect.Resolve(ownerStats)).ToArray());
+            Activation = activation?.Copy() ?? data.Activation?.Resolve(ownerStats) ?? new ItemActivationData();
             BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
                 .Select(status => status.Copy()).ToArray());
             DisplayColor = data.DisplayColor;
             Origin = origin;
             Rotation = rotation;
             OccupiedCells = Array.AsReadOnly(occupiedCells.ToArray());
-            BaseWeaponStats = (baseStats ?? data.BaseWeaponStats)?.Copy() ?? new WeaponStats();
+            BaseWeaponStats = baseStats?.Copy() ?? data.ResolveWeaponStats(ownerStats);
         }
 
         public string InstanceId { get; }
@@ -69,17 +70,19 @@ namespace BackpackAutoBattle.Combat
 
     public sealed class CombatantSnapshot
     {
-        public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout)
+        public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             DisplayName = displayName;
             MaximumHealth = maximumHealth;
+            Stats = new CharacterStatsSnapshot(maximumHealth, attack);
             Loadout = loadout ?? throw new ArgumentNullException(nameof(loadout));
         }
 
         public string DisplayName { get; }
         public double MaximumHealth { get; }
+        public CharacterStatsSnapshot Stats { get; }
         public CombatLoadoutSnapshot Loadout { get; }
     }
 }

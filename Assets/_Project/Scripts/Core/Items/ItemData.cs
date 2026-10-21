@@ -33,6 +33,8 @@ namespace BackpackAutoBattle.Items
 
         [Header("Attack effect stats")]
         [SerializeField] private WeaponStats _weaponStats = new();
+        [Tooltip("Fixed preserves legacy/enemy values. Attack/Maximum Health use only reference × coefficient.")]
+        [SerializeField] private StatScaling _attackScaling = new();
 
         [Header("Backpack")]
         [SerializeField] private Color _displayColor = Color.white;
@@ -55,6 +57,12 @@ namespace BackpackAutoBattle.Items
         public bool ExcludeFromShop => _excludeFromShop;
 
         public WeaponStats BaseWeaponStats => _weaponStats;
+        public WeaponStats ResolveWeaponStats(CharacterStatsSnapshot owner)
+        {
+            WeaponStats stats = _weaponStats ?? new WeaponStats();
+            return new WeaponStats(_attackScaling?.Resolve(stats.AttackDamage, owner) ?? stats.AttackDamage,
+                stats.CooldownSeconds, stats.AccuracyPercent, stats.CriticalChancePercent, stats.CriticalDamagePercent);
+        }
         public ItemTags Tags => _tags;
         public ItemActivationData Activation => _activation;
         public IReadOnlyList<StatusApplication> BattleStartStatuses => _battleStartStatuses;

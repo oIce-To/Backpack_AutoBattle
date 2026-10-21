@@ -80,6 +80,17 @@ namespace BackpackAutoBattle.Editor
             }
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
+            if (serializedController.FindProperty("_characterData").objectReferenceValue == null)
+            {
+                const string path = "Assets/_Project/Data/Character_Default.asset";
+                CharacterData character = AssetDatabase.LoadAssetAtPath<CharacterData>(path);
+                if (character == null)
+                {
+                    character = ScriptableObject.CreateInstance<CharacterData>();
+                    AssetDatabase.CreateAsset(character, path);
+                }
+                serializedController.FindProperty("_characterData").objectReferenceValue = character;
+            }
             SerializedProperty recipes = serializedController.FindProperty("_fusionRecipes");
             if (recipes.arraySize == 0)
             {

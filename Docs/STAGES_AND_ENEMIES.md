@@ -2,6 +2,8 @@
 
 ## 데이터 역할
 
+외부 능력치 연동 이후 적의 기준 Attack 및 Round → Overrides → Attack을 추가했다. 비례 효과 계산과 장비 최종 수치 덮어쓰기 순서는 [외부 능력치와 화상·중독](CHARACTER_SCALING_AND_PERIODIC_DAMAGE.md)을 참고한다.
+
 - `EnemyData` (Create > Backpack AutoBattle > Enemy Type): 몬스터 종류의 고유 ID, 이름, 설명, 일러스트.
   같은 고블린을 쓰는 모든 전투 구성이 이 SO를 공유한다. 체력이나 장비는 여기서 편집하지 않는다.
 - `EnemyEncounterData` (Enemy Encounter): 전투 구성 ID, 몬스터 종류, 기본 최대 체력, 장비 목록.
