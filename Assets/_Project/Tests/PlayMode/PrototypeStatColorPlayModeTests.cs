@@ -60,10 +60,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             shield.OnPointerEnter(Pointer(shield.transform));
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, 10);
             controller.ItemTooltip.Refresh();
-            Assert.That(Value(controller, "Cooldown Value").color, Is.EqualTo(Improved));
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TMPro.TextMeshProUGUI>().text, Does.Contain("<color=#59E680>1.82</color>초마다"));
+            Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Is.Empty);
             combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Freeze, 20);
             controller.ItemTooltip.Refresh();
-            Assert.That(Value(controller, "Cooldown Value").color, Is.EqualTo(Reduced));
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TMPro.TextMeshProUGUI>().text, Does.Contain("<color=#FF5C57>2.22</color>초마다"));
 
             // Reusing the tooltip for an untouched enemy item resets colors rather than leaking the last tint.
             PrototypeBattleItemView enemy = controller.GetComponentsInChildren<PrototypeBattleItemView>().Single(item => item.Side == CombatSide.Enemy);

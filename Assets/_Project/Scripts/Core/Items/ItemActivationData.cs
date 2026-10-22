@@ -8,24 +8,29 @@ namespace BackpackAutoBattle.Items
     [Flags]
     public enum ItemTags { None = 0, Melee = 1, Ranged = 2, Magic = 4, Summon = 8 }
     public enum ItemEffectKind { Attack, GainArmor, ApplyStatus }
+    public enum ItemEffectTrigger { Activation, OnHit }
 
     [Serializable]
     public sealed class ItemActivationEffect
     {
         [SerializeField] private ItemEffectKind _kind;
+        [Tooltip("OnHit runs once for each successful attack by this exact item, including hits fully absorbed by armor.")]
+        [SerializeField] private ItemEffectTrigger _trigger;
         [Tooltip("Used by GainArmor. Attack uses the item's weapon stats.")]
         [SerializeField, Min(0f)] private float _amount = 1f;
         [SerializeField] private StatScaling _amountScaling = new();
         [Tooltip("Used only by ApplyStatus.")]
         [SerializeField] private StatusApplication _status = new(StatusEffectKind.Haste, 1);
         public ItemEffectKind Kind => _kind;
+        public ItemEffectTrigger Trigger => _trigger;
         public float Amount => Mathf.Max(0f, WeaponStats.FiniteOrDefault(_amount, 0f));
         public StatusApplication Status => _status;
         public ItemActivationEffect(ItemEffectKind kind, float amount = 1f) { _kind = kind; _amount = amount; }
-        public ItemActivationEffect(StatusApplication status) { _kind = ItemEffectKind.ApplyStatus; _status = status.Copy(); }
-        public ItemActivationEffect Copy() => new(Kind, Amount) { _status = _status?.Copy(), _amountScaling = _amountScaling?.Copy() };
+        public ItemActivationEffect(StatusApplication status, ItemEffectTrigger trigger = ItemEffectTrigger.Activation)
+        { _kind = ItemEffectKind.ApplyStatus; _status = status.Copy(); _trigger = trigger; }
+        public ItemActivationEffect Copy() => new(Kind, Amount) { _status = _status?.Copy(), _amountScaling = _amountScaling?.Copy(), _trigger = _trigger };
         public ItemActivationEffect Resolve(CharacterStatsSnapshot owner)
-            => new(Kind, _amountScaling?.Resolve(Amount, owner) ?? Amount) { _status = _status?.Copy() };
+            => new(Kind, _amountScaling?.Resolve(Amount, owner) ?? Amount) { _status = _status?.Copy(), _trigger = _trigger };
     }
 
     /// <summary>One shared activation clock and effect list, independent of item category.</summary>

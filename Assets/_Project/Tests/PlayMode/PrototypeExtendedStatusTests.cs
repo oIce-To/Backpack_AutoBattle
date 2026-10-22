@@ -38,7 +38,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 var glyph = icon.GetComponentInChildren<PrototypeStatusGlyph>();
                 Color expectedColor = kind switch
                 {
-                    StatusEffectKind.Precision => new Color(1f, 0.85f, 0.20f),
+                    StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
                     StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
                     StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
                     _ => Color.white

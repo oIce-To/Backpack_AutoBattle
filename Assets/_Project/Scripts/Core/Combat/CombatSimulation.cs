@@ -184,21 +184,9 @@ namespace BackpackAutoBattle.Combat
                 targetTime = Math.Max(targetTime, ElapsedSeconds);
                 foreach (ItemActivationEffect effect in next.Activation.Effects)
                 {
+                    if (effect.Trigger != ItemEffectTrigger.Activation) continue;
                     if (effect.Kind == ItemEffectKind.Attack) ResolveAttack((CombatWeapon)next, side, events);
-                    else if (effect.Kind == ItemEffectKind.GainArmor)
-                    {
-                        if (side == CombatSide.Player) PlayerArmor += effect.Amount;
-                        else EnemyArmor += effect.Amount;
-                        RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind, armorGained: effect.Amount));
-                    }
-                    else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
-                    {
-                        StatusApplication status = effect.Status;
-                        CombatSide target = TargetSide(side, status.Target);
-                        ApplyStatus(target, status.Kind, status.Stacks, side);
-                        RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, next, effect.Kind,
-                            statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
-                    }
+                    else ResolveNonAttackEffect(next, side, effect, events);
                     if (Result != CombatResult.Running) break;
                 }
                 next.Cycle.CompleteActivation(ElapsedSeconds);
@@ -233,7 +221,31 @@ namespace BackpackAutoBattle.Combat
                 _avoidanceCounts[target] = checked(GetAvoidanceCount(target) + 1);
                 AttackAvoided?.Invoke(itemEvent);
             }
+            // Bind to this item's resolved hit, not an independent timer or another weapon's attack.
+            // A blocked hit still qualifies; a miss, evade, status tick or dead target does not.
+            if (hit && (target == CombatSide.Player ? PlayerHealth : EnemyHealth) > 0d && Result == CombatResult.Running)
+                foreach (ItemActivationEffect effect in weapon.Activation.Effects)
+                    if (effect.Trigger == ItemEffectTrigger.OnHit) ResolveNonAttackEffect(weapon, side, effect, events);
             UpdateCombatResult();
+        }
+
+        private void ResolveNonAttackEffect(CombatItem item, CombatSide side, ItemActivationEffect effect, ICollection<CombatItemEvent> events)
+        {
+            if (effect.Kind == ItemEffectKind.Attack) throw new InvalidOperationException("명중 연계 효과에서 공격 효과를 재귀 실행할 수 없습니다.");
+            if (effect.Kind == ItemEffectKind.GainArmor)
+            {
+                if (side == CombatSide.Player) PlayerArmor += effect.Amount;
+                else EnemyArmor += effect.Amount;
+                RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind, armorGained: effect.Amount));
+            }
+            else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
+            {
+                StatusApplication status = effect.Status;
+                CombatSide target = TargetSide(side, status.Target);
+                ApplyStatus(target, status.Kind, status.Stacks, side);
+                RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind,
+                    statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
+            }
         }
 
         /// <summary>Periodic status damage and reflected/other damage never roll accuracy, evasion or critical,

@@ -25,6 +25,7 @@ MonoBehaviour:
     - _kind: 0
       _amount: 1
     - _kind: 2
+      _trigger: 1
       _amount: 0
       _status:
         _kind: 6

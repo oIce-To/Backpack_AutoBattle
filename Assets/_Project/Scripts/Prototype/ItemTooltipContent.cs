@@ -15,6 +15,7 @@ namespace BackpackAutoBattle.Prototype
 
         private WeaponStats _baseStats;
         private float _baseCooldownSeconds;
+        private ItemCategory _category;
         public string DisplayName { get; private set; }
         public ItemRarity Rarity { get; private set; }
         public string Description { get; private set; }
@@ -64,6 +65,7 @@ namespace BackpackAutoBattle.Prototype
             {
                 DisplayName = item.DisplayName,
                 Rarity = item.Rarity,
+                _category = item.Category,
                 Description = item.Description,
                 EffectDescription = item.EffectDescription,
                 HasWeaponStats = item.Activation.HasEffect(ItemEffectKind.Attack),
@@ -71,7 +73,7 @@ namespace BackpackAutoBattle.Prototype
                 IsRuntime = runtime != null
             };
             result.SetStats(item.BaseWeaponStats, (runtime as CombatWeapon)?.Stats);
-            result.SetActivation(item.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds));
+            result.SetActivation(item.Activation, runtime?.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds));
             result.SetBattleStart(item.BattleStartStatuses);
             result.SetPlacement(item.PlacementEffects);
             return result;
@@ -86,17 +88,34 @@ namespace BackpackAutoBattle.Prototype
             CriticalDamagePercent = runtime?.CriticalDamagePercent ?? baseStats.CriticalDamagePercent;
         }
 
-        private void SetActivation(ItemActivationData activation, float interval)
+        private void SetActivation(ItemActivationData baseline, ItemActivationData runtime, float interval)
         {
-            _baseCooldownSeconds = activation.CooldownSeconds;
+            _baseCooldownSeconds = baseline.CooldownSeconds;
             CooldownSeconds = interval;
-            string automatic = string.Join("\n", activation.Effects.Where(effect => effect != null && activation.HasCycle
-                && effect.Kind == ItemEffectKind.GainArmor).Select(effect => $"{interval:0.0#}초마다 방어도를 {effect.Amount:0.#} 얻습니다."));
-            if (!string.IsNullOrEmpty(automatic))
-                EffectDescription = string.IsNullOrWhiteSpace(EffectDescription) ? automatic : automatic + "\n" + EffectDescription;
-            foreach (ItemActivationEffect effect in activation.Effects.Where(effect => effect != null && activation.HasCycle
-                && effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null))
-                AppendEffect($"{interval:0.0#}초마다 {DescribeStatus(effect.Status)}");
+            ItemActivationData actual = runtime ?? baseline;
+            string period = ColorNumber($"{interval:0.0#}", interval, baseline.CooldownSeconds, lowerIsBetter: true);
+            for (int index = 0; actual.HasCycle && index < actual.Effects.Count; index++)
+            {
+                ItemActivationEffect effect = actual.Effects[index];
+                if (effect == null || effect.Kind == ItemEffectKind.Attack) continue;
+                ItemActivationEffect original = index < baseline.Effects.Count ? baseline.Effects[index] : effect;
+                if (original == null || original.Kind != effect.Kind || original.Trigger != effect.Trigger) original = effect;
+                string subject = _category == ItemCategory.Weapon ? "무기" : _category == ItemCategory.Pet ? "소환수" : "아이템";
+                string trigger = effect.Trigger == ItemEffectTrigger.OnHit
+                    ? $"해당 {subject}가 적에게 명중할 때마다 " : $"{period}초마다 ";
+                if (effect.Kind == ItemEffectKind.GainArmor)
+                    AppendEffect(trigger + $"방어도를 {ColorNumber($"{effect.Amount:0.#}", effect.Amount, original.Amount)} 얻습니다.");
+                else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
+                    AppendEffect(trigger + DescribeStatus(effect.Status,
+                        ColorNumber(effect.Status.Stacks.ToString(), effect.Status.Stacks, original.Status?.Stacks ?? effect.Status.Stacks)));
+            }
+        }
+
+        private string ColorNumber(string text, float actual, float original, bool lowerIsBetter = false)
+        {
+            if (!IsRuntime || Mathf.Approximately(actual, original)) return text;
+            bool improved = lowerIsBetter ? actual < original : actual > original;
+            return $"<color=#{(improved ? "59E680" : "FF5C57")}>{text}</color>";
         }
 
         private void SetBattleStart(System.Collections.Generic.IEnumerable<StatusApplication> statuses)
@@ -130,8 +149,8 @@ namespace BackpackAutoBattle.Prototype
             return string.Join(" ", tags);
         }
 
-        private static string DescribeStatus(StatusApplication status)
+        private static string DescribeStatus(StatusApplication status, string stacks = null)
             => $"{(status.Target == StatusTarget.Self ? "자신에게" : "상대에게")} "
-                + $"{StatusEffectRules.DisplayName(status.Kind)} {status.Stacks}중첩을 부여합니다.";
+                + $"{StatusEffectRules.DisplayName(status.Kind)} {stacks ?? status.Stacks.ToString()}중첩을 부여합니다.";
     }
 }

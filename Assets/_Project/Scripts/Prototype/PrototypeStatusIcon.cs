@@ -1,5 +1,6 @@
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,12 +14,12 @@ namespace BackpackAutoBattle.Prototype
         public StatusEffectKind Kind { get; set; }
         public static Color ColorFor(StatusEffectKind kind) => kind switch
         {
-            StatusEffectKind.Precision => new Color(1f, 0.85f, 0.20f),
+            StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
             StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
             StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
             StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
-            StatusEffectKind.Burn => new Color(1f, 0.46f, 0.15f),
-            StatusEffectKind.Poison => new Color(0.70f, 0.90f, 0.24f),
+            StatusEffectKind.Burn => new Color(1f, 0.25f, 0.20f),
+            StatusEffectKind.Poison => new Color(0.71f, 0.53f, 0.96f),
             _ => Color.white
         };
         public PrototypeStatusGlyph() { useLegacyMeshGeneration = false; }
@@ -36,15 +37,76 @@ namespace BackpackAutoBattle.Prototype
                 vh.AddTriangle(offset, offset + 1, offset + 2);
                 vh.AddTriangle(offset, offset + 2, offset + 3);
             }
-            if (Kind is StatusEffectKind.Burn or StatusEffectKind.Poison)
+            Vector2 Bezier(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
             {
-                Vector2[] points = Kind == StatusEffectKind.Burn
-                    ? new Vector2[] { new(0, 9), new(-1, 3), new(-5, 5), new(-7, -1), new(-6, -6), new(0, -9), new(6, -6), new(7, -1), new(4, 5), new(3, 0) }
-                    : new Vector2[] { new(0, 9), new(-6, -1), new(-6, -5), new(-3, -8), new(3, -8), new(6, -5), new(6, -1) };
-                int first = vh.currentVertCount;
-                vh.AddVert(rect.center + new Vector2(0, -2) * scale, color, Vector2.zero);
-                foreach (Vector2 point in points) vh.AddVert(rect.center + point * scale, color, Vector2.zero);
-                for (int i = 0; i < points.Length; i++) vh.AddTriangle(first, first + i + 1, first + (i + 1) % points.Length + 1);
+                float u = 1 - t;
+                return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
+            }
+            void Curve(Vector2 a, Vector2 b, Vector2 c, Vector2 d, List<Vector2> outline = null)
+            {
+                Vector2 previous = a;
+                for (int i = 1; i <= 12; i++)
+                {
+                    Vector2 point = Bezier(a, b, c, d, i / 12f);
+                    if (outline != null) outline.Add(point); else Line(previous, point, 1.7f);
+                    previous = point;
+                }
+            }
+            if (Kind == StatusEffectKind.Burn)
+            {
+                // Same Lucide flame boundary and 0.83 horizontal scale as the approved preview.
+                // The preview uses this single curled tip, not the previous hand-drawn three-tip approximation.
+                // Source/license: Docs/THIRD_PARTY_NOTICES.md (Lucide, ISC).
+                Vector2 FlamePoint(Vector2 p) => new((p.x - 12) * .83f, 12.5f - p.y);
+                var points = new List<Vector2> { FlamePoint(new(12, 3)) };
+                void SourceCurve(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+                    => Curve(FlamePoint(a), FlamePoint(b), FlamePoint(c), FlamePoint(d), points);
+                void Quadratic(Vector2 a, Vector2 control, Vector2 b)
+                    => SourceCurve(a, a + (control - a) * (2f / 3), b + (control - b) * (2f / 3), b);
+                void Arc(Vector2 center, float radius, float start, float sweep, int steps)
+                {
+                    for (int i = 1; i <= steps; i++)
+                    {
+                        float angle = start + sweep * i / steps;
+                        points.Add(FlamePoint(center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius));
+                    }
+                }
+                Quadratic(new(12, 3), new(13, 7), new(16, 9.5f));
+                Quadratic(new(16, 9.5f), new(19, 12), new(19, 15));
+                Arc(new(12, 15), 7, 0, Mathf.PI, 24);
+                Arc(new(10, 15), 5, Mathf.PI, Mathf.Atan2(3, 4), 12);
+                Arc(new(8.5f, 12), 2.5f, Mathf.PI, -Mathf.PI, 16);
+                SourceCurve(new(11, 12), new(11, 10), new(9.5f, 9), new(9.5f, 7));
+                Quadratic(new(9.5f, 7), new(9.5f, 5), new(12, 3));
+                points.RemoveAt(points.Count - 1); // Closing point is already the first vertex.
+                FillPolygon(vh, points, rect.center, scale, color);
+            }
+            else if (Kind == StatusEffectKind.Poison)
+            {
+                // Rounded skull outline with eyes, nose and three teeth. All holes stay transparent.
+                // Cheeks taper directly into the narrow jaw, without outward lower-face lobes.
+                Curve(new(-4, -6), new(-4, -4.2f), new(-7, -5), new(-7, -3));
+                Curve(new(-7, -3), new(-9, -2), new(-9, 1), new(-7.5f, 3));
+                Curve(new(-7.5f, 3), new(-6.5f, 7), new(-3.5f, 9), new(0, 9));
+                Curve(new(0, 9), new(3.5f, 9), new(6.5f, 7), new(7.5f, 3));
+                Curve(new(7.5f, 3), new(9, 1), new(9, -2), new(7, -3));
+                Curve(new(7, -3), new(7, -5), new(4, -4.2f), new(4, -6));
+                Line(new(-4, -6), new(-4, -8.5f)); Line(new(-4, -8.5f), new(4, -8.5f)); Line(new(4, -8.5f), new(4, -6));
+                Line(new(-1.4f, -6.5f), new(-1.4f, -8.5f), 1.2f); Line(new(1.4f, -6.5f), new(1.4f, -8.5f), 1.2f);
+                for (int eye = -1; eye <= 1; eye += 2)
+                {
+                    int first = vh.currentVertCount;
+                    Vector2 center = new(eye * 3, 1);
+                    vh.AddVert(rect.center + center * scale, color, Vector2.zero);
+                    for (int i = 0; i < 20; i++)
+                    {
+                        float angle = i * Mathf.PI / 10;
+                        vh.AddVert(rect.center + (center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 1.6f) * scale, color, Vector2.zero);
+                    }
+                    for (int i = 0; i < 20; i++) vh.AddTriangle(first, first + i + 1, first + (i + 1) % 20 + 1);
+                }
+                Line(new(0, -2.5f), new(-.8f, -4), 1.1f); Line(new(-.8f, -4), new(.8f, -4), 1.1f);
+                Line(new(.8f, -4), new(0, -2.5f), 1.1f);
             }
             else if (Kind == StatusEffectKind.Haste)
             {
@@ -107,6 +169,38 @@ namespace BackpackAutoBattle.Prototype
                 Line(new(-10, 4), new(-4.5f, 4), 1.3f);
                 Line(new(-10, 0), new(-5.5f, 0), 1.3f);
                 Line(new(-10, -4), new(-6.5f, -4), 1.3f);
+            }
+        }
+
+        private static void FillPolygon(VertexHelper vh, List<Vector2> points, Vector2 center, float scale, Color tint)
+        {
+            // Ear clipping preserves the curved flame's inward notches instead of filling them with a triangle fan.
+            float Cross(Vector2 a, Vector2 b, Vector2 c) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+            float area = 0;
+            for (int i = 0; i < points.Count; i++)
+                area += points[i].x * points[(i + 1) % points.Count].y - points[(i + 1) % points.Count].x * points[i].y;
+            if (area < 0) points.Reverse();
+            int first = vh.currentVertCount;
+            var remaining = new List<int>();
+            for (int i = 0; i < points.Count; i++)
+            { vh.AddVert(center + points[i] * scale, tint, Vector2.zero); remaining.Add(i); }
+            while (remaining.Count > 2)
+            {
+                bool clipped = false;
+                for (int i = 0; i < remaining.Count; i++)
+                {
+                    int a = remaining[(i + remaining.Count - 1) % remaining.Count], b = remaining[i], c = remaining[(i + 1) % remaining.Count];
+                    if (Cross(points[a], points[b], points[c]) <= 1e-6f) continue;
+                    bool contains = false;
+                    foreach (int p in remaining)
+                        if (p != a && p != b && p != c && Cross(points[a], points[b], points[p]) >= -1e-6f
+                            && Cross(points[b], points[c], points[p]) >= -1e-6f && Cross(points[c], points[a], points[p]) >= -1e-6f)
+                        { contains = true; break; }
+                    if (contains) continue;
+                    vh.AddTriangle(first + a, first + b, first + c);
+                    remaining.RemoveAt(i); clipped = true; break;
+                }
+                if (!clipped) break;
             }
         }
     }

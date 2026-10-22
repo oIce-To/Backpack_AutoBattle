@@ -277,6 +277,7 @@ namespace BackpackAutoBattle.Editor
             int index = effects.arraySize; effects.arraySize++;
             var effect = effects.GetArrayElementAtIndex(index);
             effect.FindPropertyRelative("_kind").enumValueIndex = (int)ItemEffectKind.ApplyStatus;
+            effect.FindPropertyRelative("_trigger").enumValueIndex = (int)(kind == StatusEffectKind.Burn ? ItemEffectTrigger.OnHit : ItemEffectTrigger.Activation);
             var status = effect.FindPropertyRelative("_status");
             status.FindPropertyRelative("_kind").enumValueIndex = (int)kind;
             status.FindPropertyRelative("_target").enumValueIndex = (int)StatusTarget.Opponent;

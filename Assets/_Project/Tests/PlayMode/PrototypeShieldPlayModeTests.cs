@@ -27,9 +27,10 @@ namespace BackpackAutoBattle.Tests.Prototype
                 .Single(view => view.Data == definition);
             pointer.position = Screen(preparationShield.transform);
             preparationShield.OnPointerEnter(pointer);
-            Assert.That(Text(controller.ItemTooltip, "Cooldown Value").text, Is.EqualTo("2.0s"));
+            Assert.That(controller.ItemTooltip.GetComponentsInChildren<Text>(true).Single(t => t.name == "Tooltip Context").gameObject.activeSelf, Is.False);
             Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("방어도를 2.5"));
-            Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Has.Length.EqualTo(1));
+            Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Is.Empty);
+            Assert.That(controller.ItemTooltip.RectTransform.sizeDelta.y, Is.LessThan(200));
             preparationShield.OnPointerExit(pointer);
 
             controller.BattleController.AutoTick = false;
@@ -75,8 +76,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             pointer.position = Screen(view.transform);
             view.OnPointerEnter(pointer);
             controller.ItemTooltip.Refresh();
-            Assert.That(Text(controller.ItemTooltip, "Cooldown Value").text, Is.EqualTo("1.0s"));
-            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("1.0초마다"));
+            Assert.That(controller.ItemTooltip.GetComponentsInChildren<PrototypeStatIcon>(), Is.Empty);
+            Assert.That(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("<color=#59E680>1.0</color>초마다"));
             Assert.That(definition.Activation.CooldownSeconds, Is.EqualTo(2f));
             controller.TickCombat(0.5f);
             Assert.That(combat.PlayerArmor, Is.EqualTo(2.5d));

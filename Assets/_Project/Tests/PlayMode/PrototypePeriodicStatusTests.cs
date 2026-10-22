@@ -124,6 +124,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(controller.Gold, Is.EqualTo(6));
                 controller.TryStartBattle();
                 var combat = controller.ActiveCombat;
+                combat.PlayerWeapons.Single(w => w.Snapshot.ItemId == "fire_staff").Stats.AccuracyPercent = 100;
                 var ticks = new List<PeriodicStatusTickEvent>(); combat.StatusTicked += ticks.Add;
                 controller.TickCombat(4.3f); yield return null; Canvas.ForceUpdateCanvases();
                 Assert.That(ticks.Select(t => t.Kind), Is.EquivalentTo(new[] { StatusEffectKind.Poison, StatusEffectKind.Burn }));

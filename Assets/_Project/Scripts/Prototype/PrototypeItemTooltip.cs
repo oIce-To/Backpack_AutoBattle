@@ -173,16 +173,16 @@ namespace BackpackAutoBattle.Prototype
             _name.text = item.DisplayName;
             Place(_name.rectTransform, Padding, -26f, 245f, 36f);
             _rarity.gameObject.SetActive(true);
-            _divider.gameObject.SetActive(true);
+            _divider.gameObject.SetActive(item.HasWeaponStats);
             _rarity.text = item.Rarity.GetDisplayName();
             _rarity.color = _border.color = item.Rarity.GetDisplayColor();
             _context.text = "전투 중 실제 스탯";
-            _context.gameObject.SetActive(item.IsRuntime);
+            _context.gameObject.SetActive(item.IsRuntime && item.HasWeaponStats);
             _statsRoot.anchoredPosition = new Vector2(0f, item.IsRuntime ? 0f : 18f);
-            _statsRoot.gameObject.SetActive(item.HasWeaponStats || item.HasCycle);
+            _statsRoot.gameObject.SetActive(item.HasWeaponStats);
             for (int index = 0; index < 5; index++)
             {
-                bool visible = item.HasWeaponStats || (item.HasCycle && index == 1);
+                bool visible = item.HasWeaponStats;
                 _statIcons[index].gameObject.SetActive(visible);
                 _values[index].gameObject.SetActive(visible);
                 _statCaptions[index].gameObject.SetActive(visible);
@@ -203,7 +203,7 @@ namespace BackpackAutoBattle.Prototype
             _values[2].text = $"{item.AccuracyPercent:0.#}%";
             _values[3].text = $"{item.CriticalChancePercent:0.#}%";
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
-            float descriptionTop = (item.HasWeaponStats ? 211f : item.HasCycle ? 151f : 84f) - (item.IsRuntime ? 0f : 18f);
+            float descriptionTop = item.HasWeaponStats ? 211f - (item.IsRuntime ? 0f : 18f) : 62f;
             float dividerTop = descriptionTop;
             _description.text = item.GetDescriptionText();
             float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - Padding * 2f);
