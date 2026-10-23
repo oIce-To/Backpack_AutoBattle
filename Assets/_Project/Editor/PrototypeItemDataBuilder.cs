@@ -16,6 +16,11 @@ namespace BackpackAutoBattle.Editor
 
             ItemDefinition[] definitions =
             {
+                new("Item_ThornArmor.asset", "thorn_armor", "가시 갑옷", "", ItemCategory.Armor, ItemRarity.Rare,
+                    5, new Color(.20f, .45f, .27f), true,
+                    new[] { new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(1, 1) }),
+                new("Item_VampiricCharm.asset", "vampiric_charm", "흡혈의 부적", "", ItemCategory.Accessory, ItemRarity.Rare,
+                    5, new Color(.72f, .18f, .26f), false, new[] { Vector2Int.zero }),
                 new("Item_PrecisionCharm.asset", "precision_charm", "정밀의 부적", "", ItemCategory.Accessory, ItemRarity.Uncommon,
                     4, new Color(.35f, .68f, .5f), false, new[] { Vector2Int.zero }),
                 new("Item_FocusCharm.asset", "focus_charm", "집중의 부적", "", ItemCategory.Accessory, ItemRarity.Uncommon,
@@ -208,7 +213,7 @@ namespace BackpackAutoBattle.Editor
                 serializedItem.FindProperty("_activation").FindPropertyRelative("_effects").arraySize = 0;
                 ConfigurePeriodicStatus(serializedItem, StatusEffectKind.Poison, 2);
             }
-            else if (definition.ItemId is "swift_charm" or "precision_charm" or "focus_charm" or "blinding_dust" or "agility_charm")
+            else if (definition.ItemId is "swift_charm" or "precision_charm" or "focus_charm" or "blinding_dust" or "agility_charm" or "thorn_armor" or "vampiric_charm")
             {
                 var grant = definition.ItemId switch
                 {
@@ -216,6 +221,8 @@ namespace BackpackAutoBattle.Editor
                     "focus_charm" => (StatusEffectKind.Focus, 20, StatusTarget.Self),
                     "blinding_dust" => (StatusEffectKind.Blindness, 20, StatusTarget.Opponent),
                     "agility_charm" => (StatusEffectKind.Agility, 30, StatusTarget.Self),
+                    "thorn_armor" => (StatusEffectKind.Thorns, 3, StatusTarget.Self),
+                    "vampiric_charm" => (StatusEffectKind.Lifesteal, 3, StatusTarget.Self),
                     _ => (StatusEffectKind.Haste, 10, StatusTarget.Self)
                 };
                 SerializedProperty statuses = serializedItem.FindProperty("_battleStartStatuses");

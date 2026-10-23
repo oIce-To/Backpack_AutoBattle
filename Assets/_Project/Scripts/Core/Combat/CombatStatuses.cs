@@ -18,7 +18,8 @@ namespace BackpackAutoBattle.Combat
         private readonly StatScaling _damageScaling;
         public double TickIntervalSeconds { get; }
         public int StacksLostPerTick { get; }
-        public double DamagePerStack(CharacterStatsSnapshot owner) => _damageScaling.Resolve(0, owner);
+        public double AmountPerStack(CharacterStatsSnapshot owner) => _damageScaling.Resolve(0, owner);
+        public double DamagePerStack(CharacterStatsSnapshot owner) => AmountPerStack(owner);
         public StatusEffectKind Kind { get; }
         public string DisplayName { get; }
         public float PercentPerStack { get; }

@@ -15,15 +15,15 @@ namespace BackpackAutoBattle.Tests.Items
                 .Select(AssetDatabase.LoadAssetAtPath<ItemData>)
                 .ToArray();
 
-            Assert.That(items, Has.Length.EqualTo(14));
-            Assert.That(items.Count(item => !item.ExcludeFromShop), Is.EqualTo(13));
+            Assert.That(items, Has.Length.EqualTo(16));
+            Assert.That(items.Count(item => !item.ExcludeFromShop), Is.EqualTo(15));
             Assert.That(items.Select(item => item.ItemId).Distinct().Count(), Is.EqualTo(items.Length));
             Assert.That(items.All(item => !string.IsNullOrWhiteSpace(item.DisplayName)), Is.True);
             Assert.That(items.All(item => item.PurchasePrice >= 0), Is.True);
             Assert.That(items.All(item => item.CreateShape().BaseCells.Count > 0), Is.True);
             Assert.That(items.Count(item => item.Rarity == ItemRarity.Common), Is.EqualTo(3));
             Assert.That(items.Count(item => item.Rarity == ItemRarity.Uncommon), Is.EqualTo(7));
-            Assert.That(items.Count(item => item.Rarity == ItemRarity.Rare), Is.EqualTo(3));
+            Assert.That(items.Count(item => item.Rarity == ItemRarity.Rare), Is.EqualTo(5));
             Assert.That(items.Count(item => item.Rarity == ItemRarity.Epic), Is.EqualTo(1));
             Assert.That(items.All(item => item.Rarity != ItemRarity.Legendary), Is.True);
             ItemData[] weapons = items.Where(item => item.Category == ItemCategory.Weapon).ToArray();

@@ -24,6 +24,8 @@ namespace BackpackAutoBattle.Prototype
                 StatusStat.Evasion => $"회피율이 {percent:0.##}%p 증가합니다.",
                 StatusStat.PeriodicDamage => $"{definition.TickIntervalSeconds:0.##}초마다 {combat.GetStatusDamagePerTick(side, kind):0.##} 피해를 받습니다."
                     + (definition.StacksLostPerTick > 0 ? $" 피해 후 {definition.StacksLostPerTick}중첩 감소합니다." : ""),
+                StatusStat.ReflectedDamage => $"공격 아이템으로 피해를 받으면 공격자에게 {combat.GetStatusReactionAmount(side, kind):0.##} 피해를 반사합니다.",
+                StatusStat.HealingOnAttack => $"공격 아이템으로 피해를 주면 체력을 {combat.GetStatusReactionAmount(side, kind):0.##} 회복합니다.",
                 _ => ""
             };
             return new StatusTooltipContent

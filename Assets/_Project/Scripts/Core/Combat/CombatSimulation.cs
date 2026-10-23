@@ -226,7 +226,8 @@ namespace BackpackAutoBattle.Combat
             if (hit && (target == CombatSide.Player ? PlayerHealth : EnemyHealth) > 0d && Result == CombatResult.Running)
                 foreach (ItemActivationEffect effect in weapon.Activation.Effects)
                     if (effect.Trigger == ItemEffectTrigger.OnHit) ResolveNonAttackEffect(weapon, side, effect, events);
-            UpdateCombatResult();
+            if (hit) ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId));
+            UpdateCombatResult(side);
         }
 
         private void ResolveNonAttackEffect(CombatItem item, CombatSide side, ItemActivationEffect effect, ICollection<CombatItemEvent> events)
@@ -276,9 +277,12 @@ namespace BackpackAutoBattle.Combat
         private void RecordItemEvent(ICollection<CombatItemEvent> events, CombatItemEvent itemEvent)
         { events.Add(itemEvent); ItemActivated?.Invoke(itemEvent); }
 
-        private void UpdateCombatResult()
+        private void UpdateCombatResult(CombatSide? attackingSide = null)
         {
-            if (EnemyHealth <= 0d) Result = CombatResult.Victory;
+            // Finish the entire attack/reaction transaction before resolving a lethal trade.
+            if (PlayerHealth <= 0d && EnemyHealth <= 0d && attackingSide.HasValue)
+                Result = attackingSide == CombatSide.Player ? CombatResult.Victory : CombatResult.Defeat;
+            else if (EnemyHealth <= 0d) Result = CombatResult.Victory;
             else if (PlayerHealth <= 0d) Result = CombatResult.Defeat;
         }
     }

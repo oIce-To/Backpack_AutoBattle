@@ -40,7 +40,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 {
                     StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
                     StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
-                    StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
+                    StatusEffectKind.Blindness => Color.black,
                     _ => Color.white
                 };
                 Assert.That(glyph.color, Is.EqualTo(expectedColor)); Assert.That(glyph.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(0));

@@ -160,6 +160,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e92cfe2213f74d66a4c4b78a4703290a, type: 2}
   - {fileID: 11400000, guid: 67fd8153d5d34eb4b527d87f8badbfbc, type: 2}
   - {fileID: 11400000, guid: 33dc35743b2147fd8ecb6431619a0c78, type: 2}
+  - {fileID: 11400000, guid: 261ac004096b4ccba398dcf23f9b8315, type: 2}
+  - {fileID: 11400000, guid: 55a5927ddfc14c54b187b5584d17737c, type: 2}
   _maximumBattleSeconds: 120
   _enableDebugRoundAdvance: 1
   _itemCatalog:
@@ -176,6 +178,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 22328651421249b4961935ccfb271fe5, type: 2}
   - {fileID: 11400000, guid: 6f8a7418ac324b57867e027aeab3bcd0, type: 2}
   - {fileID: 11400000, guid: c3440320608a42ce9a4615fc27680174, type: 2}
+  - {fileID: 11400000, guid: 56292269338f4f22999acb506815037d, type: 2}
+  - {fileID: 11400000, guid: 88f99c3a2d414162b73ea7b89882ff7d, type: 2}
   _shopRarityTable: {fileID: 11400000, guid: 08f7d104cec8c7e4d845a744ebd2fd0e, type: 2}
   _shopSlotCount: 4
   _startingGold: 20

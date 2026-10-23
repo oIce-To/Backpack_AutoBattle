@@ -185,6 +185,31 @@ namespace BackpackAutoBattle.Prototype
                 + (tick.Resolution.ArmorAbsorbed > 0 ? $" (방어도 {tick.Resolution.ArmorAbsorbed:0.##} 흡수 · 체력 {tick.Resolution.HealthDamage:0.##})" : ""));
         }
 
+        public void ShowReaction(CombatReactionEvent reaction)
+        {
+            if (reaction.Kind == CombatReactionKind.HealSelf && reaction.HealthRestored <= 0) return;
+            bool targetPlayer = reaction.Target == CombatSide.Player;
+            Text feedback = targetPlayer ? _playerDamage : _enemyDamage;
+            string target = targetPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+            if (reaction.Kind == CombatReactionKind.HealSelf)
+            {
+                feedback.text = $"+{reaction.HealthRestored:0.##}";
+                feedback.color = new Color(.36f, .88f, .48f);
+                AppendLog($"{reaction.Time:0.0}s {target} · 흡혈 → 체력 +{reaction.HealthRestored:0.##}");
+            }
+            else
+            {
+                feedback.text = reaction.Damage.HealthDamage == 0 && reaction.Damage.ArmorAbsorbed > 0
+                    ? "BLOCK" : $"-{reaction.Damage.HealthDamage:0.##}";
+                feedback.color = new Color(.40f, .75f, .44f);
+                string owner = reaction.Owner == CombatSide.Player ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
+                AppendLog($"{reaction.Time:0.0}s {owner} · 가시 → {target} {reaction.Amount:0.##} 피해"
+                    + (reaction.Damage.ArmorAbsorbed > 0 ? $" (방어도 {reaction.Damage.ArmorAbsorbed:0.##} 흡수 · 체력 {reaction.Damage.HealthDamage:0.##})" : ""));
+            }
+            if (targetPlayer) _playerDamageExpiry = Time.unscaledTime + .65f;
+            else _enemyDamageExpiry = Time.unscaledTime + .65f;
+        }
+
         private void AppendLog(string message)
         {
             _log.Enqueue(message);

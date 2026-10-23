@@ -29,6 +29,7 @@ namespace BackpackAutoBattle.Prototype
             Simulation = new CombatSimulation(player, enemy, maximumDuration: maximumSeconds, statusEffects: statusEffects);
             Simulation.ItemActivated += _screen.ShowAttack;
             Simulation.StatusTicked += _screen.ShowStatusDamage;
+            Simulation.ReactionTriggered += _screen.ShowReaction;
             _screen.Begin(Simulation, round, income);
         }
 
@@ -61,6 +62,7 @@ namespace BackpackAutoBattle.Prototype
             if (Simulation == null) return;
             Simulation.ItemActivated -= _screen.ShowAttack;
             Simulation.StatusTicked -= _screen.ShowStatusDamage;
+            Simulation.ReactionTriggered -= _screen.ShowReaction;
         }
         private void OnDestroy() => UnbindSimulation();
     }

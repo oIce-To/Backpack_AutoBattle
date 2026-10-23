@@ -20,7 +20,7 @@ namespace BackpackAutoBattle.Editor
                 var data = new SerializedObject(result[index]);
                 data.FindProperty("_kind").enumValueIndex = index;
                 data.FindProperty("_displayName").stringValue = StatusEffectRules.DisplayName((StatusEffectKind)index);
-                if ((StatusEffectKind)index is StatusEffectKind.Burn or StatusEffectKind.Poison)
+                if ((StatusEffectKind)index is StatusEffectKind.Burn or StatusEffectKind.Poison or StatusEffectKind.Thorns or StatusEffectKind.Lifesteal)
                 {
                     PrototypeItemDataBuilder.ConfigureScaling(data.FindProperty("_damageScaling"), StatReference.Attack,
                         (StatusEffectKind)index == StatusEffectKind.Burn ? .12f : .1f);

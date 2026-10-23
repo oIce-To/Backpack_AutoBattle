@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace BackpackAutoBattle.Items
 {
-    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison }
-    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage }
+    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison, Thorns, Lifesteal }
+    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage, ReflectedDamage, HealingOnAttack }
     public enum StatusTarget { Self, Opponent }
 
     public static class StatusEffectRules
@@ -14,6 +14,7 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Haste => "신속", StatusEffectKind.Freeze => "빙결", StatusEffectKind.Precision => "정밀",
             StatusEffectKind.Focus => "집중", StatusEffectKind.Blindness => "실명", StatusEffectKind.Agility => "민첩",
             StatusEffectKind.Burn => "화상", StatusEffectKind.Poison => "중독",
+            StatusEffectKind.Thorns => "가시", StatusEffectKind.Lifesteal => "흡혈",
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static bool IsDebuff(StatusEffectKind kind) => kind is StatusEffectKind.Freeze or StatusEffectKind.Blindness or StatusEffectKind.Burn or StatusEffectKind.Poison;
@@ -24,6 +25,8 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Focus or StatusEffectKind.Blindness => StatusStat.Accuracy,
             StatusEffectKind.Agility => StatusStat.Evasion,
             StatusEffectKind.Burn or StatusEffectKind.Poison => StatusStat.PeriodicDamage,
+            StatusEffectKind.Thorns => StatusStat.ReflectedDamage,
+            StatusEffectKind.Lifesteal => StatusStat.HealingOnAttack,
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static StatusEffectKind? Opposite(StatusEffectKind kind) => kind switch
@@ -40,7 +43,8 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private StatusEffectKind _kind;
         [SerializeField] private string _displayName = "신속";
         [SerializeField, Min(0f)] private float _percentPerStack = 1f;
-        [Header("Periodic damage only (independent of item clocks)")]
+        [Header("Periodic damage / damage reactions (owner stat scaling)")]
+        [InspectorName("Amount Scaling")]
         [SerializeField] private StatScaling _damageScaling = new();
         [SerializeField, Min(0.01f)] private float _tickIntervalSeconds = 1f;
         [SerializeField, Min(0)] private int _stacksLostPerTick;

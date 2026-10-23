@@ -16,10 +16,12 @@ namespace BackpackAutoBattle.Prototype
         {
             StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
             StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
-            StatusEffectKind.Blindness => new Color(0.62f, 0.65f, 0.69f),
+            StatusEffectKind.Blindness => Color.black,
             StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
             StatusEffectKind.Burn => new Color(1f, 0.25f, 0.20f),
             StatusEffectKind.Poison => new Color(0.71f, 0.53f, 0.96f),
+            StatusEffectKind.Thorns => new Color(0.68f, 0.70f, 0.73f),
+            StatusEffectKind.Lifesteal => new Color(0.94f, 0.17f, 0.23f),
             _ => Color.white
         };
         public PrototypeStatusGlyph() { useLegacyMeshGeneration = false; }
@@ -107,6 +109,47 @@ namespace BackpackAutoBattle.Prototype
                 }
                 Line(new(0, -2.5f), new(-.8f, -4), 1.1f); Line(new(-.8f, -4), new(.8f, -4), 1.1f);
                 Line(new(.8f, -4), new(0, -2.5f), 1.1f);
+            }
+            else if (Kind == StatusEffectKind.Thorns)
+            {
+                // A simplified medieval mace head: round metal ball and seven pointed spikes.
+                // Keep the center transparent, with a small front-facing spike to suggest volume.
+                for (int i = 0; i < 40; i++)
+                {
+                    float a = i * Mathf.PI / 20f, b = (i + 1) * Mathf.PI / 20f;
+                    Line(new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * 5.8f,
+                        new Vector2(Mathf.Cos(b), Mathf.Sin(b)) * 5.8f, 1.35f);
+                }
+                for (int i = 0; i < 7; i++)
+                {
+                    float angle = Mathf.PI / 2f + i * Mathf.PI * 2f / 7f;
+                    Vector2 Radial(float offset, float radius) => new Vector2(Mathf.Cos(angle + offset), Mathf.Sin(angle + offset)) * radius;
+                    FillPolygon(vh, new List<Vector2> { Radial(-.24f, 5.6f), Radial(0, 9.2f), Radial(.24f, 5.6f) }, rect.center, scale, color);
+                }
+                Line(new(.5f, 1), new(3, 2), 1.1f);
+                Line(new(3, 2), new(2, -.7f), 1.1f);
+            }
+            else if (Kind == StatusEffectKind.Lifesteal)
+            {
+                // Open vampire mouth: upper/lower teeth, with two longer upper canines.
+                // The mouth opening and the gaps between teeth remain transparent.
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    var canine = new List<Vector2> { new(side * 9, 7.8f), new(side * 6, 7.6f), new(side * 4.2f, 5.7f), new(side * 6.2f, -.6f) };
+                    Curve(new(side * 6.2f, -.6f), new(side * 8, .8f), new(side * 8.8f, 5.2f), new(side * 9, 7.8f), canine);
+                    canine.RemoveAt(canine.Count - 1);
+                    FillPolygon(vh, canine, rect.center, scale, color);
+                    FillPolygon(vh, new List<Vector2> { new(side * 8.8f, -7), new(side * 7.7f, -3.3f), new(side * 6.2f, -1.9f), new(side * 5.3f, -6.5f) }, rect.center, scale, color);
+                }
+                Vector2[] upper = { new(-4.2f, 5.7f), new(-1.4f, 5.2f), new(1.4f, 5.2f), new(4.2f, 5.7f) };
+                Vector2[] lower = { new(-4.5f, -7.2f), new(-1.5f, -7.7f), new(1.5f, -7.7f), new(4.5f, -7.2f) };
+                for (int i = 0; i < 3; i++)
+                {
+                    Line(upper[i], upper[i + 1], 1.25f);
+                    FillPolygon(vh, new List<Vector2> { upper[i], upper[i + 1], new((i - 1) * 2.8f, i == 1 ? 1.5f : 2.1f) }, rect.center, scale, color);
+                    FillPolygon(vh, new List<Vector2> { lower[i], lower[i + 1], new((i - 1) * 2.8f, i == 1 ? -3.2f : -2.6f) }, rect.center, scale, color);
+                }
+                Curve(new(-8.8f, -7), new(-4, -8.8f), new(4, -8.8f), new(8.8f, -7));
             }
             else if (Kind == StatusEffectKind.Haste)
             {
