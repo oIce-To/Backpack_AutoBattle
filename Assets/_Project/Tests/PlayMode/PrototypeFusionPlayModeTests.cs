@@ -215,8 +215,11 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             yield return Setup();
             BuyStone(Rect("Grid Cell 1,2")); yield return null;
-            Set(_controller, "_maximumBattleSeconds", 1f);
-            _controller.TryStartBattle(); _controller.TickCombat(1f);
+            _controller.TryStartBattle();
+            // Explicitly time-box this simulation only; normal stage battles have no time limit.
+            var original = _controller.ActiveCombat;
+            _controller.BattleController.BeginBattle(original.Player, original.Enemy, _controller.CurrentRound, 5, maximumSeconds: 1f);
+            _controller.TickCombat(1f);
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Draw));
             _controller.ReturnToPreparation(); _controller.TickFusionPresentation(5f); yield return null;
             Assert.That(Stored().Count(item => item.StoredItem.ItemData.ItemId == "steel_sword"), Is.EqualTo(1));

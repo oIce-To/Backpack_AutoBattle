@@ -39,14 +39,20 @@ namespace BackpackAutoBattle.Prototype
 
         public void Bind(CombatSimulation combat, CombatSide side, PrototypeItemTooltip tooltip)
         {
-            foreach (PrototypeStatusIcon icon in _icons)
-            { icon.gameObject.SetActive(false); UnityEngine.Object.Destroy(icon.gameObject); }
-            _icons.Clear();
+            Clear();
             foreach (StatusEffectKind kind in Enum.GetValues(typeof(StatusEffectKind)))
                 _icons.Add(PrototypeStatusIcon.Create(_content, combat, side, kind, tooltip));
             _icons.Sort((a, b) => a.IsDebuff.CompareTo(b.IsDebuff));
-            _content.anchoredPosition = Vector2.zero;
             Render();
+        }
+
+        public void Clear()
+        {
+            foreach (PrototypeStatusIcon icon in _icons)
+            { icon.gameObject.SetActive(false); UnityEngine.Object.Destroy(icon.gameObject); }
+            _icons.Clear();
+            _content.anchoredPosition = Vector2.zero;
+            _content.sizeDelta = new Vector2(0f, ViewportHeight);
         }
 
         public void Render()

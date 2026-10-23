@@ -27,6 +27,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _enemyName;
         private readonly Text _title;
         private readonly Text _timer;
+        private readonly Text _lives;
         private readonly Text _inspection;
         private readonly Text _logText;
         private readonly Text _playerDamage;
@@ -50,6 +51,8 @@ namespace BackpackAutoBattle.Prototype
             Root = background.rectTransform;
             BackpackPrototypeController.Stretch(Root);
             _timer = Label(Root, "Combat Timer", new Vector2(0f, 318f), new Vector2(900f, 44f), 28, TextAnchor.MiddleCenter);
+            _lives = Label(Root, "Battle Lives", Vector2.zero, new Vector2(170f, 30f), 18, TextAnchor.MiddleRight);
+            BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
             _title = Label(Root, "Battle Result", new Vector2(0f, 270f), new Vector2(900f, 36f), 24, TextAnchor.MiddleCenter);
             _title.gameObject.SetActive(false);
             RectTransform playerGroup = CombatantGroup(Root, "Player Combatant", -310f);
@@ -217,21 +220,38 @@ namespace BackpackAutoBattle.Prototype
             _logText.text = string.Join("\n", _log);
         }
 
+        public void Clear()
+        {
+            _tooltip.HideAll();
+            _playerBag.Clear(); _enemyBag.Clear(); _playerStatuses.Clear(); _enemyStatuses.Clear();
+            _combat = null; _log.Clear();
+            _logText.text = _inspection.text = _playerDamage.text = _enemyDamage.text = _title.text = "";
+            _title.gameObject.SetActive(false); _continueButton.interactable = false;
+        }
+
+        public void SetLives(int lives, int startingLives)
+        {
+            _lives.text = $"라이프 {lives} / {startingLives}";
+            _lives.color = lives <= 1 ? new Color(1f, .4f, .4f) : new Color(.91f, .94f, .98f);
+        }
+
         public void ShowResult(PrototypePhase phase)
         {
             _title.gameObject.SetActive(true);
             _title.text = phase switch
             {
                 PrototypePhase.Victory => "승리!",
-                PrototypePhase.Defeat => "패배 · 가방을 재정비하고 재도전하세요",
+                PrototypePhase.Defeat => "패배 · 라이프 -1",
                 PrototypePhase.Draw => "시간 초과",
+                PrototypePhase.GameOver => "게임 오버",
                 _ => "스테이지 클리어!"
             };
-            _continueButton.interactable = phase != PrototypePhase.Completed;
+            _continueButton.interactable = phase is not (PrototypePhase.Completed or PrototypePhase.GameOver);
             _continueText.text = phase switch
             {
                 PrototypePhase.Victory => $"상점으로 · +{_income}G",
                 PrototypePhase.Defeat or PrototypePhase.Draw => "상점으로 돌아가기",
+                PrototypePhase.GameOver => "라이프 소진",
                 _ => "모든 라운드 완료"
             };
         }

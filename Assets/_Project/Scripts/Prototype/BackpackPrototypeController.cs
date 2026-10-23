@@ -77,14 +77,9 @@ namespace BackpackAutoBattle.Prototype
         {
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
-            _run = new PrototypeRunState(_startingGold, _stageData?.StageId, _characterData?.CaptureStats(), _characterData != null ? _characterData.DisplayName : "플레이어");
+            _run = CreateRunState();
             BuildInterface();
-            RefreshEncounterPreview();
-            CreateStartingItems();
-            PopulateShop();
-            UpdateEconomyText();
-            RefreshCombatInterface();
-            SetStatus("상점 아이템을 가방이나 자유 보관함으로 드래그해 구매하세요.");
+            InitializeRunContent();
         }
 
         private void Update()
@@ -434,6 +429,8 @@ namespace BackpackAutoBattle.Prototype
 
             Text title = CreateText(_shopScreenRoot, "Title", "BACKPACK AUTO BATTLE PROTOTYPE", 28, FontStyle.Bold, TextAnchor.MiddleCenter);
             SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(720f, 46f));
+            _livesText = CreateText(_shopScreenRoot, "Run Lives", "", 18, FontStyle.Bold, TextAnchor.MiddleRight);
+            SetRect(_livesText.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
 
             Text instructions = CreateText(
                 _shopScreenRoot,
@@ -481,6 +478,7 @@ namespace BackpackAutoBattle.Prototype
             BuildStorage(_shopScreenRoot);
             _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot);
             InitializeBattleScreen(canvasObject.transform);
+            _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart());
 
         }
 
@@ -936,6 +934,11 @@ namespace BackpackAutoBattle.Prototype
 
         private void UpdateEconomyText()
         {
+            if (_livesText != null)
+            {
+                _livesText.text = $"라이프 {_run.Lives} / {_run.StartingLives}";
+                _livesText.color = _run.Lives <= 1 ? new Color(1f, .4f, .4f) : new Color(.91f, .94f, .98f);
+            }
             if (_goldText != null)
             {
                 _goldText.text = $"{_run.Gold} G";

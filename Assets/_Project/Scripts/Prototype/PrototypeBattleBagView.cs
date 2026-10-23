@@ -24,15 +24,27 @@ namespace BackpackAutoBattle.Prototype
         public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
             PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content)
         {
+            Clear();
+            float pitch = Mathf.Min(50f, 228f / Mathf.Max(loadout.Width, loadout.Height));
+            Vector2 boardSize = new(loadout.Width * pitch, loadout.Height * pitch);
+            _root.sizeDelta = boardSize;
+            BuildContents(loadout, side, inspect, tooltip, content, pitch, boardSize);
+        }
+
+        public void Clear()
+        {
             foreach (Transform child in _root)
             {
                 child.gameObject.SetActive(false);
                 UnityEngine.Object.Destroy(child.gameObject);
             }
             _items.Clear();
-            float pitch = Mathf.Min(50f, 228f / Mathf.Max(loadout.Width, loadout.Height));
-            Vector2 boardSize = new(loadout.Width * pitch, loadout.Height * pitch);
-            _root.sizeDelta = boardSize;
+            _placementOverlay = null;
+        }
+
+        private void BuildContents(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
+            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, float pitch, Vector2 boardSize)
+        {
             for (int y = 0; y < loadout.Height; y++)
             {
                 for (int x = 0; x < loadout.Width; x++)

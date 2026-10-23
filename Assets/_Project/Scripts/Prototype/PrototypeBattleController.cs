@@ -22,7 +22,7 @@ namespace BackpackAutoBattle.Prototype
             SetVisible(false);
         }
 
-        public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds,
+        public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds = float.PositiveInfinity,
             StatusEffectData[] statusEffects = null)
         {
             UnbindSimulation();
@@ -47,6 +47,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void ShowResult(PrototypePhase phase) => _screen.ShowResult(phase);
+        public void SetLives(int lives, int startingLives) => _screen.SetLives(lives, startingLives);
         public void ShowConfigurationError(string error) => _screen.ShowConfigurationError(error);
         public void SetVisible(bool visible) => _screen.Root.gameObject.SetActive(visible);
 
@@ -54,6 +55,7 @@ namespace BackpackAutoBattle.Prototype
         {
             UnbindSimulation();
             Simulation = null;
+            _screen.Clear();
             SetVisible(false);
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Enemies;
+using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Shop;
 using BackpackAutoBattle.Stages;
@@ -22,7 +23,6 @@ namespace BackpackAutoBattle.Prototype
         [FormerlySerializedAs("_enemyData")]
         [SerializeField] private EnemyEncounterData _debugEnemyOverride;
         [SerializeField] private StatusEffectData[] _statusEffects = Array.Empty<StatusEffectData>();
-        [SerializeField, Min(1f)] private float _maximumBattleSeconds = 120f;
         [SerializeField] private bool _enableDebugRoundAdvance = true;
 
         private PrototypeRunState _run;
@@ -72,11 +72,11 @@ namespace BackpackAutoBattle.Prototype
 
             var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack);
             CapturePendingFusions();
+            if (!_run.TryBeginBattle()) return false;
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
             // Use exactly the same resolved snapshot shown in preparation, never the source ItemData values.
-            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, _roundIncome, _maximumBattleSeconds, _statusEffects);
-            _run.Phase = PrototypePhase.Battle;
+            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, _roundIncome, statusEffects: _statusEffects);
             _selectedItem = null;
             _sellPreview.gameObject.SetActive(false);
             RefreshCombatInterface();
@@ -87,12 +87,11 @@ namespace BackpackAutoBattle.Prototype
 
         public bool ReturnToPreparation()
         {
-            if (Phase != PrototypePhase.Defeat && Phase != PrototypePhase.Draw) return false;
-            _run.Phase = PrototypePhase.Preparation;
+            if (!_run.TryReturnToPreparation()) return false;
             _battleController.EndBattle();
             BeginFusionPresentation();
             RefreshCombatInterface();
-            SetStatus("가방을 재배치하고 재도전하세요. 라운드와 골드는 유지됩니다.");
+            SetStatus($"남은 라이프 {_run.Lives}. 가방을 재배치하고 재도전하세요. 라운드와 골드는 유지됩니다.");
             return true;
         }
 
@@ -113,15 +112,17 @@ namespace BackpackAutoBattle.Prototype
 
         private void OnBattleFinished(CombatResult result)
         {
-            _run.Phase = result switch
-            {
-                CombatResult.Victory => _run.Round == StageRoundCount
-                    ? PrototypePhase.Completed : PrototypePhase.Victory,
-                CombatResult.Defeat => PrototypePhase.Defeat,
-                _ => PrototypePhase.Draw
-            };
+            if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds)) return;
             _battleController.ShowResult(Phase);
+            UpdateEconomyText();
+            if (_run.IsFinished)
+            {
+                _pendingFusions = Array.Empty<FusionPlan>();
+                _itemTooltip.HideAll(); _fusionHoverOwner = null; ClearPlacementOverlay();
+                _runResultScreen.Show(_run.Result);
+            }
             RefreshCombatInterface();
+            if (_run.IsFinished) RunEnded?.Invoke(_run.Result);
         }
 
         private void RefreshCombatInterface()
@@ -130,6 +131,7 @@ namespace BackpackAutoBattle.Prototype
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);
             _battleController.SetVisible(!showShop);
+            _battleController.SetLives(_run.Lives, _run.StartingLives);
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
@@ -200,8 +202,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void OnValidate()
         {
-            _maximumBattleSeconds = float.IsNaN(_maximumBattleSeconds) || float.IsInfinity(_maximumBattleSeconds)
-                ? 120f : Mathf.Max(1f, _maximumBattleSeconds);
+            _startingLives = Mathf.Max(1, _startingLives);
         }
     }
 }

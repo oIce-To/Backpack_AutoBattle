@@ -162,7 +162,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 33dc35743b2147fd8ecb6431619a0c78, type: 2}
   - {fileID: 11400000, guid: 261ac004096b4ccba398dcf23f9b8315, type: 2}
   - {fileID: 11400000, guid: 55a5927ddfc14c54b187b5584d17737c, type: 2}
-  _maximumBattleSeconds: 120
+  _startingLives: 3
   _enableDebugRoundAdvance: 1
   _itemCatalog:
   - {fileID: 11400000, guid: e48d25b6f51943e79a109ef232080b83, type: 2}

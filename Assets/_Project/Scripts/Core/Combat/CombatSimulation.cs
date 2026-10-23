@@ -80,9 +80,9 @@ namespace BackpackAutoBattle.Combat
         public long GetAvoidanceCount(CombatSide side) => _avoidanceCounts.TryGetValue(side, out long count) ? count : 0;
 
         public CombatSimulation(CombatantSnapshot player, CombatantSnapshot enemy, Random random = null,
-            double maximumDuration = 120d, IEnumerable<StatusEffectData> statusEffects = null)
+            double maximumDuration = double.PositiveInfinity, IEnumerable<StatusEffectData> statusEffects = null)
         {
-            if (maximumDuration <= 0d || double.IsNaN(maximumDuration) || double.IsInfinity(maximumDuration))
+            if (maximumDuration <= 0d || double.IsNaN(maximumDuration))
                 throw new ArgumentOutOfRangeException(nameof(maximumDuration));
             Player = player ?? throw new ArgumentNullException(nameof(player));
             Enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
