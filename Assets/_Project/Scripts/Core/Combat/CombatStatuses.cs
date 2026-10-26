@@ -39,7 +39,7 @@ namespace BackpackAutoBattle.Combat
         public double GetEvasionPercent(CombatSide side)
             => Math.Clamp(GetStatusDefinition(StatusEffectKind.Agility).PercentAt(GetStatusStacks(side, StatusEffectKind.Agility)), 0d, 70d);
 
-        public void ApplyStatus(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source = null)
+        public void ApplyStatus(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source = null, string sourceItemId = null)
         {
             if (stacks < 0) throw new ArgumentOutOfRangeException(nameof(stacks));
             if (!Enum.IsDefined(typeof(CombatSide), side)) throw new ArgumentOutOfRangeException(nameof(side));
@@ -49,8 +49,14 @@ namespace BackpackAutoBattle.Combat
             StatusEffectKind? opposite = GetStatusDefinition(kind).Opposite;
             long cancelled = opposite.HasValue ? Math.Min(stacks, GetStatusStacks(side, opposite.Value)) : 0;
             long total = checked(GetStatusStacks(side, kind) + (stacks - cancelled));
-            if (opposite.HasValue) _statusStacks[(side, opposite.Value)] = GetStatusStacks(side, opposite.Value) - cancelled;
+            if (opposite.HasValue)
+            {
+                _statusStacks[(side, opposite.Value)] = GetStatusStacks(side, opposite.Value) - cancelled;
+                RemoveStatusOrigins(side, opposite.Value, cancelled);
+            }
             _statusStacks[(side, kind)] = total;
+            AddStatusOrigin(side, kind, source ?? (GetStatusDefinition(kind).AffectedStat == StatusStat.PeriodicDamage
+                ? TargetSide(side, StatusTarget.Opponent) : side), sourceItemId, stacks - cancelled);
             if (GetStatusDefinition(kind).AffectedStat == StatusStat.PeriodicDamage)
                 AddPeriodicStacks(side, kind, source ?? TargetSide(side, StatusTarget.Opponent), stacks);
             switch (GetStatusDefinition(kind).AffectedStat)
@@ -90,7 +96,7 @@ namespace BackpackAutoBattle.Combat
         {
             foreach (CombatItemSnapshot item in loadout.Items)
                 foreach (StatusApplication status in item.BattleStartStatuses)
-                    ApplyStatus(TargetSide(owner, status.Target), status.Kind, status.Stacks, owner);
+                    ApplyStatus(TargetSide(owner, status.Target), status.Kind, status.Stacks, owner, item.InstanceId);
         }
 
         private static CombatSide TargetSide(CombatSide owner, StatusTarget target)

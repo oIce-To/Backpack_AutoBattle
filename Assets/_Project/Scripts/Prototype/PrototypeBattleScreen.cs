@@ -34,6 +34,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _enemyDamage;
         private readonly Button _continueButton;
         private readonly Text _continueText;
+        private readonly Button _statisticsButton;
         private readonly Queue<string> _log = new();
         private readonly PrototypeItemTooltip _tooltip;
         private CombatSimulation _combat;
@@ -44,12 +45,19 @@ namespace BackpackAutoBattle.Prototype
 
         public RectTransform Root { get; }
 
-        public PrototypeBattleScreen(Transform parent, Action continueAction, PrototypeItemTooltip tooltip)
+        public PrototypeBattleScreen(Transform parent, Action continueAction, PrototypeItemTooltip tooltip, Action statisticsAction)
         {
             _tooltip = tooltip;
             Image background = Image(parent, "Battle Screen", new Color(0.04f, 0.065f, 0.11f));
             Root = background.rectTransform;
             BackpackPrototypeController.Stretch(Root);
+            Image statisticsImage = Image(Root, "Battle Statistics Button", new Color(.23f, .46f, .68f));
+            BackpackPrototypeController.SetRect(statisticsImage.rectTransform, Vector2.one * .5f, new Vector2(0, 220), new Vector2(180, 36));
+            statisticsImage.raycastTarget = true;
+            _statisticsButton = statisticsImage.gameObject.AddComponent<Button>();
+            _statisticsButton.onClick.AddListener(() => statisticsAction());
+            var statisticsText = BackpackPrototypeController.CreateText(statisticsImage.transform, "Battle Statistics Label", "전투 통계", 18, FontStyle.Bold, TextAnchor.MiddleCenter);
+            statisticsText.raycastTarget = false; BackpackPrototypeController.Stretch(statisticsText.rectTransform);
             _timer = Label(Root, "Combat Timer", new Vector2(0f, 318f), new Vector2(900f, 44f), 28, TextAnchor.MiddleCenter);
             _lives = Label(Root, "Battle Lives", Vector2.zero, new Vector2(170f, 30f), 18, TextAnchor.MiddleRight);
             BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
@@ -97,6 +105,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Begin(CombatSimulation combat, int round, int income)
         {
+            _statisticsButton.gameObject.SetActive(false);
             _combat = combat;
             _round = round;
             _income = income;
@@ -222,6 +231,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Clear()
         {
+            _statisticsButton.gameObject.SetActive(false);
             _tooltip.HideAll();
             _playerBag.Clear(); _enemyBag.Clear(); _playerStatuses.Clear(); _enemyStatuses.Clear();
             _combat = null; _log.Clear();
@@ -237,6 +247,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowResult(PrototypePhase phase)
         {
+            _statisticsButton.gameObject.SetActive(true);
             _title.gameObject.SetActive(true);
             _title.text = phase switch
             {

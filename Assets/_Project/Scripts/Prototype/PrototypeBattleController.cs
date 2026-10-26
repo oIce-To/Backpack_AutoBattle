@@ -9,6 +9,8 @@ namespace BackpackAutoBattle.Prototype
     public sealed class PrototypeBattleController : MonoBehaviour
     {
         private PrototypeBattleScreen _screen;
+        private PrototypeCombatStatisticsView _statisticsView;
+        private PrototypeItemTooltip _tooltip;
         private Action<CombatResult> _finished;
 
         public CombatSimulation Simulation { get; private set; }
@@ -18,7 +20,9 @@ namespace BackpackAutoBattle.Prototype
         public void Initialize(Transform canvas, Action<CombatResult> finished, Action continueAction, PrototypeItemTooltip tooltip)
         {
             _finished = finished;
-            _screen = new PrototypeBattleScreen(canvas, continueAction, tooltip);
+            _tooltip = tooltip;
+            _screen = new PrototypeBattleScreen(canvas, continueAction, tooltip, () => ShowStatistics());
+            _statisticsView = new PrototypeCombatStatisticsView(canvas);
             SetVisible(false);
         }
 
@@ -26,6 +30,7 @@ namespace BackpackAutoBattle.Prototype
             StatusEffectData[] statusEffects = null)
         {
             UnbindSimulation();
+            _statisticsView.Hide();
             Simulation = new CombatSimulation(player, enemy, maximumDuration: maximumSeconds, statusEffects: statusEffects);
             Simulation.ItemActivated += _screen.ShowAttack;
             Simulation.StatusTicked += _screen.ShowStatusDamage;
@@ -47,12 +52,19 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void ShowResult(PrototypePhase phase) => _screen.ShowResult(phase);
+        public bool ShowStatistics()
+        {
+            if (Simulation == null || Simulation.Result == CombatResult.Running) return false;
+            _tooltip.HideAll(); _statisticsView.Show(Simulation.CaptureStatistics()); return true;
+        }
+        public void HideStatistics() => _statisticsView.Hide();
         public void SetLives(int lives, int startingLives) => _screen.SetLives(lives, startingLives);
         public void ShowConfigurationError(string error) => _screen.ShowConfigurationError(error);
         public void SetVisible(bool visible) => _screen.Root.gameObject.SetActive(visible);
 
         public void EndBattle()
         {
+            _statisticsView.Hide();
             UnbindSimulation();
             Simulation = null;
             _screen.Clear();

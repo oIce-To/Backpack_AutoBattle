@@ -73,11 +73,13 @@ namespace BackpackAutoBattle.Combat
         {
             long removed = Math.Min(stacks, GetStatusStacks(target, kind));
             _statusStacks[(target, kind)] = GetStatusStacks(target, kind) - removed;
-            if (!_periodicStates.TryGetValue((target, kind), out var state)) return;
+            if (!_periodicStates.TryGetValue((target, kind), out var state))
+            { RemoveStatusOrigins(target, kind, removed); return; }
             // Natural decay/cleansing removes oldest source contributions first, one stack total, not one per source.
             foreach (var contribution in state.Contributions)
             {
                 long take = Math.Min(removed, contribution.Stacks);
+                RemoveStatusOrigins(target, kind, take, contribution.Source);
                 contribution.Stacks -= take; removed -= take;
             }
             state.Contributions.RemoveAll(c => c.Stacks == 0);
@@ -102,7 +104,10 @@ namespace BackpackAutoBattle.Combat
             {
                 if (Result != CombatResult.Running) break;
                 double damage = contribution.Stacks * contribution.DamagePerStack;
-                DamageResolution resolution = ApplyNonAttackDamage(contribution.Source, state.Target, damage, CombatDamageKind.StatusEffect);
+                // Keep the original one-damage-event-per-source-side rule; provenance must not change combat outcomes.
+                DamageResolution resolution = DealDamage(contribution.Source, state.Target, damage, CombatDamageKind.StatusEffect,
+                    null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind);
+                UpdateCombatResult();
                 StatusTicked?.Invoke(new PeriodicStatusTickEvent(ElapsedSeconds, contribution.Source, state.Target,
                     state.Kind, contribution.Stacks, damage, resolution));
             }

@@ -97,6 +97,7 @@ namespace BackpackAutoBattle.Combat
             ApplyPlacementBonuses(Enemy.Loadout, EnemyWeapons);
             _random = random ?? new Random();
             _maximumDuration = maximumDuration;
+            InitializeStatistics();
             InitializeStatuses(statusEffects);
         }
 
@@ -235,6 +236,7 @@ namespace BackpackAutoBattle.Combat
             if (effect.Kind == ItemEffectKind.Attack) throw new InvalidOperationException("명중 연계 효과에서 공격 효과를 재귀 실행할 수 없습니다.");
             if (effect.Kind == ItemEffectKind.GainArmor)
             {
+                AddArmorOrigin(side, item.InstanceId, effect.Amount);
                 if (side == CombatSide.Player) PlayerArmor += effect.Amount;
                 else EnemyArmor += effect.Amount;
                 RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind, armorGained: effect.Amount));
@@ -243,7 +245,7 @@ namespace BackpackAutoBattle.Combat
             {
                 StatusApplication status = effect.Status;
                 CombatSide target = TargetSide(side, status.Target);
-                ApplyStatus(target, status.Kind, status.Stacks, side);
+                ApplyStatus(target, status.Kind, status.Stacks, side, item.InstanceId);
                 RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind,
                     statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
             }
@@ -251,7 +253,7 @@ namespace BackpackAutoBattle.Combat
 
         /// <summary>Periodic status damage and reflected/other damage never roll accuracy, evasion or critical,
         /// and never publish an AttackAvoided event. Attack-item damage must use the item activation path.</summary>
-        public DamageResolution ApplyNonAttackDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind)
+        public DamageResolution ApplyNonAttackDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string sourceItemId = null)
         {
             if (kind == CombatDamageKind.AttackItem || !Enum.IsDefined(typeof(CombatDamageKind), kind))
                 throw new ArgumentOutOfRangeException(nameof(kind));
@@ -259,17 +261,20 @@ namespace BackpackAutoBattle.Combat
                 throw new ArgumentOutOfRangeException(nameof(target));
             if (Result != CombatResult.Running)
                 return DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
-            var result = DealDamage(source, target, damage, kind, null);
+            var result = DealDamage(source, target, damage, kind, sourceItemId);
             UpdateCombatResult();
             return result;
         }
 
-        private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId)
+        private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId,
+            IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null)
         {
             DamageResolution result = DamageResolver.Resolve(damage, target == CombatSide.Player ? PlayerArmor : EnemyArmor,
                 target == CombatSide.Player ? PlayerHealth : EnemyHealth);
             if (target == CombatSide.Player) { PlayerArmor = result.ArmorRemaining; PlayerHealth = result.HealthRemaining; }
             else { EnemyArmor = result.ArmorRemaining; EnemyHealth = result.HealthRemaining; }
+            CreditDamage(source, itemId, kind, result, credits, cause);
+            CreditAbsorption(target, result.ArmorAbsorbed);
             DamageApplied?.Invoke(new CombatDamageEvent(source, target, kind, damage, result, itemId));
             return result;
         }

@@ -478,7 +478,7 @@ namespace BackpackAutoBattle.Prototype
             BuildStorage(_shopScreenRoot);
             _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot);
             InitializeBattleScreen(canvasObject.transform);
-            _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart());
+            _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart(), () => _battleController.ShowStatistics());
 
         }
 

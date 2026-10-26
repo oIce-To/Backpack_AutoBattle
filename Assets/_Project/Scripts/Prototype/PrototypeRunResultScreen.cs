@@ -12,7 +12,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _summary;
         private readonly Button _restart;
 
-        public PrototypeRunResultScreen(Transform canvas, Action restart)
+        public PrototypeRunResultScreen(Transform canvas, Action restart, Action statistics)
         {
             var obj = new GameObject("Run Result Screen", typeof(RectTransform), typeof(Image));
             obj.transform.SetParent(canvas, false); Root = (RectTransform)obj.transform;
@@ -32,6 +32,11 @@ namespace BackpackAutoBattle.Prototype
             _restart = button.GetComponent<Button>(); _restart.onClick.AddListener(() => restart());
             var label = Text(button.transform, "Restart Run Label", 20, Vector2.zero, new Vector2(320, 48));
             label.text = "같은 스테이지 다시 시작";
+            var stats = new GameObject("Run Statistics Button", typeof(RectTransform), typeof(Image), typeof(Button));
+            stats.transform.SetParent(panel.transform, false); stats.GetComponent<Image>().color = new Color(.23f, .46f, .68f);
+            BackpackPrototypeController.SetRect((RectTransform)stats.transform, Vector2.one * .5f, new Vector2(0, -103), new Vector2(190, 36));
+            stats.GetComponent<Button>().onClick.AddListener(() => statistics());
+            Text(stats.transform, "Run Statistics Label", 18, Vector2.zero, new Vector2(180, 34)).text = "전투 통계";
             Hide();
         }
 

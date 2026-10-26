@@ -67,13 +67,14 @@ namespace BackpackAutoBattle.Combat
                     double maximum = owner == CombatSide.Player ? PlayerMaxHealth : EnemyMaxHealth;
                     double healed = Math.Min(amount, maximum - health);
                     if (owner == CombatSide.Player) PlayerHealth += healed; else EnemyHealth += healed;
+                    CreditHealing(owner, healed, StatusWeights(owner, rule.Status));
                     ReactionTriggered?.Invoke(new CombatReactionEvent(ElapsedSeconds, owner, owner, rule.Status,
                         rule.Effect, attack.SourceItemId, amount, healed));
                 }
                 else
                 {
                     // A defender killed by this attack still retaliates. Do not resolve victory here.
-                    DamageResolution damage = DealDamage(owner, attack.Source, amount, CombatDamageKind.Other, null);
+                    DamageResolution damage = DealDamage(owner, attack.Source, amount, CombatDamageKind.Other, null, StatusWeights(owner, rule.Status), StatusEffectKind.Thorns);
                     ReactionTriggered?.Invoke(new CombatReactionEvent(ElapsedSeconds, owner, attack.Source, rule.Status,
                         rule.Effect, attack.SourceItemId, amount, damage: damage));
                 }
