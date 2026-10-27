@@ -145,6 +145,14 @@ namespace BackpackAutoBattle.Tests.Combat
         {
             foreach (StatusEffectKind kind in Enum.GetValues(typeof(StatusEffectKind)))
             {
+                if (kind == StatusEffectKind.Enrage)
+                {
+                    // System-owned time rule: no editable item status asset or battle-start grant.
+                    var timed = new CombatSimulation(Unit(Array.Empty<ItemData>()), Unit(Array.Empty<ItemData>()));
+                    Assert.That(timed.GetStatusDefinition(kind).PercentPerStack, Is.EqualTo(10));
+                    Assert.That(timed.GetStatusDefinition(kind).IsDebuff, Is.True);
+                    continue;
+                }
                 var definition = AssetDatabase.LoadAssetAtPath<StatusEffectData>($"Assets/_Project/Data/StatusEffects/Status_{kind}.asset");
                 Assert.That(definition, Is.Not.Null); Assert.That(definition.PercentPerStack, Is.EqualTo(1));
             }

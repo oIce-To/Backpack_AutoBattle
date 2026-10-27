@@ -216,7 +216,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return Setup();
             BuyStone(Rect("Grid Cell 1,2")); yield return null;
             _controller.TryStartBattle();
-            // Explicitly time-box this simulation only; normal stage battles have no time limit.
+            // An earlier explicit test deadline keeps this Draw-only compatibility path separate from the 90s forced defeat.
             var original = _controller.ActiveCombat;
             _controller.BattleController.BeginBattle(original.Player, original.Enemy, _controller.CurrentRound, 5, maximumSeconds: 1f);
             _controller.TickCombat(1f);

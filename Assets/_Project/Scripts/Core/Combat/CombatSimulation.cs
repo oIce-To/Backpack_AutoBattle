@@ -70,6 +70,17 @@ namespace BackpackAutoBattle.Combat
     /// <summary>Chronological, category-independent item activations; no UI or frame-rate dependencies.</summary>
     public sealed partial class CombatSimulation
     {
+        public const double EnrageStartsAt = 60d;
+        public const double EnrageIntervalSeconds = 3d;
+        public const double ForcedDefeatAt = 90d;
+        public long EnrageStacks => ElapsedSeconds < EnrageStartsAt ? 0
+            : Math.Min(10, 1 + (long)Math.Floor((ElapsedSeconds - EnrageStartsAt) / EnrageIntervalSeconds));
+        public double EnrageDamageIncreasePercent => EnrageStacks * 10d;
+        public bool IsForcedDefeat { get; private set; }
+
+        // This battle rule applies once to every incoming damage kind, before armor and health.
+        public double GetIncomingDamageMultiplier(CombatSide target)
+            => target == CombatSide.Player ? 1d + EnrageDamageIncreasePercent / 100d : 1d;
         private readonly Random _random;
         private readonly double _maximumDuration;
         private readonly Dictionary<(CombatSide side, string source), (float percent, ItemTargetFilter filter)> _speedModifiers = new();
@@ -159,7 +170,7 @@ namespace BackpackAutoBattle.Combat
                 throw new ArgumentOutOfRangeException(nameof(deltaSeconds));
             if (Result != CombatResult.Running || deltaSeconds == 0d) return Array.Empty<CombatItemEvent>();
             var events = new List<CombatItemEvent>();
-            double targetTime = Math.Min(ElapsedSeconds + deltaSeconds, _maximumDuration);
+            double targetTime = Math.Min(ElapsedSeconds + deltaSeconds, Math.Min(_maximumDuration, ForcedDefeatAt));
             while (Result == CombatResult.Running)
             {
                 CombatItem next = null;
@@ -173,13 +184,13 @@ namespace BackpackAutoBattle.Combat
                 // Existing item ordering wins exact ties; status ties use target side, then status kind.
                 if (periodic != null && (next == null || periodic.NextTickAt < next.Cycle.NextActivationAt))
                 {
-                    if (periodic.NextTickAt > targetTime + 1e-9d) break;
+                    if (periodic.NextTickAt >= ForcedDefeatAt || periodic.NextTickAt > targetTime + 1e-9d) break;
                     ElapsedSeconds = periodic.NextTickAt;
                     targetTime = Math.Max(targetTime, ElapsedSeconds);
                     ResolvePeriodicTick(periodic);
                     continue;
                 }
-                if (next == null || next.Cycle.NextActivationAt > targetTime + 1e-9d) break;
+                if (next == null || next.Cycle.NextActivationAt >= ForcedDefeatAt || next.Cycle.NextActivationAt > targetTime + 1e-9d) break;
                 ElapsedSeconds = next.Cycle.NextActivationAt;
                 // Snap sub-nanosecond partition error forward, never move time backward after firing.
                 targetTime = Math.Max(targetTime, ElapsedSeconds);
@@ -195,7 +206,8 @@ namespace BackpackAutoBattle.Combat
             if (Result == CombatResult.Running)
             {
                 ElapsedSeconds = targetTime;
-                if (targetTime >= _maximumDuration) Result = CombatResult.Draw;
+                if (targetTime >= ForcedDefeatAt) { IsForcedDefeat = true; Result = CombatResult.Defeat; }
+                else if (targetTime >= _maximumDuration) Result = CombatResult.Draw;
             }
             return events;
         }
@@ -214,6 +226,7 @@ namespace BackpackAutoBattle.Combat
             double damage = hit ? weapon.Stats.AttackDamage * (critical ? weapon.Stats.CriticalDamagePercent / 100d : 1d) : 0d;
             DamageResolution result = hit ? DealDamage(side, target, damage, CombatDamageKind.AttackItem, weapon.InstanceId)
                 : DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
+            damage *= GetIncomingDamageMultiplier(target);
             var itemEvent = new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
                 damage, result.ArmorAbsorbed, result.HealthDamage, targetSide: target, attackOutcome: attack.Outcome);
             RecordItemEvent(events, itemEvent);
@@ -269,6 +282,7 @@ namespace BackpackAutoBattle.Combat
         private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId,
             IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null)
         {
+            damage *= GetIncomingDamageMultiplier(target);
             DamageResolution result = DamageResolver.Resolve(damage, target == CombatSide.Player ? PlayerArmor : EnemyArmor,
                 target == CombatSide.Player ? PlayerHealth : EnemyHealth);
             if (target == CombatSide.Player) { PlayerArmor = result.ArmorRemaining; PlayerHealth = result.HealthRemaining; }

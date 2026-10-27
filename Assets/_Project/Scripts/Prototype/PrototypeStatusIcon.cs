@@ -22,6 +22,7 @@ namespace BackpackAutoBattle.Prototype
             StatusEffectKind.Poison => new Color(0.71f, 0.53f, 0.96f),
             StatusEffectKind.Thorns => new Color(0.68f, 0.70f, 0.73f),
             StatusEffectKind.Lifesteal => new Color(0.94f, 0.17f, 0.23f),
+            StatusEffectKind.Enrage => new Color(1f, 0.50f, 0.12f),
             _ => Color.white
         };
         public PrototypeStatusGlyph() { useLegacyMeshGeneration = false; }
@@ -54,7 +55,28 @@ namespace BackpackAutoBattle.Prototype
                     previous = point;
                 }
             }
-            if (Kind == StatusEffectKind.Burn)
+            if (Kind == StatusEffectKind.Enrage)
+            {
+                // Six-point warning star: red rim, orange face and a yellow tapered exclamation mark.
+                var star = new List<Vector2>
+                {
+                    new(0, 9.4f), new(3.1f, 4.7f), new(8.6f, 4.7f), new(5.8f, 0),
+                    new(8.6f, -4.7f), new(3.1f, -4.7f), new(0, -9.4f), new(-3.1f, -4.7f),
+                    new(-8.6f, -4.7f), new(-5.8f, 0), new(-8.6f, 4.7f), new(-3.1f, 4.7f)
+                };
+                FillPolygon(vh, star, rect.center, scale, new Color(1f, .16f, .20f, color.a));
+                FillPolygon(vh, star, rect.center, scale * .89f, color);
+                Color yellow = new(1f, .96f, 0f, color.a);
+                FillPolygon(vh, new List<Vector2>
+                {
+                    new(-2.1f, 5.1f), new(2.1f, 5.1f), new(1.2f, -2.2f), new(-1.2f, -2.2f)
+                }, rect.center, scale, yellow);
+                FillPolygon(vh, new List<Vector2>
+                {
+                    new(-1.5f, -3.4f), new(1.5f, -3.4f), new(1.3f, -5.8f), new(-1.3f, -5.8f)
+                }, rect.center, scale, yellow);
+            }
+            else if (Kind == StatusEffectKind.Burn)
             {
                 // Same Lucide flame boundary and 0.83 horizontal scale as the approved preview.
                 // The preview uses this single curled tip, not the previous hand-drawn three-tip approximation.

@@ -76,7 +76,7 @@ namespace BackpackAutoBattle.Combat
                     // A defender killed by this attack still retaliates. Do not resolve victory here.
                     DamageResolution damage = DealDamage(owner, attack.Source, amount, CombatDamageKind.Other, null, StatusWeights(owner, rule.Status), StatusEffectKind.Thorns);
                     ReactionTriggered?.Invoke(new CombatReactionEvent(ElapsedSeconds, owner, attack.Source, rule.Status,
-                        rule.Effect, attack.SourceItemId, amount, damage: damage));
+                        rule.Effect, attack.SourceItemId, amount * GetIncomingDamageMultiplier(attack.Source), damage: damage));
                 }
             }
         }

@@ -17,6 +17,31 @@ namespace BackpackAutoBattle.Tests.Prototype
     public sealed class PrototypeStatusPlayModeTests
     {
         [UnityTest]
+        public IEnumerator Enrage_AppearsAt60_UpdatesTooltipTo100Percent_AndOnlyAffectsPlayer()
+        {
+            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            controller.BattleController.AutoTick = false; controller.TryStartBattle();
+            foreach (var weapon in controller.ActiveCombat.PlayerWeapons.Concat(controller.ActiveCombat.EnemyWeapons)) weapon.Stats.AttackDamage = 0;
+            var icon = Icon(controller, CombatSide.Player, StatusEffectKind.Enrage);
+            var enemyIcon = Icon(controller, CombatSide.Enemy, StatusEffectKind.Enrage);
+            controller.TickCombat(59); Assert.That(icon.gameObject.activeSelf, Is.False);
+            controller.TickCombat(1); yield return null; Canvas.ForceUpdateCanvases();
+            Assert.That(icon.gameObject.activeInHierarchy, Is.True); Assert.That(enemyIcon.gameObject.activeSelf, Is.False);
+            Assert.That(icon.GetComponentInChildren<Text>().text, Is.EqualTo("1"));
+            Assert.That(icon.GetComponentInChildren<PrototypeStatusGlyph>().canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(0));
+            icon.OnPointerEnter(Pointer(icon.transform));
+            Assert.That(Description(controller), Is.EqualTo("받는 모든 피해가 10% 증가합니다."));
+            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "Enrage60Seconds.png");
+            controller.TickCombat(3); controller.ItemTooltip.Refresh();
+            Assert.That(Description(controller), Is.EqualTo("받는 모든 피해가 20% 증가합니다."));
+            controller.TickCombat(24); controller.ItemTooltip.Refresh();
+            Assert.That(icon.GetComponentInChildren<Text>().text, Is.EqualTo("10"));
+            Assert.That(Description(controller), Is.EqualTo("받는 모든 피해가 100% 증가합니다."));
+            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "Enrage87Seconds.png");
+        }
+
+        [UnityTest]
         public IEnumerator BattleStartCharm_HasteAndFreezeUpdateIconsTooltipAndAllCyclesLive()
         {
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);

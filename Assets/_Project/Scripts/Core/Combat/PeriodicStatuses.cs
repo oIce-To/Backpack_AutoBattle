@@ -39,7 +39,7 @@ namespace BackpackAutoBattle.Combat
 
         public double GetStatusDamagePerTick(CombatSide target, StatusEffectKind kind)
             => _periodicStates.TryGetValue((target, kind), out var state)
-                ? state.Contributions.Sum(c => c.Stacks * c.DamagePerStack) : 0;
+                ? state.Contributions.Sum(c => c.Stacks * c.DamagePerStack) * GetIncomingDamageMultiplier(target) : 0;
 
         private void AddPeriodicStacks(CombatSide target, StatusEffectKind kind, CombatSide source, long stacks)
         {
@@ -63,7 +63,7 @@ namespace BackpackAutoBattle.Combat
         {
             if (stacks < 0 || !Enum.IsDefined(typeof(CombatSide), target) || !_statusDefinitions.ContainsKey(kind))
                 throw new ArgumentOutOfRangeException(nameof(stacks));
-            if (Result != CombatResult.Running) return;
+            if (Result != CombatResult.Running || kind == StatusEffectKind.Enrage) return;
             RemoveStatusStacks(target, kind, stacks);
             if (GetStatusDefinition(kind).AffectedStat == StatusStat.ActivationSpeed) RefreshItemSpeeds(target);
             if (GetStatusDefinition(kind).AffectedStat is StatusStat.Accuracy or StatusStat.CriticalChance) RefreshWeaponStatusModifiers(target);
@@ -109,7 +109,7 @@ namespace BackpackAutoBattle.Combat
                     null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind);
                 UpdateCombatResult();
                 StatusTicked?.Invoke(new PeriodicStatusTickEvent(ElapsedSeconds, contribution.Source, state.Target,
-                    state.Kind, contribution.Stacks, damage, resolution));
+                    state.Kind, contribution.Stacks, damage * GetIncomingDamageMultiplier(state.Target), resolution));
             }
             RemoveStatusStacks(state.Target, state.Kind, GetStatusDefinition(state.Kind).StacksLostPerTick);
         }

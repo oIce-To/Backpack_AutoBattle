@@ -28,7 +28,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator NewRun_ShowsThreeLives_KeepsDeveloperFeaturesAndHasNo120SecondTimeout()
+        public IEnumerator ForcedDefeat_CostsOneLife_PreservesHealth_AndRetriesSameRoundWithFreshClock()
         {
             yield return Setup();
             Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.StartingLives, Is.EqualTo(3));
@@ -39,12 +39,25 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.AdvanceRound(), Is.True); Assert.That(_controller.Lives, Is.EqualTo(3));
             Assert.That(_controller.TryStartBattle(), Is.True);
             foreach (var weapon in _controller.ActiveCombat.PlayerWeapons.Concat(_controller.ActiveCombat.EnemyWeapons)) weapon.Stats.AttackDamage = 0;
+            int round = _controller.CurrentRound, gold = _controller.Gold;
             _controller.TickCombat(121);
-            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Battle));
-            Assert.That(_controller.ActiveCombat.Result, Is.EqualTo(CombatResult.Running));
-            Assert.That(_controller.ActiveCombat.ElapsedSeconds, Is.EqualTo(121));
-            Assert.That(Text("Battle Lives"), Is.EqualTo("라이프 3 / 3"));
-            Assert.That(_controller.Lives, Is.EqualTo(3)); Capture("UnlimitedBattleAfter121Seconds.png");
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Defeat));
+            Assert.That(_controller.ActiveCombat.Result, Is.EqualTo(CombatResult.Defeat));
+            Assert.That(_controller.ActiveCombat.IsForcedDefeat, Is.True);
+            Assert.That(_controller.ActiveCombat.ElapsedSeconds, Is.EqualTo(90));
+            Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(_controller.ActiveCombat.PlayerMaxHealth));
+            Assert.That(Text("Battle Lives"), Is.EqualTo("라이프 2 / 3"));
+            Assert.That(Text("Battle Result"), Does.Contain("90초 경과"));
+            Assert.That(_controller.Lives, Is.EqualTo(2)); Capture("ForcedDefeat90Seconds.png");
+            Assert.That(_controller.BattleController.ShowStatistics(), Is.True);
+            Assert.That(_controller.ActiveCombat.CaptureStatistics().Seconds, Is.EqualTo(90));
+            _controller.BattleController.HideStatistics();
+            _controller.TickCombat(200); Assert.That(_controller.Lives, Is.EqualTo(2));
+            Assert.That(_controller.ReturnToPreparation(), Is.True);
+            Assert.That(_controller.CurrentRound, Is.EqualTo(round)); Assert.That(_controller.Gold, Is.EqualTo(gold));
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(_controller.ActiveCombat.EnrageStacks, Is.Zero);
+            Assert.That(_controller.ActiveCombat.ElapsedSeconds, Is.Zero);
         }
 
         [UnityTest]

@@ -101,13 +101,15 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [Test]
-        public void DefaultCombatHasNoTimeLimit_WhileExplicitTestDeadlineStillWorks()
+        public void DefaultCombatForcesDefeatAt90_WhileEarlierExplicitTestDeadlineStillWorks()
         {
             var unit = new CombatantSnapshot("Idle", 50, new CombatLoadoutSnapshot(Array.Empty<CombatItemSnapshot>()));
             var unlimited = new CombatSimulation(unit, unit);
             unlimited.Advance(121); unlimited.Advance(3600);
-            Assert.That(unlimited.Result, Is.EqualTo(CombatResult.Running));
-            Assert.That(unlimited.ElapsedSeconds, Is.EqualTo(3721));
+            Assert.That(unlimited.Result, Is.EqualTo(CombatResult.Defeat));
+            Assert.That(unlimited.IsForcedDefeat, Is.True);
+            Assert.That(unlimited.ElapsedSeconds, Is.EqualTo(90));
+            Assert.That(unlimited.PlayerHealth, Is.EqualTo(50));
             var limited = new CombatSimulation(unit, unit, maximumDuration: 3);
             limited.Advance(100);
             Assert.That(limited.Result, Is.EqualTo(CombatResult.Draw)); Assert.That(limited.ElapsedSeconds, Is.EqualTo(3));

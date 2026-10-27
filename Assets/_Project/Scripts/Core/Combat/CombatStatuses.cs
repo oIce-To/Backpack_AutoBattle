@@ -35,7 +35,8 @@ namespace BackpackAutoBattle.Combat
         private readonly Dictionary<(CombatSide, StatusEffectKind), long> _statusStacks = new();
         public CombatStatusDefinition GetStatusDefinition(StatusEffectKind kind) => _statusDefinitions[kind];
         public long GetStatusStacks(CombatSide side, StatusEffectKind kind)
-            => _statusStacks.TryGetValue((side, kind), out long stacks) ? stacks : 0;
+            => kind == StatusEffectKind.Enrage ? (side == CombatSide.Player ? EnrageStacks : 0)
+                : _statusStacks.TryGetValue((side, kind), out long stacks) ? stacks : 0;
         public double GetEvasionPercent(CombatSide side)
             => Math.Clamp(GetStatusDefinition(StatusEffectKind.Agility).PercentAt(GetStatusStacks(side, StatusEffectKind.Agility)), 0d, 70d);
 
@@ -45,7 +46,7 @@ namespace BackpackAutoBattle.Combat
             if (!Enum.IsDefined(typeof(CombatSide), side)) throw new ArgumentOutOfRangeException(nameof(side));
             if (!_statusDefinitions.ContainsKey(kind)) throw new ArgumentOutOfRangeException(nameof(kind));
             if (source.HasValue && !Enum.IsDefined(typeof(CombatSide), source.Value)) throw new ArgumentOutOfRangeException(nameof(source));
-            if (Result != CombatResult.Running || stacks == 0) return;
+            if (Result != CombatResult.Running || stacks == 0 || kind == StatusEffectKind.Enrage) return;
             StatusEffectKind? opposite = GetStatusDefinition(kind).Opposite;
             long cancelled = opposite.HasValue ? Math.Min(stacks, GetStatusStacks(side, opposite.Value)) : 0;
             long total = checked(GetStatusStacks(side, kind) + (stacks - cancelled));
@@ -86,8 +87,9 @@ namespace BackpackAutoBattle.Combat
                 _statusDefinitions.Add(kind, new(kind, StatusEffectRules.DisplayName(kind)));
             if (definitions != null)
                 foreach (StatusEffectData data in definitions)
-                    if (data != null) _statusDefinitions[data.Kind] = new(data.Kind, data.DisplayName, data.PercentPerStack,
+                    if (data != null && data.Kind != StatusEffectKind.Enrage) _statusDefinitions[data.Kind] = new(data.Kind, data.DisplayName, data.PercentPerStack,
                         data.DamageScaling, data.TickIntervalSeconds, data.StacksLostPerTick);
+            _statusDefinitions[StatusEffectKind.Enrage] = new(StatusEffectKind.Enrage, "광폭화", 10f);
             ApplyBattleStartStatuses(Player.Loadout, CombatSide.Player);
             ApplyBattleStartStatuses(Enemy.Loadout, CombatSide.Enemy);
         }

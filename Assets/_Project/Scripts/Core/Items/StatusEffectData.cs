@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace BackpackAutoBattle.Items
 {
-    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison, Thorns, Lifesteal }
-    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage, ReflectedDamage, HealingOnAttack }
+    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison, Thorns, Lifesteal, Enrage }
+    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage, ReflectedDamage, HealingOnAttack, DamageTaken }
     public enum StatusTarget { Self, Opponent }
 
     public static class StatusEffectRules
@@ -15,9 +15,10 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Focus => "집중", StatusEffectKind.Blindness => "실명", StatusEffectKind.Agility => "민첩",
             StatusEffectKind.Burn => "화상", StatusEffectKind.Poison => "중독",
             StatusEffectKind.Thorns => "가시", StatusEffectKind.Lifesteal => "흡혈",
+            StatusEffectKind.Enrage => "광폭화",
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
-        public static bool IsDebuff(StatusEffectKind kind) => kind is StatusEffectKind.Freeze or StatusEffectKind.Blindness or StatusEffectKind.Burn or StatusEffectKind.Poison;
+        public static bool IsDebuff(StatusEffectKind kind) => kind is StatusEffectKind.Freeze or StatusEffectKind.Blindness or StatusEffectKind.Burn or StatusEffectKind.Poison or StatusEffectKind.Enrage;
         public static StatusStat AffectedStat(StatusEffectKind kind) => kind switch
         {
             StatusEffectKind.Haste or StatusEffectKind.Freeze => StatusStat.ActivationSpeed,
@@ -27,6 +28,7 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Burn or StatusEffectKind.Poison => StatusStat.PeriodicDamage,
             StatusEffectKind.Thorns => StatusStat.ReflectedDamage,
             StatusEffectKind.Lifesteal => StatusStat.HealingOnAttack,
+            StatusEffectKind.Enrage => StatusStat.DamageTaken,
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static StatusEffectKind? Opposite(StatusEffectKind kind) => kind switch

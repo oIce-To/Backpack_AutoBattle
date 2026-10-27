@@ -252,7 +252,7 @@ namespace BackpackAutoBattle.Prototype
             _title.text = phase switch
             {
                 PrototypePhase.Victory => "승리!",
-                PrototypePhase.Defeat => "패배 · 라이프 -1",
+                PrototypePhase.Defeat => _combat.IsForcedDefeat ? "90초 경과 · 패배 · 라이프 -1" : "패배 · 라이프 -1",
                 PrototypePhase.Draw => "시간 초과",
                 PrototypePhase.GameOver => "게임 오버",
                 _ => "스테이지 클리어!"
