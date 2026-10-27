@@ -122,7 +122,7 @@ ItemData의 `Activation`에서 사용 주기를, `Weapon Stats`에서 공격 관
 적 전용 ItemData이며 플레이어 상점 카탈로그에 포함하지 않는다. 적이 플레이어와
 동일한 아이템을 사용할 필요는 없고, 아이템의 형태·기본 스탯 데이터 구조만 공유한다.
 겹치거나 가방 밖으로 나간 적 아이템 배치는 전투 시작 시 거부한다.
-플레이어 체력/공격력은 Character Data에서 설정한다. 시작 라이프는 씬의 `Backpack Prototype > Run Rules > Starting Lives`에서 조절하며 기본값은 3이다. 전투의 광폭화·90초 강제 패배 규칙은 [런 생명주기](RUN_LIFECYCLE.md)를 참고한다.
+플레이어 체력/공격력은 Character Data에서 설정한다. 시작 라이프는 씬의 `Backpack Prototype > Run Rules > Starting Lives`에서 조절하며 기본값은 3이다. 전투 상단에서 0.5·1·2·3배속과 일시정지/재생을 선택할 수 있다. 전투의 광폭화·90초 강제 패배·배속 규칙은 [런 생명주기](RUN_LIFECYCLE.md)를 참고한다.
 스테이지/라운드별 체력과 장비 스탯 편집은 [스테이지 및 적 데이터 가이드](STAGES_AND_ENEMIES.md)를 참고한다.
 
 ## 상점과 전투 화면 분리

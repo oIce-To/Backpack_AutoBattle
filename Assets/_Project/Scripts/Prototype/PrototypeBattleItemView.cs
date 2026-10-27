@@ -110,7 +110,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _label.color = !hit ? new Color(0.62f, 0.66f, 0.73f)
                 : critical ? new Color(1f, 0.8f, 0.2f) : Color.white;
-            yield return new WaitForSeconds(0.18f);
+            yield return new WaitForSecondsRealtime(0.18f);
             _label.color = Color.white;
             _pulse = null;
         }

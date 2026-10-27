@@ -35,6 +35,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Button _continueButton;
         private readonly Text _continueText;
         private readonly Button _statisticsButton;
+        private readonly PrototypeBattlePlaybackControls _playbackControls;
         private readonly Queue<string> _log = new();
         private readonly PrototypeItemTooltip _tooltip;
         private CombatSimulation _combat;
@@ -45,7 +46,8 @@ namespace BackpackAutoBattle.Prototype
 
         public RectTransform Root { get; }
 
-        public PrototypeBattleScreen(Transform parent, Action continueAction, PrototypeItemTooltip tooltip, Action statisticsAction)
+        public PrototypeBattleScreen(Transform parent, Action continueAction, PrototypeItemTooltip tooltip, Action statisticsAction,
+            Action<float> speedAction, Action pauseAction)
         {
             _tooltip = tooltip;
             Image background = Image(parent, "Battle Screen", new Color(0.04f, 0.065f, 0.11f));
@@ -63,6 +65,7 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
             _title = Label(Root, "Battle Result", new Vector2(0f, 270f), new Vector2(900f, 36f), 24, TextAnchor.MiddleCenter);
             _title.gameObject.SetActive(false);
+            _playbackControls = new PrototypeBattlePlaybackControls(Root, speedAction, pauseAction);
             RectTransform playerGroup = CombatantGroup(Root, "Player Combatant", -310f);
             RectTransform enemyGroup = CombatantGroup(Root, "Enemy Combatant", 310f);
             _playerBagFrame = Frame(playerGroup, "Player Battle Frame", new Color(0.07f, 0.13f, 0.20f));
@@ -231,6 +234,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Clear()
         {
+            _playbackControls.SetState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(false);
             _tooltip.HideAll();
             _playerBag.Clear(); _enemyBag.Clear(); _playerStatuses.Clear(); _enemyStatuses.Clear();
@@ -247,6 +251,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowResult(PrototypePhase phase)
         {
+            _playbackControls.SetState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(true);
             _title.gameObject.SetActive(true);
             _title.text = phase switch
@@ -266,6 +271,9 @@ namespace BackpackAutoBattle.Prototype
                 _ => "모든 라운드 완료"
             };
         }
+
+        public void SetPlaybackState(bool running, float speed, bool paused)
+            => _playbackControls.SetState(running, speed, paused);
 
         public void ShowConfigurationError(string error)
         {

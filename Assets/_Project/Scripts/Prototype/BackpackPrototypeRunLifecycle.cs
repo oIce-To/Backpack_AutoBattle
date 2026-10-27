@@ -52,6 +52,7 @@ namespace BackpackAutoBattle.Prototype
             _pendingFusions = Array.Empty<FusionPlan>(); _fusionLocks.Clear(); _fusionOverlay?.Clear();
             _fusionAnimation?.Dispose(); _fusionAnimation = null;
             _battleController.EndBattle();
+            _battleController.ResetPlayback();
             foreach (var view in _itemViews.Values) { view.gameObject.SetActive(false); Destroy(view.gameObject); }
             foreach (var view in _storageViews.Values) { view.gameObject.SetActive(false); Destroy(view.gameObject); }
             _itemViews.Clear(); _storageViews.Clear(); _storedItems.Clear(); _selectedItem = null;
