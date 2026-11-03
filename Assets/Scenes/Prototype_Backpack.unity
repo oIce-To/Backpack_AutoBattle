@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BackpackAutoBattle.Prototype::BackpackAutoBattle.Prototype.BackpackPrototypeController
   _characterData: {fileID: 11400000, guid: 860bc943e6d94bc19a1f4cf60d610f7c, type: 2}
+  _adventureCatalog: {fileID: 11400000, guid: d79c3abf52db4a90bd06a6a4a953f74b, type: 2}
   _stageData: {fileID: 11400000, guid: 11c76e0ca6ea19b4982f773cdae8e84e, type: 2}
   _debugEnemyOverride: {fileID: 0}
   _statusEffects:

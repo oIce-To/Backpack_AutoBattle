@@ -11,8 +11,9 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _title;
         private readonly Text _summary;
         private readonly Button _restart;
+        private readonly Button _mainMenu;
 
-        public PrototypeRunResultScreen(Transform canvas, Action restart, Action statistics)
+        public PrototypeRunResultScreen(Transform canvas, Action restart, Action statistics, Action mainMenu)
         {
             var obj = new GameObject("Run Result Screen", typeof(RectTransform), typeof(Image));
             obj.transform.SetParent(canvas, false); Root = (RectTransform)obj.transform;
@@ -28,10 +29,16 @@ namespace BackpackAutoBattle.Prototype
             var button = new GameObject("Restart Run Button", typeof(RectTransform), typeof(Image), typeof(Button));
             button.transform.SetParent(panel.transform, false);
             button.GetComponent<Image>().color = new Color(.23f, .46f, .68f);
-            BackpackPrototypeController.SetRect((RectTransform)button.transform, Vector2.one * .5f, new Vector2(0, -160), new Vector2(330, 54));
+            BackpackPrototypeController.SetRect((RectTransform)button.transform, Vector2.one * .5f, new Vector2(-140, -160), new Vector2(280, 54));
             _restart = button.GetComponent<Button>(); _restart.onClick.AddListener(() => restart());
-            var label = Text(button.transform, "Restart Run Label", 20, Vector2.zero, new Vector2(320, 48));
+            var label = Text(button.transform, "Restart Run Label", 18, Vector2.zero, new Vector2(270, 48));
             label.text = "같은 스테이지 다시 시작";
+            var main = new GameObject("Return To Main Menu Button", typeof(RectTransform), typeof(Image), typeof(Button));
+            main.transform.SetParent(panel.transform, false);
+            main.GetComponent<Image>().color = new Color(.16f, .21f, .29f);
+            BackpackPrototypeController.SetRect((RectTransform)main.transform, Vector2.one * .5f, new Vector2(150, -160), new Vector2(260, 54));
+            _mainMenu = main.GetComponent<Button>(); _mainMenu.onClick.AddListener(() => mainMenu());
+            Text(main.transform, "Return To Main Menu Label", 18, Vector2.zero, new Vector2(250, 48)).text = "메인으로 돌아가기";
             var stats = new GameObject("Run Statistics Button", typeof(RectTransform), typeof(Image), typeof(Button));
             stats.transform.SetParent(panel.transform, false); stats.GetComponent<Image>().color = new Color(.23f, .46f, .68f);
             BackpackPrototypeController.SetRect((RectTransform)stats.transform, Vector2.one * .5f, new Vector2(0, -103), new Vector2(190, 36));
@@ -51,11 +58,12 @@ namespace BackpackAutoBattle.Prototype
                 + $"승리 {result.Victories} · 패배 {result.Defeats}\n"
                 + $"누적 전투 시간  {result.TotalBattleSeconds:0.0}초";
             _restart.interactable = true;
+            _mainMenu.interactable = true;
             Root.gameObject.SetActive(true); Root.SetAsLastSibling();
         }
 
         public void Hide() => Root.gameObject.SetActive(false);
-        public void SetRestartPending() => _restart.interactable = false;
+        public void SetRestartPending() { _restart.interactable = false; _mainMenu.interactable = false; }
         private static Text Text(Transform parent, string name, int size, Vector2 position, Vector2 dimensions)
         {
             var text = BackpackPrototypeController.CreateText(parent, name, "", size, FontStyle.Bold, TextAnchor.MiddleCenter);

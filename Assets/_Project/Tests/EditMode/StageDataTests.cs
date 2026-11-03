@@ -19,7 +19,7 @@ namespace BackpackAutoBattle.Tests.Stages
     {
         private readonly List<Object> _temporary = new();
         private static StageData First => AssetDatabase.LoadAssetAtPath<StageData>("Assets/_Project/Data/Stages/Stage_01.asset");
-        private static StageData Late => AssetDatabase.LoadAssetAtPath<StageData>("Assets/_Project/Data/Stages/Stage_08_Example.asset");
+        private static StageData Late => AssetDatabase.LoadAssetAtPath<StageData>("Assets/_Project/Data/Stages/Stage_05.asset");
         private static EnemyEncounterData Goblin => AssetDatabase.LoadAssetAtPath<EnemyEncounterData>("Assets/_Project/Data/Enemies/Enemy_Goblin.asset");
         [TearDown] public void Cleanup() { foreach (Object obj in _temporary) Object.DestroyImmediate(obj); _temporary.Clear(); }
         private T Clone<T>(T source) where T : Object { T result = Object.Instantiate(source); _temporary.Add(result); return result; }
@@ -29,7 +29,8 @@ namespace BackpackAutoBattle.Tests.Stages
         [Test]
         public void StageAssets_HaveTwelveValidRoundsIncreasingHealthAndFixedSixBySixEnemies()
         {
-            foreach (StageData stage in new[] { First, Late })
+            var stages = Enumerable.Range(1, 5).Select(number => AssetDatabase.LoadAssetAtPath<StageData>($"Assets/_Project/Data/Stages/Stage_{number:00}.asset")).ToArray();
+            foreach (StageData stage in stages)
             {
                 Assert.That(stage, Is.Not.Null);
                 Assert.That(stage.GetValidationErrors(), Is.Empty);
@@ -47,6 +48,16 @@ namespace BackpackAutoBattle.Tests.Stages
                 Assert.Throws<InvalidOperationException>(() => stage.GetRound(0));
                 Assert.Throws<InvalidOperationException>(() => stage.GetRound(13));
             }
+            Assert.That(AssetDatabase.LoadAssetAtPath<StageData>("Assets/_Project/Data/Stages/Stage_08_Example.asset"), Is.Null);
+            for (int index = 1; index < stages.Length; index++)
+                for (int round = 1; round <= 12; round++)
+                {
+                    var previous = stages[index - 1].GetRound(round).CreateEnemySnapshot();
+                    var current = stages[index].GetRound(round).CreateEnemySnapshot();
+                    Assert.That(current.MaximumHealth, Is.GreaterThan(previous.MaximumHealth));
+                    Assert.That(current.Loadout.Items.First(i => i.InstanceId.EndsWith(":club")).BaseWeaponStats.AttackDamage,
+                        Is.GreaterThan(previous.Loadout.Items.First(i => i.InstanceId.EndsWith(":club")).BaseWeaponStats.AttackDamage));
+                }
             foreach (string guid in AssetDatabase.FindAssets("t:EnemyEncounterData", new[] { "Assets/_Project/Data/Enemies" }))
             {
                 var encounter = AssetDatabase.LoadAssetAtPath<EnemyEncounterData>(AssetDatabase.GUIDToAssetPath(guid));
@@ -65,10 +76,10 @@ namespace BackpackAutoBattle.Tests.Stages
             CombatantSnapshot late = Late.GetRound(1).CreateEnemySnapshot();
             Assert.That(first.MaximumHealth, Is.EqualTo(30d));
             Assert.That(second.MaximumHealth, Is.EqualTo(35d));
-            Assert.That(late.MaximumHealth, Is.EqualTo(180d));
+            Assert.That(late.MaximumHealth, Is.EqualTo(78d));
             Assert.That(first.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
             Assert.That(second.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(6f));
-            Assert.That(late.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(25f));
+            Assert.That(late.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(13f));
             Assert.That(Goblin.MaximumHealth, Is.EqualTo(30));
             Assert.That(Goblin.Items[0].Item.BaseWeaponStats.AttackDamage, Is.EqualTo(5f));
         }

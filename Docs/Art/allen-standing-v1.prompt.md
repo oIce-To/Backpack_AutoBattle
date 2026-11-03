@@ -1,7 +1,7 @@
 # Starter boy standing illustration v1
 
 Generated with the built-in image generation tool, with transparent_background enabled.
-Output: Assets/_Project/Art/Characters/StarterBoy/starter-boy-standing-v1.png
+Output: Assets/_Project/Art/Characters/Allen/allen-standing-v1.png
 Dimensions: 1024 x 1536, PNG with alpha.
 The six user-attached character images were provided in conversation as visual references.
 

@@ -1,9 +1,9 @@
 # Starter boy standing illustration v2
 
-Selection note (2026-10-26): The user approved the FIRST revision, before the final facial refinement. Its saved asset is `Assets/_Project/Art/Characters/StarterBoy/starter-boy-standing-approved.png`. The v2 output below is the unselected second revision. See `CHARACTER_ART_STYLE.md` for the approved direction.
+Selection note (2026-10-26): The user approved the FIRST revision, before the final facial refinement. Its saved asset is `Assets/_Project/Art/Characters/Allen/allen-standing-approved.png`. The v2 output below is the unselected second revision. See `CHARACTER_ART_STYLE.md` for the approved direction.
 
 Tool: built-in image generation, transparent_background enabled.
-Output: Assets/_Project/Art/Characters/StarterBoy/starter-boy-standing-v2.png
+Output: Assets/_Project/Art/Characters/Allen/allen-standing-v2.png
 Dimensions: 1024 x 1536 PNG with alpha.
 Revision: taller proportions, smaller head, restrained natural facial features.
 

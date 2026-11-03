@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7f69fdc3324fca87230ad25bda180e, type: 3}
+  m_Name: AdventureCatalog
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.AdventureCatalogData
+  _characters:
+  - {fileID: 11400000, guid: 860bc943e6d94bc19a1f4cf60d610f7c, type: 2}
+  - {fileID: 11400000, guid: a6cd0bb47bb6417ca3a71de381c41bcf, type: 2}
+  _stages:
+  - {fileID: 11400000, guid: 11c76e0ca6ea19b4982f773cdae8e84e, type: 2}
+  - {fileID: 11400000, guid: 84e2ba3cd63a467a9c0b1f155bd0b803, type: 2}
+  - {fileID: 11400000, guid: 0dd00a99ae4f4da6ba591b08d1f7c512, type: 2}
+  - {fileID: 11400000, guid: 8fe988e1ac954bf88ebea824a36a819a, type: 2}
+  - {fileID: 11400000, guid: 274653bd415344faba340f11c4576014, type: 2}

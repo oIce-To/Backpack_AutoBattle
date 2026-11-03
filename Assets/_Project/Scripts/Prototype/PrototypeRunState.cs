@@ -4,7 +4,7 @@ using BackpackAutoBattle.Items;
 
 namespace BackpackAutoBattle.Prototype
 {
-    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed, Fusion, GameOver }
+    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed, Fusion, GameOver, MainMenu }
 
     public enum PrototypeRunOutcome { Cleared, GameOver }
 
@@ -80,7 +80,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         /// <summary>Only a battle-to-result transition can spend a life or finish a run, exactly once.
-        /// Draw support is retained for explicit simulation tests/future rules; normal play has no time limit.</summary>
+        /// Draw is retained for explicit test deadlines; normal play forces defeat at 90 combat seconds.</summary>
         public bool TryCompleteBattle(CombatResult result, int roundCount, double elapsedSeconds)
         {
             if (Phase != PrototypePhase.Battle || IsFinished || result == CombatResult.Running) return false;

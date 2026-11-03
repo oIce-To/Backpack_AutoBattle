@@ -30,12 +30,13 @@ namespace BackpackAutoBattle.Prototype
         private void InitializeRunContent()
         {
             RefreshEncounterPreview(); CreateStartingItems(); PopulateShop(); UpdateEconomyText(); RefreshCombatInterface();
+            RecordProgress();
             SetStatus("상점 아이템을 가방이나 자유 보관함으로 드래그해 구매하세요.");
         }
 
         public bool RequestRunRestart()
         {
-            if (!_run.IsFinished || _restartRequested) return false;
+            if (IsMainMenu || !_run.IsFinished || _restartRequested) return false;
             _restartRequested = true;
             _runResultScreen.SetRestartPending();
             if (RestartRequested != null) { RestartRequested.Invoke(_run.Result); return true; }
@@ -46,7 +47,13 @@ namespace BackpackAutoBattle.Prototype
         /// Only terminal runs can be restarted; repeated clicks cannot duplicate starting content.</summary>
         public bool TryRestartRun()
         {
-            if (!_run.IsFinished) return false;
+            if (IsMainMenu || !_run.IsFinished) return false;
+            StartNewRun();
+            return true;
+        }
+
+        private void ClearRunContent()
+        {
             _itemTooltip.HideAll(); _fusionHoverOwner = null;
             FinishDrag();
             _pendingFusions = Array.Empty<FusionPlan>(); _fusionLocks.Clear(); _fusionOverlay?.Clear();
@@ -57,14 +64,30 @@ namespace BackpackAutoBattle.Prototype
             foreach (var view in _storageViews.Values) { view.gameObject.SetActive(false); Destroy(view.gameObject); }
             _itemViews.Clear(); _storageViews.Clear(); _storedItems.Clear(); _selectedItem = null;
             foreach (var slot in _shopSlots) slot.Bind(null); // Discard purchases AND locks/discounts from the old run.
+            _currentShopItems.Clear();
             _grid = new BackpackGrid(GridSize, GridSize);
-            _shopRandom = new System.Random(Environment.TickCount);
-            _run = CreateRunState(); _restartRequested = false;
             _preparedEnemy = null; _enemyConfigurationError = null;
             _runResultScreen.Hide();
             EventSystem.current?.SetSelectedGameObject(null);
+        }
+
+        private void StartNewRun()
+        {
+            // Capture editable outside-stage data at entry, never during an active run.
+            PrototypeRunState nextRun = CreateRunState();
+            _trackProgress = _progressStore != null && (_trackProgress || IsMainMenu);
+            if (_trackProgress)
+            {
+                if (!string.IsNullOrWhiteSpace(_characterData?.CharacterId)) _progress.SelectCharacter(_characterData.CharacterId);
+                _progress.SelectStage(_stageData.StageId);
+                SaveProgress();
+            }
+            ClearRunContent();
+            _shopRandom = new System.Random(Environment.TickCount);
+            _run = nextRun; _restartRequested = false;
+            IsMainMenu = false; CloseSelectionScreens(); _mainMenu.Hide();
+            _mainNavigation.Hide();
             InitializeRunContent();
-            return true;
         }
     }
 }

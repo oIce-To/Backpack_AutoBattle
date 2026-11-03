@@ -70,7 +70,7 @@ namespace BackpackAutoBattle.Prototype
         public ShopRarityTableData ShopRarityTable => _shopRarityTable;
         public int Gold => _run.Gold;
         public int CurrentRound => _run?.Round ?? 1;
-        public string CurrentStageId => _run?.StageId ?? _stageData?.StageId;
+        public string CurrentStageId => IsMainMenu ? _stageData?.StageId : _run?.StageId ?? _stageData?.StageId;
         public int StoredItemCount => _storedItems.Count;
 
         private void Awake()
@@ -79,7 +79,8 @@ namespace BackpackAutoBattle.Prototype
             _shopRandom = new System.Random(System.Environment.TickCount);
             _run = CreateRunState();
             BuildInterface();
-            InitializeRunContent();
+            if (PrototypeMainMenuEntry.ConsumeMainMenuRequest()) ShowMainMenu();
+            else InitializeRunContent();
         }
 
         private void Update()
@@ -328,7 +329,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool AdvanceRound()
         {
-            if (_draggingItem != null || (_run.Phase != PrototypePhase.Victory
+            if (IsMainMenu || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
                 && !(_enableDebugRoundAdvance && _run.Phase == PrototypePhase.Preparation)))
             {
                 return false;
@@ -357,6 +358,7 @@ namespace BackpackAutoBattle.Prototype
             bool processFusions = _run.Phase == PrototypePhase.Victory;
             _run.Round++;
             _preparedEnemy = nextEnemy;
+            RecordProgress();
             _enemyConfigurationError = null;
             _run.Gold += _roundIncome;
             _run.Phase = PrototypePhase.Preparation;
@@ -478,7 +480,15 @@ namespace BackpackAutoBattle.Prototype
             BuildStorage(_shopScreenRoot);
             _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot);
             InitializeBattleScreen(canvasObject.transform);
-            _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart(), () => _battleController.ShowStatistics());
+            _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart(),
+                () => _battleController.ShowStatistics(), () => TryReturnToMainMenu());
+            _mainMenu = new PrototypeMainMenuScreen(canvasObject.transform, () => TryStartRun(), QuitGame,
+                () => ShowCharacterSelection(), () => ShowStageSelection());
+            _characterSelection = new PrototypeCharacterSelectionScreen(canvasObject.transform,
+                character => TrySelectCharacter(character.CharacterId), CloseSelectionScreens);
+            _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
+                stage => TrySelectStage(stage.StageId), CloseSelectionScreens);
+            _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab));
 
         }
 

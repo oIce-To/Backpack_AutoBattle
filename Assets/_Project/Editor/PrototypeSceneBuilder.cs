@@ -14,6 +14,7 @@ namespace BackpackAutoBattle.Editor
     public static class PrototypeSceneBuilder
     {
         public const string ScenePath = "Assets/Scenes/Prototype_Backpack.unity";
+        public const string MainMenuScenePath = "Assets/Scenes/MainMenu.unity";
 
         [MenuItem("Tools/Backpack AutoBattle/Create Backpack Prototype Scene")]
         public static void CreatePrototypeScene()
@@ -80,6 +81,9 @@ namespace BackpackAutoBattle.Editor
             }
 
             serializedController.FindProperty("_shopRarityTable").objectReferenceValue = rarityTable;
+            if (serializedController.FindProperty("_adventureCatalog").objectReferenceValue == null)
+                serializedController.FindProperty("_adventureCatalog").objectReferenceValue =
+                    AssetDatabase.LoadAssetAtPath<AdventureCatalogData>("Assets/_Project/Data/AdventureCatalog.asset");
             if (serializedController.FindProperty("_characterData").objectReferenceValue == null)
             {
                 const string path = "Assets/_Project/Data/Character_Default.asset";
@@ -113,9 +117,11 @@ namespace BackpackAutoBattle.Editor
         {
             EditorBuildSettingsScene[] existingScenes = EditorBuildSettings.scenes;
             var scenes = existingScenes
-                .Where(scene => !string.Equals(scene.path, ScenePath))
+                .Where(scene => !string.Equals(scene.path, ScenePath) && !string.Equals(scene.path, MainMenuScenePath))
                 .ToList();
             scenes.Insert(0, new EditorBuildSettingsScene(ScenePath, true));
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(MainMenuScenePath) != null)
+                scenes.Insert(0, new EditorBuildSettingsScene(MainMenuScenePath, true));
             EditorBuildSettings.scenes = scenes.ToArray();
         }
     }

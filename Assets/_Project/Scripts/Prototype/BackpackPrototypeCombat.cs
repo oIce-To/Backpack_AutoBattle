@@ -37,7 +37,7 @@ namespace BackpackAutoBattle.Prototype
         private CombatantSnapshot _preparedEnemy;
         private string _enemyConfigurationError;
 
-        public PrototypePhase Phase => _run.Phase;
+        public PrototypePhase Phase => IsMainMenu ? PrototypePhase.MainMenu : _run.Phase;
         public CombatSimulation ActiveCombat => _battleController?.Simulation;
         public PrototypeBattleController BattleController => _battleController;
         public StageData Stage => _stageData;
@@ -47,7 +47,7 @@ namespace BackpackAutoBattle.Prototype
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
-        public bool CanEditLoadout => _run.Phase == PrototypePhase.Preparation;
+        public bool CanEditLoadout => !IsMainMenu && _run.Phase == PrototypePhase.Preparation;
         public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
@@ -113,6 +113,7 @@ namespace BackpackAutoBattle.Prototype
         private void OnBattleFinished(CombatResult result)
         {
             if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds)) return;
+            RecordProgress(_run.Result?.Outcome == PrototypeRunOutcome.Cleared);
             _battleController.ShowResult(Phase);
             UpdateEconomyText();
             if (_run.IsFinished)
@@ -130,7 +131,7 @@ namespace BackpackAutoBattle.Prototype
             bool showShop = CanEditLoadout || Phase == PrototypePhase.Fusion;
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);
-            _battleController.SetVisible(!showShop);
+            _battleController.SetVisible(!IsMainMenu && !showShop);
             _battleController.SetLives(_run.Lives, _run.StartingLives);
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);

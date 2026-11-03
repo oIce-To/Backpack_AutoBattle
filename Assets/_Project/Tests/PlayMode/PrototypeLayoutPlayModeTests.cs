@@ -142,7 +142,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(art.anchoredPosition.y + art.sizeDelta.y / 2f,
                     Is.LessThan(name.anchoredPosition.y - name.sizeDelta.y / 2f));
                 Assert.That(frame.parent.GetComponent<Image>(), Is.Null, "Only the bag gets a colored frame.");
-                Assert.That(name.GetComponent<Text>().text, Is.EqualTo(side == "Player" ? "플레이어" : "고블린"));
+                Assert.That(name.GetComponent<Text>().text, Is.EqualTo(side == "Player" ? "알렌" : "고블린"));
                 Assert.That(art.GetComponentsInChildren<Image>().All(image => image.sprite == null), Is.True);
                 Assert.That(armor.gameObject.activeSelf, Is.False);
             }

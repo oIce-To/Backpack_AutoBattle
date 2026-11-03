@@ -13,7 +13,7 @@ namespace BackpackAutoBattle.Editor
     public static class PrototypeStageDataBuilder
     {
         public const string StagePath = "Assets/_Project/Data/Stages/Stage_01.asset";
-        public const string LateStagePath = "Assets/_Project/Data/Stages/Stage_08_Example.asset";
+        public const string FinalStagePath = "Assets/_Project/Data/Stages/Stage_05.asset";
 
         [MenuItem("Tools/Backpack AutoBattle/Setup Stage Prototype Data")]
         public static void SetupScene()
@@ -51,9 +51,15 @@ namespace BackpackAutoBattle.Editor
             EnemyEncounterData guarded = Encounter("Encounter_GoblinGuard", "goblin_guard", goblin.Enemy, 50, club, shield);
             EnemyData captainType = PrototypeEnemyDataBuilder.CreateType("EnemyType_GoblinCaptain", "goblin_captain", "고블린 대장");
             EnemyEncounterData captain = Encounter("Encounter_GoblinCaptain", "goblin_captain", captainType, 85, club, shield);
-            EnemyEncounterData veteran = Encounter("Encounter_GoblinVeteran", "goblin_veteran", goblin.Enemy, 180, club, null, 25f);
-            StageData stage = CreateStage(StagePath, "stage_01", "1스테이지 · 고블린 시험장", goblin, guarded, captain, false);
-            CreateStage(LateStagePath, "stage_08_example", "8스테이지 · 강화 예시", veteran, veteran, captain, true);
+            StageData stage = null;
+            for (int number = 1; number <= 5; number++)
+            {
+                string title = number == 1 ? "1스테이지 · 고블린 시험장" : $"{number}스테이지 · 고블린 전선";
+                StageData created = CreateStage($"Assets/_Project/Data/Stages/Stage_{number:00}.asset", $"stage_{number:00}",
+                    title, goblin, guarded, captain, number);
+                created.ValidateOrThrow();
+                if (number == 1) stage = created;
+            }
             AssetDatabase.SaveAssets();
             stage.ValidateOrThrow();
             return stage;
@@ -89,7 +95,7 @@ namespace BackpackAutoBattle.Editor
         }
 
         private static StageData CreateStage(string path, string id, string displayName, EnemyEncounterData basic,
-            EnemyEncounterData guarded, EnemyEncounterData boss, bool late)
+            EnemyEncounterData guarded, EnemyEncounterData boss, int stageNumber)
         {
             var result = AssetDatabase.LoadAssetAtPath<StageData>(path);
             if (result != null) return result;
@@ -99,6 +105,7 @@ namespace BackpackAutoBattle.Editor
             data.FindProperty("_displayName").stringValue = displayName;
             SerializedProperty rounds = data.FindProperty("_rounds");
             rounds.arraySize = StageData.RoundsPerStage;
+            float scale = 1f + (stageNumber - 1) * .4f;
             for (int index = 0; index < rounds.arraySize; index++)
             {
                 bool isBoss = index == rounds.arraySize - 1;
@@ -107,12 +114,12 @@ namespace BackpackAutoBattle.Editor
                 round.FindPropertyRelative("_isBoss").boolValue = isBoss;
                 SerializedProperty modifier = round.FindPropertyRelative("_overrides");
                 modifier.FindPropertyRelative("_overrideMaximumHealth").boolValue = true;
-                modifier.FindPropertyRelative("_maximumHealth").intValue = late ? 180 + index * 10 : 30 + index * 5;
+                modifier.FindPropertyRelative("_maximumHealth").intValue = Mathf.RoundToInt((30 + index * 5) * scale);
                 SerializedProperty items = modifier.FindPropertyRelative("_items");
                 items.arraySize = 1;
                 SerializedProperty item = items.GetArrayElementAtIndex(0);
                 item.FindPropertyRelative("_slotId").stringValue = "club";
-                Stat(item.FindPropertyRelative("_stats"), "_attackDamage", late ? 25 + index : 5 + (index + 1) / 2);
+                Stat(item.FindPropertyRelative("_stats"), "_attackDamage", Mathf.RoundToInt((5 + (index + 1) / 2) * scale));
             }
             data.ApplyModifiedPropertiesWithoutUndo();
             AssetDatabase.CreateAsset(result, path);

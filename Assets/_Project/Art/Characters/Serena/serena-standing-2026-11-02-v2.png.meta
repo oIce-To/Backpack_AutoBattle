@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 6111f504d6342d74d81fecffe013aa6c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1075534598350314066
+    second: serena-standing-2026-11-02-v2_0
+  - first:
+      213: -1590845451600945924
+    second: serena-standing-2026-11-02-v2_1
+  - first:
+      213: -1975919536655462094
+    second: serena-standing-2026-11-02-v2_2
+  - first:
+      213: -3703671795031456828
+    second: serena-standing-2026-11-02-v2_3
+  - first:
+      213: -4770602251961157223
+    second: serena-standing-2026-11-02-v2_4
+  - first:
+      213: -5203423418535346265
+    second: serena-standing-2026-11-02-v2_5
+  - first:
+      213: 5611347878896227461
+    second: serena-standing-2026-11-02-v2_6
+  - first:
+      213: 2938281624645523379
+    second: serena-standing-2026-11-02-v2_7
+  - first:
+      213: -8511915277243602532
+    second: serena-standing-2026-11-02-v2_8
+  - first:
+      213: -2718648716967432699
+    second: serena-standing-2026-11-02-v2_9
+  - first:
+      213: 755375163254677674
+    second: serena-standing-2026-11-02-v2_10
+  - first:
+      213: 4258445390758253723
+    second: serena-standing-2026-11-02-v2_11
+  - first:
+      213: -5840822916778456604
+    second: serena-standing-2026-11-02-v2_12
+  - first:
+      213: 7775480969855733595
+    second: serena-standing-2026-11-02-v2_13
+  - first:
+      213: -711638199528173230
+    second: serena-standing-2026-11-02-v2_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_0
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 1524
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea5efa13bfee211f0800000000000000
+      internalID: -1075534598350314066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1005
+        height: 1522
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfc97cc8d7e2ce9e0800000000000000
+      internalID: -1590845451600945924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_2
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 1501
+        width: 33
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23195e876af1494e0800000000000000
+      internalID: -1975919536655462094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_3
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 1407
+        width: 45
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c34484102ae99cc0800000000000000
+      internalID: -3703671795031456828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_4
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 1457
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9993d2f078a6bcdb0800000000000000
+      internalID: -4770602251961157223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_5
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 1234
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7af704248f9b9c7b0800000000000000
+      internalID: -5203423418535346265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_6
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 988
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58450c86a238fdd40800000000000000
+      internalID: 5611347878896227461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_7
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 951
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b7dd07e19fd6c820800000000000000
+      internalID: 2938281624645523379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_8
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 911
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c99aca5472a9fd980800000000000000
+      internalID: -8511915277243602532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_9
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 879
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50ea51c556b654ad0800000000000000
+      internalID: -2718648716967432699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_10
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 848
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa0a2f575b1ab7a00800000000000000
+      internalID: 755375163254677674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_11
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 847
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b949b8b4589091b30800000000000000
+      internalID: 4258445390758253723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_12
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 503
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e98571d08a31fea0800000000000000
+      internalID: -5840822916778456604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_13
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 488
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5f8f0eeebe08eb60800000000000000
+      internalID: 7775480969855733595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serena-standing-2026-11-02-v2_14
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 247
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2515684f3d0cf16f0800000000000000
+      internalID: -711638199528173230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      serena-standing-2026-11-02-v2_0: -1075534598350314066
+      serena-standing-2026-11-02-v2_1: -1590845451600945924
+      serena-standing-2026-11-02-v2_10: 755375163254677674
+      serena-standing-2026-11-02-v2_11: 4258445390758253723
+      serena-standing-2026-11-02-v2_12: -5840822916778456604
+      serena-standing-2026-11-02-v2_13: 7775480969855733595
+      serena-standing-2026-11-02-v2_14: -711638199528173230
+      serena-standing-2026-11-02-v2_2: -1975919536655462094
+      serena-standing-2026-11-02-v2_3: -3703671795031456828
+      serena-standing-2026-11-02-v2_4: -4770602251961157223
+      serena-standing-2026-11-02-v2_5: -5203423418535346265
+      serena-standing-2026-11-02-v2_6: 5611347878896227461
+      serena-standing-2026-11-02-v2_7: 2938281624645523379
+      serena-standing-2026-11-02-v2_8: -8511915277243602532
+      serena-standing-2026-11-02-v2_9: -2718648716967432699
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

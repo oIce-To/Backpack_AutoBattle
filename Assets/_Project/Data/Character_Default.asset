@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78196cbf77949ec8df4c40f5d0753e0, type: 3}
   m_Name: Character_Default
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.CharacterData
-  _displayName: 플레이어
+  _displayName: 알렌
+  _characterId: allen
+  _portrait: {fileID: 1084409501750632735, guid: 8875e5cb005174b46b17ffc6166d88a9, type: 3}
   _maximumHealth: 50
   _attack: 10

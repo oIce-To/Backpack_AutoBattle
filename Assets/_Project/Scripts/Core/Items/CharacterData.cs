@@ -20,10 +20,14 @@ namespace BackpackAutoBattle.Items
     [CreateAssetMenu(menuName = "Backpack AutoBattle/Character", fileName = "Character_")]
     public sealed class CharacterData : ScriptableObject
     {
+        [SerializeField] private string _characterId;
         [SerializeField] private string _displayName = "플레이어";
+        [SerializeField] private Sprite _portrait;
         [SerializeField, Min(1)] private float _maximumHealth = 50;
         [SerializeField, Min(0)] private float _attack = 10;
         public string DisplayName => _displayName;
+        public string CharacterId => _characterId;
+        public Sprite Portrait => _portrait;
         public CharacterStatsSnapshot CaptureStats() => new(_maximumHealth, _attack);
     }
 

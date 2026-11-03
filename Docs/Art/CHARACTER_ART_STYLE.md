@@ -4,13 +4,26 @@
 
 ## 승인된 기준 이미지
 
-![확정된 기본 소년 캐릭터](../../Assets/_Project/Art/Characters/StarterBoy/starter-boy-standing-approved.png)
+![확정된 기본 소년 캐릭터](../../Assets/_Project/Art/Characters/Allen/allen-standing-approved.png)
 
-- 확정 파일: `Assets/_Project/Art/Characters/StarterBoy/starter-boy-standing-approved.png`
+- 확정 파일: `Assets/_Project/Art/Characters/Allen/allen-standing-approved.png`
 - 사용자가 등신과 얼굴 수정을 요청한 뒤 생성한 두 장 중 **첫 번째**를 선택했다. 얼굴을 추가로 사실적으로 수정하기 전 이미지다.
 - 생성 원본 식별자: `exec-46a8b68d-e822-49d5-952c-1630f9d43045.png`.
-- 기존 `starter-boy-standing-v1.png`와 `starter-boy-standing-v2.png`는 비교용 이전 시안이며, 승인된 기준 이미지는 위 `approved` 파일이다.
+- 기존 `allen-standing-v1.png`와 `allen-standing-v2.png`는 비교용 이전 시안이며, 승인된 기준 이미지는 위 `approved` 파일이다.
 - 1024 × 1536 PNG, 알파 채널 포함. 게임 화면 연결 및 임포트 설정은 별도 작업이다.
+
+## 세레나 확정 이미지
+
+![세레나 확정본](../../Assets/_Project/Art/Characters/Serena/serena-standing-approved.png)
+
+- 확정일: 2026-11-02.
+- 확정 파일: `Assets/_Project/Art/Characters/Serena/serena-standing-approved.png`.
+- 선택된 시안: `serena-standing-2026-11-02-v2.png`. 피부색을 조금 밝게 하고 한쪽 어깨의 녹색 케이프 길이를 줄인 수정본이다. 이미지 변경 없이 복사했다.
+- 은회색 장발과 검은 머리띠, 흰 셔츠와 남색 조끼·스커트, 스타킹 없는 맨다리, 짙은 갈색 부츠, 흰색·금색 활을 갖춘 인간 여성 궁수다.
+- 1024 × 1536 PNG, 알파 채널 포함. 알렌과 동일한 Unity TextureImporter 설정을 사용한다(Sprites, Multiple, 100 PPU, Bilinear, mipmap 비활성화, 알파 투명도 활성화). 스프라이트 이름은 `serena-standing-approved_0`, 영역은 전체 1024 × 1536이다.
+- Unity 에셋 GUID와 스프라이트 식별자는 세레나 전용으로 부여했다. 게임 데이터나 화면에 캐릭터를 추가하는 작업은 별도다.
+- 생성·편집 프롬프트: `serena-standing-2026-11-02-v1.prompt.md`, `serena-standing-2026-11-02-v2.prompt.md`.
+- 알렌은 공통 그림체의 우선 기준이며, 세레나의 디자인 수정에는 이 확정본을 사용한다.
 
 ## 앞으로 적용할 방향
 
@@ -29,4 +42,4 @@
 
 ## 생성 기록
 
-내장 이미지 생성 도구로 제작했다. 승인 이미지는 `starter-boy-standing-v2.prompt.md`의 **Initial revision prompt** 결과다. 같은 문서의 **Final facial refinement prompt** 결과는 선택되지 않았다. 향후 프롬프트의 얼굴 표현이 승인 이미지와 충돌하면 승인 이미지의 표현을 따른다.
+내장 이미지 생성 도구로 제작했다. 승인 이미지는 `allen-standing-v2.prompt.md`의 **Initial revision prompt** 결과다. 같은 문서의 **Final facial refinement prompt** 결과는 선택되지 않았다. 향후 프롬프트의 얼굴 표현이 승인 이미지와 충돌하면 승인 이미지의 표현을 따른다.
