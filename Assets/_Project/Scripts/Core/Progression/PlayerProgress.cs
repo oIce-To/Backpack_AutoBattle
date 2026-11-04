@@ -12,6 +12,15 @@ namespace BackpackAutoBattle.Progression
         public string selectedCharacterId;
         public string selectedStageId;
         public List<StageProgressData> stages;
+        public long sharedExperience;
+        public List<CharacterProgressData> characters;
+    }
+
+    [Serializable]
+    public sealed class CharacterProgressData
+    {
+        public string characterId;
+        public int level;
     }
 
     [Serializable]
@@ -34,8 +43,27 @@ namespace BackpackAutoBattle.Progression
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
     public sealed class PlayerProgress
     {
-        public const int SaveVersion = 1;
+        public const int SaveVersion = 2;
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
+        public long SharedExperience { get; private set; }
+        public int GetCharacterLevel(string id) => _characterLevels.TryGetValue(id ?? "", out int level) ? level : 1;
+        public bool TryAddExperience(long amount)
+        {
+            if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
+            if (amount > long.MaxValue - SharedExperience) return false;
+            SharedExperience += amount;
+            return true;
+        }
+        public bool TryLevelUp(string id, ExperienceTableData table)
+        {
+            ValidId(id);
+            int level = GetCharacterLevel(id);
+            if (table == null || !table.TryGetCost(level, out long cost) || SharedExperience < cost) return false;
+            SharedExperience -= cost;
+            _characterLevels[id] = level + 1;
+            return true;
+        }
         public string SelectedCharacterId { get; private set; } = "";
         public string SelectedStageId { get; private set; } = "";
         public StageProgress GetStage(string id) => _stages.TryGetValue(id ?? "", out var progress)
@@ -67,6 +95,9 @@ namespace BackpackAutoBattle.Progression
         public ProfileSaveData Export() => new()
         {
             version = SaveVersion, selectedCharacterId = SelectedCharacterId, selectedStageId = SelectedStageId,
+            sharedExperience = SharedExperience,
+            characters = _characterLevels.OrderBy(p => p.Key, StringComparer.Ordinal)
+                .Select(p => new CharacterProgressData { characterId = p.Key, level = p.Value }).ToList(),
             stages = _stages.Values.OrderBy(p => p.StageId, StringComparer.Ordinal).Select(p => new StageProgressData
             { stageId = p.StageId, highestRound = p.HighestRound, cleared = p.Cleared }).ToList()
         };
@@ -79,6 +110,17 @@ namespace BackpackAutoBattle.Progression
             {
                 SelectedCharacterId = data.selectedCharacterId ?? "", SelectedStageId = data.selectedStageId ?? ""
             };
+            if (data.version >= 2)
+            {
+                if (data.sharedExperience < 0) throw new FormatException("Invalid experience balance.");
+                progress.SharedExperience = data.sharedExperience;
+                foreach (var character in data.characters ?? new List<CharacterProgressData>())
+                {
+                    if (character == null || string.IsNullOrWhiteSpace(character.characterId) || character.level < 1)
+                        throw new FormatException("Invalid character progress.");
+                    progress._characterLevels[character.characterId] = Math.Max(progress.GetCharacterLevel(character.characterId), character.level);
+                }
+            }
             foreach (var stage in data.stages ?? new List<StageProgressData>())
             {
                 if (stage == null || string.IsNullOrWhiteSpace(stage.stageId) || stage.highestRound < 1 || stage.highestRound > StageData.RoundsPerStage

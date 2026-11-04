@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackpackAutoBattle.Items;
+using BackpackAutoBattle.Progression;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -114,9 +115,11 @@ namespace BackpackAutoBattle.Prototype
     {
         public RectTransform Root { get; }
         public PrototypeCharacterCarousel Carousel { get; }
-        private readonly Text _name, _stats;
-        private readonly Button _confirm;
-        public PrototypeCharacterSelectionScreen(Transform canvas, Action<CharacterData> confirm, Action close)
+        private readonly Text _name, _stats, _level, _levelCost, _levelUpTitle, _error;
+        private readonly PrototypeExperienceIcon _costIcon;
+        private readonly Button _confirm, _levelUp;
+        private PlayerProgress _progress;
+        public PrototypeCharacterSelectionScreen(Transform canvas, Action<CharacterData> confirm, Action close, Action<CharacterData> levelUp)
         {
             var background = SelectionUi.Image(canvas, "Character Selection Screen", new Color(.035f, .04f, .055f));
             background.raycastTarget = true; Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
@@ -130,8 +133,24 @@ namespace BackpackAutoBattle.Prototype
             var detail = SelectionUi.Image(panel.transform, "Character Details Panel", new Color(.10f, .12f, .16f));
             SelectionUi.Place(detail.rectTransform, new Vector2(340, -30), new Vector2(340, 510));
             _name = SelectionUi.Label(panel.transform, "Character Preview Name", "", 31, new Vector2(340, 154), new Vector2(300, 50));
-            _stats = SelectionUi.Label(panel.transform, "Character Preview Stats", "", 23, new Vector2(340, 54), new Vector2(300, 130));
+            _level = SelectionUi.Label(panel.transform, "Character Preview Level", "", 19, new Vector2(340, 111), new Vector2(300, 28));
+            _stats = SelectionUi.Label(panel.transform, "Character Preview Stats", "", 23, new Vector2(340, 48), new Vector2(300, 84));
             _stats.lineSpacing = 1.7f;
+            var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(PrototypeRoundedPanel), typeof(Button));
+            upgrade.transform.SetParent(panel.transform, false);
+            SelectionUi.Place((RectTransform)upgrade.transform, new Vector2(340, -100), new Vector2(300, 104));
+            var face = upgrade.GetComponent<PrototypeRoundedPanel>(); face.color = new Color(.23f, .42f, .30f);
+            _levelUp = upgrade.GetComponent<Button>(); _levelUp.targetGraphic = face;
+            _levelUp.navigation = new Navigation { mode = Navigation.Mode.None };
+            _levelUp.onClick.AddListener(() => { if (_levelUp.interactable && !Carousel.IsAnimating) levelUp(Carousel.PreviewedCharacter); });
+            _levelUpTitle = SelectionUi.Label(upgrade.transform, "Character Level Up Button Label", "레벨 업", 23,
+                new Vector2(0, 23), new Vector2(280, 32));
+            var costIcon = new GameObject("Character Level Up Experience Icon", typeof(RectTransform), typeof(PrototypeExperienceIcon));
+            costIcon.transform.SetParent(upgrade.transform, false); _costIcon = costIcon.GetComponent<PrototypeExperienceIcon>();
+            _levelCost = SelectionUi.Label(upgrade.transform, "Character Level Up Cost", "", 23, new Vector2(19, -22), new Vector2(150, 32));
+            _levelCost.resizeTextForBestFit = true; _levelCost.resizeTextMinSize = 14; _levelCost.resizeTextMaxSize = 23;
+            _error = SelectionUi.Label(panel.transform, "Character Growth Error", "", 14, new Vector2(340, -194), new Vector2(300, 42));
+            _error.color = new Color(1, .45f, .4f);
             _confirm = SelectionUi.Button(panel.transform, "Character Confirm Button", "선택", new Vector2(340, -253), new Vector2(300, 46),
                 () => { if (!Carousel.IsAnimating && Carousel.PreviewedCharacter != null) confirm(Carousel.PreviewedCharacter); });
             _confirm.GetComponent<Image>().color = new Color(.57f, .78f, .59f);
@@ -140,15 +159,32 @@ namespace BackpackAutoBattle.Prototype
             Carousel = Root.gameObject.AddComponent<PrototypeCharacterCarousel>(); Carousel.Configure(viewport.rectTransform, RenderDetails);
             Hide();
         }
-        public void Show(IReadOnlyList<CharacterData> characters, CharacterData current)
+        public void Show(IReadOnlyList<CharacterData> characters, CharacterData current, PlayerProgress progress)
         {
+            _progress = progress; _error.text = "";
             Root.gameObject.SetActive(true); Root.SetAsLastSibling(); Carousel.SetCharacters(characters, current);
         }
+        public void RefreshProgress(PlayerProgress progress)
+        {
+            _progress = progress; _error.text = "";
+            RenderDetails(Carousel.PreviewedCharacter, Carousel.IsAnimating);
+        }
+        public void ShowError(string error) => _error.text = error ?? "";
         private void RenderDetails(CharacterData character, bool moving)
         {
             _confirm.interactable = character != null && !moving;
             _name.text = character?.DisplayName ?? "캐릭터가 없습니다.";
-            var stats = character?.CaptureStats(); _stats.text = stats == null ? "" : $"체력  {stats.MaximumHealth:0.#}\n공격력  {stats.Attack:0.#}";
+            int level = _progress?.GetCharacterLevel(character?.CharacterId) ?? 1;
+            _level.text = $"Lv. {level}";
+            var stats = character?.CaptureStats(level); _stats.text = stats == null ? "" : $"체력  {stats.MaximumHealth:0.#}\n공격력  {stats.Attack:0.#}";
+            long cost = 0;
+            bool canGrow = character?.ExperienceTable != null && character.ExperienceTable.TryGetCost(level, out cost);
+            _levelUpTitle.text = canGrow ? "레벨 업" : "레벨업 불가";
+            _levelCost.text = canGrow ? $"{cost:N0}" : "—";
+            float costWidth = Mathf.Min(220, _levelCost.preferredWidth);
+            SelectionUi.Place(_costIcon.rectTransform, new Vector2(-(costWidth + 10) / 2, -22), new Vector2(28, 28));
+            SelectionUi.Place(_levelCost.rectTransform, new Vector2(19, -22), new Vector2(costWidth, 32));
+            _levelUp.interactable = canGrow && !moving && (_progress?.SharedExperience ?? 0) >= cost;
         }
         public void Hide() => Root.gameObject.SetActive(false);
     }

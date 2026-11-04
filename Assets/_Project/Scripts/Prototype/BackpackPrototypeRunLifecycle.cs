@@ -24,8 +24,10 @@ namespace BackpackAutoBattle.Prototype
         /// A future main-screen coordinator can subscribe and take ownership of navigation/rewards.</summary>
         public event Action<PrototypeRunResult> RestartRequested;
 
-        private PrototypeRunState CreateRunState() => new(_startingGold, _stageData?.StageId, _characterData?.CaptureStats(),
-            _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName);
+        private PrototypeRunState CreateRunState() => new(_startingGold, _stageData?.StageId,
+            _characterData?.CaptureStats(_progress.GetCharacterLevel(_characterData.CharacterId)),
+            _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName,
+            _stageData?.ClearExperience ?? 0);
 
         private void InitializeRunContent()
         {

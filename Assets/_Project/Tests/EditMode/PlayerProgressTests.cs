@@ -74,7 +74,7 @@ namespace BackpackAutoBattle.Tests.Progression
             Assert.That(loaded.GetStage("stage_05").HighestRound, Is.EqualTo(4));
             loaded.RecordRound("stage_05", 8, 12);
             Assert.That(progress.GetStage("stage_05").HighestRound, Is.EqualTo(4));
-            Assert.That(File.ReadAllText(_path), Does.Contain("\"version\": 1"));
+            Assert.That(File.ReadAllText(_path), Does.Contain("\"version\": 2"));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace BackpackAutoBattle.Tests.Progression
 
         [TestCase("{invalid json")]
         [TestCase("{}")]
-        [TestCase("{\"version\":2,\"futureField\":123}")]
+        [TestCase("{\"version\":3,\"futureField\":123}")]
         public void UnreadableOrNewerSave_IsPreservedAndNeverSilentlyOverwritten(string json)
         {
             Directory.CreateDirectory(_directory); File.WriteAllText(_path, json);
@@ -122,6 +122,29 @@ namespace BackpackAutoBattle.Tests.Progression
             Assert.Throws<FormatException>(() => PlayerProgress.FromData(data));
             Assert.Throws<ArgumentException>(() => new PlayerProgress().SelectCharacter(""));
             Assert.Throws<ArgumentException>(() => new PlayerProgress().SelectStage(" "));
+        }
+
+        [Test]
+        public void VersionOneMigratesWithoutLosingSelectionsOrStageRecords_AndVersionTwoPersistsSharedExperienceAndSeparateLevels()
+        {
+            const string legacy = "{\"version\":1,\"selectedCharacterId\":\"serena\",\"selectedStageId\":\"stage_02\",\"stages\":[{\"stageId\":\"stage_01\",\"highestRound\":12,\"cleared\":true}]}";
+            Directory.CreateDirectory(_directory); File.WriteAllText(_path, legacy);
+            var store = new PlayerProgressStore(_path); var progress = store.Load(out string warning);
+            Assert.That(warning, Is.Null); Assert.That(progress.SharedExperience, Is.Zero);
+            Assert.That(progress.GetCharacterLevel("serena"), Is.EqualTo(1));
+            Assert.That(progress.SelectedCharacterId, Is.EqualTo("serena")); Assert.That(progress.SelectedStageId, Is.EqualTo("stage_02"));
+            Assert.That(progress.GetStage("stage_01").Cleared, Is.True);
+            var table = UnityEngine.ScriptableObject.CreateInstance<ExperienceTableData>();
+            try
+            {
+                progress.TryAddExperience(400); progress.TryLevelUp("allen", table); progress.TryLevelUp("allen", table);
+                Assert.That(store.TrySave(progress, out _), Is.True);
+                var loaded = new PlayerProgressStore(_path).Load(out warning);
+                Assert.That(warning, Is.Null); Assert.That(loaded.SharedExperience, Is.EqualTo(175));
+                Assert.That(loaded.GetCharacterLevel("allen"), Is.EqualTo(3)); Assert.That(loaded.GetCharacterLevel("serena"), Is.EqualTo(1));
+                Assert.That(loaded.GetStage("stage_01").Cleared, Is.True);
+            }
+            finally { UnityEngine.Object.DestroyImmediate(table); }
         }
     }
 }

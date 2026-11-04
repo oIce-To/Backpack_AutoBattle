@@ -11,7 +11,7 @@ namespace BackpackAutoBattle.Prototype
     {
         public RectTransform Root { get; }
         private readonly Image _portrait;
-        private readonly Text _name, _health, _attack, _stage, _error;
+        private readonly Text _name, _health, _attack, _stage, _error, _level;
 
         public PrototypeMainMenuScreen(Transform canvas, Action start, Action quit, Action characters, Action stages)
         {
@@ -30,6 +30,7 @@ namespace BackpackAutoBattle.Prototype
             Text title = Label(panel.transform, "Main Menu Title", "BACKPACK\nAUTO BATTLE", 36,
                 new Vector2(232, 216), new Vector2(450, 100));
             title.color = new Color(.95f, .88f, .72f);
+            _level = Label(panel.transform, "Main Character Level", "", 19, new Vector2(232, 150), new Vector2(430, 24));
             _name = Label(panel.transform, "Main Character Name", "", 36, new Vector2(232, 112), new Vector2(430, 52));
             _health = Label(panel.transform, "Main Character Health", "", 23, new Vector2(128, 65), new Vector2(192, 40));
             _attack = Label(panel.transform, "Main Character Attack", "", 23, new Vector2(338, 65), new Vector2(192, 40));
@@ -48,9 +49,11 @@ namespace BackpackAutoBattle.Prototype
             Hide();
         }
 
-        public void Show(CharacterData character, StageData stage, StageProgress progress)
+        public void Show(CharacterData character, StageData stage, StageProgress progress, PlayerProgress profile)
         {
-            CharacterStatsSnapshot stats = character != null ? character.CaptureStats() : CharacterStatsSnapshot.Default;
+            int level = profile.GetCharacterLevel(character?.CharacterId);
+            CharacterStatsSnapshot stats = character != null ? character.CaptureStats(level) : CharacterStatsSnapshot.Default;
+            _level.text = $"Lv. {level}";
             _portrait.sprite = character?.Portrait;
             _portrait.enabled = _portrait.sprite != null;
             _name.text = character != null ? character.DisplayName : "플레이어";

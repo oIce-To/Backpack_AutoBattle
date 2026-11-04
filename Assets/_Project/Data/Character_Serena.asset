@@ -17,3 +17,4 @@ MonoBehaviour:
   _portrait: {fileID: 21300000, guid: fda51e17537649989841639e6848ea6c, type: 3}
   _maximumHealth: 50
   _attack: 10
+  _experienceTable: {fileID: 11400000, guid: 481ec39832414edfb8c729d86de26385, type: 2}

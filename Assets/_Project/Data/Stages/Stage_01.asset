@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Stage_01
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.StageData
   _stageId: stage_01
+  _clearExperience: 100
   _displayName: "1\uC2A4\uD14C\uC774\uC9C0 \xB7 \uACE0\uBE14\uB9B0 \uC2DC\uD5D8\uC7A5"
   _rounds:
   - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}

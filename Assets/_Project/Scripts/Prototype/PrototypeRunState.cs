@@ -1,6 +1,7 @@
 using System;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
+using BackpackAutoBattle.Progression;
 
 namespace BackpackAutoBattle.Prototype
 {
@@ -17,6 +18,7 @@ namespace BackpackAutoBattle.Prototype
             Round = run.Round; RoundCount = roundCount; Lives = run.Lives; StartingLives = run.StartingLives;
             Gold = run.Gold; Victories = run.Victories; Defeats = run.Defeats; Draws = run.Draws;
             TotalBattleSeconds = run.TotalBattleSeconds; LastBattleResult = run.LastBattleResult.Value;
+            ExperienceReward = StageExperienceReward.Calculate(run.ClearExperience, outcome == PrototypeRunOutcome.Cleared, Round);
         }
         public PrototypeRunOutcome Outcome { get; }
         public string StageId { get; }
@@ -31,24 +33,28 @@ namespace BackpackAutoBattle.Prototype
         public int Draws { get; }
         public double TotalBattleSeconds { get; }
         public CombatResult LastBattleResult { get; }
+        public long ExperienceReward { get; }
     }
 
     /// <summary>Run progress lives independently of both screen roots.</summary>
     public sealed class PrototypeRunState
     {
         public PrototypeRunState(int startingGold, string stageId = null, CharacterStatsSnapshot stats = null,
-            string playerName = "플레이어", int startingLives = 3, string stageName = null)
+            string playerName = "플레이어", int startingLives = 3, string stageName = null, int clearExperience = 0)
         {
             if (startingGold < 0) throw new ArgumentOutOfRangeException(nameof(startingGold));
             if (startingLives < 1) throw new ArgumentOutOfRangeException(nameof(startingLives));
+            if (clearExperience < 0) throw new ArgumentOutOfRangeException(nameof(clearExperience));
             Gold = startingGold; StageId = stageId; StageName = stageName;
             PlayerStats = stats ?? CharacterStatsSnapshot.Default; PlayerName = playerName;
             Lives = StartingLives = startingLives;
+            ClearExperience = clearExperience;
         }
         public CharacterStatsSnapshot PlayerStats { get; }
         public string PlayerName { get; }
         public string StageId { get; }
         public string StageName { get; }
+        public int ClearExperience { get; }
         public int StartingLives { get; }
         public int Lives { get; private set; }
         public int Victories { get; private set; }

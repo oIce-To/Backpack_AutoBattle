@@ -113,14 +113,14 @@ namespace BackpackAutoBattle.Prototype
         private void OnBattleFinished(CombatResult result)
         {
             if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds)) return;
-            RecordProgress(_run.Result?.Outcome == PrototypeRunOutcome.Cleared);
+            RecordProgress(_run.Result?.Outcome == PrototypeRunOutcome.Cleared, _run.Result?.ExperienceReward ?? 0);
             _battleController.ShowResult(Phase);
             UpdateEconomyText();
             if (_run.IsFinished)
             {
                 _pendingFusions = Array.Empty<FusionPlan>();
                 _itemTooltip.HideAll(); _fusionHoverOwner = null; ClearPlacementOverlay();
-                _runResultScreen.Show(_run.Result);
+                _runResultScreen.Show(_run.Result, _trackProgress ? _run.Result.ExperienceReward : (long?)null, _saveNotice);
             }
             RefreshCombatInterface();
             if (_run.IsFinished) RunEnded?.Invoke(_run.Result);

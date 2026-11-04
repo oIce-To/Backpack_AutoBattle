@@ -103,6 +103,7 @@ namespace BackpackAutoBattle.Editor
             var data = new SerializedObject(result);
             data.FindProperty("_stageId").stringValue = id;
             data.FindProperty("_displayName").stringValue = displayName;
+            data.FindProperty("_clearExperience").intValue = 100 * (1 << (stageNumber - 1));
             SerializedProperty rounds = data.FindProperty("_rounds");
             rounds.arraySize = StageData.RoundsPerStage;
             float scale = 1f + (stageNumber - 1) * .4f;

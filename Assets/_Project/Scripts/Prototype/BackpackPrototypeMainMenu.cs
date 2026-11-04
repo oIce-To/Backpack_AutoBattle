@@ -50,10 +50,10 @@ namespace BackpackAutoBattle.Prototype
             switch (tab)
             {
                 case MainMenuTab.Home: RefreshMainMenu(); break;
-                case MainMenuTab.Characters: _characterSelection.Show(AvailableCharacters, _characterData); break;
+                case MainMenuTab.Characters: _characterSelection.Show(AvailableCharacters, _characterData, _progress); break;
                 case MainMenuTab.Stages: _stageSelection.Show(AvailableStages, _stageData, _progress); break;
             }
-            ActiveMainTab = tab; _mainNavigation.Show(tab); return true;
+            ActiveMainTab = tab; _mainNavigation.Show(tab, _progress.SharedExperience); return true;
         }
         public bool ShowCharacterSelection() => ShowMainMenuTab(MainMenuTab.Characters);
         public bool ShowStageSelection() => ShowMainMenuTab(MainMenuTab.Stages);
@@ -80,20 +80,47 @@ namespace BackpackAutoBattle.Prototype
             SaveProgress(); ShowMainMenuTab(MainMenuTab.Home); return true;
         }
 
+        public bool TryLevelUpCharacter(string id)
+        {
+            if (!IsMainMenu || _progressStore == null) return false;
+            CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
+            if (character == null) return false;
+            var candidate = PlayerProgress.FromData(_progress.Export());
+            if (!candidate.TryLevelUp(id, character.ExperienceTable)) return false;
+            // Save the debit and new level together. A failed write must not spend the user's experience.
+            if (!_progressStore.TrySave(candidate, out _saveNotice))
+            {
+                _characterSelection.ShowError(_saveNotice);
+                if (ActiveMainTab == MainMenuTab.Home) _mainMenu.ShowError(_saveNotice);
+                return false;
+            }
+            _progress = candidate;
+            _characterSelection.RefreshProgress(_progress);
+            _mainNavigation.SetExperience(_progress.SharedExperience);
+            if (ActiveMainTab == MainMenuTab.Home) ShowMainMenuTab(MainMenuTab.Home);
+            return true;
+        }
+
         private void SaveProgress()
         {
             if (_progressStore == null) return;
             _progressStore.TrySave(_progress, out _saveNotice);
             if (IsMainMenu && !string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
-        private void RecordProgress(bool cleared = false)
+        private void RecordProgress(bool cleared = false, long experienceReward = 0)
         {
             if (!_trackProgress || _progressStore == null || _stageData == null) return;
-            if (_progress.RecordRound(_run.StageId, _run.Round, StageRoundCount, cleared)) SaveProgress();
+            bool changed = _progress.RecordRound(_run.StageId, _run.Round, StageRoundCount, cleared);
+            if (!_progress.TryAddExperience(experienceReward))
+            {
+                _saveNotice = "경험치가 저장 가능한 범위를 초과했습니다.";
+                return;
+            }
+            if (changed || experienceReward > 0) SaveProgress();
         }
         private void RefreshMainMenu()
         {
-            _mainMenu.Show(_characterData, _stageData, _progress.GetStage(_stageData?.StageId));
+            _mainMenu.Show(_characterData, _stageData, _progress.GetStage(_stageData?.StageId), _progress);
             if (!string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
 

@@ -1,4 +1,5 @@
 using System;
+using BackpackAutoBattle.Progression;
 using UnityEngine;
 
 namespace BackpackAutoBattle.Items
@@ -25,10 +26,18 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private Sprite _portrait;
         [SerializeField, Min(1)] private float _maximumHealth = 50;
         [SerializeField, Min(0)] private float _attack = 10;
+        [SerializeField] private ExperienceTableData _experienceTable;
         public string DisplayName => _displayName;
         public string CharacterId => _characterId;
         public Sprite Portrait => _portrait;
+        public ExperienceTableData ExperienceTable => _experienceTable;
         public CharacterStatsSnapshot CaptureStats() => new(_maximumHealth, _attack);
+        public CharacterStatsSnapshot CaptureStats(int level)
+        {
+            if (level < 1) throw new ArgumentOutOfRangeException(nameof(level));
+            double growth = Math.Pow(1.1, level - 1);
+            return new CharacterStatsSnapshot(Math.Floor(_maximumHealth * growth), Math.Floor(_attack * growth));
+        }
     }
 
     public enum StatReference { Fixed, Attack, MaximumHealth }

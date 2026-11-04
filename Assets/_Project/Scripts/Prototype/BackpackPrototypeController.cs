@@ -485,7 +485,8 @@ namespace BackpackAutoBattle.Prototype
             _mainMenu = new PrototypeMainMenuScreen(canvasObject.transform, () => TryStartRun(), QuitGame,
                 () => ShowCharacterSelection(), () => ShowStageSelection());
             _characterSelection = new PrototypeCharacterSelectionScreen(canvasObject.transform,
-                character => TrySelectCharacter(character.CharacterId), CloseSelectionScreens);
+                character => TrySelectCharacter(character.CharacterId), CloseSelectionScreens,
+                character => TryLevelUpCharacter(character.CharacterId));
             _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
                 stage => TrySelectStage(stage.StageId), CloseSelectionScreens);
             _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab));

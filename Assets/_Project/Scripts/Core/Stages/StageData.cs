@@ -31,9 +31,11 @@ namespace BackpackAutoBattle.Stages
         public const int RoundsPerStage = 12;
         [SerializeField] private string _stageId;
         [SerializeField] private string _displayName;
+        [SerializeField, Min(0)] private int _clearExperience = 100;
         [SerializeField] private List<StageRoundData> _rounds = Enumerable.Range(0, RoundsPerStage).Select(_ => new StageRoundData()).ToList();
         public string StageId => _stageId;
         public string DisplayName => _displayName;
+        public int ClearExperience => _clearExperience;
         public int RoundCount => _rounds?.Count ?? 0;
         public IReadOnlyList<StageRoundData> Rounds => _rounds;
         public StageRoundData GetRound(int round)
@@ -44,6 +46,7 @@ namespace BackpackAutoBattle.Stages
         public List<string> GetValidationErrors()
         {
             var errors = new List<string>();
+            if (_clearExperience < 0) errors.Add("클리어 경험치는 0 이상이어야 합니다.");
             if (string.IsNullOrWhiteSpace(StageId) || string.IsNullOrWhiteSpace(DisplayName)) errors.Add("Stage ID와 Display Name을 지정하세요.");
             if (RoundCount != RoundsPerStage) errors.Add($"라운드는 정확히 {RoundsPerStage}개여야 합니다. 현재 {RoundCount}개입니다.");
             for (int round = 1; round <= RoundCount; round++)

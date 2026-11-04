@@ -163,18 +163,27 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(((RectTransform)Find("Main Tab Characters")).anchoredPosition.x, Is.LessThan(0));
             Assert.That(((RectTransform)Find("Main Tab Home")).anchoredPosition.x, Is.Zero);
             Assert.That(((RectTransform)Find("Main Tab Stages")).anchoredPosition.x, Is.GreaterThan(0));
+            Assert.That(((RectTransform)Find("Main Tabs")).anchoredPosition.y, Is.LessThan(-300));
+            var wallet = Find("Main Experience Wallet");
+            Assert.That(((RectTransform)wallet).anchoredPosition.y, Is.GreaterThan(300));
+            Assert.That(((RectTransform)wallet).anchoredPosition.x, Is.LessThan(0));
+            Assert.That(wallet.GetComponent<PrototypeRoundedPanel>().color.a, Is.GreaterThan(0).And.LessThan(1));
+            Assert.That(wallet.gameObject.activeInHierarchy, Is.True);
+            Assert.That(Find("Main Experience Icon").GetComponent<PrototypeExperienceIcon>(), Is.Not.Null);
             Assert.That(_controller.ActiveMainTab, Is.EqualTo(MainMenuTab.Home));
             Assert.That(Find("Main Navigation").gameObject.activeInHierarchy, Is.True);
             Click("Main Tab Characters"); yield return null;
             Assert.That(_controller.ActiveMainTab, Is.EqualTo(MainMenuTab.Characters));
             Assert.That(Find("Main Menu Screen").gameObject.activeSelf, Is.False);
             Assert.That(Find("Character Selection Screen").gameObject.activeSelf, Is.True);
+            Assert.That(wallet.gameObject.activeInHierarchy, Is.True);
             Carousel().Move(1); SettleCarousel();
             Click("Main Tab Stages"); yield return null;
             Assert.That(_controller.ActiveMainTab, Is.EqualTo(MainMenuTab.Stages));
             Assert.That(Find("Character Selection Screen").gameObject.activeSelf, Is.False);
             Assert.That(_controller.SelectedCharacter.CharacterId, Is.EqualTo("allen"));
             Assert.That(Find("Stage Selection Screen").gameObject.activeSelf, Is.True);
+            Assert.That(wallet.gameObject.activeInHierarchy, Is.True);
             var fifth = Find("Stage Choice stage_05");
             Assert.That(RectTransformUtility.RectangleContainsScreenPoint((RectTransform)Find("Stage Choices Viewport"), Pointer(fifth).position), Is.True);
             var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(fifth), hits);
@@ -187,6 +196,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Character Selection Back Button");
             _controller.TryStartRun();
             Assert.That(Find("Main Navigation").gameObject.activeSelf, Is.False);
+            Assert.That(wallet.gameObject.activeInHierarchy, Is.False);
             Assert.That(_controller.ShowMainMenuTab(MainMenuTab.Characters), Is.False);
         }
 
@@ -305,6 +315,118 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         private PrototypeCharacterCarousel Carousel() => _controller.GetComponentInChildren<PrototypeCharacterCarousel>(true);
+
+        [UnityTest]
+        public IEnumerator ExperienceRewards_PayOnlyAtTerminalResult_ExactlyOnce_EvenForPreviouslyClearedLowStages()
+        {
+            SeedClearedStages(4); yield return LoadMenu();
+            Assert.That(_controller.TrySelectStage("stage_01"), Is.True); _controller.TryStartRun();
+            for (int i = 0; i < 2; i++)
+            {
+                Lose(); Assert.That(_controller.Progress.SharedExperience, Is.Zero);
+                Assert.That(_controller.ReturnToPreparation(), Is.True);
+            }
+            Lose(); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(10));
+            Assert.That(_controller.RunResult.ExperienceReward, Is.EqualTo(10));
+            Assert.That(Text("Run Result Experience"), Does.Contain("+10"));
+            _controller.TickCombat(200); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(10));
+            Capture("ExperienceGameOver.png");
+            _controller.TryReturnToMainMenu(); _controller.TryStartRun();
+            for (int i = 0; i < 11; i++) _controller.AdvanceRound();
+            Win(); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(110));
+            Assert.That(_controller.RunResult.ExperienceReward, Is.EqualTo(100));
+            _controller.TickCombat(200); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(110));
+            Capture("ExperienceClear.png");
+            _controller.TryReturnToMainMenu(); yield return LoadMenu();
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(110));
+            Assert.That(_controller.Progress.GetStage("stage_04").Cleared, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator ExperienceGameOver_UsesCurrentRoundRatherThanHistoricalHighestRound()
+        {
+            foreach (var scenario in new[] { (round: 4, expected: 10L), (round: 5, expected: 25L), (round: 8, expected: 25L),
+                (round: 9, expected: 50L), (round: 12, expected: 50L) })
+            {
+                var progress = new PlayerProgress(); progress.RecordRound("stage_01", 12, 12, true);
+                Assert.That(new PlayerProgressStore(_savePath).TrySave(progress, out _), Is.True);
+                yield return LoadMenu(); _controller.TryStartRun();
+                for (int i = 1; i < scenario.round; i++) _controller.AdvanceRound();
+                for (int i = 0; i < 3; i++) { Lose(); if (i < 2) _controller.ReturnToPreparation(); }
+                Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(scenario.expected), $"Round {scenario.round}");
+                Assert.That(new PlayerProgressStore(_savePath).Load(out _).SharedExperience, Is.EqualTo(scenario.expected));
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator LevelUp_InvestsSharedExperienceInPreviewedCharacter_PersistsAndDrivesStageItemStats()
+        {
+            var initial = new PlayerProgress(); initial.TryAddExperience(1000); initial.RecordRound("stage_01", 4, 12);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu(); _controller.ShowCharacterSelection(); yield return null;
+            Carousel().Move(1); SettleCarousel();
+            Click("Character Level Up Button");
+            Assert.That(_controller.Progress.GetCharacterLevel("serena"), Is.EqualTo(2));
+            Assert.That(_controller.Progress.GetCharacterLevel("allen"), Is.EqualTo(1));
+            Assert.That(_controller.SelectedCharacter.CharacterId, Is.EqualTo("allen"), "Investing in a preview must not silently select it.");
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(900));
+            Assert.That(Text("Main Experience Amount"), Is.EqualTo("900"));
+            Assert.That(Text("Character Preview Level"), Is.EqualTo("Lv. 2"));
+            Assert.That(Text("Character Preview Stats"), Does.Contain("55").And.Contain("11"));
+            Assert.That(_controller.GetComponentsInChildren<Transform>(true).Any(t => t.name is "Character Next Level Stats"
+                or "Character Shared Experience" or "Main Shared Experience"), Is.False);
+            Assert.That(Text("Character Level Up Button Label"), Is.EqualTo("레벨 업"));
+            Assert.That(Text("Character Level Up Cost"), Is.EqualTo("125"));
+            Assert.That(Find("Character Level Up Experience Icon").GetComponent<PrototypeExperienceIcon>(), Is.Not.Null);
+            Click("Character Level Up Button");
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(775));
+            Carousel().Move(-1); SettleCarousel(); Click("Character Level Up Button");
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(675));
+            Assert.That(Text("Main Experience Amount"), Is.EqualTo("675"));
+            Capture("CharacterExperienceGrowth.png");
+            Click("Character Confirm Button");
+            Assert.That(Text("Main Character Health"), Is.EqualTo("체력  55")); Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  11"));
+            Assert.That(Text("Main Character Level"), Is.EqualTo("Lv. 2"));
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(675));
+            Assert.That(_controller.Progress.GetCharacterLevel("serena"), Is.EqualTo(3));
+            Assert.That(_controller.Progress.GetCharacterLevel("allen"), Is.EqualTo(2));
+            Assert.That(_controller.Progress.GetStage("stage_01").HighestRound, Is.EqualTo(4));
+            Capture("MainExperienceGrowth.png");
+            _controller.TryStartRun();
+            Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(55)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(11));
+            Assert.That(_controller.TryLevelUpCharacter("allen"), Is.False);
+            _controller.TryStartBattle();
+            Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(55));
+            Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(5.5f).Within(.001));
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(675));
+        }
+
+        [UnityTest]
+        public IEnumerator LevelUp_WhenSaveFails_DoesNotSpendExperienceOrChangeLevel()
+        {
+            var initial = new PlayerProgress(); initial.TryAddExperience(100);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu(); _controller.ShowCharacterSelection(); yield return null;
+            File.Delete(_savePath); Directory.CreateDirectory(_savePath); // Block the file destination inside this test's unique directory.
+            try
+            {
+                Assert.That(_controller.TryLevelUpCharacter("allen"), Is.False);
+                Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(100));
+                Assert.That(_controller.Progress.GetCharacterLevel("allen"), Is.EqualTo(1));
+                Assert.That(Text("Character Growth Error"), Is.Not.Empty);
+            }
+            finally { Directory.Delete(_savePath); }
+        }
+
+        private void Win()
+        {
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            var weapon = _controller.ActiveCombat.PlayerWeapons.First(); weapon.Stats.AttackDamage = 10000; weapon.Stats.AccuracyPercent = 100;
+            _controller.TickCombat(2);
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
+        }
+
         private void SeedClearedStages(int count)
         {
             var progress = new PlayerProgress();

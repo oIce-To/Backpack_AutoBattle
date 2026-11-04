@@ -122,7 +122,7 @@ namespace BackpackAutoBattle.Prototype
             string Names(bool bosses) => string.Join(" · ", stage.Rounds.Where(r => r != null && (!bosses || r.IsBoss))
                 .Select(r => r.Encounter?.DisplayName).Where(n => !string.IsNullOrEmpty(n)).Distinct().Take(4));
             string bossNames = Names(true);
-            _details.text = $"{stage.RoundCount}라운드\n\n주요 적  {Names(false)}\n\n보스  {(bossNames.Length == 0 ? "없음" : bossNames)}";
+            _details.text = $"{stage.RoundCount}라운드\n\n주요 적  {Names(false)}\n\n보스  {(bossNames.Length == 0 ? "없음" : bossNames)}\n\n클리어 경험치  {stage.ClearExperience:N0}";
             if (!_confirm.interactable) _details.text = "스테이지 설정을 확인해주세요.";
             StageProgress record = _progress.GetStage(stage.StageId);
             _record.text = record.Cleared ? $"클리어\n최고 도달 {record.HighestRound} / {stage.RoundCount}라운드"
