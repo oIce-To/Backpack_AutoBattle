@@ -38,7 +38,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool RequestRunRestart()
         {
-            if (IsMainMenu || !_run.IsFinished || _restartRequested) return false;
+            if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
             _restartRequested = true;
             _runResultScreen.SetRestartPending();
             if (RestartRequested != null) { RestartRequested.Invoke(_run.Result); return true; }
@@ -49,7 +49,7 @@ namespace BackpackAutoBattle.Prototype
         /// Only terminal runs can be restarted; repeated clicks cannot duplicate starting content.</summary>
         public bool TryRestartRun()
         {
-            if (IsMainMenu || !_run.IsFinished) return false;
+            if (IsMainMenu || IsSettingsOpen || !_run.IsFinished) return false;
             StartNewRun();
             return true;
         }

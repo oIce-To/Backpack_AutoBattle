@@ -62,7 +62,7 @@ namespace BackpackAutoBattle.Prototype
             statisticsText.raycastTarget = false; BackpackPrototypeController.Stretch(statisticsText.rectTransform);
             _timer = Label(Root, "Combat Timer", new Vector2(0f, 318f), new Vector2(900f, 44f), 28, TextAnchor.MiddleCenter);
             _lives = Label(Root, "Battle Lives", Vector2.zero, new Vector2(170f, 30f), 18, TextAnchor.MiddleRight);
-            BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
+            BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-145f, -36f), new Vector2(170f, 30f));
             _title = Label(Root, "Battle Result", new Vector2(0f, 270f), new Vector2(900f, 36f), 24, TextAnchor.MiddleCenter);
             _title.gameObject.SetActive(false);
             _playbackControls = new PrototypeBattlePlaybackControls(Root, speedAction, pauseAction);
@@ -234,7 +234,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Clear()
         {
-            _playbackControls.SetState(false, 1f, false);
+            SetPlaybackState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(false);
             _tooltip.HideAll();
             _playerBag.Clear(); _enemyBag.Clear(); _playerStatuses.Clear(); _enemyStatuses.Clear();
@@ -251,7 +251,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowResult(PrototypePhase phase)
         {
-            _playbackControls.SetState(false, 1f, false);
+            SetPlaybackState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(true);
             _title.gameObject.SetActive(true);
             _title.text = phase switch
@@ -274,6 +274,13 @@ namespace BackpackAutoBattle.Prototype
 
         public void SetPlaybackState(bool running, float speed, bool paused)
             => _playbackControls.SetState(running, speed, paused);
+
+        internal void SetDamageNumbersVisible(bool visible)
+        {
+            if (_playerDamage.enabled == visible) return;
+            _playerDamage.text = _enemyDamage.text = string.Empty;
+            _playerDamage.enabled = _enemyDamage.enabled = visible;
+        }
 
         public void ShowConfigurationError(string error)
         {

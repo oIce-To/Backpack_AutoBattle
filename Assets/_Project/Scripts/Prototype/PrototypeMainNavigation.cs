@@ -15,7 +15,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly RectTransform _wallet;
         private readonly PrototypeExperienceIcon _experienceIcon;
         private readonly Text _experience;
-        public PrototypeMainNavigation(Transform canvas, Action<MainMenuTab> select)
+        public PrototypeMainNavigation(Transform canvas, Action<MainMenuTab> select, Action openSettings)
         {
             var obj = new GameObject("Main Navigation", typeof(RectTransform)); obj.transform.SetParent(canvas, false);
             Root = (RectTransform)obj.transform;
@@ -30,6 +30,7 @@ namespace BackpackAutoBattle.Prototype
             icon.transform.SetParent(_wallet, false); _experienceIcon = icon.GetComponent<PrototypeExperienceIcon>();
             _experience = SelectionUi.Label(_wallet, "Main Experience Amount", "0", 22, Vector2.zero, new Vector2(120, 32));
             _experience.alignment = TextAnchor.MiddleRight;
+            PrototypeSettingsScreen.GearButton(Root, "Main Settings Button", new Vector2(529, 329), openSettings);
             string[] names = { "메인", "캐릭터", "스테이지" };
             MainMenuTab[] order = { MainMenuTab.Characters, MainMenuTab.Home, MainMenuTab.Stages };
             for (int i = 0; i < order.Length; i++)

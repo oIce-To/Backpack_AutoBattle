@@ -45,7 +45,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool ShowMainMenuTab(MainMenuTab tab)
         {
-            if (!IsMainMenu || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
+            if (!IsMainMenu || IsSettingsOpen || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
             _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide();
             switch (tab)
             {
@@ -65,7 +65,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TrySelectCharacter(string id)
         {
-            if (!IsMainMenu) return false;
+            if (!IsMainMenu || IsSettingsOpen) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null || string.IsNullOrWhiteSpace(id)) return false;
             _characterData = character; _progress.SelectCharacter(id);
@@ -73,7 +73,7 @@ namespace BackpackAutoBattle.Prototype
         }
         public bool TrySelectStage(string id)
         {
-            if (!IsMainMenu) return false;
+            if (!IsMainMenu || IsSettingsOpen) return false;
             StageData stage = AvailableStages.FirstOrDefault(s => s.StageId == id);
             if (stage == null || !IsStageUnlocked(id) || stage.GetValidationErrors().Count > 0) return false;
             _stageData = stage; _progress.SelectStage(id);
@@ -82,7 +82,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryLevelUpCharacter(string id)
         {
-            if (!IsMainMenu || _progressStore == null) return false;
+            if (!IsMainMenu || IsSettingsOpen || _progressStore == null) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null) return false;
             var candidate = PlayerProgress.FromData(_progress.Export());
@@ -126,7 +126,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryStartRun()
         {
-            if (!IsMainMenu) return false;
+            if (!IsMainMenu || IsSettingsOpen) return false;
             if (!IsStageUnlocked(_stageData?.StageId))
             {
                 _mainMenu.ShowError("이전 스테이지를 먼저 클리어해주세요.");
@@ -143,7 +143,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryReturnToMainMenu()
         {
-            if (IsMainMenu || !_run.IsFinished || _restartRequested) return false;
+            if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
             ClearRunContent();
             ShowMainMenu();
             return true;

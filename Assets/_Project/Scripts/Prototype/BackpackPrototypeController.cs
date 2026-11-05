@@ -85,6 +85,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void Update()
         {
+            UpdateSettings();
             // A slow screen-switch frame must not skip most of the visible fusion sequence.
             if (AutoTickFusionPresentation) TickFusionPresentation(Mathf.Min(Time.unscaledDeltaTime, .05f));
             if (CanEditLoadout && _selectedItem != null && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
@@ -329,7 +330,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool AdvanceRound()
         {
-            if (IsMainMenu || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
+            if (IsMainMenu || IsSettingsOpen || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
                 && !(_enableDebugRoundAdvance && _run.Phase == PrototypePhase.Preparation)))
             {
                 return false;
@@ -418,7 +419,7 @@ namespace BackpackAutoBattle.Prototype
             CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1280f, 720f);
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             _itemTooltip = PrototypeItemTooltip.Create(canvasObject.transform);
 
             var shopScreen = new GameObject("Shop Screen", typeof(RectTransform));
@@ -432,7 +433,7 @@ namespace BackpackAutoBattle.Prototype
             Text title = CreateText(_shopScreenRoot, "Title", "BACKPACK AUTO BATTLE PROTOTYPE", 28, FontStyle.Bold, TextAnchor.MiddleCenter);
             SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(720f, 46f));
             _livesText = CreateText(_shopScreenRoot, "Run Lives", "", 18, FontStyle.Bold, TextAnchor.MiddleRight);
-            SetRect(_livesText.rectTransform, new Vector2(1f, 1f), new Vector2(-110f, -36f), new Vector2(170f, 30f));
+            SetRect(_livesText.rectTransform, Vector2.one, new Vector2(-145f, -36f), new Vector2(170f, 30f));
 
             Text instructions = CreateText(
                 _shopScreenRoot,
@@ -489,7 +490,8 @@ namespace BackpackAutoBattle.Prototype
                 character => TryLevelUpCharacter(character.CharacterId));
             _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
                 stage => TrySelectStage(stage.StageId), CloseSelectionScreens);
-            _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab));
+            _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab), () => TryOpenSettings());
+            InitializeSettings(canvasObject.transform);
 
         }
 

@@ -47,7 +47,7 @@ namespace BackpackAutoBattle.Prototype
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
-        public bool CanEditLoadout => !IsMainMenu && _run.Phase == PrototypePhase.Preparation;
+        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen;
         public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
@@ -87,7 +87,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool ReturnToPreparation()
         {
-            if (!_run.TryReturnToPreparation()) return false;
+            if (IsSettingsOpen || !_run.TryReturnToPreparation()) return false;
             _battleController.EndBattle();
             BeginFusionPresentation();
             RefreshCombatInterface();
@@ -107,7 +107,7 @@ namespace BackpackAutoBattle.Prototype
             var controllerObject = new GameObject("Battle Controller", typeof(PrototypeBattleController));
             controllerObject.transform.SetParent(transform, false);
             _battleController = controllerObject.GetComponent<PrototypeBattleController>();
-            _battleController.Initialize(canvas, OnBattleFinished, HandleCombatAction, _itemTooltip);
+            _battleController.Initialize(canvas, OnBattleFinished, HandleCombatAction, _itemTooltip, PlayCombatHit);
         }
 
         private void OnBattleFinished(CombatResult result)
@@ -128,11 +128,14 @@ namespace BackpackAutoBattle.Prototype
 
         private void RefreshCombatInterface()
         {
-            bool showShop = CanEditLoadout || Phase == PrototypePhase.Fusion;
+            bool showShop = Phase is PrototypePhase.Preparation or PrototypePhase.Fusion;
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);
             _battleController.SetVisible(!IsMainMenu && !showShop);
             _battleController.SetLives(_run.Lives, _run.StartingLives);
+            _stageSettingsButton.gameObject.SetActive(!IsMainMenu);
+            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion;
+            if (!IsMainMenu && !IsSettingsOpen) _stageSettingsButton.transform.SetAsLastSibling();
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
