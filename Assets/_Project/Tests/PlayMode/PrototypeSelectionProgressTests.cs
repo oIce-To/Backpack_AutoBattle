@@ -81,6 +81,12 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller.TryStartBattle();
             Assert.That(_controller.ActiveCombat.Player.DisplayName, Is.EqualTo("세레나"));
             Assert.That(_controller.ActiveCombat.EnemyMaxHealth, Is.EqualTo(78));
+            var portrait = Find("Player Character Illustration").GetComponent<Image>();
+            Assert.That(portrait.sprite, Is.SameAs(_controller.SelectedCharacter.Portrait));
+            Assert.That(portrait.rectTransform.localScale.x, Is.EqualTo(1));
+            Assert.That(_controller.Stage.GetRound(12).Encounter.Enemy.Illustration,
+                Is.SameAs(_controller.ActiveCombat.Enemy.Illustration));
+            Capture("BattleSerenaPortrait.png");
         }
 
         [UnityTest]

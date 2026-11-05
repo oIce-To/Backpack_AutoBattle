@@ -15,4 +15,4 @@ MonoBehaviour:
   _enemyId: goblin_captain
   _displayName: "\uACE0\uBE14\uB9B0 \uB300\uC7A5"
   _description: 
-  _illustration: {fileID: 0}
+  _illustration: {fileID: 21300000, guid: 9d8b4044a25f45f6bfe2c8b2337c0acd, type: 3}

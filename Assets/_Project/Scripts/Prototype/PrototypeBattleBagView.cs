@@ -8,6 +8,7 @@ namespace BackpackAutoBattle.Prototype
 {
     public sealed class PrototypeBattleBagView
     {
+        internal const float CenterY = 171f;
         private readonly RectTransform _root;
         private readonly Dictionary<string, PrototypeBattleItemView> _items = new();
         private PrototypePlacementOverlay _placementOverlay;
@@ -18,7 +19,7 @@ namespace BackpackAutoBattle.Prototype
             var obj = new GameObject(name, typeof(RectTransform));
             obj.transform.SetParent(parent, false);
             _root = (RectTransform)obj.transform;
-            BackpackPrototypeController.SetRect(_root, new Vector2(0.5f, 0.5f), new Vector2(0f, 117f), Vector2.zero);
+            BackpackPrototypeController.SetRect(_root, Vector2.one * .5f, new Vector2(0f, CenterY), Vector2.zero);
         }
 
         public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,

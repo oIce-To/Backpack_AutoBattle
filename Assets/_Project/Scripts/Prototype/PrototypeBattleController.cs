@@ -56,6 +56,7 @@ namespace BackpackAutoBattle.Prototype
         private void Update()
         {
             if (AutoTick) TickCombat(Time.unscaledDeltaTime);
+            if (_screen != null && _screen.Root.gameObject.activeInHierarchy) _screen.TickDamagePopups();
         }
 
         public void TickCombat(float deltaSeconds)

@@ -24,12 +24,14 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private string _characterId;
         [SerializeField] private string _displayName = "플레이어";
         [SerializeField] private Sprite _portrait;
+        [SerializeField] private bool _portraitFacesLeft;
         [SerializeField, Min(1)] private float _maximumHealth = 50;
         [SerializeField, Min(0)] private float _attack = 10;
         [SerializeField] private ExperienceTableData _experienceTable;
         public string DisplayName => _displayName;
         public string CharacterId => _characterId;
         public Sprite Portrait => _portrait;
+        public bool PortraitFacesLeft => _portraitFacesLeft;
         public ExperienceTableData ExperienceTable => _experienceTable;
         public CharacterStatsSnapshot CaptureStats() => new(_maximumHealth, _attack);
         public CharacterStatsSnapshot CaptureStats(int level)

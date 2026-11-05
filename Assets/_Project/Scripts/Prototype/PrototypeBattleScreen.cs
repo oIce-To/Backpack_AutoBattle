@@ -9,6 +9,7 @@ namespace BackpackAutoBattle.Prototype
 {
     public sealed class PrototypeBattleScreen
     {
+        private const float IllustrationCenterY = -92f;
         private readonly PrototypeBattleBagView _playerBag;
         private readonly PrototypeBattleBagView _enemyBag;
         private readonly Image _playerHealthFill;
@@ -30,8 +31,10 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _lives;
         private readonly Text _inspection;
         private readonly Text _logText;
-        private readonly Text _playerDamage;
-        private readonly Text _enemyDamage;
+        private readonly Image _playerIllustration;
+        private readonly Image _enemyIllustration;
+        private readonly PrototypeDamagePopups _playerDamage;
+        private readonly PrototypeDamagePopups _enemyDamage;
         private readonly Button _continueButton;
         private readonly Text _continueText;
         private readonly Button _statisticsButton;
@@ -41,8 +44,6 @@ namespace BackpackAutoBattle.Prototype
         private CombatSimulation _combat;
         private int _round;
         private int _income;
-        private float _playerDamageExpiry;
-        private float _enemyDamageExpiry;
 
         public RectTransform Root { get; }
 
@@ -72,10 +73,10 @@ namespace BackpackAutoBattle.Prototype
             _enemyBagFrame = Frame(enemyGroup, "Enemy Battle Frame", new Color(0.17f, 0.10f, 0.10f));
             _playerBag = new PrototypeBattleBagView(playerGroup, "Player Battle Backpack");
             _enemyBag = new PrototypeBattleBagView(enemyGroup, "Enemy Battle Backpack");
-            _playerName = Label(playerGroup, "Player Name", new Vector2(0f, -27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
-            _enemyName = Label(enemyGroup, "Enemy Name", new Vector2(0f, -27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
-            CharacterSpace(playerGroup, "Player Character Illustration");
-            CharacterSpace(enemyGroup, "Enemy Character Illustration");
+            _playerName = Label(playerGroup, "Player Name", new Vector2(0f, 27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
+            _enemyName = Label(enemyGroup, "Enemy Name", new Vector2(0f, 27f), new Vector2(280f, 30f), 22, TextAnchor.MiddleCenter);
+            _playerIllustration = CharacterSpace(playerGroup, "Player Character Illustration");
+            _enemyIllustration = CharacterSpace(enemyGroup, "Enemy Character Illustration");
             _playerEvasion = EvasionReadout(playerGroup, "Player", -166f);
             _enemyEvasion = EvasionReadout(enemyGroup, "Enemy", 166f);
             _playerHealthFill = HealthBar(playerGroup, "Player Health", new Color(0.20f, 0.67f, 0.37f));
@@ -86,8 +87,11 @@ namespace BackpackAutoBattle.Prototype
             _enemyArmor = PrototypeArmorBadge.Create(enemyGroup, "Enemy Armor Badge");
             _playerStatuses = new PrototypeStatusArea(Root, "Player", true);
             _enemyStatuses = new PrototypeStatusArea(Root, "Enemy", false);
-            _playerDamage = Label(playerGroup, "Player Damage", new Vector2(0f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
-            _enemyDamage = Label(enemyGroup, "Enemy Damage", new Vector2(0f, -87f), new Vector2(110f, 38f), 23, TextAnchor.MiddleCenter);
+            var glyphs = Resources.Load<Texture2D>("UI/BattleDamageGlyphs");
+            var damageAreaCenter = new Vector2(0, IllustrationCenterY);
+            var damageAreaSize = new Vector2(220, 168);
+            _playerDamage = new PrototypeDamagePopups(playerGroup, "Player Damage", damageAreaCenter, damageAreaSize, glyphs);
+            _enemyDamage = new PrototypeDamagePopups(enemyGroup, "Enemy Damage", damageAreaCenter, damageAreaSize, glyphs);
             _inspection = Label(Root, "Battle Item Details", new Vector2(0f, -272f), new Vector2(1180f, 24f), 14, TextAnchor.MiddleCenter);
 
             Image logPanel = Image(Root, "Battle Log Panel", new Color(0.08f, 0.11f, 0.17f));
@@ -123,11 +127,14 @@ namespace BackpackAutoBattle.Prototype
             _enemyBagFrame.rectTransform.sizeDelta = _enemyBag.Root.sizeDelta + Vector2.one * 24f;
             _playerName.text = combat.Player.DisplayName;
             _enemyName.text = combat.Enemy.DisplayName;
+            SetIllustration(_playerIllustration, combat.Player, facesLeft: false);
+            SetIllustration(_enemyIllustration, combat.Enemy, facesLeft: true);
             _title.text = string.Empty;
             _title.gameObject.SetActive(false);
             _inspection.text = "아이템 위에 마우스를 올리면 전투 스탯을 확인합니다. 색이 위까지 차오르면 아이템을 사용합니다.";
             _logText.text = "첫 공격을 준비하고 있습니다…";
-            _playerDamage.text = _enemyDamage.text = string.Empty;
+            _playerDamage.Clear();
+            _enemyDamage.Clear();
             // Each battle starts at zero armor; item activations then feed the real HUD values.
             _playerArmor.SetValue(0d);
             _enemyArmor.SetValue(0d);
@@ -149,8 +156,13 @@ namespace BackpackAutoBattle.Prototype
             _enemyStatuses.Render();
             _playerBag.RenderCooldowns(combat.PlayerItems, combat.ElapsedSeconds);
             _enemyBag.RenderCooldowns(combat.EnemyItems, combat.ElapsedSeconds);
-            if (Time.unscaledTime > _playerDamageExpiry) _playerDamage.text = string.Empty;
-            if (Time.unscaledTime > _enemyDamageExpiry) _enemyDamage.text = string.Empty;
+        }
+
+        internal void TickDamagePopups()
+        {
+            double now = Time.unscaledTimeAsDouble;
+            _playerDamage.Tick(now);
+            _enemyDamage.Tick(now);
         }
 
         public void ShowAttack(CombatItemEvent attack)
@@ -167,20 +179,11 @@ namespace BackpackAutoBattle.Prototype
             }
             if (attack.Kind == ItemEffectKind.GainArmor)
             {
-                Text gain = fromPlayer ? _playerDamage : _enemyDamage;
-                gain.text = $"+{attack.ArmorGained:0.#}";
-                gain.color = new Color(0.15f, 0.78f, 1f);
-                if (fromPlayer) _playerDamageExpiry = Time.unscaledTime + 0.65f;
-                else _enemyDamageExpiry = Time.unscaledTime + 0.65f;
                 AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → 방어도 +{attack.ArmorGained:0.#}");
                 return;
             }
-            Text damage = fromPlayer ? _enemyDamage : _playerDamage;
-            damage.text = !attack.Hit ? (attack.AttackOutcome == AttackOutcome.Evaded ? "DODGE" : "MISS") : attack.ArmorAbsorbed > 0d && attack.HealthDamage == 0d ? "BLOCK"
-                : $"{(attack.Critical ? "CRIT " : "")}-{attack.HealthDamage:0.#}";
-            damage.color = attack.Critical ? new Color(1f, 0.80f, 0.20f) : Color.white;
-            if (fromPlayer) _enemyDamageExpiry = Time.unscaledTime + 0.65f;
-            else _playerDamageExpiry = Time.unscaledTime + 0.65f;
+            DamagePopups(attack.TargetSide).Show(attack.Damage,
+                attack.Critical ? new Color(1f, .81f, .28f) : Color.white, attack.Critical);
             string outcome = !attack.Hit ? (attack.AttackOutcome == AttackOutcome.Evaded ? "회피" : "명중 실패 · 회피 효과 발동")
                 : $"{(attack.Critical ? "치명타" : "명중")} {attack.Damage:0.#} 피해";
             if (attack.ArmorAbsorbed > 0d) outcome += $" (방어도 {attack.ArmorAbsorbed:0.#} 흡수 · 체력 {attack.HealthDamage:0.#})";
@@ -190,11 +193,7 @@ namespace BackpackAutoBattle.Prototype
         public void ShowStatusDamage(PeriodicStatusTickEvent tick)
         {
             bool targetPlayer = tick.Target == CombatSide.Player;
-            Text damage = targetPlayer ? _playerDamage : _enemyDamage;
-            damage.text = tick.Resolution.HealthDamage == 0 && tick.Resolution.ArmorAbsorbed > 0 ? "BLOCK" : $"-{tick.Resolution.HealthDamage:0.##}";
-            damage.color = PrototypeStatusGlyph.ColorFor(tick.Kind);
-            if (targetPlayer) _playerDamageExpiry = Time.unscaledTime + 0.65f;
-            else _enemyDamageExpiry = Time.unscaledTime + 0.65f;
+            DamagePopups(tick.Target).Show(tick.Damage, PrototypeStatusGlyph.ColorFor(tick.Kind));
             string target = targetPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
             AppendLog($"{tick.Time:0.0}s {target} · {_combat.GetStatusDefinition(tick.Kind).DisplayName} {tick.Stacks}중첩 → {tick.Damage:0.##} 피해"
                 + (tick.Resolution.ArmorAbsorbed > 0 ? $" (방어도 {tick.Resolution.ArmorAbsorbed:0.##} 흡수 · 체력 {tick.Resolution.HealthDamage:0.##})" : ""));
@@ -204,26 +203,21 @@ namespace BackpackAutoBattle.Prototype
         {
             if (reaction.Kind == CombatReactionKind.HealSelf && reaction.HealthRestored <= 0) return;
             bool targetPlayer = reaction.Target == CombatSide.Player;
-            Text feedback = targetPlayer ? _playerDamage : _enemyDamage;
             string target = targetPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
             if (reaction.Kind == CombatReactionKind.HealSelf)
             {
-                feedback.text = $"+{reaction.HealthRestored:0.##}";
-                feedback.color = new Color(.36f, .88f, .48f);
                 AppendLog($"{reaction.Time:0.0}s {target} · 흡혈 → 체력 +{reaction.HealthRestored:0.##}");
             }
             else
             {
-                feedback.text = reaction.Damage.HealthDamage == 0 && reaction.Damage.ArmorAbsorbed > 0
-                    ? "BLOCK" : $"-{reaction.Damage.HealthDamage:0.##}";
-                feedback.color = new Color(.40f, .75f, .44f);
+                DamagePopups(reaction.Target).Show(reaction.Amount, PrototypeStatusGlyph.ColorFor(reaction.Status));
                 string owner = reaction.Owner == CombatSide.Player ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
                 AppendLog($"{reaction.Time:0.0}s {owner} · 가시 → {target} {reaction.Amount:0.##} 피해"
                     + (reaction.Damage.ArmorAbsorbed > 0 ? $" (방어도 {reaction.Damage.ArmorAbsorbed:0.##} 흡수 · 체력 {reaction.Damage.HealthDamage:0.##})" : ""));
             }
-            if (targetPlayer) _playerDamageExpiry = Time.unscaledTime + .65f;
-            else _enemyDamageExpiry = Time.unscaledTime + .65f;
         }
+
+        private PrototypeDamagePopups DamagePopups(CombatSide side) => side == CombatSide.Player ? _playerDamage : _enemyDamage;
 
         private void AppendLog(string message)
         {
@@ -239,7 +233,9 @@ namespace BackpackAutoBattle.Prototype
             _tooltip.HideAll();
             _playerBag.Clear(); _enemyBag.Clear(); _playerStatuses.Clear(); _enemyStatuses.Clear();
             _combat = null; _log.Clear();
-            _logText.text = _inspection.text = _playerDamage.text = _enemyDamage.text = _title.text = "";
+            _logText.text = _inspection.text = _title.text = "";
+            _playerDamage.Clear();
+            _enemyDamage.Clear();
             _title.gameObject.SetActive(false); _continueButton.interactable = false;
         }
 
@@ -277,9 +273,8 @@ namespace BackpackAutoBattle.Prototype
 
         internal void SetDamageNumbersVisible(bool visible)
         {
-            if (_playerDamage.enabled == visible) return;
-            _playerDamage.text = _enemyDamage.text = string.Empty;
-            _playerDamage.enabled = _enemyDamage.enabled = visible;
+            _playerDamage.SetVisible(visible);
+            _enemyDamage.SetVisible(visible);
         }
 
         public void ShowConfigurationError(string error)
@@ -344,7 +339,8 @@ namespace BackpackAutoBattle.Prototype
         private static Image Frame(Transform parent, string name, Color color)
         {
             Image frame = Image(parent, name, color);
-            BackpackPrototypeController.SetRect(frame.rectTransform, Vector2.one * 0.5f, new Vector2(0f, 117f), Vector2.zero);
+            BackpackPrototypeController.SetRect(frame.rectTransform, Vector2.one * .5f,
+                new Vector2(0f, PrototypeBattleBagView.CenterY), Vector2.zero);
             return frame;
         }
 
@@ -353,7 +349,7 @@ namespace BackpackAutoBattle.Prototype
             var obj = new GameObject($"{side} Evasion", typeof(RectTransform));
             obj.transform.SetParent(parent, false);
             BackpackPrototypeController.SetRect((RectTransform)obj.transform, Vector2.one * 0.5f,
-                new Vector2(x, -119f), new Vector2(104f, 36f));
+                new Vector2(x, IllustrationCenterY), new Vector2(104f, 36f));
             var glyphObject = new GameObject("Evasion Glyph", typeof(RectTransform), typeof(PrototypeStatusGlyph));
             glyphObject.transform.SetParent(obj.transform, false);
             PrototypeStatusGlyph glyph = glyphObject.GetComponent<PrototypeStatusGlyph>();
@@ -365,26 +361,20 @@ namespace BackpackAutoBattle.Prototype
             return Label(obj.transform, "Evasion Value", new Vector2(18f, 0f), new Vector2(64f, 36f), 21, TextAnchor.MiddleLeft);
         }
 
-        private static void CharacterSpace(Transform parent, string name)
+        private static Image CharacterSpace(Transform parent, string name)
         {
-            var obj = new GameObject(name, typeof(RectTransform));
-            obj.transform.SetParent(parent, false);
-            RectTransform rect = (RectTransform)obj.transform;
-            BackpackPrototypeController.SetRect(rect, Vector2.one * 0.5f, new Vector2(0f, -119f), new Vector2(180f, 144f));
-            // No sprite or invented character art. The faint frame marks the future illustration area.
-            Color outline = new Color(0.49f, 0.57f, 0.67f, 0.22f);
-            for (int edge = 0; edge < 4; edge++)
-            {
-                Image line = Image(rect, $"Illustration Frame {edge}", outline);
-                bool horizontal = edge < 2;
-                Vector2 position = horizontal ? new Vector2(0f, edge == 0 ? 72f : -72f)
-                    : new Vector2(edge == 2 ? -90f : 90f, 0f);
-                BackpackPrototypeController.SetRect(line.rectTransform, Vector2.one * 0.5f, position,
-                    horizontal ? new Vector2(180f, 1f) : new Vector2(1f, 144f));
-            }
-            Text caption = Label(rect, "Illustration Placeholder", new Vector2(0f, -56f), new Vector2(170f, 20f), 11, TextAnchor.MiddleCenter);
-            caption.text = "일러스트 영역";
-            caption.color = new Color(0.49f, 0.57f, 0.67f, 0.48f);
+            Image illustration = Image(parent, name, Color.white);
+            SelectionUi.Place(illustration.rectTransform, new Vector2(0, IllustrationCenterY), new Vector2(224, 200));
+            illustration.preserveAspect = true;
+            illustration.enabled = false;
+            return illustration;
+        }
+
+        private static void SetIllustration(Image image, CombatantSnapshot combatant, bool facesLeft)
+        {
+            image.sprite = combatant.Illustration;
+            image.enabled = image.sprite != null;
+            image.rectTransform.localScale = new Vector3(combatant.IllustrationFacesLeft == facesLeft ? 1 : -1, 1, 1);
         }
 
         private static Text Label(Transform parent, string name, Vector2 position, Vector2 size, int fontSize, TextAnchor alignment)

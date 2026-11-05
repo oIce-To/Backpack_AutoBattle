@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Linq;
+using BackpackAutoBattle.Combat;
+using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Prototype;
 using BackpackAutoBattle.Shop;
@@ -143,7 +145,10 @@ namespace BackpackAutoBattle.Tests.Prototype
                     Is.LessThan(name.anchoredPosition.y - name.sizeDelta.y / 2f));
                 Assert.That(frame.parent.GetComponent<Image>(), Is.Null, "Only the bag gets a colored frame.");
                 Assert.That(name.GetComponent<Text>().text, Is.EqualTo(side == "Player" ? "알렌" : "고블린"));
-                Assert.That(art.GetComponentsInChildren<Image>().All(image => image.sprite == null), Is.True);
+                var portrait = art.GetComponent<Image>();
+                Assert.That(portrait.preserveAspect, Is.True);
+                Assert.That(portrait.sprite.texture.name, Is.EqualTo(side == "Player" ? "allen-standing-approved" : "goblin-standing-approved"));
+                Assert.That(portrait.rectTransform.localScale.x, Is.EqualTo(-1));
                 Assert.That(armor.gameObject.activeSelf, Is.False);
             }
             controller.TickCombat(1f);
@@ -152,6 +157,65 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(timer.text, Is.EqualTo("ROUND 1 · 1.0초"));
             Assert.That(Rect(controller, "Battle Result").gameObject.activeSelf, Is.False);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "BattleLayout.png");
+        }
+
+        [UnityTest]
+        public IEnumerator BattleDamagePopups_ShowTotalDamageThroughArmorAndUseEffectColors()
+        {
+            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return null;
+            var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            controller.BattleController.AutoTick = false;
+            Assert.That(controller.TryStartBattle(), Is.True);
+            var combat = controller.ActiveCombat;
+            var enemy = combat.EnemyWeapons.Single().Stats;
+            enemy.AccuracyPercent = 100;
+            enemy.CriticalChancePercent = 100;
+            enemy.CriticalDamagePercent = 200;
+            enemy.AttackDamage = 1;
+            var sword = combat.PlayerWeapons.Single().Stats;
+            sword.AttackDamage = 0;
+            sword.AccuracyPercent = 100;
+            sword.CriticalChancePercent = 0;
+
+            controller.TickCombat(2);
+            Assert.That(combat.PlayerHealth, Is.EqualTo(combat.PlayerMaxHealth));
+            Assert.That(combat.PlayerArmor, Is.GreaterThan(0));
+            Assert.That(Popups("Player").Single().Text, Is.EqualTo("-2"), "A fully absorbed critical hit still shows its total damage.");
+            Assert.That(Popups("Enemy"), Is.Empty);
+
+            enemy.AttackDamage = 4;
+            controller.TickCombat(2);
+            var critical = Popups("Player").Single(p => p.Text == "-8");
+            Assert.That(combat.PlayerHealth, Is.EqualTo(combat.PlayerMaxHealth - 5),
+                "The critical hit shows 8 while armor absorbs 3 and health loses 5.");
+            Assert.That(critical.color, Is.EqualTo(new Color(1f, .81f, .28f)));
+
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Burn, 2);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Poison, 2);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Thorns, 8);
+            sword.AttackDamage = 4;
+            controller.TickCombat(1.6f);
+            var damage = Popups("Enemy");
+            Assert.That(damage.Any(p => p.Text == "-4" && p.color == Color.white), Is.True);
+            Assert.That(damage.Any(p => p.Text == "-2.4" && p.color == PrototypeStatusGlyph.ColorFor(StatusEffectKind.Burn)), Is.True);
+            Assert.That(damage.Any(p => p.Text == "-2" && p.color == PrototypeStatusGlyph.ColorFor(StatusEffectKind.Poison)), Is.True);
+            Assert.That(Popups("Player").Any(p => p.Text == "-8" && p.color == PrototypeStatusGlyph.ColorFor(StatusEffectKind.Thorns)), Is.True);
+            Canvas.ForceUpdateCanvases();
+            Assert.That(critical.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(0));
+            Assert.That(critical.mainTexture.name, Is.EqualTo("BattleDamageGlyphs"));
+            foreach (string side in new[] { "Player", "Enemy" })
+            {
+                var area = Rect(controller, side + " Damage");
+                foreach (var popup in Popups(side))
+                    Assert.That(area.rect.Contains(popup.rectTransform.anchoredPosition), Is.True);
+            }
+            PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "BattlePortraitsAndDamage.png");
+            yield return new WaitForSecondsRealtime(.8f);
+            Assert.That(Popups("Player"), Is.Empty);
+            Assert.That(Popups("Enemy"), Is.Empty);
+
+            PrototypeDamageNumber[] Popups(string side) => Rect(controller, side + " Damage").GetComponentsInChildren<PrototypeDamageNumber>();
         }
 
         [UnityTest]

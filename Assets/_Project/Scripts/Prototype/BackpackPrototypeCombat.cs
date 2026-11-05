@@ -70,7 +70,8 @@ namespace BackpackAutoBattle.Prototype
                 return false;
             }
 
-            var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack);
+            var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack,
+                _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false);
             CapturePendingFusions();
             if (!_run.TryBeginBattle()) return false;
             _itemTooltip.HideAll();

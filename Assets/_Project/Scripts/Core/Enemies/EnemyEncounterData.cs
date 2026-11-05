@@ -93,7 +93,8 @@ namespace BackpackAutoBattle.Enemies
             }
 
             return new CombatantSnapshot(DisplayName, owner.MaximumHealth,
-                new CombatLoadoutSnapshot(snapshots, BackpackWidth, BackpackHeight), owner.Attack);
+                new CombatLoadoutSnapshot(snapshots, BackpackWidth, BackpackHeight), owner.Attack,
+                _enemy.Illustration, _enemy.IllustrationFacesLeft);
         }
 
         private void OnValidate()

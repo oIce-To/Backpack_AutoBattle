@@ -112,8 +112,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.TryStartBattle(), Is.True);
             var battle = _controller.BattleController;
             Assert.That(battle.PlaybackSpeed, Is.EqualTo(3));
-            Assert.That(Find("Player Damage").GetComponent<Text>().enabled, Is.False);
-            Assert.That(Find("Enemy Damage").GetComponent<Text>().enabled, Is.False);
+            Assert.That(Find("Player Damage").gameObject.activeSelf, Is.False);
+            Assert.That(Find("Enemy Damage").gameObject.activeSelf, Is.False);
             battle.Simulation.PlayerWeapons.First().Stats.AccuracyPercent = 100;
             battle.TickCombat(1);
             Assert.That(battle.Simulation.EnemyHealth, Is.LessThan(battle.Simulation.EnemyMaxHealth));
@@ -128,9 +128,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(battle.IsPaused, Is.False);
             Click("Settings Speed 2");
             Find("Settings Damage Toggle").GetComponent<Toggle>().isOn = true;
-            Assert.That(Find("Player Damage").GetComponent<Text>().enabled, Is.True);
-            Assert.That(Find("Enemy Damage").GetComponent<Text>().enabled, Is.True);
-            Assert.That(Text("Player Damage"), Is.Empty);
+            Assert.That(Find("Player Damage").gameObject.activeSelf, Is.True);
+            Assert.That(Find("Enemy Damage").gameObject.activeSelf, Is.True);
+            Assert.That(Find("Player Damage").GetComponentsInChildren<PrototypeDamageNumber>(), Is.Empty);
+            Assert.That(Find("Enemy Damage").GetComponentsInChildren<PrototypeDamageNumber>(), Is.Empty);
             Capture("SettingsBattle.png");
             Click("Settings Close");
             Assert.That(battle.PlaybackSpeed, Is.EqualTo(.5f));
