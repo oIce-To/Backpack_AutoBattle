@@ -42,8 +42,10 @@ namespace BackpackAutoBattle.Prototype
                 _tabs[i] = Button(_panel, "Settings Tab " + i, names[i], new Vector2((i - 1) * 215, 152), new Vector2(200, 42), () => SelectPage(page));
                 _pages[i] = Panel(_panel, "Settings Page " + i, new Vector2(0, -9), new Vector2(630, 250));
             }
-            Button(_panel, "Settings Reset", "기본값 복원", new Vector2(-225, -195), new Vector2(180, 46), ResetCurrentPage);
-            Button(_panel, "Settings Close", "닫기", new Vector2(225, -195), new Vector2(180, 46), _controller.CloseSettings);
+            var reset = Button(_panel, "Settings Reset", "기본값 복원", new Vector2(-225, -195), new Vector2(180, 46), ResetCurrentPage);
+            reset.image.color = new Color(.48f, .77f, .94f);
+            reset.GetComponentInChildren<Text>().color = new Color(.08f, .17f, .25f);
+            CreateCloseButton(_panel, _controller.CloseSettings);
             _notice = SelectionUi.Label(_panel, "Settings Notice", "", 15, new Vector2(0, -151), new Vector2(620, 28));
             _notice.color = new Color(1, .57f, .48f);
 
@@ -254,6 +256,26 @@ namespace BackpackAutoBattle.Prototype
             return slider;
         }
 
+        private static void CreateCloseButton(Transform parent, Action close)
+        {
+            var face = SelectionUi.Image(parent, "Settings Close", new Color(.76f, .18f, .23f));
+            face.raycastTarget = true;
+            SelectionUi.Place(face.rectTransform, new Vector2(339, 217), new Vector2(42, 42));
+            var button = face.gameObject.AddComponent<Button>();
+            button.targetGraphic = face;
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
+            button.onClick.AddListener(() => close());
+
+            var light = SelectionUi.Image(face.transform, "Top Edge", new Color(.98f, .38f, .42f));
+            SelectionUi.Place(light.rectTransform, new Vector2(0, 19.5f), new Vector2(42, 3));
+            var shadow = SelectionUi.Image(face.transform, "Bottom Edge", new Color(.49f, .09f, .14f));
+            SelectionUi.Place(shadow.rectTransform, new Vector2(0, -19.5f), new Vector2(42, 3));
+            var glyph = new GameObject("Close X", typeof(RectTransform), typeof(PrototypeSettingsCloseGlyph));
+            glyph.transform.SetParent(face.transform, false);
+            SelectionUi.Place((RectTransform)glyph.transform, Vector2.zero, new Vector2(22, 22));
+            glyph.GetComponent<PrototypeSettingsCloseGlyph>().raycastTarget = false;
+        }
+
         internal static Button GearButton(Transform parent, string name, Vector2 position, Action open)
         {
             var face = SelectionUi.Image(parent, name, Color.clear);
@@ -301,6 +323,34 @@ namespace BackpackAutoBattle.Prototype
         {
             var label = SelectionUi.Label(parent, name, value, 20, new Vector2(-188, y), new Vector2(198, 38));
             label.alignment = TextAnchor.MiddleLeft;
+        }
+    }
+
+    [RequireComponent(typeof(CanvasRenderer))]
+    public sealed class PrototypeSettingsCloseGlyph : MaskableGraphic
+    {
+        public PrototypeSettingsCloseGlyph() { useLegacyMeshGeneration = false; }
+
+        protected override void OnPopulateMesh(VertexHelper mesh)
+        {
+            mesh.Clear();
+            const int pixels = 9;
+            Rect rect = GetPixelAdjustedRect();
+            float pixel = Mathf.Min(rect.width, rect.height) / pixels;
+            Vector2 bottomLeft = rect.center - Vector2.one * (pixels * pixel / 2);
+            for (int y = 0; y < pixels; y++)
+            for (int x = 0; x < pixels; x++)
+            {
+                if (Mathf.Abs(x - y) > 1 && Mathf.Abs(x + y - (pixels - 1)) > 1) continue;
+                Vector2 corner = bottomLeft + new Vector2(x, y) * pixel;
+                int start = mesh.currentVertCount;
+                mesh.AddVert(corner, color, Vector2.zero);
+                mesh.AddVert(corner + new Vector2(0, pixel), color, Vector2.zero);
+                mesh.AddVert(corner + new Vector2(pixel, pixel), color, Vector2.zero);
+                mesh.AddVert(corner + new Vector2(pixel, 0), color, Vector2.zero);
+                mesh.AddTriangle(start, start + 1, start + 2);
+                mesh.AddTriangle(start, start + 2, start + 3);
+            }
         }
     }
 
