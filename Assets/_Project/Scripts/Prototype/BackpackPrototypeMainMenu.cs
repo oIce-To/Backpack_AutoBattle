@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Stages;
@@ -25,8 +24,7 @@ namespace BackpackAutoBattle.Prototype
         public CharacterData SelectedCharacter => _characterData;
         public PlayerProgress Progress => _progress;
         public string ProgressSavePath => _progressStore?.FilePath;
-        public IReadOnlyList<CharacterData> AvailableCharacters => (_adventureCatalog?.Characters ?? new[] { _characterData })
-            .Where(c => c != null).Distinct().ToArray();
+        public IReadOnlyList<CharacterData> AvailableCharacters => CatalogCharacters.Where(c => _progress.HasCharacter(c.CharacterId)).ToArray();
         public IReadOnlyList<StageData> AvailableStages => (_adventureCatalog?.Stages ?? new[] { _stageData })
             .Where(s => s != null).Distinct().ToArray();
         public bool IsStageUnlocked(string id) => _progress.IsStageUnlocked(id, AvailableStages.Select(s => s.StageId).ToArray());
@@ -34,11 +32,12 @@ namespace BackpackAutoBattle.Prototype
         private void EnsureProgressLoaded()
         {
             if (_progressStore != null) return;
-            string path = Environment.GetEnvironmentVariable("BACKPACK_PROFILE_PATH");
-            _progressStore = new PlayerProgressStore(string.IsNullOrWhiteSpace(path)
-                ? Path.Combine(Application.persistentDataPath, "player-progress.json") : path);
+            _progressStore = new PlayerProgressStore(PlayerProgressStore.ResolveLocalPath());
             _progress = _progressStore.Load(out _saveNotice);
-            _characterData = AvailableCharacters.FirstOrDefault(c => c.CharacterId == _progress.SelectedCharacterId) ?? _characterData;
+            if (AcquireInitialCharacters() && string.IsNullOrEmpty(_saveNotice))
+                _progressStore.TrySave(_progress, out _saveNotice);
+            _characterData = AvailableCharacters.FirstOrDefault(c => c.CharacterId == _progress.SelectedCharacterId)
+                ?? AvailableCharacters.FirstOrDefault();
             _stageData = AvailableStages.FirstOrDefault(s => s.StageId == _progress.SelectedStageId && IsStageUnlocked(s.StageId))
                 ?? AvailableStages.FirstOrDefault(s => IsStageUnlocked(s.StageId));
         }
@@ -46,12 +45,13 @@ namespace BackpackAutoBattle.Prototype
         public bool ShowMainMenuTab(MainMenuTab tab)
         {
             if (!IsMainMenu || IsSettingsOpen || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
-            _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide();
+            _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide(); _equipment.Hide();
             switch (tab)
             {
                 case MainMenuTab.Home: RefreshMainMenu(); break;
                 case MainMenuTab.Characters: _characterSelection.Show(AvailableCharacters, _characterData, _progress); break;
                 case MainMenuTab.Stages: _stageSelection.Show(AvailableStages, _stageData, _progress); break;
+                case MainMenuTab.Equipment: _equipment.Show(); break;
             }
             ActiveMainTab = tab; _mainNavigation.Show(tab, _progress.SharedExperience); return true;
         }
@@ -60,7 +60,7 @@ namespace BackpackAutoBattle.Prototype
         public void CloseSelectionScreens()
         {
             if (IsMainMenu) ShowMainMenuTab(MainMenuTab.Home);
-            else { _characterSelection.Hide(); _stageSelection.Hide(); }
+            else { _characterSelection.Hide(); _stageSelection.Hide(); _equipment.Hide(); }
         }
 
         public bool TrySelectCharacter(string id)
@@ -120,7 +120,7 @@ namespace BackpackAutoBattle.Prototype
         }
         private void RefreshMainMenu()
         {
-            _mainMenu.Show(_characterData, _stageData, _progress.GetStage(_stageData?.StageId), _progress);
+            _mainMenu.Show(_characterData, _stageData, _progress.GetStage(_stageData?.StageId), _progress, GetCharacterStats(_characterData));
             if (!string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
 

@@ -9,7 +9,6 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -20,7 +19,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator ShopDragAndHover_DiamondsUseEligibilityAndTooltipContainsARealIcon()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             var slot = Object.FindFirstObjectByType<PrototypeShopSlotView>();
@@ -90,7 +89,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator InvalidDragRotationAndCancel_DoNotClaimAnActiveEffectOrLeaveGhostMarkers()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             Buy(controller, "whetstone", 1, 2);
@@ -131,7 +130,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator PlacementBonus_AffectsActualBattleAndHoverButDisappearsAfterMovingSourceAway()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             Buy(controller, "whetstone", 1, 2);
@@ -184,7 +183,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StoragePurchasePreviewAndReturn_PreserveFreePositionAndRangeRotation()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             var slot = Object.FindFirstObjectByType<PrototypeShopSlotView>();
@@ -217,7 +216,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator InlineDescription_SupportsMultipleEffectsAndIconsInTheMiddleWithoutCustomLayout()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             ItemData temporary = Object.Instantiate(controller.ItemCatalog.Single(item => item.ItemId == "whetstone"));

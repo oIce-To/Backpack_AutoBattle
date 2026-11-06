@@ -6,7 +6,6 @@ using BackpackAutoBattle.Prototype;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -22,7 +21,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator TooltipColors_TrackAllFiveStatsAndResetAfterEffectsAndOnShopReturn()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;

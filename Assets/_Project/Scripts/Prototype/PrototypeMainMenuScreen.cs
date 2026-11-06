@@ -49,16 +49,15 @@ namespace BackpackAutoBattle.Prototype
             Hide();
         }
 
-        public void Show(CharacterData character, StageData stage, StageProgress progress, PlayerProgress profile)
+        public void Show(CharacterData character, StageData stage, StageProgress progress, PlayerProgress profile, CharacterStatsSnapshot stats)
         {
             int level = profile.GetCharacterLevel(character?.CharacterId);
-            CharacterStatsSnapshot stats = character != null ? character.CaptureStats(level) : CharacterStatsSnapshot.Default;
             _level.text = $"Lv. {level}";
             _portrait.sprite = character?.Portrait;
             _portrait.enabled = _portrait.sprite != null;
             _name.text = character != null ? character.DisplayName : "플레이어";
-            _health.text = $"체력  {stats.MaximumHealth:0.#}";
-            _attack.text = $"공격력  {stats.Attack:0.#}";
+            _health.text = $"체력  {stats.MaximumHealth:0.##}";
+            _attack.text = $"공격력  {stats.Attack:0.##}";
             _stage.text = stage != null ? $"{stage.DisplayName}\n{stage.RoundCount}라운드 · "
                 + (progress.Cleared ? "클리어" : progress.HighestRound > 0 ? $"최고 {progress.HighestRound}라운드" : "도전 기록 없음")
                 : "스테이지가 지정되지 않았습니다.";

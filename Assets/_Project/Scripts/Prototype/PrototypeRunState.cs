@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Progression;
@@ -51,6 +52,7 @@ namespace BackpackAutoBattle.Prototype
             ClearExperience = clearExperience;
         }
         public CharacterStatsSnapshot PlayerStats { get; }
+        internal IReadOnlyDictionary<string, StartingGear> StartingGear { get; set; } = new Dictionary<string, StartingGear>();
         public string PlayerName { get; }
         public string StageId { get; }
         public string StageName { get; }

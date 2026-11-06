@@ -18,6 +18,8 @@ namespace BackpackAutoBattle.Prototype
         private PrototypeItemTooltip _tooltip;
         private Func<ItemTooltipContent> _tooltipContent;
         private Text _label;
+        private Image _artFill;
+        private Material _mutedArtwork;
         private float _itemHeight;
         private float _cellSize;
         private Coroutine _pulse;
@@ -60,8 +62,8 @@ namespace BackpackAutoBattle.Prototype
                 RectTransform cellRect = (RectTransform)cellObject.transform;
                 BackpackPrototypeController.SetRect(cellRect, new Vector2(0f, 1f), new Vector2(cell.x * pitch, -cell.y * pitch), Vector2.one * _cellSize);
                 cellRect.pivot = new Vector2(0f, 1f);
-                cellObject.GetComponent<Image>().color = hasCycle ? muted : item.DisplayColor;
-                if (!hasCycle) continue;
+                cellObject.GetComponent<Image>().color = item.InventorySprite != null ? Color.clear : hasCycle ? muted : item.DisplayColor;
+                if (!hasCycle || item.InventorySprite != null) continue;
 
                 var fillObject = new GameObject("Cycle Color", typeof(RectTransform), typeof(Image));
                 fillObject.transform.SetParent(cellObject.transform, false);
@@ -77,6 +79,11 @@ namespace BackpackAutoBattle.Prototype
                 _colorFills.Add((fillRect, bottom));
             }
 
+            if (item.InventorySprite != null)
+            {
+                BuildArtwork(item, rect.sizeDelta, hasCycle);
+                return;
+            }
             _label = BackpackPrototypeController.CreateText(transform, "Label", item.DisplayName, 12, FontStyle.Bold, TextAnchor.MiddleCenter);
             _label.resizeTextForBestFit = true;
             _label.resizeTextMinSize = 9;
@@ -88,9 +95,33 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.Stretch(_label.rectTransform, 3f);
         }
 
+        private void BuildArtwork(CombatItemSnapshot item, Vector2 size, bool hasCycle)
+        {
+            var art = PrototypeItemShapeVisual.CreateArtwork(transform, item.InventorySprite, item.Rotation, size,
+                Vector2.zero, item.InventoryArtworkWidthScale);
+            if (!hasCycle) return;
+            Shader shader = Resources.Load<Shader>("UI/CharacterCarousel");
+            if (shader != null)
+            {
+                _mutedArtwork = new Material(shader);
+                _mutedArtwork.SetFloat("_Saturation", .18f);
+                art.material = _mutedArtwork;
+            }
+            art.color = new Color(.68f, .68f, .68f);
+            _artFill = PrototypeItemShapeVisual.CreateArtwork(transform, item.InventorySprite, item.Rotation, size,
+                Vector2.zero, item.InventoryArtworkWidthScale);
+            _artFill.name = "Artwork Cycle Color";
+            _artFill.type = Image.Type.Filled;
+            int turn = (int)item.Rotation;
+            _artFill.fillMethod = (turn & 1) == 0 ? Image.FillMethod.Vertical : Image.FillMethod.Horizontal;
+            _artFill.fillOrigin = turn is 1 or 2 ? 1 : 0;
+            _artFill.fillAmount = 0f;
+        }
+
         public void RenderCooldown(CombatItem item, double elapsed)
         {
             CycleProgress = (float)item.Cycle.ProgressAt(elapsed);
+            if (_artFill != null) _artFill.fillAmount = CycleProgress;
             float fillHeight = _itemHeight * CycleProgress;
             foreach (var fill in _colorFills)
             {
@@ -102,6 +133,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void PulseAttack(bool hit, bool critical)
         {
+            if (_label == null) return;
             if (_pulse != null) StopCoroutine(_pulse);
             _pulse = StartCoroutine(PulseLabel(hit, critical));
         }
@@ -138,6 +170,11 @@ namespace BackpackAutoBattle.Prototype
         {
             if (_tooltip != null) _tooltip.Hide(this);
             _hidePlacement?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            if (_mutedArtwork != null) Destroy(_mutedArtwork);
         }
     }
 }

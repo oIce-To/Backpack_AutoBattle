@@ -8,7 +8,6 @@ using BackpackAutoBattle.Stages;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -19,7 +18,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator SameGoblin_NextRoundChangesHealthAttackAndPreviewWithoutMutatingDefinitions()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -42,8 +41,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             var view = controller.GetComponentsInChildren<PrototypeBattleItemView>().Single(item => item.Side == CombatSide.Enemy);
             view.OnPointerEnter(new PointerEventData(EventSystem.current)
                 { position = RectTransformUtility.WorldToScreenPoint(null, view.transform.position) });
-            Assert.That(Text(controller, "Attack Value").text, Is.EqualTo("6"));
-            Assert.That(Text(controller, "Attack Value").color, Is.EqualTo(new Color(0.91f, 0.94f, 0.98f)),
+            var attack = controller.ItemTooltip.GetComponentsInChildren<Text>().Single(label => label.name == "Attack Value");
+            Assert.That(attack.text, Is.EqualTo("6"));
+            Assert.That(attack.color, Is.EqualTo(new Color(0.91f, 0.94f, 0.98f)),
                 "Round scaling is the enemy's baseline, not an in-battle buff.");
             PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound2BattleTooltip.png");
             controller.TickCombat(2f);
@@ -57,7 +57,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator LaterRound_ChangesLoadoutAndKeepsBothBattleBagsAtSixBySix()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -77,7 +77,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator AnotherStage_UsesItsOwnGoblinHealthAndAttackFromTheFirstRound()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var previous = Object.FindFirstObjectByType<BackpackPrototypeController>();
             StageData stage = Object.Instantiate(previous.Stage);
@@ -120,7 +120,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator InvalidStage_DisablesBattleAndDoesNotPayOrAdvanceUntilFixed()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             StageData original = controller.Stage;

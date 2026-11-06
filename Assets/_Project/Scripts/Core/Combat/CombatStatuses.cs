@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BackpackAutoBattle.Items;
 
 namespace BackpackAutoBattle.Combat
@@ -70,11 +71,15 @@ namespace BackpackAutoBattle.Combat
 
         private void RefreshWeaponStatusModifiers(CombatSide side)
         {
-            double accuracy = GetStatusDefinition(StatusEffectKind.Focus).PercentAt(GetStatusStacks(side, StatusEffectKind.Focus))
+            long focus = GetStatusStacks(side, StatusEffectKind.Focus);
+            double accuracy = GetStatusDefinition(StatusEffectKind.Focus).PercentAt(focus)
                 - GetStatusDefinition(StatusEffectKind.Blindness).PercentAt(GetStatusStacks(side, StatusEffectKind.Blindness));
             double precision = GetStatusDefinition(StatusEffectKind.Precision).PercentAt(GetStatusStacks(side, StatusEffectKind.Precision));
+            double rangedBonus = focus * GetItems(side).Where(item => item.Snapshot.GearEffect.Kind == UniqueGearEffectKind.FocusRangedCriticalChance)
+                .Sum(item => (double)item.Snapshot.GearEffect.Amount);
             foreach (var weapon in side == CombatSide.Player ? PlayerWeapons : EnemyWeapons)
-                weapon.Stats.SetStatusModifiers(accuracy, precision);
+                weapon.Stats.SetStatusModifiers(accuracy, precision +
+                    (weapon.Snapshot.Category == ItemCategory.Weapon && (weapon.Snapshot.Tags & ItemTags.Ranged) != 0 ? rangedBonus : 0d));
         }
 
         private double StatusSpeedPercent(CombatSide side)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Prototype
 {
-    public enum MainMenuTab { Home, Characters, Stages }
+    public enum MainMenuTab { Home, Characters, Stages, Equipment }
 
     /// <summary>Persistent main-menu navigation, independent of each tab's presentation and input.</summary>
     public sealed class PrototypeMainNavigation
@@ -21,7 +21,7 @@ namespace BackpackAutoBattle.Prototype
             Root = (RectTransform)obj.transform;
             BackpackPrototypeController.Stretch(Root);
             var tabs = new GameObject("Main Tabs", typeof(RectTransform)); tabs.transform.SetParent(Root, false);
-            SelectionUi.Place((RectTransform)tabs.transform, new Vector2(0, -329), new Vector2(650, 38));
+            SelectionUi.Place((RectTransform)tabs.transform, new Vector2(0, -329), new Vector2(1100, 38));
             var wallet = new GameObject("Main Experience Wallet", typeof(RectTransform), typeof(PrototypeRoundedPanel));
             wallet.transform.SetParent(Root, false); _wallet = (RectTransform)wallet.transform;
             var walletFace = wallet.GetComponent<PrototypeRoundedPanel>();
@@ -31,13 +31,13 @@ namespace BackpackAutoBattle.Prototype
             _experience = SelectionUi.Label(_wallet, "Main Experience Amount", "0", 22, Vector2.zero, new Vector2(120, 32));
             _experience.alignment = TextAnchor.MiddleRight;
             PrototypeSettingsScreen.GearButton(Root, "Main Settings Button", new Vector2(529, 329), openSettings);
-            string[] names = { "메인", "캐릭터", "스테이지" };
-            MainMenuTab[] order = { MainMenuTab.Characters, MainMenuTab.Home, MainMenuTab.Stages };
+            string[] names = { "메인", "캐릭터", "스테이지", "장비" };
+            MainMenuTab[] order = { MainMenuTab.Equipment, MainMenuTab.Characters, MainMenuTab.Home, MainMenuTab.Stages };
             for (int i = 0; i < order.Length; i++)
             {
                 MainMenuTab tab = order[i];
                 Button button = SelectionUi.Button(tabs.transform, "Main Tab " + tab, names[(int)tab],
-                    new Vector2((i - 1) * 204, 0), new Vector2(192, 38), () => select(tab));
+                    new Vector2((i - 2) * 204, 0), new Vector2(192, 38), () => select(tab));
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
                 _tabs.Add(tab, button);
             }

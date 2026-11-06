@@ -10,11 +10,15 @@ namespace BackpackAutoBattle.Items
         public static CharacterStatsSnapshot Default { get; } = new(50, 10);
         public double MaximumHealth { get; }
         public double Attack { get; }
-        public CharacterStatsSnapshot(double maximumHealth, double attack)
+        public double CriticalDamageBonusPercent { get; }
+        public CharacterStatsSnapshot(double maximumHealth, double attack, double criticalDamageBonusPercent = 0)
         {
             if (!double.IsFinite(maximumHealth) || maximumHealth <= 0) throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             if (!double.IsFinite(attack) || attack < 0) throw new ArgumentOutOfRangeException(nameof(attack));
+            if (!double.IsFinite(criticalDamageBonusPercent) || criticalDamageBonusPercent < 0)
+                throw new ArgumentOutOfRangeException(nameof(criticalDamageBonusPercent));
             MaximumHealth = maximumHealth; Attack = attack;
+            CriticalDamageBonusPercent = criticalDamageBonusPercent;
         }
     }
 
@@ -28,6 +32,10 @@ namespace BackpackAutoBattle.Items
         [SerializeField, Min(1)] private float _maximumHealth = 50;
         [SerializeField, Min(0)] private float _attack = 10;
         [SerializeField] private ExperienceTableData _experienceTable;
+        [SerializeField] private bool _initiallyAvailable;
+        [SerializeField] private UniqueGearData _starterGear;
+        public bool InitiallyAvailable => _initiallyAvailable;
+        public UniqueGearData StarterGear => _starterGear;
         public string DisplayName => _displayName;
         public string CharacterId => _characterId;
         public Sprite Portrait => _portrait;

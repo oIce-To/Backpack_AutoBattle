@@ -55,9 +55,10 @@ namespace BackpackAutoBattle.Prototype
             return improved ? ItemStatChange.Improved : ItemStatChange.Reduced;
         }
 
-        public static ItemTooltipContent FromItem(ItemData item, CharacterStatsSnapshot owner = null)
+        public static ItemTooltipContent FromItem(ItemData item, CharacterStatsSnapshot owner = null,
+            ItemRarity? rarity = null, UniqueGearEffect gearEffect = default)
             => FromCombat(new CombatItemSnapshot("tooltip", item, Vector2Int.zero, Inventory.ItemRotation.None,
-                item.OccupiedCells, ownerStats: owner ?? CharacterStatsSnapshot.Default), null);
+                item.OccupiedCells, ownerStats: owner ?? CharacterStatsSnapshot.Default, rarity: rarity, gearEffect: gearEffect), null);
 
         public static ItemTooltipContent FromCombat(CombatItemSnapshot item, CombatItem runtime)
         {

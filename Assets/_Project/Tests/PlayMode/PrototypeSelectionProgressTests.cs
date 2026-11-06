@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using BackpackAutoBattle.Inventory;
+using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Progression;
 using BackpackAutoBattle.Prototype;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -75,8 +78,14 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Main Start Button");
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_05"));
             Assert.That(_controller.PreparedEnemy.MaximumHealth, Is.EqualTo(78));
-            Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(50)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10));
-            Assert.That(_controller.GetComponentsInChildren<BackpackItemView>(), Has.Length.EqualTo(3));
+            Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(50)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10.5));
+            var bow = _controller.CaptureCombatSnapshot().Items.Single();
+            Assert.That(bow.ItemId, Is.EqualTo("silver_longbow"));
+            Assert.That(bow.InventorySprite, Is.Not.Null);
+            var bagView = _controller.GetComponentsInChildren<BackpackItemView>().Single();
+            Assert.That(bagView.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(bow.InventorySprite));
+            Assert.That(bagView.transform.Find("Item Artwork").localScale.x, Is.GreaterThan(1f));
+            Assert.That(bagView.transform.Find("Label"), Is.Null);
             Assert.That(_controller.TrySelectCharacter("allen"), Is.False); Assert.That(_controller.TrySelectStage("stage_01"), Is.False);
             _controller.TryStartBattle();
             Assert.That(_controller.ActiveCombat.Player.DisplayName, Is.EqualTo("세레나"));
@@ -86,7 +95,180 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(portrait.rectTransform.localScale.x, Is.EqualTo(1));
             Assert.That(_controller.Stage.GetRound(12).Encounter.Enemy.Illustration,
                 Is.SameAs(_controller.ActiveCombat.Enemy.Illustration));
+            var battleItem = _controller.GetComponentsInChildren<PrototypeBattleItemView>().Single(item => item.Snapshot.ItemId == bow.ItemId);
+            Assert.That(battleItem.transform.Find("Label"), Is.Null);
+            var fill = battleItem.transform.Find("Artwork Cycle Color").GetComponent<Image>();
+            Assert.That(fill.sprite, Is.SameAs(bow.InventorySprite));
+            Assert.That(fill.transform.localScale.x, Is.EqualTo(bagView.transform.Find("Item Artwork").localScale.x));
+            _controller.TickCombat(1.2f);
+            Assert.That(fill.fillAmount, Is.EqualTo(.5f).Within(.01f));
             Capture("BattleSerenaPortrait.png");
+        }
+
+        [UnityTest]
+        public IEnumerator EquipmentTab_TransfersSharedGearAndPersists_WithoutRegrantingOrRequiringAWeapon()
+        {
+            yield return LoadMenu();
+            var sword = _controller.Progress.GetEquippedGear("allen", UniqueGearSlot.Weapon);
+            var bow = _controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon);
+            Assert.That(_controller.Progress.UniqueGear, Has.Count.EqualTo(2));
+            _controller.ShowCharacterSelection();
+            Assert.That(Find("Character Gear Weapon").Find("Gear Badge").gameObject.activeInHierarchy, Is.True);
+            Assert.That(Find("Character Gear Weapon").Find("Gear Badge/Gear Sprite").GetComponent<Image>().sprite, Is.Not.Null);
+            Assert.That(Find("Character Gear Armor").Find("Gear Badge"), Is.Null);
+            Click("Main Tab Equipment"); yield return null;
+            Assert.That(Text("Equipped Character Stats"), Does.Contain("52.5").And.Contain("10.5"));
+            Capture("EquipmentAllen.png");
+            var swordTile = (RectTransform)Find("Inventory Gear " + sword.InstanceId);
+            Assert.That(swordTile.rect.width, Is.EqualTo(swordTile.rect.height));
+            var badge = swordTile.Find("Gear Badge");
+            Assert.That(badge.Find("Gear Rank").GetComponent<Text>().text, Is.EqualTo("일반"));
+            Assert.That(badge.Find("Gear Enhancement").GetComponent<Text>().text, Is.EqualTo("+0"));
+            Assert.That(badge.Find("Gear Equipped").gameObject.activeInHierarchy, Is.True);
+            Assert.That(badge.Find("Gear Equipped").GetComponent<Text>().fontSize, Is.EqualTo(28));
+            var bowIcon = (RectTransform)Find("Inventory Gear " + bow.InstanceId).Find("Gear Badge/Gear Sprite");
+            Assert.That(bowIcon.offsetMin, Is.EqualTo(new Vector2(7, 7)));
+            Assert.That(bowIcon.offsetMax, Is.EqualTo(new Vector2(-7, -7)));
+            Assert.That(Find("Equipment Details Modal").gameObject.activeSelf, Is.False);
+            Click("Equipment Slot Weapon"); yield return null;
+            var tooltip = Find("Equipment Item Tooltip");
+            Assert.That(tooltip.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("기사의 보검"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("5%"));
+            Assert.That(Find("Equip Unique Gear").gameObject.activeSelf, Is.False);
+            Assert.That(Find("Unequip Unique Gear").GetComponent<Button>().interactable, Is.True);
+            var hits = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(Pointer(tooltip), hits);
+            Assert.That(hits.First().gameObject, Is.EqualTo(tooltip.gameObject));
+            hits.Clear();
+            EventSystem.current.RaycastAll(Pointer(Find("Main Tab Home")), hits);
+            Assert.That(hits.First().gameObject.name, Is.EqualTo("Equipment Details Backdrop"));
+            Capture("EquipmentDetailsAllen.png");
+            Click("Equipment Details Backdrop");
+            Assert.That(Find("Equipment Details Modal").gameObject.activeSelf, Is.False);
+            Assert.That(_controller.TrySelectCharacter("serena"), Is.True);
+            Click("Main Tab Equipment"); yield return null;
+            Click("Equipment Slot Weapon");
+            Assert.That(tooltip.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("은빛 장궁"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("0.5%"));
+            Click("Equipment Details Backdrop");
+            Click("Inventory Gear " + sword.InstanceId); yield return null;
+            Assert.That(Find("Equip Unique Gear").GetComponent<Button>().interactable, Is.True);
+            Assert.That(Find("Unequip Unique Gear").gameObject.activeSelf, Is.False);
+            Click("Equip Unique Gear"); yield return null;
+            Assert.That(Text("Equipment Transfer Message"), Does.Contain("알렌이 장착"));
+            Capture("EquipmentTransferConfirmation.png");
+            Click("Cancel Equipment Transfer");
+            Assert.That(Find("Equipment Transfer Modal").gameObject.activeSelf, Is.False);
+            Assert.That(Find("Equipment Details Modal").gameObject.activeSelf, Is.True);
+            Assert.That(_controller.Progress.GetEquippedGear("allen", UniqueGearSlot.Weapon).InstanceId, Is.EqualTo(sword.InstanceId));
+            Assert.That(_controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon).InstanceId, Is.EqualTo(bow.InstanceId));
+            Click("Equip Unique Gear");
+            Click("Confirm Equipment Transfer"); yield return null;
+            Assert.That(_controller.Progress.GetEquippedGear("allen", UniqueGearSlot.Weapon), Is.Null);
+            Assert.That(_controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon).InstanceId, Is.EqualTo(sword.InstanceId));
+            Assert.That(_controller.Progress.UniqueGear.Single(item => item.InstanceId == bow.InstanceId).EquippedBy, Is.Empty);
+
+            Click("Inventory Gear " + bow.InstanceId);
+            Click("Equip Unique Gear"); yield return null;
+            Assert.That(Find("Equipment Transfer Modal").gameObject.activeSelf, Is.False);
+            Assert.That(_controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon).InstanceId, Is.EqualTo(bow.InstanceId));
+            Click("Inventory Gear " + sword.InstanceId);
+            Click("Equip Unique Gear"); yield return null;
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.UniqueGear, Has.Count.EqualTo(2));
+            Assert.That(_controller.Progress.GetEquippedGear("allen", UniqueGearSlot.Weapon), Is.Null);
+            Assert.That(_controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon).InstanceId, Is.EqualTo(sword.InstanceId));
+
+            Assert.That(_controller.TryStartRun(), Is.True);
+            yield return null;
+            Assert.That(_controller.CurrentShopItems.All(item => !item.IsUniqueGear), Is.True);
+            var view = _controller.GetComponentsInChildren<BackpackItemView>().Single();
+            Assert.That(view.Data.ItemId, Is.EqualTo("knight_sword"));
+            Assert.That(_controller.TryToggleFusionLock(view.InstanceId), Is.False);
+            var validDrop = Pointer(view.transform);
+            view.OnBeginDrag(validDrop);
+            view.OnDrag(validDrop);
+            var gridCell = Find("Grid Cell 0,0").GetComponent<Image>();
+            Assert.That(gridCell.color.g, Is.GreaterThan(gridCell.color.r + .2f));
+            Assert.That(gridCell.rectTransform.rect.width, Is.GreaterThan(BackpackPrototypeController.ItemCellSize));
+            Assert.That(view.transform.Find("Cell 0,0").GetComponent<Image>().color.a, Is.Zero);
+            view.OnEndDrag(validDrop);
+            _controller.RotateItem(view);
+            Assert.That(view.Rotation, Is.EqualTo(ItemRotation.Clockwise90));
+            Assert.That(view.transform.Find("Item Artwork").localEulerAngles.z, Is.EqualTo(270f).Within(.01f));
+            var pointer = Pointer(view.transform);
+            view.OnBeginDrag(pointer);
+            pointer.position = Pointer(Find("Prototype Shop")).position;
+            view.OnDrag(pointer);
+            var invalidColor = view.transform.Find("Cell 0,0").GetComponent<Image>().color;
+            Assert.That(invalidColor.r, Is.GreaterThan(invalidColor.g + .2f));
+            view.OnEndDrag(pointer);
+            Assert.That(_controller.Gold, Is.EqualTo(20));
+            Assert.That(_controller.CaptureCombatSnapshot().Items, Has.Count.EqualTo(1));
+            pointer = Pointer(view.transform);
+            view.OnBeginDrag(pointer);
+            pointer.position = Pointer(Find("Freeform Storage")).position;
+            view.OnDrag(pointer); view.OnEndDrag(pointer);
+            yield return null;
+            Assert.That(_controller.StoredItemCount, Is.EqualTo(1));
+            var stored = _controller.GetComponentsInChildren<PrototypeStorageItemView>().Single();
+            Assert.That(stored.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(view.Data.InventorySprite));
+            Assert.That(stored.transform.Find("Label"), Is.Null);
+            pointer = Pointer(stored.transform);
+            stored.OnBeginDrag(pointer);
+            pointer.position = Pointer(Find("Prototype Shop")).position;
+            stored.OnDrag(pointer); stored.OnEndDrag(pointer);
+            Assert.That(_controller.StoredItemCount, Is.EqualTo(1));
+            Assert.That(_controller.Gold, Is.EqualTo(20));
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(52.5));
+            Assert.That(_controller.ActiveCombat.Player.Stats.Attack, Is.EqualTo(10.5));
+            Assert.That(_controller.ActiveCombat.PlayerItems, Is.Empty);
+
+            yield return LoadMenu();
+            Assert.That(_controller.TrySelectCharacter("allen"), Is.True);
+            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10));
+            Assert.That(_controller.CaptureCombatSnapshot().Items, Is.Empty);
+            Assert.That(_controller.TryStartBattle(), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator AbandonStage_CancelPreservesRun_ConfirmLeavesWithoutPartialRewards()
+        {
+            yield return LoadMenu();
+            Assert.That(_controller.TryStartRun(), Is.True);
+            for (int i = 0; i < 4; i++) Assert.That(_controller.AdvanceRound(), Is.True);
+            Lose();
+            Assert.That(Find("Abandon Stage Button").gameObject.activeInHierarchy, Is.False);
+            Assert.That(_controller.ReturnToPreparation(), Is.True);
+            int gold = _controller.Gold;
+            int ended = 0;
+            _controller.RunEnded += _ => ended++;
+            Click("Abandon Stage Button");
+            Assert.That(Find("Abandon Stage Modal").gameObject.activeInHierarchy, Is.True);
+            Assert.That(_controller.TryStartBattle(), Is.False);
+            Assert.That(_controller.AdvanceRound(), Is.False);
+            Assert.That(_controller.TryRerollShop(), Is.False);
+            Assert.That(_controller.TryOpenSettings(), Is.False);
+            Capture("AbandonStageConfirmation.png");
+            Click("Cancel Abandon Stage");
+            Assert.That(_controller.CanEditLoadout, Is.True);
+            Assert.That(_controller.CurrentRound, Is.EqualTo(5));
+            Assert.That(_controller.Lives, Is.EqualTo(2));
+            Assert.That(_controller.Gold, Is.EqualTo(gold));
+            Assert.That(_controller.CaptureCombatSnapshot().Items, Has.Count.EqualTo(1));
+            Click("Abandon Stage Button");
+            Click("Confirm Abandon Stage");
+            Assert.That(_controller.IsMainMenu, Is.True);
+            Assert.That(_controller.Progress.SharedExperience, Is.Zero);
+            Assert.That(_controller.Progress.GetStage("stage_01").HighestRound, Is.EqualTo(5));
+            Assert.That(_controller.RunResult, Is.Null);
+            Assert.That(_controller.CurrentShopItems, Is.Empty);
+            Assert.That(ended, Is.Zero);
+            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.CurrentRound, Is.EqualTo(1));
+            Assert.That(_controller.Lives, Is.EqualTo(3));
         }
 
         [UnityTest]
@@ -118,7 +300,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             for (int i = 0; i < 11; i++) _controller.AdvanceRound();
             _controller.TryStartBattle();
             var sword = _controller.ActiveCombat.PlayerWeapons.First(); sword.Stats.AttackDamage = 10000; sword.Stats.AccuracyPercent = 100;
-            _controller.TickCombat(2); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
+            _controller.TickCombat(2.5f); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
             Assert.That(_controller.Progress.GetStage("stage_01").Cleared, Is.True);
             _controller.TickCombat(200); _controller.TryReturnToMainMenu();
             _controller.ShowStageSelection(); yield return null;
@@ -391,7 +573,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Text("Main Experience Amount"), Is.EqualTo("675"));
             Capture("CharacterExperienceGrowth.png");
             Click("Character Confirm Button");
-            Assert.That(Text("Main Character Health"), Is.EqualTo("체력  55")); Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  11"));
+            Assert.That(Text("Main Character Health"), Is.EqualTo("체력  57.75")); Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  11.55"));
             Assert.That(Text("Main Character Level"), Is.EqualTo("Lv. 2"));
             yield return LoadMenu();
             Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(675));
@@ -400,11 +582,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.Progress.GetStage("stage_01").HighestRound, Is.EqualTo(4));
             Capture("MainExperienceGrowth.png");
             _controller.TryStartRun();
-            Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(55)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(11));
+            Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(57.75)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(11.55));
             Assert.That(_controller.TryLevelUpCharacter("allen"), Is.False);
             _controller.TryStartBattle();
-            Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(55));
-            Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(5.5f).Within(.001));
+            Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(57.75));
+            Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(6.3525).Within(.001));
             Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(675));
         }
 

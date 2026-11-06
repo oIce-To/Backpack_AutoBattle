@@ -8,7 +8,6 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -19,7 +18,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator Enrage_AppearsAt60_UpdatesTooltipTo100Percent_AndOnlyAffectsPlayer()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false; controller.TryStartBattle();
             foreach (var weapon in controller.ActiveCombat.PlayerWeapons.Concat(controller.ActiveCombat.EnemyWeapons)) weapon.Stats.AttackDamage = 0;
@@ -44,7 +43,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator BattleStartCharm_HasteAndFreezeUpdateIconsTooltipAndAllCyclesLive()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -126,7 +125,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StatusAreas_UseOuterScreenColumnsWithoutCaptionsOrVisibleBackgrounds()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -175,7 +174,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StoredCharm_DoesNotGrantHaste()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -196,7 +195,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator NewRound_ResetsStatusStacksAndHidesOldTooltip()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;

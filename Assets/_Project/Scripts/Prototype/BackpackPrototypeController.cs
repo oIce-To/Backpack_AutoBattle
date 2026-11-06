@@ -77,15 +77,22 @@ namespace BackpackAutoBattle.Prototype
         {
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
+            bool openMainMenu = PrototypeMainMenuEntry.ConsumeMainMenuRequest();
+            if (!openMainMenu) AcquireInitialCharacters();
             _run = CreateRunState();
             BuildInterface();
-            if (PrototypeMainMenuEntry.ConsumeMainMenuRequest()) ShowMainMenu();
+            if (openMainMenu) ShowMainMenu();
             else InitializeRunContent();
         }
 
         private void Update()
         {
             UpdateSettings();
+            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+            {
+                if (_equipment.IsDetailsOpen) _equipment.DismissTopmost();
+                else if (IsStageAbandonOpen) CancelStageAbandon();
+            }
             // A slow screen-switch frame must not skip most of the visible fusion sequence.
             if (AutoTickFusionPresentation) TickFusionPresentation(Mathf.Min(Time.unscaledDeltaTime, .05f));
             if (CanEditLoadout && _selectedItem != null && Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
@@ -151,7 +158,7 @@ namespace BackpackAutoBattle.Prototype
                 return;
             }
 
-            if (_dragSource != DragSource.Shop && IsPointerInside(_sellArea, eventData))
+            if (_dragSource != DragSource.Shop && !itemView.Data.IsUniqueGear && IsPointerInside(_sellArea, eventData))
             {
                 SellDraggedItem(itemView);
                 FinishDrag();
@@ -330,7 +337,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool AdvanceRound()
         {
-            if (IsMainMenu || IsSettingsOpen || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
+            if (IsMainMenu || IsSettingsOpen || IsStageAbandonOpen || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
                 && !(_enableDebugRoundAdvance && _run.Phase == PrototypePhase.Preparation)))
             {
                 return false;
@@ -432,8 +439,6 @@ namespace BackpackAutoBattle.Prototype
 
             Text title = CreateText(_shopScreenRoot, "Title", "BACKPACK AUTO BATTLE PROTOTYPE", 28, FontStyle.Bold, TextAnchor.MiddleCenter);
             SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(720f, 46f));
-            _livesText = CreateText(_shopScreenRoot, "Run Lives", "", 18, FontStyle.Bold, TextAnchor.MiddleRight);
-            SetRect(_livesText.rectTransform, Vector2.one, new Vector2(-145f, -36f), new Vector2(170f, 30f));
 
             Text instructions = CreateText(
                 _shopScreenRoot,
@@ -487,11 +492,13 @@ namespace BackpackAutoBattle.Prototype
                 () => ShowCharacterSelection(), () => ShowStageSelection());
             _characterSelection = new PrototypeCharacterSelectionScreen(canvasObject.transform,
                 character => TrySelectCharacter(character.CharacterId), CloseSelectionScreens,
-                character => TryLevelUpCharacter(character.CharacterId));
+                character => TryLevelUpCharacter(character.CharacterId), GetCharacterStats, FindGearDefinition);
+            _equipment = new PrototypeEquipmentScreen(canvasObject.transform, this);
             _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
                 stage => TrySelectStage(stage.StageId), CloseSelectionScreens);
             _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab), () => TryOpenSettings());
             InitializeSettings(canvasObject.transform);
+            BuildRunControls(canvasObject.transform);
 
         }
 
@@ -574,29 +581,31 @@ namespace BackpackAutoBattle.Prototype
 
         private void CreateStartingItems()
         {
-            CreateStartingItem("training_blade", "starter_training_blade", new Vector2Int(0, 0));
-            CreateStartingItem("wooden_shield", "starter_wooden_shield", new Vector2Int(1, 0));
-            CreateStartingItem("swift_charm", "starter_swift_charm", new Vector2Int(3, 3));
+            foreach (var gear in _run.StartingGear.Values)
+            {
+                if (TryPlaceStartingGear(gear)) continue;
+                Vector2 position = FindFusionStoragePosition(gear.Item, ItemRotation.None);
+                var stored = new PrototypeStoredItem(gear.InstanceId, gear.Item, position, ItemRotation.None);
+                _storedItems.Add(stored);
+                CreateStorageView(stored);
+            }
         }
 
-        private void CreateStartingItem(string itemId, string instanceId, Vector2Int origin)
+        private bool TryPlaceStartingGear(StartingGear gear)
         {
-            ItemData itemData = _itemCatalog?.FirstOrDefault(data => data != null && data.ItemId == itemId);
-            if (itemData == null)
-            {
-                Debug.LogError($"Starting ItemData was not found: {itemId}");
-                return;
-            }
+            for (int y = 0; y < GridSize; y++)
+                for (int x = 0; x < GridSize; x++)
+                    if (TryPlaceItem(gear.Item, gear.InstanceId, new Vector2Int(x, y))) return true;
+            return false;
+        }
 
-            if (!_grid.TryPlace(instanceId, itemData.CreateShape(), origin))
-            {
-                Debug.LogError($"Could not place prototype item: {instanceId}");
-                return;
-            }
-
+        private bool TryPlaceItem(ItemData itemData, string instanceId, Vector2Int origin)
+        {
+            if (!_grid.TryPlace(instanceId, itemData.CreateShape(), origin)) return false;
             BackpackItemView itemView = CreateItemView(instanceId, itemData, origin, ItemRotation.None);
             _itemViews.Add(instanceId, itemView);
             PositionItem(itemView);
+            return true;
         }
 
         private BackpackItemView CreateItemView(string instanceId, ItemData itemData, Vector2Int origin, ItemRotation rotation)
@@ -876,6 +885,7 @@ namespace BackpackAutoBattle.Prototype
         private void UpdateSellPreview(PointerEventData eventData)
         {
             bool canSell = _draggingItem != null
+                           && !_draggingItem.Data.IsUniqueGear
                            && (_dragSource == DragSource.Backpack || _dragSource == DragSource.Storage);
             _sellPreview.gameObject.SetActive(canSell);
             if (!canSell)
@@ -930,28 +940,29 @@ namespace BackpackAutoBattle.Prototype
         private void UpdatePlacementPreview(BackpackItemView itemView, Vector2Int origin)
         {
             RefreshDragPlacementOverlay();
-            bool valid = _grid.CanPlace(itemView.InstanceId, itemView.Shape, origin, itemView.Rotation);
+            bool valid = _dragRangeInsideGrid && _grid.CanPlace(itemView.InstanceId, itemView.Shape, origin, itemView.Rotation)
+                && (_dragSource != DragSource.Shop || CanPurchaseDraggedOffer());
             Color previewColor = valid ? ValidPreviewColor : InvalidPreviewColor;
-            itemView.SetTint(previewColor);
+            if (valid) itemView.ResetTint();
+            else itemView.SetTint(InvalidPreviewColor);
             ResetGridColors();
+            if (!_dragRangeInsideGrid) return;
 
             foreach (Vector2Int localCell in itemView.Shape.GetCells(itemView.Rotation))
             {
                 Vector2Int worldCell = origin + localCell;
                 if (_grid.IsInside(worldCell))
                 {
-                    _gridCells[worldCell.x, worldCell.y].color = previewColor;
+                    Image target = _gridCells[worldCell.x, worldCell.y];
+                    target.color = previewColor;
+                    // Keep the target edge visible even when the opaque dragged cell aligns with it.
+                    if (valid) target.rectTransform.sizeDelta = Vector2.one * (ItemCellSize + 4f);
                 }
             }
         }
 
         private void UpdateEconomyText()
         {
-            if (_livesText != null)
-            {
-                _livesText.text = $"라이프 {_run.Lives} / {_run.StartingLives}";
-                _livesText.color = _run.Lives <= 1 ? new Color(1f, .4f, .4f) : new Color(.91f, .94f, .98f);
-            }
             if (_goldText != null)
             {
                 _goldText.text = $"{_run.Gold} G";
@@ -992,7 +1003,9 @@ namespace BackpackAutoBattle.Prototype
             {
                 for (int x = 0; x < GridSize; x++)
                 {
-                    _gridCells[x, y].color = (x + y) % 2 == 0 ? GridColorA : GridColorB;
+                    Image cell = _gridCells[x, y];
+                    cell.color = (x + y) % 2 == 0 ? GridColorA : GridColorB;
+                    cell.rectTransform.sizeDelta = Vector2.one * ItemCellSize;
                 }
             }
         }

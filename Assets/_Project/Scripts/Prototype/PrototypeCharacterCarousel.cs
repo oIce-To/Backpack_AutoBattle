@@ -118,9 +118,14 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _name, _stats, _level, _levelCost, _levelUpTitle, _error;
         private readonly PrototypeExperienceIcon _costIcon;
         private readonly Button _confirm, _levelUp;
+        private readonly RectTransform[] _gearSlots = new RectTransform[3];
+        private readonly Func<CharacterData, CharacterStatsSnapshot> _getStats;
+        private readonly Func<string, UniqueGearData> _findGear;
         private PlayerProgress _progress;
-        public PrototypeCharacterSelectionScreen(Transform canvas, Action<CharacterData> confirm, Action close, Action<CharacterData> levelUp)
+        public PrototypeCharacterSelectionScreen(Transform canvas, Action<CharacterData> confirm, Action close, Action<CharacterData> levelUp,
+            Func<CharacterData, CharacterStatsSnapshot> getStats, Func<string, UniqueGearData> findGear)
         {
+            _getStats = getStats; _findGear = findGear;
             var background = SelectionUi.Image(canvas, "Character Selection Screen", new Color(.035f, .04f, .055f));
             background.raycastTarget = true; Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
             var panel = SelectionUi.Image(Root, "Character Selection Panel", new Color(.07f, .075f, .085f));
@@ -134,8 +139,16 @@ namespace BackpackAutoBattle.Prototype
             SelectionUi.Place(detail.rectTransform, new Vector2(340, -30), new Vector2(340, 510));
             _name = SelectionUi.Label(panel.transform, "Character Preview Name", "", 31, new Vector2(340, 154), new Vector2(300, 50));
             _level = SelectionUi.Label(panel.transform, "Character Preview Level", "", 19, new Vector2(340, 111), new Vector2(300, 28));
-            _stats = SelectionUi.Label(panel.transform, "Character Preview Stats", "", 23, new Vector2(340, 48), new Vector2(300, 84));
-            _stats.lineSpacing = 1.7f;
+            _stats = SelectionUi.Label(panel.transform, "Character Preview Stats", "", 19, new Vector2(340, 78), new Vector2(320, 33));
+            for (int i = 0; i < _gearSlots.Length; i++)
+            {
+                var slot = SelectionUi.Image(panel.transform, "Character Gear " + (UniqueGearSlot)i, SelectionUi.Idle);
+                float x = 340 + (i - 1) * 100;
+                SelectionUi.Place(slot.rectTransform, new Vector2(x, 17), Vector2.one * 88f);
+                SelectionUi.Label(panel.transform, "Slot Type", PrototypeEquipmentScreen.SlotLabel((UniqueGearSlot)i), 11,
+                    new Vector2(x, -36), new Vector2(88, 15));
+                _gearSlots[i] = slot.rectTransform;
+            }
             var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(PrototypeRoundedPanel), typeof(Button));
             upgrade.transform.SetParent(panel.transform, false);
             SelectionUi.Place((RectTransform)upgrade.transform, new Vector2(340, -100), new Vector2(300, 104));
@@ -176,7 +189,13 @@ namespace BackpackAutoBattle.Prototype
             _name.text = character?.DisplayName ?? "캐릭터가 없습니다.";
             int level = _progress?.GetCharacterLevel(character?.CharacterId) ?? 1;
             _level.text = $"Lv. {level}";
-            var stats = character?.CaptureStats(level); _stats.text = stats == null ? "" : $"체력  {stats.MaximumHealth:0.#}\n공격력  {stats.Attack:0.#}";
+            var stats = character == null ? null : _getStats(character);
+            _stats.text = stats == null ? "" : $"체력  {stats.MaximumHealth:0.##}    공격력  {stats.Attack:0.##}";
+            for (int i = 0; i < _gearSlots.Length; i++)
+            {
+                var gear = _progress?.GetEquippedGear(character?.CharacterId, (UniqueGearSlot)i);
+                PrototypeGearBadge.Render(_gearSlots[i], gear == null ? null : _findGear(gear.GearId), gear);
+            }
             long cost = 0;
             bool canGrow = character?.ExperienceTable != null && character.ExperienceTable.TryGetCost(level, out cost);
             _levelUpTitle.text = canGrow ? "레벨 업" : "레벨업 불가";

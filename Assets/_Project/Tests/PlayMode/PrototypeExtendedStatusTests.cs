@@ -7,7 +7,6 @@ using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -18,7 +17,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator PurchasedStatusItems_GrantOnBattleStart_AndShowDistinctColoredGlyphsAndLiveStatColors()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
             Buy("precision_charm", 3, 0); Buy("focus_charm", 4, 0); Buy("agility_charm", 5, 0); Buy("blinding_dust", 5, 1);
             Assert.That(controller.Gold, Is.EqualTo(4));
@@ -87,7 +86,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator EvasionReadouts_StayOutsideIllustrations_AndShowLiveEffectiveRatesIncludingZeroAndCap()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
             controller.TryStartBattle();
@@ -134,7 +133,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StatusDescriptions_OnlyShowTheirEffect_AndKeepExistingTooltipColors()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
             controller.TryStartBattle();

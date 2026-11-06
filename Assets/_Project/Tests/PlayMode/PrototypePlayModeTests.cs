@@ -7,7 +7,6 @@ using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -18,8 +17,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator PrototypeScene_SupportsDragPurchaseStoragePlacementAndEconomy()
         {
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
-            yield return loadOperation;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
 
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
@@ -118,7 +116,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator DiscountedOffers_AreIndependentAndOwnedItemsCanReappear()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
 
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
@@ -187,7 +185,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator CancelledOrUnaffordablePurchase_PreservesShelfOfferAndGold()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             ItemData potion = controller.ItemCatalog.Single(item => item.ItemId == "healing_potion");

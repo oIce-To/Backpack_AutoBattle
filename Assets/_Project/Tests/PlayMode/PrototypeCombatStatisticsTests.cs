@@ -11,7 +11,6 @@ using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -24,7 +23,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [TearDown] public void Cleanup() { foreach (var item in _temporary) if (item != null) Object.Destroy(item); _temporary.Clear(); }
         private IEnumerator Setup()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             _controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); _controller.BattleController.AutoTick = false;
         }
         [UnityTest]

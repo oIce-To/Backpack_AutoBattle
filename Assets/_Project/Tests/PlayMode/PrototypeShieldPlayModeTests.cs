@@ -7,7 +7,6 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -18,7 +17,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator Shield_ActivatesAbsorbsDamageAndUsesCommonSpeedAndTooltip()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             ItemData definition = controller.ItemCatalog.Single(item => item.ItemId == "wooden_shield");

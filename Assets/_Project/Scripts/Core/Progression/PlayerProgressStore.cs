@@ -15,6 +15,13 @@ namespace BackpackAutoBattle.Progression
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentException("A save path is required.", nameof(path));
             FilePath = Path.GetFullPath(path);
         }
+
+        public static string ResolveLocalPath()
+        {
+            string path = Environment.GetEnvironmentVariable("BACKPACK_PROFILE_PATH");
+            return string.IsNullOrWhiteSpace(path) ? Path.Combine(Application.persistentDataPath, "player-progress.json") : path;
+        }
+
         public PlayerProgress Load(out string warning)
         {
             warning = null; CanWrite = true; _recoveredBackup = false;

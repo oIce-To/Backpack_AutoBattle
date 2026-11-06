@@ -47,7 +47,7 @@ namespace BackpackAutoBattle.Prototype
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
-        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen;
+        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen && !IsStageAbandonOpen;
         public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
@@ -56,7 +56,11 @@ namespace BackpackAutoBattle.Prototype
             foreach (BackpackItemView view in _itemViews.Values)
             {
                 if (_grid.TryGetOccupiedCells(view.InstanceId, out var occupiedCells))
-                    snapshots.Add(new CombatItemSnapshot(view.InstanceId, view.Data, view.Origin, view.Rotation, occupiedCells, ownerStats: _run.PlayerStats));
+                {
+                    _run.StartingGear.TryGetValue(view.InstanceId, out var gear);
+                    snapshots.Add(new CombatItemSnapshot(view.InstanceId, view.Data, view.Origin, view.Rotation, occupiedCells,
+                        ownerStats: _run.PlayerStats, rarity: gear?.Rarity, gearEffect: gear?.Effect ?? default));
+                }
             }
             return new CombatLoadoutSnapshot(snapshots, GridSize, GridSize);
         }
@@ -71,7 +75,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack,
-                _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false);
+                _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false, _run.PlayerStats.CriticalDamageBonusPercent);
             CapturePendingFusions();
             if (!_run.TryBeginBattle()) return false;
             _itemTooltip.HideAll();
@@ -133,10 +137,16 @@ namespace BackpackAutoBattle.Prototype
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);
             _battleController.SetVisible(!IsMainMenu && !showShop);
-            _battleController.SetLives(_run.Lives, _run.StartingLives);
+            _lifeHearts.gameObject.SetActive(!IsMainMenu);
+            _lifeHearts.SetLives(_run.Lives, _run.StartingLives);
             _stageSettingsButton.gameObject.SetActive(!IsMainMenu);
-            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion;
-            if (!IsMainMenu && !IsSettingsOpen) _stageSettingsButton.transform.SetAsLastSibling();
+            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion && !IsStageAbandonOpen;
+            _stageAbandonButton.interactable = CanEditLoadout;
+            if (!IsMainMenu && !IsSettingsOpen && !IsStageAbandonOpen)
+            {
+                _lifeHearts.transform.SetAsLastSibling();
+                _stageSettingsButton.transform.SetAsLastSibling();
+            }
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
@@ -182,7 +192,15 @@ namespace BackpackAutoBattle.Prototype
         {
             if (!CanEditLoadout || _draggingItem != null || item == null) return;
             _fusionHoverOwner = owner;
-            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item, _run.PlayerStats), pointer.position, pointer.enterEventCamera);
+            string id = owner switch
+            {
+                BackpackItemView bag => bag.InstanceId,
+                PrototypeStorageItemView storage => storage.StoredItem.InstanceId,
+                _ => null
+            };
+            StartingGear gear = id != null && _run.StartingGear.TryGetValue(id, out var equipped) ? equipped : null;
+            _itemTooltip.Show(owner, () => ItemTooltipContent.FromItem(item, _run.PlayerStats, gear?.Rarity, gear?.Effect ?? default),
+                pointer.position, pointer.enterEventCamera);
             ShowPreparationPlacement(owner);
         }
 

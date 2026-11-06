@@ -26,6 +26,7 @@ namespace BackpackAutoBattle.Prototype
         private Func<StatusTooltipContent> _statusContent;
         private Vector2 _pointer;
         private Camera _eventCamera;
+        private bool _pinned;
 
         public RectTransform RectTransform { get; private set; }
         public bool IsVisible => gameObject.activeSelf;
@@ -107,6 +108,19 @@ namespace BackpackAutoBattle.Prototype
             Refresh();
         }
 
+        internal void ShowPinned(ItemTooltipContent content, string rankSuffix, string notes, float footerHeight)
+        {
+            _pinned = true;
+            _border.raycastTarget = true;
+            CanvasGroup group = GetComponent<CanvasGroup>();
+            group.blocksRaycasts = true;
+            group.interactable = true;
+            RectTransform.anchorMin = RectTransform.anchorMax = Vector2.one * .5f;
+            gameObject.SetActive(true);
+            RenderItem(content, rankSuffix, notes, footerHeight);
+            RectTransform.anchoredPosition = new Vector2(-RectTransform.sizeDelta.x / 2f, RectTransform.sizeDelta.y / 2f);
+        }
+
         public void ShowStatus(Component owner, Func<StatusTooltipContent> content, Vector2 pointer, Camera eventCamera)
         {
             _owner = owner;
@@ -144,6 +158,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Refresh()
         {
+            if (_pinned) return;
             if (_owner == null || !_owner.gameObject.activeInHierarchy || (_content == null && _statusContent == null))
             {
                 HideAll();
@@ -170,11 +185,17 @@ namespace BackpackAutoBattle.Prototype
             }
             ItemTooltipContent item = _content();
             if (item == null) { HideAll(); return; }
+            RenderItem(item);
+            Position();
+        }
+
+        private void RenderItem(ItemTooltipContent item, string rankSuffix = "", string notes = "", float footerHeight = 0f)
+        {
             _name.text = item.DisplayName;
             Place(_name.rectTransform, Padding, -26f, 245f, 36f);
             _rarity.gameObject.SetActive(true);
             _divider.gameObject.SetActive(item.HasWeaponStats);
-            _rarity.text = item.Rarity.GetDisplayName();
+            _rarity.text = item.Rarity.GetDisplayName() + rankSuffix;
             _rarity.color = _border.color = item.Rarity.GetDisplayColor();
             _context.text = "전투 중 실제 스탯";
             _context.gameObject.SetActive(item.IsRuntime && item.HasWeaponStats);
@@ -205,15 +226,14 @@ namespace BackpackAutoBattle.Prototype
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
             float descriptionTop = item.HasWeaponStats ? 211f - (item.IsRuntime ? 0f : 18f) : 62f;
             float dividerTop = descriptionTop;
-            _description.text = item.GetDescriptionText();
-            float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - Padding * 2f);
+            _description.text = item.GetDescriptionText() + notes;
+            float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - footerHeight - Padding * 2f);
             Place(_description.rectTransform, Padding, -descriptionTop - available / 2f, Width - Padding * 2f, available);
             float height = Mathf.Clamp(_description.GetPreferredValues(_description.text, Width - Padding * 2f, Mathf.Infinity).y,
                 32f, available);
             Place(_description.rectTransform, Padding, -descriptionTop - height / 2f, Width - Padding * 2f, height);
             Place(_divider.rectTransform, Padding, -dividerTop + 12f, Width - Padding * 2f, 1f);
-            RectTransform.sizeDelta = new Vector2(Width, descriptionTop + height + Padding);
-            Position();
+            RectTransform.sizeDelta = new Vector2(Width, descriptionTop + height + Padding + footerHeight);
         }
 
         private void Position()

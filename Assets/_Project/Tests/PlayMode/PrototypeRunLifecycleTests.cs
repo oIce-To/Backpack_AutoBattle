@@ -10,7 +10,6 @@ using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -22,7 +21,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         private BackpackPrototypeController _controller;
         private IEnumerator Setup()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             _controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             _controller.BattleController.AutoTick = false;
         }
@@ -32,7 +31,9 @@ namespace BackpackAutoBattle.Tests.Prototype
         {
             yield return Setup();
             Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.StartingLives, Is.EqualTo(3));
-            Assert.That(Text("Run Lives"), Is.EqualTo("라이프 3 / 3"));
+            var hearts = Find("Run Lives").GetComponent<PrototypeLifeHearts>();
+            Assert.That(hearts.Capacity, Is.EqualTo(3));
+            Assert.That(hearts.Lives, Is.EqualTo(3));
             Assert.That(Find("Next Round Button").gameObject.activeInHierarchy, Is.True);
             Assert.That(_controller.ItemCatalog.Any(i => i.ItemId == "healing_potion"), Is.True);
             Capture("RunLivesPreparation.png");
@@ -46,7 +47,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.ActiveCombat.IsForcedDefeat, Is.True);
             Assert.That(_controller.ActiveCombat.ElapsedSeconds, Is.EqualTo(90));
             Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(_controller.ActiveCombat.PlayerMaxHealth));
-            Assert.That(Text("Battle Lives"), Is.EqualTo("라이프 2 / 3"));
+            Assert.That(hearts.Lives, Is.EqualTo(2));
             Assert.That(Text("Battle Result"), Does.Contain("90초 경과"));
             Assert.That(_controller.Lives, Is.EqualTo(2)); Capture("ForcedDefeat90Seconds.png");
             Assert.That(_controller.BattleController.ShowStatistics(), Is.True);
@@ -83,7 +84,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                     if (i == 1) Capture("DefeatWithTwoLives.png");
                     Find("Combat Action Button").GetComponent<Button>().onClick.Invoke();
                     Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
-                    Assert.That(Text("Run Lives"), Is.EqualTo($"라이프 {3 - i} / 3"));
+                    Assert.That(Find("Run Lives").GetComponent<PrototypeLifeHearts>().Lives, Is.EqualTo(3 - i));
                     Assert.That(_controller.ReturnToPreparation(), Is.False);
                 }
             }
@@ -92,7 +93,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.RunResult.Outcome, Is.EqualTo(PrototypeRunOutcome.GameOver));
             Assert.That(Find("Run Result Screen").gameObject.activeInHierarchy, Is.True);
             Assert.That(Text("Run Result Title"), Is.EqualTo("게임 오버"));
-            Assert.That(Text("Run Result Summary"), Does.Contain("남은 라이프  0 / 3").And.Contain("패배 3").And.Not.Contain("골드"));
+            Assert.That(Find("Run Lives").GetComponent<PrototypeLifeHearts>().Lives, Is.Zero);
+            Assert.That(Text("Run Result Summary"), Does.Contain("패배 3").And.Not.Contain("골드"));
             Assert.That(_controller.CanEditLoadout, Is.False);
             Assert.That(_controller.TryStartBattle(), Is.False); Assert.That(_controller.ReturnToPreparation(), Is.False);
             Assert.That(_controller.AdvanceRound(), Is.False); Assert.That(_controller.TryRerollShop(), Is.False);
@@ -134,19 +136,18 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.GetComponentsInChildren<PrototypeStatusIcon>(true), Is.Empty);
             Assert.That(Find("Run Result Screen").gameObject.activeSelf, Is.False);
             var bag = _controller.GetComponentsInChildren<BackpackItemView>();
-            Assert.That(bag, Has.Length.EqualTo(3));
-            Assert.That(bag.Select(v => v.Data.ItemId), Is.EquivalentTo(new[] { "training_blade", "wooden_shield", "swift_charm" }));
+            Assert.That(bag.Select(v => v.Data.ItemId), Is.EqualTo(new[] { "knight_sword" }));
             Assert.That(bag.All(v => v.Rotation == ItemRotation.None), Is.True);
-            Assert.That(bag.Single(v => v.Data.ItemId == "wooden_shield").Origin, Is.EqualTo(new Vector2Int(1, 0)));
+            Assert.That(bag.Single().Origin, Is.EqualTo(Vector2Int.zero));
             var slots = _controller.GetComponentsInChildren<PrototypeShopSlotView>();
             Assert.That(slots.All(s => s.CanPurchase && !s.Offer.IsLocked), Is.True);
             Assert.That(slot.Offer, Is.Not.SameAs(oldOffer)); Assert.That(_controller.CurrentShopItems, Has.Count.EqualTo(4));
             Assert.That(oldResult.Defeats, Is.EqualTo(3)); Assert.That(oldResult.Lives, Is.Zero);
             Assert.That(_controller.TryRestartRun(), Is.False); Assert.That(_controller.RequestRunRestart(), Is.False);
             Assert.That(_controller.TryStartBattle(), Is.True);
-            Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(50));
-            Assert.That(_controller.ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.EqualTo(10));
-            Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(5));
+            Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(52.5));
+            Assert.That(_controller.ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.Zero);
+            Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(5.775).Within(.001));
         }
 
         [UnityTest]
@@ -206,11 +207,11 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10));
                 for (int i = 0; i < 11; i++) _controller.AdvanceRound();
                 Win(); _controller.TryRestartRun(); yield return null;
-                Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(100));
-                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(20));
+                Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(105));
+                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(21));
                 _controller.TryStartBattle();
-                Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(100));
-                Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(10));
+                Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(105));
+                Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(11.55).Within(.001));
                 Assert.That(_controller.Lives, Is.EqualTo(3));
             }
             finally { Set(_controller, "_characterData", original); Object.Destroy(changed); }

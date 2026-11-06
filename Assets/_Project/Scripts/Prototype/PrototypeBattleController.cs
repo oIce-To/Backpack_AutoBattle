@@ -122,7 +122,6 @@ namespace BackpackAutoBattle.Prototype
             _tooltip.HideAll(); _statisticsView.Show(Simulation.CaptureStatistics()); return true;
         }
         public void HideStatistics() => _statisticsView.Hide();
-        public void SetLives(int lives, int startingLives) => _screen.SetLives(lives, startingLives);
         public void ShowConfigurationError(string error) => _screen.ShowConfigurationError(error);
         public void SetVisible(bool visible) => _screen.Root.gameObject.SetActive(visible);
 

@@ -8,7 +8,6 @@ using BackpackAutoBattle.Shop;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -19,7 +18,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator ScreenSwitch_PreservesStoragePositionsAndRotatedShopItems()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
@@ -86,7 +85,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator Battle_AutomaticallyTicksAndRendersHealthAndLogs()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             Assert.That(controller.TryStartBattle(), Is.True);
@@ -118,7 +117,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator Battle_UsesOnlyBackpackWeaponsLocksPreparationAndPaysNextRoundOnce()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.enabled = false;
@@ -233,7 +232,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator Defeat_ReturnsToPreparationWithoutIncomeOrRoundChange()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.enabled = false;
@@ -258,7 +257,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator TwelveVictories_CompleteRunWithoutThirteenthRoundOrExtraIncome()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             BackpackPrototypeController controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.enabled = false;

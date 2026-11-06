@@ -30,10 +30,12 @@ namespace BackpackAutoBattle.Items
             get
             {
                 if (_centerItem == null || _resultItem == null) return "중심 아이템과 결과 아이템을 지정하세요.";
+                if (_centerItem.IsUniqueGear || _resultItem.IsUniqueGear) return "고유 장비는 스테이지 합성에 사용할 수 없습니다.";
                 if (_ingredients == null || _ingredients.Count == 0) return "추가 재료를 하나 이상 지정하세요.";
                 foreach (var ingredient in _ingredients)
                     if (ingredient == null || ingredient.Item == null || ingredient.Quantity < 1)
                         return "모든 재료의 아이템과 1 이상의 수량을 지정하세요.";
+                    else if (ingredient.Item.IsUniqueGear) return "고유 장비는 스테이지 합성에 사용할 수 없습니다.";
                 return null;
             }
         }

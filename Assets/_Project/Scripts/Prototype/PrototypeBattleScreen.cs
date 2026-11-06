@@ -28,7 +28,6 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _enemyName;
         private readonly Text _title;
         private readonly Text _timer;
-        private readonly Text _lives;
         private readonly Text _inspection;
         private readonly Text _logText;
         private readonly Image _playerIllustration;
@@ -62,8 +61,6 @@ namespace BackpackAutoBattle.Prototype
             var statisticsText = BackpackPrototypeController.CreateText(statisticsImage.transform, "Battle Statistics Label", "전투 통계", 18, FontStyle.Bold, TextAnchor.MiddleCenter);
             statisticsText.raycastTarget = false; BackpackPrototypeController.Stretch(statisticsText.rectTransform);
             _timer = Label(Root, "Combat Timer", new Vector2(0f, 318f), new Vector2(900f, 44f), 28, TextAnchor.MiddleCenter);
-            _lives = Label(Root, "Battle Lives", Vector2.zero, new Vector2(170f, 30f), 18, TextAnchor.MiddleRight);
-            BackpackPrototypeController.SetRect(_lives.rectTransform, new Vector2(1f, 1f), new Vector2(-145f, -36f), new Vector2(170f, 30f));
             _title = Label(Root, "Battle Result", new Vector2(0f, 270f), new Vector2(900f, 36f), 24, TextAnchor.MiddleCenter);
             _title.gameObject.SetActive(false);
             _playbackControls = new PrototypeBattlePlaybackControls(Root, speedAction, pauseAction);
@@ -237,12 +234,6 @@ namespace BackpackAutoBattle.Prototype
             _playerDamage.Clear();
             _enemyDamage.Clear();
             _title.gameObject.SetActive(false); _continueButton.interactable = false;
-        }
-
-        public void SetLives(int lives, int startingLives)
-        {
-            _lives.text = $"라이프 {lives} / {startingLives}";
-            _lives.color = lives <= 1 ? new Color(1f, .4f, .4f) : new Color(.91f, .94f, .98f);
         }
 
         public void ShowResult(PrototypePhase phase)

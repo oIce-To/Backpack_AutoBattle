@@ -33,10 +33,17 @@ namespace BackpackAutoBattle.Prototype
                 rect.anchoredPosition = new Vector2(cell.x, -cell.y) * BackpackPrototypeController.CellPitch;
                 rect.sizeDelta = Vector2.one * BackpackPrototypeController.ItemCellSize;
                 Image image = obj.GetComponent<Image>();
-                image.color = item.DisplayColor;
+                image.color = item.InventorySprite == null ? item.DisplayColor : Color.clear;
                 images.Add(image);
             }
             root.sizeDelta = new Vector2(width, height) * BackpackPrototypeController.CellPitch;
+            if (item.InventorySprite != null)
+            {
+                CreateArtwork(root, item.InventorySprite, rotation, root.sizeDelta - Vector2.one * 6f,
+                    new Vector2(-3f, 3f), item.InventoryArtworkWidthScale);
+                if (wasLocked) SetFusionLocked(root, true);
+                return images;
+            }
             Text label = BackpackPrototypeController.CreateText(root, "Label", item.DisplayName, 14,
                 FontStyle.Bold, TextAnchor.MiddleCenter);
             label.raycastTarget = false;
@@ -46,6 +53,18 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.Stretch(label.rectTransform);
             if (wasLocked) SetFusionLocked(root, true);
             return images;
+        }
+
+        internal static Image CreateArtwork(Transform parent, Sprite sprite, ItemRotation rotation, Vector2 size, Vector2 offset, float widthScale)
+        {
+            var image = SelectionUi.Image(parent, "Item Artwork", Color.white);
+            image.sprite = sprite;
+            image.preserveAspect = true;
+            if (((int)rotation & 1) != 0) size = new Vector2(size.y, size.x);
+            SelectionUi.Place(image.rectTransform, offset, size);
+            image.rectTransform.localRotation = Quaternion.Euler(0f, 0f, -90f * (int)rotation);
+            image.rectTransform.localScale = new Vector3(widthScale, 1f, 1f);
+            return image;
         }
 
         public static void SetFusionLocked(RectTransform root, bool locked)

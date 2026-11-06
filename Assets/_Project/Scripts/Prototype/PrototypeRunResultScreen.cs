@@ -59,7 +59,6 @@ namespace BackpackAutoBattle.Prototype
             _title.color = cleared ? new Color(1, .8f, .24f) : new Color(1, .4f, .4f);
             _summary.text = $"{result.StageName ?? result.StageId ?? "스테이지"}\n"
                 + $"{(cleared ? "완료" : "도달")} 라운드  {result.Round} / {result.RoundCount}\n"
-                + $"남은 라이프  {result.Lives} / {result.StartingLives}\n"
                 + $"승리 {result.Victories} · 패배 {result.Defeats}\n"
                 + $"누적 전투 시간  {result.TotalBattleSeconds:0.0}초";
             _experience.text = experience.HasValue ? $"획득 경험치  +{experience.Value:N0}" : "";

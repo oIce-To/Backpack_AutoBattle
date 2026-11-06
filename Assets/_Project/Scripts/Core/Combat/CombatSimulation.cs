@@ -177,9 +177,9 @@ namespace BackpackAutoBattle.Combat
                 CombatSide side = CombatSide.Player;
                 // Snapshot order is stable ID order. Player activations win exact time ties.
                 foreach (CombatItem item in PlayerItems)
-                    if (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt) { next = item; side = CombatSide.Player; }
+                    if (item.Activation.HasCycle && (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt)) { next = item; side = CombatSide.Player; }
                 foreach (CombatItem item in EnemyItems)
-                    if (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt) { next = item; side = CombatSide.Enemy; }
+                    if (item.Activation.HasCycle && (next == null || item.Cycle.NextActivationAt < next.Cycle.NextActivationAt)) { next = item; side = CombatSide.Enemy; }
                 PeriodicState periodic = NextPeriodicTick();
                 // Existing item ordering wins exact ties; status ties use target side, then status kind.
                 if (periodic != null && (next == null || periodic.NextTickAt < next.Cycle.NextActivationAt))
@@ -213,8 +213,8 @@ namespace BackpackAutoBattle.Combat
         }
 
         private IReadOnlyList<CombatItem> CreateItems(CombatLoadoutSnapshot loadout)
-            => Array.AsReadOnly(loadout.Items.Where(item => item.Activation.HasCycle).Select(item =>
-                item.Activation.HasEffect(ItemEffectKind.Attack) ? new CombatWeapon(item, () => ElapsedSeconds)
+            => Array.AsReadOnly(loadout.Items.Where(item => item.Activation.HasCycle || item.GearEffect.Kind != UniqueGearEffectKind.None).Select(item =>
+                item.Activation.HasCycle && item.Activation.HasEffect(ItemEffectKind.Attack) ? new CombatWeapon(item, () => ElapsedSeconds)
                     : new CombatItem(item, () => ElapsedSeconds)).ToArray());
 
         private void ResolveAttack(CombatWeapon weapon, CombatSide side, ICollection<CombatItemEvent> events)
@@ -240,7 +240,14 @@ namespace BackpackAutoBattle.Combat
             if (hit && (target == CombatSide.Player ? PlayerHealth : EnemyHealth) > 0d && Result == CombatResult.Running)
                 foreach (ItemActivationEffect effect in weapon.Activation.Effects)
                     if (effect.Trigger == ItemEffectTrigger.OnHit) ResolveNonAttackEffect(weapon, side, effect, events);
-            if (hit) ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId));
+            if (hit)
+            {
+                if (weapon.Snapshot.Category == ItemCategory.Weapon && (weapon.Snapshot.Tags & ItemTags.Melee) != 0)
+                    foreach (CombatItem source in GetItems(side))
+                        if (source.Snapshot.GearEffect.Kind == UniqueGearEffectKind.MeleeHitArmor)
+                            GainArmor(source, side, (side == CombatSide.Player ? Player : Enemy).Stats.Attack * source.Snapshot.GearEffect.Amount, events);
+                ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId));
+            }
             UpdateCombatResult(side);
         }
 
@@ -249,10 +256,7 @@ namespace BackpackAutoBattle.Combat
             if (effect.Kind == ItemEffectKind.Attack) throw new InvalidOperationException("명중 연계 효과에서 공격 효과를 재귀 실행할 수 없습니다.");
             if (effect.Kind == ItemEffectKind.GainArmor)
             {
-                AddArmorOrigin(side, item.InstanceId, effect.Amount);
-                if (side == CombatSide.Player) PlayerArmor += effect.Amount;
-                else EnemyArmor += effect.Amount;
-                RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind, armorGained: effect.Amount));
+                GainArmor(item, side, effect.Amount, events);
             }
             else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
             {
@@ -262,6 +266,14 @@ namespace BackpackAutoBattle.Combat
                 RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind,
                     statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
             }
+        }
+
+        private void GainArmor(CombatItem source, CombatSide side, double amount, ICollection<CombatItemEvent> events)
+        {
+            AddArmorOrigin(side, source.InstanceId, amount);
+            if (side == CombatSide.Player) PlayerArmor += amount;
+            else EnemyArmor += amount;
+            RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, source, ItemEffectKind.GainArmor, armorGained: amount));
         }
 
         /// <summary>Periodic status damage and reflected/other damage never roll accuracy, evasion or critical,

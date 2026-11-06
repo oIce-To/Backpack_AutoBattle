@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e3d90d1546141768d75f4921938895c, type: 3}
+  m_Name: UniqueGear_SilverLongbow
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.UniqueGearData
+  _item: {fileID: 11400000, guid: 34738870f637459d8ff5810f21ddf1b1, type: 2}
+  _slot: 0
+  _icon: {fileID: 21300000, guid: 42e733ae756b4cb6b48e4866b596c8a4, type: 3}
+  _iconInset: 7
+  _bonusHealth: 0
+  _bonusAttack: 1
+  _bonusCriticalDamage: 1
+  _effect: 2
+  _commonEffect: 0.5
+  _uncommonEffect: 0.7

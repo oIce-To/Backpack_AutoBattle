@@ -21,3 +21,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0dd00a99ae4f4da6ba591b08d1f7c512, type: 2}
   - {fileID: 11400000, guid: 8fe988e1ac954bf88ebea824a36a819a, type: 2}
   - {fileID: 11400000, guid: 274653bd415344faba340f11c4576014, type: 2}
+  _uniqueGear:
+  - {fileID: 11400000, guid: ce84af5a7abf44b29779ed8ecb4ee949, type: 2}
+  - {fileID: 11400000, guid: c8318740d5b24ad18ad0879020d4a461, type: 2}

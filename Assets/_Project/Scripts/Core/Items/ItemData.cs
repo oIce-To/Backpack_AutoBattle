@@ -29,6 +29,7 @@ namespace BackpackAutoBattle.Items
 
         [Header("Shop")]
         [SerializeField] private bool _excludeFromShop;
+        [SerializeField] private bool _isUniqueGear;
         [SerializeField, Min(0)] private int _purchasePrice = 1;
 
         [Header("Attack effect stats")]
@@ -37,6 +38,8 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private StatScaling _attackScaling = new();
 
         [Header("Backpack")]
+        [SerializeField] private Sprite _inventorySprite;
+        [SerializeField, Range(1f, 2f)] private float _inventoryArtworkWidthScale = 1f;
         [SerializeField] private Color _displayColor = Color.white;
         [SerializeField] private bool _canRotate = true;
         [SerializeField] private List<Vector2Int> _occupiedCells = new() { Vector2Int.zero };
@@ -54,14 +57,16 @@ namespace BackpackAutoBattle.Items
         public ItemRarity Rarity => _rarity;
 
         public int PurchasePrice => _purchasePrice;
-        public bool ExcludeFromShop => _excludeFromShop;
+        public bool ExcludeFromShop => _excludeFromShop || _isUniqueGear;
+        public bool IsUniqueGear => _isUniqueGear;
 
         public WeaponStats BaseWeaponStats => _weaponStats;
         public WeaponStats ResolveWeaponStats(CharacterStatsSnapshot owner)
         {
             WeaponStats stats = _weaponStats ?? new WeaponStats();
             return new WeaponStats(_attackScaling?.Resolve(stats.AttackDamage, owner) ?? stats.AttackDamage,
-                stats.CooldownSeconds, stats.AccuracyPercent, stats.CriticalChancePercent, stats.CriticalDamagePercent);
+                stats.CooldownSeconds, stats.AccuracyPercent, stats.CriticalChancePercent,
+                (float)(stats.CriticalDamagePercent * (1d + (owner?.CriticalDamageBonusPercent ?? 0d) / 100d)));
         }
         public ItemTags Tags => _tags;
         public ItemActivationData Activation => _activation;
@@ -69,6 +74,8 @@ namespace BackpackAutoBattle.Items
         public IReadOnlyList<ItemPlacementEffect> PlacementEffects => _placementEffects;
 
         public Color DisplayColor => _displayColor;
+        public Sprite InventorySprite => _inventorySprite;
+        public float InventoryArtworkWidthScale => Mathf.Max(1f, _inventoryArtworkWidthScale);
 
         public bool CanRotate => _canRotate;
 

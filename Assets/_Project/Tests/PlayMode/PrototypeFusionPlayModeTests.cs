@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace BackpackAutoBattle.Tests.Prototype
@@ -25,7 +24,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnitySetUp]
         public IEnumerator Setup()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
+            yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
             _controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             _controller.BattleController.AutoTick = false;
@@ -261,10 +260,9 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Set(recipe, "_resultItem", output); Set(_controller, "_fusionRecipes", new[] { recipe });
                 BuyStone(Rect("Grid Cell 1,2")); yield return null;
                 var grid = (BackpackGrid)Get(_controller, "_grid");
-                var create = typeof(BackpackPrototypeController).GetMethod("CreateStartingItem", BindingFlags.NonPublic | BindingFlags.Instance);
                 for (int y = 0; y < 6; y++) for (int x = 0; x < 6; x++)
                     if (!grid.TryGetItemAt(new Vector2Int(x, y), out _))
-                        create.Invoke(_controller, new object[] { "healing_potion", $"fill_{x}_{y}", new Vector2Int(x, y) });
+                        Assert.That(PrototypeCombatFixture.PlaceItem(_controller, "healing_potion", $"fill_{x}_{y}", new Vector2Int(x, y)), Is.True);
                 Assert.That(_controller.GetReadyFusions().Count, Is.EqualTo(1));
                 _controller.TryStartBattle(); Win(); _controller.AdvanceRound();
                 Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Fusion));

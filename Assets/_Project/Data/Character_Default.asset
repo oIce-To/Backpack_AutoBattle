@@ -19,3 +19,5 @@ MonoBehaviour:
   _maximumHealth: 50
   _attack: 10
   _experienceTable: {fileID: 11400000, guid: 481ec39832414edfb8c729d86de26385, type: 2}
+  _initiallyAvailable: 1
+  _starterGear: {fileID: 11400000, guid: ce84af5a7abf44b29779ed8ecb4ee949, type: 2}

@@ -14,6 +14,8 @@ namespace BackpackAutoBattle.Progression
         public List<StageProgressData> stages;
         public long sharedExperience;
         public List<CharacterProgressData> characters;
+        public List<string> acquiredCharacters;
+        public List<UniqueGearSaveData> uniqueGear;
     }
 
     [Serializable]
@@ -41,9 +43,9 @@ namespace BackpackAutoBattle.Progression
     }
 
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
-    public sealed class PlayerProgress
+    public sealed partial class PlayerProgress
     {
-        public const int SaveVersion = 2;
+        public const int SaveVersion = 3;
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
         private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
         public long SharedExperience { get; private set; }
@@ -96,6 +98,8 @@ namespace BackpackAutoBattle.Progression
         {
             version = SaveVersion, selectedCharacterId = SelectedCharacterId, selectedStageId = SelectedStageId,
             sharedExperience = SharedExperience,
+            acquiredCharacters = _acquiredCharacters.OrderBy(id => id, StringComparer.Ordinal).ToList(),
+            uniqueGear = _uniqueGear.Values.Select(item => item.Export()).ToList(),
             characters = _characterLevels.OrderBy(p => p.Key, StringComparer.Ordinal)
                 .Select(p => new CharacterProgressData { characterId = p.Key, level = p.Value }).ToList(),
             stages = _stages.Values.OrderBy(p => p.StageId, StringComparer.Ordinal).Select(p => new StageProgressData
@@ -121,6 +125,7 @@ namespace BackpackAutoBattle.Progression
                     progress._characterLevels[character.characterId] = Math.Max(progress.GetCharacterLevel(character.characterId), character.level);
                 }
             }
+            if (data.version >= 3) progress.LoadUniqueGear(data);
             foreach (var stage in data.stages ?? new List<StageProgressData>())
             {
                 if (stage == null || string.IsNullOrWhiteSpace(stage.stageId) || stage.highestRound < 1 || stage.highestRound > StageData.RoundsPerStage

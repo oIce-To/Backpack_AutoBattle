@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using BackpackAutoBattle.Editor;
 using BackpackAutoBattle.Progression;
 using NUnit.Framework;
 
@@ -18,6 +19,46 @@ namespace BackpackAutoBattle.Tests.Progression
         {
             foreach (string suffix in new[] { "", ".bak", ".tmp" }) if (File.Exists(_path + suffix)) File.Delete(_path + suffix);
             if (Directory.Exists(_directory)) Directory.Delete(_directory); // Empty, uniquely owned directory; no recursive deletion.
+        }
+
+        [Test]
+        public void EditorReset_ArchivesProfileAndRecoveryFiles_AndKeepsSettings()
+        {
+            var store = new PlayerProgressStore(_path);
+            var progress = new PlayerProgress();
+            progress.TryAddExperience(125);
+            Assert.That(store.TrySave(progress, out _), Is.True);
+            string original = File.ReadAllText(_path);
+            File.Copy(_path, _path + ".bak");
+            File.WriteAllText(_path + ".tmp", "temporary save");
+            string settings = Path.Combine(_directory, "settings.json");
+            File.WriteAllText(settings, "settings");
+
+            string backup = null;
+            try
+            {
+                backup = PlayerProgressResetTool.ArchiveProgress(store);
+                string archived = Path.Combine(backup, Path.GetFileName(_path));
+                Assert.That(File.ReadAllText(archived), Is.EqualTo(original));
+                Assert.That(File.ReadAllText(archived + ".bak"), Is.EqualTo(original));
+                Assert.That(File.ReadAllText(archived + ".tmp"), Is.EqualTo("temporary save"));
+                Assert.That(File.Exists(_path), Is.False);
+                Assert.That(File.Exists(_path + ".bak"), Is.False);
+                Assert.That(File.Exists(_path + ".tmp"), Is.False);
+                Assert.That(File.ReadAllText(settings), Is.EqualTo("settings"));
+                Assert.That(store.Load(out var warning).SharedExperience, Is.Zero);
+                Assert.That(warning, Is.Null);
+                Assert.That(PlayerProgressResetTool.ArchiveProgress(store), Is.Null);
+            }
+            finally
+            {
+                File.Delete(settings);
+                if (backup != null)
+                {
+                    foreach (string file in Directory.GetFiles(backup)) File.Delete(file);
+                    Directory.Delete(backup);
+                }
+            }
         }
 
         [Test]
@@ -74,7 +115,7 @@ namespace BackpackAutoBattle.Tests.Progression
             Assert.That(loaded.GetStage("stage_05").HighestRound, Is.EqualTo(4));
             loaded.RecordRound("stage_05", 8, 12);
             Assert.That(progress.GetStage("stage_05").HighestRound, Is.EqualTo(4));
-            Assert.That(File.ReadAllText(_path), Does.Contain("\"version\": 2"));
+            Assert.That(File.ReadAllText(_path), Does.Contain($"\"version\": {PlayerProgress.SaveVersion}"));
         }
 
         [Test]
@@ -93,7 +134,7 @@ namespace BackpackAutoBattle.Tests.Progression
 
         [TestCase("{invalid json")]
         [TestCase("{}")]
-        [TestCase("{\"version\":3,\"futureField\":123}")]
+        [TestCase("{\"version\":4,\"futureField\":123}")]
         public void UnreadableOrNewerSave_IsPreservedAndNeverSilentlyOverwritten(string json)
         {
             Directory.CreateDirectory(_directory); File.WriteAllText(_path, json);

@@ -11,7 +11,6 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -22,7 +21,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator PurchasedReactionItems_GrantStacks_ShowFinalTooltipAndChronologicalCombatFeedback()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
             var enemy = Object.Instantiate(controller.CurrentEnemyEncounter);
             try
@@ -78,7 +77,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StoredReactionItem_DoesNotGrantCombatStatus()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
             Buy(controller, "vampiric_charm", Find(controller, "Freeform Storage")); yield return null;
             Assert.That(controller.StoredItemCount, Is.EqualTo(1));
@@ -89,7 +88,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator ReactionGlyphs_AreGraySpikedBallRedOpenFangsAndBlackBlindness_WithTransparentBackgrounds()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
             controller.TryStartBattle();
             foreach (var kind in new[] { StatusEffectKind.Thorns, StatusEffectKind.Lifesteal, StatusEffectKind.Blindness }) controller.ActiveCombat.ApplyStatus(CombatSide.Player, kind, 3);

@@ -82,7 +82,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ResetTint()
         {
-            SetTint(_baseColor);
+            SetTint(Data.InventorySprite == null ? _baseColor : Color.clear);
         }
 
         public void OnPointerDown(PointerEventData eventData)

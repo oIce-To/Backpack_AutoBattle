@@ -37,8 +37,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return Setup(); yield return null; Canvas.ForceUpdateCanvases();
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.MainMenu));
             Assert.That(Text("Main Character Name"), Is.EqualTo("알렌"));
-            Assert.That(Text("Main Character Health"), Is.EqualTo("체력  50"));
-            Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  10"));
+            Assert.That(Text("Main Character Health"), Is.EqualTo("체력  52.5"));
+            Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  10.5"));
             Assert.That(Text("Main Stage Summary"), Does.Contain("12라운드"));
             var portrait = Find("Main Character Illustration").GetComponent<Image>();
             Assert.That(portrait.sprite, Is.SameAs(Character().Portrait)); Assert.That(portrait.sprite, Is.Not.Null);
@@ -64,7 +64,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.TryStartRun(), Is.False);
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Lives, Is.EqualTo(3));
             Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.CurrentShopItems, Has.Count.EqualTo(4));
-            Assert.That(_controller.GetComponentsInChildren<BackpackItemView>(), Has.Length.EqualTo(3));
+            Assert.That(_controller.CaptureCombatSnapshot().Items.Single().ItemId, Is.EqualTo("knight_sword"));
             Assert.That(_controller.TryReturnToMainMenu(), Is.False, "An active run cannot be discarded by the result-only action.");
             _controller.TryStartBattle(); Assert.That(_controller.ActiveCombat.Player.DisplayName, Is.EqualTo("알렌"));
         }
@@ -115,17 +115,17 @@ namespace BackpackAutoBattle.Tests.Prototype
             try
             {
                 Set(upgraded, "_maximumHealth", 80f); Set(upgraded, "_attack", 20f); Set(_controller, "_characterData", upgraded);
-                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10));
+                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10.5));
                 Click("Return To Main Menu Button");
-                Assert.That(Text("Main Character Health"), Is.EqualTo("체력  80"));
-                Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  20"));
+                Assert.That(Text("Main Character Health"), Is.EqualTo("체력  84"));
+                Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  21"));
                 Capture("MainMenuAfterClear.png");
                 Click("Main Start Button");
-                Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(80));
-                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(20));
+                Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(84));
+                Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(21));
                 Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(result.Round, Is.EqualTo(12));
-                _controller.TryStartBattle(); Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(80));
-                Assert.That(_controller.ActiveCombat.PlayerWeapons.First().Stats.AttackDamage, Is.EqualTo(10));
+                _controller.TryStartBattle(); Assert.That(_controller.ActiveCombat.PlayerHealth, Is.EqualTo(84));
+                Assert.That(_controller.ActiveCombat.PlayerWeapons.First().Stats.AttackDamage, Is.EqualTo(11.55).Within(.001));
                 Assert.That(_controller.BattleController.PlaybackSpeed, Is.EqualTo(1));
             }
             finally { Set(_controller, "_characterData", original); Object.Destroy(upgraded); }
@@ -142,7 +142,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
             _controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); _controller.BattleController.AutoTick = false;
             Assert.That(_controller.IsMainMenu, Is.False); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
-            Assert.That(_controller.GetComponentsInChildren<BackpackItemView>(), Has.Length.EqualTo(3));
+            Assert.That(_controller.CaptureCombatSnapshot().Items.Single().ItemId, Is.EqualTo("knight_sword"));
         }
 
         private void Lose()

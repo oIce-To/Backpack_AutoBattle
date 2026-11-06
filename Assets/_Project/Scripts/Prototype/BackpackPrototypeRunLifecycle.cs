@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using BackpackAutoBattle.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,7 +11,10 @@ namespace BackpackAutoBattle.Prototype
     {
         [Header("Run Rules")]
         [SerializeField, Min(1)] private int _startingLives = 3;
-        private Text _livesText;
+        private PrototypeLifeHearts _lifeHearts;
+        private RectTransform _stageAbandonModal;
+        private Button _stageAbandonButton;
+        private bool IsStageAbandonOpen => _stageAbandonModal != null && _stageAbandonModal.gameObject.activeSelf;
         private PrototypeRunResultScreen _runResultScreen;
         private bool _restartRequested;
 
@@ -24,10 +28,70 @@ namespace BackpackAutoBattle.Prototype
         /// A future main-screen coordinator can subscribe and take ownership of navigation/rewards.</summary>
         public event Action<PrototypeRunResult> RestartRequested;
 
+        private void BuildRunControls(Transform canvas)
+        {
+            var life = new GameObject("Run Lives", typeof(RectTransform), typeof(PrototypeLifeHearts));
+            life.transform.SetParent(canvas, false);
+            _lifeHearts = life.GetComponent<PrototypeLifeHearts>();
+            _lifeHearts.raycastTarget = false;
+            SetRect(_lifeHearts.rectTransform, Vector2.one, new Vector2(-149, -36), new Vector2(176, 28));
+
+            _stageAbandonButton = SelectionUi.Button(_shopScreenRoot, "Abandon Stage Button", "스테이지 포기",
+                new Vector2(-405f, -283f), new Vector2(310f, 44f), OpenStageAbandon);
+            _stageAbandonButton.GetComponent<Image>().color = new Color(.58f, .19f, .23f);
+
+            var backdrop = SelectionUi.Image(canvas, "Abandon Stage Modal", new Color(0f, 0f, 0f, .72f));
+            backdrop.raycastTarget = true;
+            _stageAbandonModal = backdrop.rectTransform;
+            Stretch(_stageAbandonModal);
+            var panel = SelectionUi.Image(backdrop.transform, "Abandon Stage Panel", new Color(.10f, .13f, .19f));
+            SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(500, 200));
+            SelectionUi.Label(panel.transform, "Abandon Stage Message",
+                "스테이지를 포기하면 모든 보상을 잃고 메인 화면으로 나가게 됩니다. 정말로 포기하시겠습니까?",
+                21, new Vector2(0, 32), new Vector2(442, 110));
+            var yes = SelectionUi.Button(panel.transform, "Confirm Abandon Stage", "예", new Vector2(-114, -55), new Vector2(190, 43), ConfirmStageAbandon);
+            yes.GetComponent<Image>().color = new Color(.64f, .22f, .25f);
+            var no = SelectionUi.Button(panel.transform, "Cancel Abandon Stage", "아니오", new Vector2(114, -55), new Vector2(190, 43), CancelStageAbandon);
+            no.GetComponent<Image>().color = new Color(.31f, .33f, .37f);
+            _stageAbandonModal.gameObject.SetActive(false);
+        }
+
+        private void OpenStageAbandon()
+        {
+            if (!CanEditLoadout || _draggingItem != null) return;
+            _itemTooltip.HideAll();
+            ClearPlacementOverlay();
+            EventSystem.current?.SetSelectedGameObject(null);
+            _stageAbandonModal.gameObject.SetActive(true);
+            RefreshCombatInterface();
+            _stageAbandonModal.SetAsLastSibling();
+        }
+
+        private void CancelStageAbandon()
+        {
+            if (!IsStageAbandonOpen) return;
+            _stageAbandonModal.gameObject.SetActive(false);
+            EventSystem.current?.SetSelectedGameObject(null);
+            RefreshCombatInterface();
+        }
+
+        private void ConfirmStageAbandon()
+        {
+            if (!IsStageAbandonOpen || IsMainMenu || _run.Phase != PrototypePhase.Preparation) return;
+            _stageAbandonModal.gameObject.SetActive(false);
+            _trackProgress = false;
+            ClearRunContent();
+            ShowMainMenu();
+        }
+
         private PrototypeRunState CreateRunState() => new(_startingGold, _stageData?.StageId,
-            _characterData?.CaptureStats(_progress.GetCharacterLevel(_characterData.CharacterId)),
+            GetCharacterStats(_characterData),
             _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName,
-            _stageData?.ClearExperience ?? 0);
+            _stageData?.ClearExperience ?? 0)
+        {
+            StartingGear = EquippedGear(_characterData).Select(gear => new StartingGear(gear.instance, gear.definition))
+                .ToDictionary(gear => gear.InstanceId)
+        };
 
         private void InitializeRunContent()
         {

@@ -3,7 +3,8 @@
   "rootNamespace": "BackpackAutoBattle.Tests",
   "references": [
     "BackpackAutoBattle.Core",
-    "BackpackAutoBattle.Prototype"
+    "BackpackAutoBattle.Prototype",
+    "BackpackAutoBattle.Editor"
   ],
   "includePlatforms": [
     "Editor"

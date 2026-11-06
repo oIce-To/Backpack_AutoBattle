@@ -12,7 +12,6 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
@@ -23,7 +22,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StrongerCharacter_ShowsResolvedNumbersInShopStorageBagAndBattle()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var previous = Object.FindFirstObjectByType<BackpackPrototypeController>();
             var character = Object.Instantiate((CharacterData)Field(previous, "_characterData"));
             Set(character, "_maximumHealth", 100f); Set(character, "_attack", 20f);
@@ -34,7 +33,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             Set(controller, "_shopRarityTable", previous.ShopRarityTable);
             Set(controller, "_stageData", previous.Stage);
             Set(controller, "_statusEffects", Field(previous, "_statusEffects"));
-            previous.gameObject.SetActive(false); host.SetActive(true); yield return null;
+            previous.gameObject.SetActive(false); host.SetActive(true);
+            PrototypeCombatFixture.UseTrainingKit(controller, character.CaptureStats());
+            yield return null;
             try
             {
                 controller.BattleController.AutoTick = false;
@@ -72,7 +73,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator StageEntryStats_RemainFixedAcrossScreensAndRounds_WithoutShowingCoefficients()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
             CharacterData original = (CharacterData)Field(controller, "_characterData");
@@ -113,7 +114,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator PurchasedFireAndPoisonItems_RenderIndependentTicksLiveIconsTooltipsAndChronologicalLogs()
         {
-            yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single); yield return null;
+            yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
             var enemy = Object.Instantiate(controller.CurrentEnemyEncounter);
             try

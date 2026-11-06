@@ -11,15 +11,18 @@ namespace BackpackAutoBattle.Combat
     {
         public CombatItemSnapshot(string instanceId, ItemData data, Vector2Int origin,
             ItemRotation rotation, IEnumerable<Vector2Int> occupiedCells, WeaponStats baseStats = null,
-            ItemActivationData activation = null, CharacterStatsSnapshot ownerStats = null)
+            ItemActivationData activation = null, CharacterStatsSnapshot ownerStats = null,
+            ItemRarity? rarity = null, UniqueGearEffect gearEffect = default)
         {
             ownerStats ??= CharacterStatsSnapshot.Default;
             InstanceId = instanceId;
             ItemId = data.ItemId;
             DisplayName = data.DisplayName;
             Description = data.Description;
-            EffectDescription = data.EffectDescription;
-            Rarity = data.Rarity;
+            string uniqueDescription = gearEffect.Describe(ownerStats);
+            EffectDescription = string.Join("\n", new[] { data.EffectDescription, uniqueDescription }.Where(s => !string.IsNullOrWhiteSpace(s)));
+            Rarity = rarity ?? data.Rarity;
+            GearEffect = gearEffect;
             Category = data.Category;
             Tags = data.Tags;
             Shape = data.CreateShape();
@@ -28,6 +31,8 @@ namespace BackpackAutoBattle.Combat
             BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
                 .Select(status => status.Copy()).ToArray());
             DisplayColor = data.DisplayColor;
+            InventorySprite = data.InventorySprite;
+            InventoryArtworkWidthScale = data.InventoryArtworkWidthScale;
             Origin = origin;
             Rotation = rotation;
             OccupiedCells = Array.AsReadOnly(occupiedCells.ToArray());
@@ -40,6 +45,7 @@ namespace BackpackAutoBattle.Combat
         public string Description { get; }
         public string EffectDescription { get; }
         public ItemRarity Rarity { get; }
+        public UniqueGearEffect GearEffect { get; }
         public ItemCategory Category { get; }
         public ItemTags Tags { get; }
         public ItemShape Shape { get; }
@@ -47,6 +53,8 @@ namespace BackpackAutoBattle.Combat
         public ItemActivationData Activation { get; }
         public IReadOnlyList<StatusApplication> BattleStartStatuses { get; }
         public Color DisplayColor { get; }
+        public Sprite InventorySprite { get; }
+        public float InventoryArtworkWidthScale { get; }
         public Vector2Int Origin { get; }
         public ItemRotation Rotation { get; }
         public IReadOnlyList<Vector2Int> OccupiedCells { get; }
@@ -71,13 +79,13 @@ namespace BackpackAutoBattle.Combat
     public sealed class CombatantSnapshot
     {
         public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10,
-            Sprite illustration = null, bool illustrationFacesLeft = false)
+            Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             DisplayName = displayName;
             MaximumHealth = maximumHealth;
-            Stats = new CharacterStatsSnapshot(maximumHealth, attack);
+            Stats = new CharacterStatsSnapshot(maximumHealth, attack, criticalDamageBonusPercent);
             Loadout = loadout ?? throw new ArgumentNullException(nameof(loadout));
             Illustration = illustration;
             IllustrationFacesLeft = illustrationFacesLeft;
