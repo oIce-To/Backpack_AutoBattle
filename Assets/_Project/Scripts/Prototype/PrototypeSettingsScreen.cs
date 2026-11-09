@@ -16,8 +16,9 @@ namespace BackpackAutoBattle.Prototype
         private readonly Button[] _tabs = new Button[3], _speeds = new Button[4];
         private readonly Slider[] _volumes = new Slider[3];
         private readonly Text[] _percentages = new Text[3];
-        private readonly Text _resolution, _damageLabel, _countdown, _notice;
-        private readonly Button _previousSize, _nextSize, _windowed, _fullScreen, _apply;
+        private readonly Text _damageLabel, _countdown, _notice;
+        private readonly Dropdown _resolution;
+        private readonly Button _windowed, _fullScreen, _apply;
         private readonly Toggle _damage;
         private IReadOnlyList<Vector2Int> _sizes = Array.Empty<Vector2Int>();
         private Vector2Int _currentSize;
@@ -61,9 +62,8 @@ namespace BackpackAutoBattle.Prototype
             }
 
             RowLabel(_pages[1], "Settings Resolution Label", "해상도", 75);
-            _previousSize = Button(_pages[1], "Settings Resolution Previous", "<", new Vector2(-25, 75), new Vector2(48, 40), () => MoveResolution(-1));
-            _resolution = SelectionUi.Label(_pages[1], "Settings Resolution", "", 20, new Vector2(113, 75), new Vector2(210, 40));
-            _nextSize = Button(_pages[1], "Settings Resolution Next", ">", new Vector2(251, 75), new Vector2(48, 40), () => MoveResolution(1));
+            _resolution = CreateResolutionDropdown(_pages[1]);
+            _resolution.onValueChanged.AddListener(index => { _sizeIndex = index; RenderDisplay(); });
             RowLabel(_pages[1], "Settings Mode Label", "화면 모드", 11);
             _windowed = Button(_pages[1], "Settings Windowed", "창 모드", new Vector2(43, 11), new Vector2(165, 40), () => SetDisplayMode(false));
             _fullScreen = Button(_pages[1], "Settings Full Screen", "전체 화면", new Vector2(217, 11), new Vector2(165, 40), () => SetDisplayMode(true));
@@ -105,6 +105,8 @@ namespace BackpackAutoBattle.Prototype
         public void Show(PrototypeGameSettings settings, IReadOnlyList<Vector2Int> sizes, Vector2Int current, bool fullScreen, bool fromBattle)
         {
             _sizes = sizes;
+            _resolution.ClearOptions();
+            _resolution.AddOptions(sizes.Select(size => $"{size.x} × {size.y}").ToList());
             ReadDisplay(current, fullScreen);
             SetVolumeControls(settings.master, settings.music, settings.effects);
             RenderBattleSettings(settings.battleSpeed, settings.damageNumbers);
@@ -114,11 +116,16 @@ namespace BackpackAutoBattle.Prototype
             _root.SetAsLastSibling();
         }
 
-        public void Hide() => _root.gameObject.SetActive(false);
+        public void Hide()
+        {
+            _resolution.Hide();
+            _root.gameObject.SetActive(false);
+        }
         public void ShowNotice(string message) => _notice.text = message;
 
         public void ShowDisplayConfirmation(int seconds)
         {
+            _resolution.Hide();
             _panelInput.interactable = false;
             EventSystem.current?.SetSelectedGameObject(null);
             UpdateCountdown(seconds);
@@ -144,12 +151,6 @@ namespace BackpackAutoBattle.Prototype
             RenderDisplay();
         }
 
-        private void MoveResolution(int offset)
-        {
-            _sizeIndex = (_sizeIndex + offset + _sizes.Count) % _sizes.Count;
-            RenderDisplay();
-        }
-
         private void SetDisplayMode(bool fullScreen)
         {
             _draftFullScreen = fullScreen;
@@ -159,8 +160,8 @@ namespace BackpackAutoBattle.Prototype
         private void RenderDisplay()
         {
             Vector2Int size = _sizes[_sizeIndex];
-            _resolution.text = $"{size.x} × {size.y}";
-            _previousSize.interactable = _nextSize.interactable = _sizes.Count > 1;
+            _resolution.SetValueWithoutNotify(_sizeIndex);
+            _resolution.interactable = _sizes.Count > 1;
             _windowed.image.color = _draftFullScreen ? SelectionUi.Idle : SelectionUi.Selected;
             _fullScreen.image.color = _draftFullScreen ? SelectionUi.Selected : SelectionUi.Idle;
             _apply.interactable = size != _currentSize || _draftFullScreen != _currentFullScreen;
@@ -168,6 +169,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void SelectPage(int page)
         {
+            _resolution?.Hide();
             _page = page;
             for (int i = 0; i < _pages.Length; i++)
             {
@@ -254,6 +256,63 @@ namespace BackpackAutoBattle.Prototype
             slider.wholeNumbers = true;
             slider.navigation = new Navigation { mode = Navigation.Mode.None };
             return slider;
+        }
+
+        private static Dropdown CreateResolutionDropdown(Transform parent)
+        {
+            var face = SelectionUi.Image(parent, "Settings Resolution Dropdown", SelectionUi.Idle);
+            face.raycastTarget = true;
+            SelectionUi.Place(face.rectTransform, new Vector2(113, 75), new Vector2(324, 40));
+            var dropdown = face.gameObject.AddComponent<Dropdown>();
+            dropdown.targetGraphic = face;
+            dropdown.navigation = new Navigation { mode = Navigation.Mode.None };
+            var caption = SelectionUi.Label(face.transform, "Settings Resolution", "", 20, new Vector2(-12, 0), new Vector2(280, 36));
+            caption.alignment = TextAnchor.MiddleLeft;
+            SelectionUi.Label(face.transform, "Resolution Dropdown Arrow", "▼", 15, new Vector2(141, 0), new Vector2(26, 30));
+
+            var template = SelectionUi.Image(face.transform, "Resolution Options Template", new Color(.10f, .13f, .18f));
+            template.raycastTarget = true;
+            template.rectTransform.anchorMin = Vector2.zero;
+            template.rectTransform.anchorMax = Vector2.right;
+            template.rectTransform.pivot = new Vector2(.5f, 1);
+            template.rectTransform.anchoredPosition = new Vector2(0, -4);
+            template.rectTransform.sizeDelta = new Vector2(0, 210);
+            var viewport = SelectionUi.Image(template.transform, "Viewport", Color.clear);
+            viewport.raycastTarget = true;
+            BackpackPrototypeController.Stretch(viewport.rectTransform, 4);
+            viewport.gameObject.AddComponent<RectMask2D>();
+            var content = new GameObject("Content", typeof(RectTransform));
+            content.transform.SetParent(viewport.transform, false);
+            var contentRect = (RectTransform)content.transform;
+            contentRect.anchorMin = new Vector2(0, 1);
+            contentRect.anchorMax = Vector2.one;
+            contentRect.pivot = new Vector2(.5f, 1);
+            contentRect.sizeDelta = new Vector2(0, 36);
+            var itemFace = SelectionUi.Image(contentRect, "Resolution Option", SelectionUi.Idle);
+            itemFace.raycastTarget = true;
+            itemFace.rectTransform.anchorMin = Vector2.zero;
+            itemFace.rectTransform.anchorMax = Vector2.right;
+            itemFace.rectTransform.pivot = new Vector2(.5f, .5f);
+            itemFace.rectTransform.anchoredPosition = new Vector2(0, 18);
+            itemFace.rectTransform.sizeDelta = new Vector2(0, 36);
+            var toggle = itemFace.gameObject.AddComponent<Toggle>();
+            toggle.targetGraphic = itemFace;
+            var check = SelectionUi.Image(itemFace.transform, "Selected Mark", new Color(.65f, .86f, .74f));
+            SelectionUi.Place(check.rectTransform, new Vector2(-142, 0), new Vector2(7, 20));
+            toggle.graphic = check;
+            var label = SelectionUi.Label(itemFace.transform, "Resolution Option Label", "", 19,
+                new Vector2(7, 0), new Vector2(280, 34));
+            label.alignment = TextAnchor.MiddleLeft;
+            var scroll = template.gameObject.AddComponent<ScrollRect>();
+            scroll.viewport = viewport.rectTransform; scroll.content = contentRect;
+            scroll.horizontal = false; scroll.vertical = true;
+            scroll.scrollSensitivity = 32;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+            dropdown.template = template.rectTransform;
+            dropdown.captionText = caption;
+            dropdown.itemText = label;
+            template.gameObject.SetActive(false);
+            return dropdown;
         }
 
         private static void CreateCloseButton(Transform parent, Action close)

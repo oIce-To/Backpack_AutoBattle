@@ -62,6 +62,25 @@ namespace BackpackAutoBattle.Tests.Progression
         }
 
         [Test]
+        public void EditorTicketRefill_KeepsCurrencyAndStageRecords_AndResetsRechargeTime()
+        {
+            var progress = new PlayerProgress();
+            var now = DateTimeOffset.UtcNow;
+            Assert.That(progress.TryClaimReward("mine", new StageReward(25, 500, new[] { "knight_sword" }), true, now), Is.True);
+            progress.RecordRound("origin_mine_01", 12, 12, true);
+            var store = new PlayerProgressStore(_path);
+            Assert.That(store.TrySave(progress, out _), Is.True);
+            Assert.That(MineTicketRefillTool.RefillSavedTickets(store, out _), Is.True);
+            var loaded = store.Load(out _);
+            Assert.That(loaded.MineTickets, Is.EqualTo(5));
+            Assert.That(loaded.UntilNextMineTicket(now.AddDays(1)), Is.EqualTo(TimeSpan.Zero));
+            Assert.That(loaded.SharedExperience, Is.EqualTo(25));
+            Assert.That(loaded.OriginShards, Is.EqualTo(500));
+            Assert.That(loaded.GetBlueprints("knight_sword"), Is.EqualTo(1));
+            Assert.That(loaded.GetStage("origin_mine_01").Cleared, Is.True);
+        }
+
+        [Test]
         public void StageUnlock_RequiresPreviousClear_NotJustVisitOrRoundTwelve_AndSurvivesSave()
         {
             string[] order = { "forest", "cave", "tower" };
@@ -134,7 +153,7 @@ namespace BackpackAutoBattle.Tests.Progression
 
         [TestCase("{invalid json")]
         [TestCase("{}")]
-        [TestCase("{\"version\":4,\"futureField\":123}")]
+        [TestCase("{\"version\":5,\"futureField\":123}")]
         public void UnreadableOrNewerSave_IsPreservedAndNeverSilentlyOverwritten(string json)
         {
             Directory.CreateDirectory(_directory); File.WriteAllText(_path, json);

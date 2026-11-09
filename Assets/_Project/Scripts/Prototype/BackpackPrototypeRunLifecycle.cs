@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using BackpackAutoBattle.Inventory;
+using BackpackAutoBattle.Progression;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -87,7 +88,8 @@ namespace BackpackAutoBattle.Prototype
         private PrototypeRunState CreateRunState() => new(_startingGold, _stageData?.StageId,
             GetCharacterStats(_characterData),
             _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName,
-            _stageData?.ClearExperience ?? 0)
+            _stageData?.ClearExperience ?? 0, _stageData?.ClearOriginShards ?? 0,
+            _stageData?.IsOriginMine ?? false, _stageData?.ClearBlueprints ?? 0, AvailableGear.Select(gear => gear.GearId))
         {
             StartingGear = EquippedGear(_characterData).Select(gear => new StartingGear(gear.instance, gear.definition))
                 .ToDictionary(gear => gear.InstanceId)
@@ -103,10 +105,12 @@ namespace BackpackAutoBattle.Prototype
         public bool RequestRunRestart()
         {
             if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
+            if (!TrySettleRunReward()) return false;
+            if (RestartRequested == null) return TryRestartRun();
             _restartRequested = true;
             _runResultScreen.SetRestartPending();
-            if (RestartRequested != null) { RestartRequested.Invoke(_run.Result); return true; }
-            return TryRestartRun();
+            RestartRequested.Invoke(_run.Result);
+            return true;
         }
 
         /// <summary>Starts a fresh run in the currently configured stage without rebuilding the scene/UI.
@@ -114,8 +118,8 @@ namespace BackpackAutoBattle.Prototype
         public bool TryRestartRun()
         {
             if (IsMainMenu || IsSettingsOpen || !_run.IsFinished) return false;
-            StartNewRun();
-            return true;
+            if (!TrySettleRunReward()) return false;
+            return StartNewRun();
         }
 
         private void ClearRunContent()
@@ -134,19 +138,24 @@ namespace BackpackAutoBattle.Prototype
             _grid = new BackpackGrid(GridSize, GridSize);
             _preparedEnemy = null; _enemyConfigurationError = null;
             _runResultScreen.Hide();
+            _pendingStageReward = null; _runRewardSettled = false;
             EventSystem.current?.SetSelectedGameObject(null);
         }
 
-        private void StartNewRun()
+        private bool StartNewRun()
         {
+            if (!CheckStageAdmission()) return false;
             // Capture editable outside-stage data at entry, never during an active run.
             PrototypeRunState nextRun = CreateRunState();
             _trackProgress = _progressStore != null && (_trackProgress || IsMainMenu);
             if (_trackProgress)
             {
-                if (!string.IsNullOrWhiteSpace(_characterData?.CharacterId)) _progress.SelectCharacter(_characterData.CharacterId);
-                _progress.SelectStage(_stageData.StageId);
-                SaveProgress();
+                var candidate = PlayerProgress.FromData(_progress.Export());
+                if (!string.IsNullOrWhiteSpace(_characterData?.CharacterId)) candidate.SelectCharacter(_characterData.CharacterId);
+                candidate.SelectStage(_stageData.StageId);
+                candidate.RefreshMineTickets(DateTimeOffset.UtcNow);
+                if (!_progressStore.TrySave(candidate, out _saveNotice)) { ShowEconomyError(_saveNotice); return false; }
+                _progress = candidate;
             }
             ClearRunContent();
             _shopRandom = new System.Random(Environment.TickCount);
@@ -154,6 +163,7 @@ namespace BackpackAutoBattle.Prototype
             IsMainMenu = false; CloseSelectionScreens(); _mainMenu.Hide();
             _mainNavigation.Hide();
             InitializeRunContent();
+            return true;
         }
     }
 }

@@ -88,9 +88,11 @@ namespace BackpackAutoBattle.Prototype
         private void Update()
         {
             UpdateSettings();
+            UpdateEconomyDisplay();
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {
                 if (_equipment.IsDetailsOpen) _equipment.DismissTopmost();
+                else if (_rewardPopup.IsOpen) _rewardPopup.Hide();
                 else if (IsStageAbandonOpen) CancelStageAbandon();
             }
             // A slow screen-switch frame must not skip most of the visible fusion sequence.
@@ -495,7 +497,8 @@ namespace BackpackAutoBattle.Prototype
                 character => TryLevelUpCharacter(character.CharacterId), GetCharacterStats, FindGearDefinition);
             _equipment = new PrototypeEquipmentScreen(canvasObject.transform, this);
             _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
-                stage => TrySelectStage(stage.StageId), CloseSelectionScreens);
+                stage => TrySelectStage(stage.StageId), CloseSelectionScreens, stage => TrySweepStage(stage.StageId));
+            _rewardPopup = new PrototypeRewardPopup(canvasObject.transform);
             _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab), () => TryOpenSettings());
             InitializeSettings(canvasObject.transform);
             BuildRunControls(canvasObject.transform);

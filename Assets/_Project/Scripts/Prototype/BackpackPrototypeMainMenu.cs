@@ -27,33 +27,43 @@ namespace BackpackAutoBattle.Prototype
         public IReadOnlyList<CharacterData> AvailableCharacters => CatalogCharacters.Where(c => _progress.HasCharacter(c.CharacterId)).ToArray();
         public IReadOnlyList<StageData> AvailableStages => (_adventureCatalog?.Stages ?? new[] { _stageData })
             .Where(s => s != null).Distinct().ToArray();
-        public bool IsStageUnlocked(string id) => _progress.IsStageUnlocked(id, AvailableStages.Select(s => s.StageId).ToArray());
+        public IReadOnlyList<StageData> AvailableMineStages => (_adventureCatalog?.OriginMines ?? Array.Empty<StageData>())
+            .Where(s => s != null).Distinct().ToArray();
+        private IEnumerable<StageData> AllStages => AvailableStages.Concat(AvailableMineStages);
+        public bool IsStageUnlocked(string id)
+        {
+            var stage = AllStages.FirstOrDefault(s => s.StageId == id);
+            return stage != null && _progress.IsStageUnlocked(id,
+                (stage.IsOriginMine ? AvailableMineStages : AvailableStages).Select(s => s.StageId).ToArray());
+        }
 
         private void EnsureProgressLoaded()
         {
             if (_progressStore != null) return;
             _progressStore = new PlayerProgressStore(PlayerProgressStore.ResolveLocalPath());
             _progress = _progressStore.Load(out _saveNotice);
-            if (AcquireInitialCharacters() && string.IsNullOrEmpty(_saveNotice))
+            AcquireInitialCharacters();
+            _progress.RefreshMineTickets(DateTimeOffset.UtcNow);
+            if (string.IsNullOrEmpty(_saveNotice))
                 _progressStore.TrySave(_progress, out _saveNotice);
             _characterData = AvailableCharacters.FirstOrDefault(c => c.CharacterId == _progress.SelectedCharacterId)
                 ?? AvailableCharacters.FirstOrDefault();
-            _stageData = AvailableStages.FirstOrDefault(s => s.StageId == _progress.SelectedStageId && IsStageUnlocked(s.StageId))
+            _stageData = AllStages.FirstOrDefault(s => s.StageId == _progress.SelectedStageId && IsStageUnlocked(s.StageId))
                 ?? AvailableStages.FirstOrDefault(s => IsStageUnlocked(s.StageId));
         }
 
         public bool ShowMainMenuTab(MainMenuTab tab)
         {
-            if (!IsMainMenu || IsSettingsOpen || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
             _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide(); _equipment.Hide();
             switch (tab)
             {
                 case MainMenuTab.Home: RefreshMainMenu(); break;
                 case MainMenuTab.Characters: _characterSelection.Show(AvailableCharacters, _characterData, _progress); break;
-                case MainMenuTab.Stages: _stageSelection.Show(AvailableStages, _stageData, _progress); break;
+                case MainMenuTab.Stages: _stageSelection.Show(AvailableStages, _stageData, _progress, AvailableMineStages); break;
                 case MainMenuTab.Equipment: _equipment.Show(); break;
             }
-            ActiveMainTab = tab; _mainNavigation.Show(tab, _progress.SharedExperience); return true;
+            ActiveMainTab = tab; _mainNavigation.Show(tab, _progress.SharedExperience); RefreshEconomyDisplay(); return true;
         }
         public bool ShowCharacterSelection() => ShowMainMenuTab(MainMenuTab.Characters);
         public bool ShowStageSelection() => ShowMainMenuTab(MainMenuTab.Stages);
@@ -65,7 +75,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TrySelectCharacter(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null || string.IsNullOrWhiteSpace(id)) return false;
             _characterData = character; _progress.SelectCharacter(id);
@@ -73,8 +83,8 @@ namespace BackpackAutoBattle.Prototype
         }
         public bool TrySelectStage(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen) return false;
-            StageData stage = AvailableStages.FirstOrDefault(s => s.StageId == id);
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
+            StageData stage = AllStages.FirstOrDefault(s => s.StageId == id);
             if (stage == null || !IsStageUnlocked(id) || stage.GetValidationErrors().Count > 0) return false;
             _stageData = stage; _progress.SelectStage(id);
             SaveProgress(); ShowMainMenuTab(MainMenuTab.Home); return true;
@@ -82,7 +92,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryLevelUpCharacter(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _progressStore == null) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _progressStore == null) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null) return false;
             var candidate = PlayerProgress.FromData(_progress.Export());
@@ -107,16 +117,10 @@ namespace BackpackAutoBattle.Prototype
             _progressStore.TrySave(_progress, out _saveNotice);
             if (IsMainMenu && !string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
-        private void RecordProgress(bool cleared = false, long experienceReward = 0)
+        private void RecordProgress()
         {
             if (!_trackProgress || _progressStore == null || _stageData == null) return;
-            bool changed = _progress.RecordRound(_run.StageId, _run.Round, StageRoundCount, cleared);
-            if (!_progress.TryAddExperience(experienceReward))
-            {
-                _saveNotice = "경험치가 저장 가능한 범위를 초과했습니다.";
-                return;
-            }
-            if (changed || experienceReward > 0) SaveProgress();
+            if (_progress.RecordRound(_run.StageId, _run.Round, StageRoundCount)) SaveProgress();
         }
         private void RefreshMainMenu()
         {
@@ -126,7 +130,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryStartRun()
         {
-            if (!IsMainMenu || IsSettingsOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
             if (!IsStageUnlocked(_stageData?.StageId))
             {
                 _mainMenu.ShowError("이전 스테이지를 먼저 클리어해주세요.");
@@ -137,13 +141,13 @@ namespace BackpackAutoBattle.Prototype
                 _mainMenu.ShowError(error);
                 return false;
             }
-            StartNewRun();
-            return true;
+            return StartNewRun();
         }
 
         public bool TryReturnToMainMenu()
         {
             if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
+            if (!TrySettleRunReward()) return false;
             ClearRunContent();
             ShowMainMenu();
             return true;

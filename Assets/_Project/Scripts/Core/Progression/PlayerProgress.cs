@@ -16,6 +16,12 @@ namespace BackpackAutoBattle.Progression
         public List<CharacterProgressData> characters;
         public List<string> acquiredCharacters;
         public List<UniqueGearSaveData> uniqueGear;
+        public long originShards;
+        public List<BlueprintBalanceData> blueprints;
+        public int mineTickets;
+        public long nextMineTicketUtcTicks;
+        public long ticketClockUtcTicks;
+        public string lastRewardClaim;
     }
 
     [Serializable]
@@ -45,7 +51,7 @@ namespace BackpackAutoBattle.Progression
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
     public sealed partial class PlayerProgress
     {
-        public const int SaveVersion = 3;
+        public const int SaveVersion = 4;
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
         private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
         public long SharedExperience { get; private set; }
@@ -100,6 +106,13 @@ namespace BackpackAutoBattle.Progression
             sharedExperience = SharedExperience,
             acquiredCharacters = _acquiredCharacters.OrderBy(id => id, StringComparer.Ordinal).ToList(),
             uniqueGear = _uniqueGear.Values.Select(item => item.Export()).ToList(),
+            originShards = OriginShards,
+            blueprints = _blueprints.OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .Select(pair => new BlueprintBalanceData { gearId = pair.Key, count = pair.Value }).ToList(),
+            mineTickets = MineTickets,
+            nextMineTicketUtcTicks = _nextMineTicketUtcTicks,
+            ticketClockUtcTicks = _ticketClockUtcTicks,
+            lastRewardClaim = _lastRewardClaim,
             characters = _characterLevels.OrderBy(p => p.Key, StringComparer.Ordinal)
                 .Select(p => new CharacterProgressData { characterId = p.Key, level = p.Value }).ToList(),
             stages = _stages.Values.OrderBy(p => p.StageId, StringComparer.Ordinal).Select(p => new StageProgressData
@@ -126,6 +139,7 @@ namespace BackpackAutoBattle.Progression
                 }
             }
             if (data.version >= 3) progress.LoadUniqueGear(data);
+            if (data.version >= 4) progress.LoadEconomy(data);
             foreach (var stage in data.stages ?? new List<StageProgressData>())
             {
                 if (stage == null || string.IsNullOrWhiteSpace(stage.stageId) || stage.highestRound < 1 || stage.highestRound > StageData.RoundsPerStage

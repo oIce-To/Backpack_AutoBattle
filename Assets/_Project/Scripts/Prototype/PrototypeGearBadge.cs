@@ -31,7 +31,7 @@ namespace BackpackAutoBattle.Prototype
             }
             badge.gameObject.SetActive(true);
             BackpackPrototypeController.Stretch(badge);
-            var icon = badge.GetComponentInChildren<Image>(true);
+            var icon = badge.Find("Gear Sprite").GetComponent<Image>();
             icon.sprite = definition.Icon;
             icon.enabled = definition.Icon != null;
             BackpackPrototypeController.Stretch(icon.rectTransform, definition.IconInset);
@@ -47,6 +47,29 @@ namespace BackpackAutoBattle.Prototype
             equipped.text = "E";
             equipped.color = new Color(.62f, .94f, .72f);
             equipped.gameObject.SetActive(!string.IsNullOrEmpty(item.EquippedBy));
+            RenderBorder(badge, item.Rarity);
+        }
+
+        internal static void RenderBorder(Transform parent, ItemRarity rarity)
+        {
+            var border = parent.Find("Gear Rarity Border") as RectTransform;
+            if (border == null)
+            {
+                var obj = new GameObject("Gear Rarity Border", typeof(RectTransform));
+                obj.transform.SetParent(parent, false); border = (RectTransform)obj.transform;
+                BackpackPrototypeController.Stretch(border);
+                for (int i = 0; i < 4; i++)
+                {
+                    var edge = SelectionUi.Image(border, "Edge " + i, Color.white).rectTransform;
+                    bool horizontal = i < 2;
+                    edge.anchorMin = horizontal ? new Vector2(0, i) : new Vector2(i - 2, 0);
+                    edge.anchorMax = horizontal ? new Vector2(1, i) : new Vector2(i - 2, 1);
+                    edge.sizeDelta = horizontal ? new Vector2(0, 1.5f) : new Vector2(1.5f, 0);
+                    edge.anchoredPosition = horizontal ? new Vector2(0, i == 0 ? .75f : -.75f)
+                        : new Vector2(i == 2 ? .75f : -.75f, 0);
+                }
+            }
+            foreach (var edge in border.GetComponentsInChildren<Image>()) edge.color = rarity.GetDisplayColor();
         }
 
         private static void AddMarker(RectTransform badge, string name, Vector2 anchor, TextAnchor alignment, int fontSize = 14)

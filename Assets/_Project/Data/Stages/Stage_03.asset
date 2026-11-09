@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.StageData
   _stageId: stage_03
   _clearExperience: 400
+  _clearOriginShards: 159
   _displayName: "3스테이지 · 고블린 전선"
   _rounds:
   - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}

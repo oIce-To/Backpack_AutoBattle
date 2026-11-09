@@ -199,7 +199,7 @@ namespace BackpackAutoBattle.Prototype
             long cost = 0;
             bool canGrow = character?.ExperienceTable != null && character.ExperienceTable.TryGetCost(level, out cost);
             _levelUpTitle.text = canGrow ? "레벨 업" : "레벨업 불가";
-            _levelCost.text = canGrow ? $"{cost:N0}" : "—";
+            _levelCost.text = canGrow ? CompactNumber.Format(cost) : "—";
             float costWidth = Mathf.Min(220, _levelCost.preferredWidth);
             SelectionUi.Place(_costIcon.rectTransform, new Vector2(-(costWidth + 10) / 2, -22), new Vector2(28, 28));
             SelectionUi.Place(_levelCost.rectTransform, new Vector2(19, -22), new Vector2(costWidth, 32));

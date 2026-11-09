@@ -126,6 +126,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(badge.Find("Gear Enhancement").GetComponent<Text>().text, Is.EqualTo("+0"));
             Assert.That(badge.Find("Gear Equipped").gameObject.activeInHierarchy, Is.True);
             Assert.That(badge.Find("Gear Equipped").GetComponent<Text>().fontSize, Is.EqualTo(28));
+            Assert.That(badge.Find("Gear Rarity Border").GetComponentsInChildren<Image>()
+                .All(edge => edge.color == ItemRarity.Common.GetDisplayColor()), Is.True);
             var bowIcon = (RectTransform)Find("Inventory Gear " + bow.InstanceId).Find("Gear Badge/Gear Sprite");
             Assert.That(bowIcon.offsetMin, Is.EqualTo(new Vector2(7, 7)));
             Assert.That(bowIcon.offsetMax, Is.EqualTo(new Vector2(-7, -7)));
@@ -134,6 +136,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             var tooltip = Find("Equipment Item Tooltip");
             Assert.That(tooltip.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("기사의 보검"));
             Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("5%"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("장착한 캐릭터의 체력 +5%\n장착한 캐릭터의 공격력 +5%")
+                .And.Not.Contain("강화 비용").And.Not.Contain("승급 재료").And.Not.Contain("알렌 장착"));
+            Assert.That(Find("Enhance Unique Gear").GetComponent<CanvasGroup>().alpha, Is.LessThan(.5f));
+            Assert.That(Text("Enhancement Cost Amount"), Is.EqualTo("500"));
             Assert.That(Find("Equip Unique Gear").gameObject.activeSelf, Is.False);
             Assert.That(Find("Unequip Unique Gear").GetComponent<Button>().interactable, Is.True);
             var hits = new List<RaycastResult>();
@@ -269,6 +275,303 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.TryStartRun(), Is.True);
             Assert.That(_controller.CurrentRound, Is.EqualTo(1));
             Assert.That(_controller.Lives, Is.EqualTo(3));
+        }
+
+        [UnityTest]
+        public IEnumerator OriginGear_CraftsEnhancesAndPromotesThroughEquipmentUi_WithPersistentCosts()
+        {
+            var initial = new PlayerProgress();
+            Assert.That(initial.TryClaimReward("seed", new StageReward(0, 100000, Enumerable.Repeat("knight_sword", 20)),
+                false, DateTimeOffset.UtcNow), Is.True);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Tab Equipment");
+            Click("Show Equipment Crafting"); yield return null;
+            Click("Crafting Choice knight_sword"); yield return null;
+            Assert.That(Find("Craft Unique Gear").GetComponent<Button>().interactable, Is.True);
+            Assert.That(Text("Crafting Shard Cost"), Is.EqualTo("500"));
+            Assert.That(Text("Crafting Blueprint Cost"), Is.EqualTo("10"));
+            Assert.That(Find("Equipment Item Tooltip").GetComponentInChildren<TextMeshProUGUI>().text,
+                Does.Not.Contain("제작 비용").And.Not.Contain("설계도"));
+            Assert.That(((RectTransform)Find("Craft Unique Gear")).anchoredPosition.x, Is.GreaterThan(250));
+            Capture("OriginGearCrafting.png");
+            Click("Craft Unique Gear"); yield return null;
+            var center = _controller.Progress.UniqueGear.Single(gear => gear.GearId == "knight_sword" && gear.EquippedBy == "");
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(99500));
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword"), Is.EqualTo(10));
+            Assert.That(Find("Craft Unique Gear").gameObject.activeInHierarchy, Is.True);
+            Assert.That(Find("Enhance Unique Gear").gameObject.activeSelf, Is.False);
+            Click("Equipment Details Backdrop");
+            Click("Show Owned Equipment"); yield return null;
+            Click("Inventory Gear " + center.InstanceId);
+            for (int i = 0; i < 3; i++) { Click("Enhance Unique Gear"); yield return null; }
+            Assert.That(_controller.Progress.UniqueGear.Single(gear => gear.InstanceId == center.InstanceId).Enhancement, Is.EqualTo(3));
+            Assert.That(Find("Enhance Unique Gear").GetComponent<Button>().interactable, Is.False);
+            Assert.That(Text("Enhancement Cost Amount"), Is.EqualTo("최대 강화"));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(97300));
+            Capture("OriginGearCommonMax.png");
+            Assert.That(Find("Promote Unique Gear").GetComponent<Button>().interactable, Is.True);
+            Click("Promote Unique Gear"); yield return null;
+            Assert.That(Text("Promotion Material Count"), Is.EqualTo("재료 0 / 2"));
+            Assert.That(Find("Confirm Promotion Materials").GetComponent<Button>().interactable, Is.False);
+            Assert.That(Find("Promotion Inventory").GetComponentsInChildren<Button>().All(button => !button.interactable), Is.True);
+            Capture("OriginGearPromotionNoMaterials.png");
+            Click("Cancel Promotion Materials");
+            Click("Equipment Details Backdrop");
+            Click("Show Equipment Crafting"); yield return null;
+            Click("Crafting Choice knight_sword");
+            Click("Craft Unique Gear"); yield return null;
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword"), Is.Zero);
+            Click("Equipment Details Backdrop");
+            Click("Crafting Choice knight_sword");
+            Assert.That(Find("Craft Unique Gear").GetComponent<Button>().interactable, Is.False);
+            Assert.That(Find("Craft Unique Gear").GetComponent<CanvasGroup>().alpha, Is.LessThan(.5f));
+            Capture("OriginGearCraftingInsufficient.png");
+            Click("Equipment Details Backdrop");
+            Assert.That(_controller.TryUnequipUniqueGear(UniqueGearSlot.Weapon), Is.True);
+            Click("Show Owned Equipment"); yield return null;
+            Click("Inventory Gear " + center.InstanceId);
+            Assert.That(Find("Promote Unique Gear").GetComponent<Button>().interactable, Is.True);
+            var materials = _controller.Progress.PromotionMaterials(center.InstanceId).Take(2).Select(gear => gear.InstanceId).ToArray();
+            File.Delete(_savePath); Directory.CreateDirectory(_savePath);
+            try
+            {
+                Assert.That(_controller.TryPromoteUniqueGear(center.InstanceId, materials), Is.False);
+                Assert.That(_controller.Progress.UniqueGear.Count, Is.EqualTo(4));
+                Assert.That(_controller.Progress.UniqueGear.Single(gear => gear.InstanceId == center.InstanceId).Rarity, Is.EqualTo(ItemRarity.Common));
+            }
+            finally { Directory.Delete(_savePath); }
+            Click("Promote Unique Gear");
+            yield return null;
+            Assert.That(Find("Confirm Promotion Materials").GetComponent<Button>().interactable, Is.False);
+            var candidates = Find("Promotion Inventory").GetComponentsInChildren<Button>().ToArray();
+            Assert.That(candidates.Take(2).All(button => button.interactable), Is.True);
+            Assert.That(candidates.Skip(2).All(button => !button.interactable), Is.True);
+            foreach (string id in materials) Click("Promotion Candidate " + id);
+            Assert.That(Text("Promotion Material Count"), Is.EqualTo("재료 2 / 2"));
+            Click("Promotion Selected Material 0");
+            Assert.That(Find("Confirm Promotion Materials").GetComponent<Button>().interactable, Is.False);
+            Click("Cancel Promotion Materials");
+            Assert.That(_controller.Progress.UniqueGear.Count, Is.EqualTo(4));
+            Click("Promote Unique Gear");
+            yield return null;
+            foreach (string id in materials) Click("Promotion Candidate " + id);
+            Capture("OriginGearPromotionConfirmation.png");
+            Click("Confirm Promotion Materials"); yield return null;
+            Assert.That(_controller.Progress.UniqueGear.Count, Is.EqualTo(2));
+            var promoted = _controller.Progress.UniqueGear.Single(gear => gear.InstanceId == center.InstanceId);
+            Assert.That(promoted.Rarity, Is.EqualTo(ItemRarity.Uncommon));
+            Assert.That(promoted.Enhancement, Is.Zero);
+            Assert.That(Find("Equipment Slot Weapon").Find("Gear Badge").gameObject.activeSelf, Is.False);
+            Capture("OriginGearUncommon.png");
+            Assert.That(Text("Enhancement Cost Amount"), Is.EqualTo("2K"));
+            Click("Enhance Unique Gear"); yield return null;
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(94800));
+            Click("Equip Unique Gear"); yield return null;
+            Assert.That(_controller.GetCharacterStats(_controller.SelectedCharacter).Attack, Is.EqualTo(10.7).Within(.0001));
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.UniqueGear.Single(gear => gear.InstanceId == center.InstanceId).Enhancement, Is.EqualTo(1));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(94800));
+        }
+
+        [UnityTest]
+        public IEnumerator CraftingCategories_FilterSlotsAndRetainCraftPopup_ForConsecutiveCrafts()
+        {
+            var initial = new PlayerProgress();
+            initial.TryClaimReward("repeat-craft", new StageReward(0, 1600, Enumerable.Repeat("knight_sword", 20)), false, DateTimeOffset.UtcNow);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Assert.That(Text("Main Experience Amount"), Is.EqualTo("0"));
+            Assert.That(Text("Main Origin Shard Amount"), Is.EqualTo("1.6K"));
+            var experience = (RectTransform)Find("Main Experience Wallet");
+            var shards = (RectTransform)Find("Main Origin Shard Wallet");
+            Assert.That(experience.rect.width, Is.EqualTo(144));
+            Assert.That(shards.rect.size, Is.EqualTo(experience.rect.size));
+            Click("Main Tab Equipment"); Click("Show Equipment Crafting"); yield return null;
+            var viewport = (RectTransform)Find("Equipment Inventory Viewport");
+            var categories = (RectTransform)Find("Crafting Categories");
+            Assert.That(categories.rect.width, Is.EqualTo(viewport.rect.width));
+            var left = (RectTransform)Find("Crafting Category Weapon");
+            var right = (RectTransform)Find("Crafting Category AccessoryOrPet");
+            Assert.That(left.anchoredPosition.x - left.rect.width / 2, Is.EqualTo(-categories.rect.width / 2).Within(.001f));
+            Assert.That(right.anchoredPosition.x + right.rect.width / 2, Is.EqualTo(categories.rect.width / 2).Within(.001f));
+            Assert.That(viewport.anchoredPosition.y + viewport.rect.height / 2,
+                Is.LessThan(categories.anchoredPosition.y - categories.rect.height / 2));
+            var choices = Find("Equipment Inventory Items");
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(2));
+            Assert.That(choices.GetComponentsInChildren<Transform>().Any(t => t.name == "Gear Rarity Border"), Is.False);
+            Capture("CraftingWeaponCategory.png");
+            foreach (var category in new[] { "Armor", "AccessoryOrPet" })
+            {
+                Click("Crafting Category " + category); yield return null;
+                Assert.That(choices.GetComponentsInChildren<Button>(), Is.Empty);
+                Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.True);
+            }
+            Capture("CraftingEmptyAccessoryCategory.png");
+            Click("Crafting Category Weapon"); yield return null;
+            Click("Crafting Choice knight_sword");
+            var popup = Find("Equipment Item Tooltip");
+            for (int i = 0; i < 2; i++)
+            {
+                Click("Craft Unique Gear"); yield return null;
+                Assert.That(popup.gameObject.activeInHierarchy, Is.True);
+                Assert.That(Find("Craft Unique Gear").gameObject.activeInHierarchy, Is.True);
+                Assert.That(Find("Enhance Unique Gear").gameObject.activeSelf, Is.False);
+                Assert.That(popup.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("기사의 보검"));
+                Assert.That(((RectTransform)Find("Main Experience Wallet")).rect.size,
+                    Is.EqualTo(((RectTransform)Find("Main Origin Shard Wallet")).rect.size));
+            }
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(600));
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword"), Is.Zero);
+            Assert.That(_controller.Progress.UniqueGear.Count(gear => gear.GearId == "knight_sword" && gear.EquippedBy == ""), Is.EqualTo(2));
+            Assert.That(Find("Craft Unique Gear").GetComponent<Button>().interactable, Is.False);
+            Assert.That(_controller.TryCraftUniqueGear("knight_sword"), Is.False);
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(600));
+            Capture("CraftingPopupAfterRepeatedCrafts.png");
+            Click("Equipment Details Backdrop");
+            Assert.That(Find("Crafting Categories").gameObject.activeInHierarchy, Is.True);
+            Click("Show Owned Equipment"); yield return null;
+            Assert.That(Find("Crafting Categories").gameObject.activeSelf, Is.False);
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
+        }
+
+        [UnityTest]
+        public IEnumerator CurrencyWallets_ShowCompactAmountsAndExactHoverDetails_AndCostsAndRewardsUseTheSameUnits()
+        {
+            var initial = new PlayerProgress();
+            initial.TryClaimReward("compact-seed", new StageReward(1234567, 9876543210), false, DateTimeOffset.UtcNow);
+            initial.RecordRound("origin_mine_03", 12, 12, cleared: true);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Assert.That(Text("Main Experience Amount"), Is.EqualTo("1.2M"));
+            Assert.That(Text("Main Origin Shard Amount"), Is.EqualTo("9.9B"));
+            var experience = (RectTransform)Find("Main Experience Wallet");
+            var shards = (RectTransform)Find("Main Origin Shard Wallet");
+            Assert.That(experience.sizeDelta, Is.EqualTo(shards.sizeDelta));
+            var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(experience), hits);
+            Assert.That(hits.First().gameObject, Is.EqualTo(experience.gameObject));
+            var hover = experience.GetComponent<PrototypeCurrencyHover>();
+            hover.OnPointerEnter(Pointer(experience));
+            var experienceTooltip = Find("경험치 Currency Tooltip");
+            Assert.That(experienceTooltip.Find("Currency Tooltip Name").GetComponent<Text>().text, Is.EqualTo("경험치"));
+            Assert.That(experienceTooltip.Find("Currency Tooltip Amount").GetComponent<Text>().text, Is.EqualTo("1,234,567"));
+            Capture("ExperienceExactBalanceTooltip.png");
+            hover.OnPointerExit(Pointer(experience));
+            shards.GetComponent<PrototypeCurrencyHover>().OnPointerEnter(Pointer(shards));
+            var shardTooltip = Find("기원의 파편 Currency Tooltip");
+            Assert.That(shardTooltip.Find("Currency Tooltip Name").GetComponent<Text>().text, Is.EqualTo("기원의 파편"));
+            Assert.That(shardTooltip.Find("Currency Tooltip Amount").GetComponent<Text>().text, Is.EqualTo("9,876,543,210"));
+            Capture("ShardExactBalanceTooltip.png");
+            shards.GetComponent<PrototypeCurrencyHover>().OnPointerExit(Pointer(shards));
+            Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(1234567));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(9876543210));
+            Click("Main Tab Characters"); yield return null;
+            for (int i = 0; i < 11; i++) Click("Character Level Up Button");
+            Assert.That(Text("Character Level Up Cost"), Is.EqualTo("1.2K"));
+            Capture("CompactCharacterLevelCost.png");
+            Click("Main Tab Stages"); yield return null;
+            Click("Mine Stage Category"); yield return null;
+            Click("Stage Choice origin_mine_04");
+            Assert.That(Find("Stage Reward Origin Shards").GetComponentInChildren<Text>().text, Is.EqualTo("1K"));
+            Assert.That(((RectTransform)Find("Stage Confirm Button")).sizeDelta.y,
+                Is.EqualTo(((RectTransform)Find("Sweep Mine Stage")).sizeDelta.y));
+            Assert.That(((RectTransform)Find("Stage Confirm Button")).anchoredPosition.y,
+                Is.EqualTo(((RectTransform)Find("Sweep Mine Stage")).anchoredPosition.y));
+            Capture("CompactStageRewards.png");
+        }
+
+        [UnityTest]
+        public IEnumerator OriginMine_FailureAndAbandonKeepTickets_ClearAndSweepPayExactlyOnce_AndProgressIsIndependent()
+        {
+            yield return LoadMenu();
+            Assert.That(Text("Main Mine Tickets"), Is.EqualTo("5 / 5"));
+            Assert.That(_controller.IsStageUnlocked("origin_mine_01"), Is.True);
+            Assert.That(_controller.IsStageUnlocked("origin_mine_02"), Is.False);
+            _controller.ShowStageSelection();
+            Click("Mine Stage Category"); yield return null;
+            var categoryHits = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(Pointer(Find("Main Tab Home")), categoryHits);
+            Assert.That(categoryHits.First().gameObject.name, Is.EqualTo("Main Tab Home"));
+            Assert.That(Text("Stage Preview Name"), Does.Contain("기원의 광산 1"));
+            Assert.That(Find("Stage Reward Origin Shards").GetComponentInChildren<Text>().text, Is.EqualTo("500"));
+            Assert.That(Find("Stage Reward Blueprints").GetComponentInChildren<Text>().text, Is.EqualTo("5"));
+            Assert.That(Find("Sweep Mine Stage").GetComponent<RectTransform>().rect.height, Is.GreaterThan(46));
+            Assert.That(Text("Sweep Ticket Cost"), Is.EqualTo("1"));
+            Assert.That(Find("Sweep Mine Stage").GetComponent<Button>().interactable, Is.False);
+            Capture("OriginMineSelection.png");
+            Click("Stage Confirm Button");
+            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
+            Lose();
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
+            Assert.That(_controller.Progress.OriginShards, Is.Zero);
+            _controller.ReturnToPreparation();
+            Click("Abandon Stage Button"); Click("Confirm Abandon Stage");
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
+            Assert.That(_controller.TryStartRun(), Is.True);
+            for (int i = 0; i < 11; i++) _controller.AdvanceRound();
+            Win();
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(4));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(500));
+            Assert.That(_controller.Progress.SharedExperience, Is.Zero);
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword") + _controller.Progress.GetBlueprints("silver_longbow"), Is.EqualTo(5));
+            Assert.That(_controller.IsStageUnlocked("origin_mine_02"), Is.True);
+            Assert.That(_controller.IsStageUnlocked("stage_02"), Is.False);
+            Capture("OriginMineClearedRewards.png");
+            _controller.TickCombat(200);
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(500));
+            Assert.That(_controller.TryReturnToMainMenu(), Is.True);
+            _controller.ShowStageSelection(); yield return null;
+            Assert.That(Find("Sweep Mine Stage").GetComponent<Button>().interactable, Is.True);
+            Click("Sweep Mine Stage"); yield return null;
+            Assert.That(Text("Reward Popup Contents"), Does.Contain("500").And.Contain("설계도"));
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(3));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(1000));
+            Capture("OriginMineSweepRewards.png");
+            Assert.That(_controller.TrySweepStage("origin_mine_01"), Is.False, "A second click while the reward popup is open cannot spend another ticket.");
+            Click("Reward Popup Close");
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.That(_controller.TrySweepStage("origin_mine_01"), Is.True);
+                Click("Reward Popup Close");
+            }
+            Assert.That(_controller.Progress.MineTickets, Is.Zero);
+            Assert.That(_controller.TrySweepStage("origin_mine_01"), Is.False);
+            _controller.ShowMainMenuTab(MainMenuTab.Home);
+            Assert.That(_controller.TryStartRun(), Is.False);
+            Assert.That(Text("Main Mine Tickets"), Is.EqualTo("0 / 5"));
+            Assert.That(Text("Main Mine Ticket Timer"), Does.StartWith("다음 충전"));
+            Capture("OriginMineTicketsDepleted.png");
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.MineTickets, Is.Zero);
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(2500));
+#if UNITY_EDITOR
+            Assert.That(_controller.RefillMineTicketsForTesting(out _), Is.True);
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
+            Assert.That(Text("Main Mine Tickets"), Is.EqualTo("5 / 5"));
+#endif
+        }
+
+        [UnityTest]
+        public IEnumerator OriginMine_SaveFailureKeepsTicketAndRewardTogether_AndReturnRetriesSettlement()
+        {
+            yield return LoadMenu();
+            _controller.TrySelectStage("origin_mine_01"); _controller.TryStartRun();
+            for (int i = 0; i < 11; i++) _controller.AdvanceRound();
+            File.Delete(_savePath); Directory.CreateDirectory(_savePath);
+            try
+            {
+                Win();
+                Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
+                Assert.That(_controller.Progress.OriginShards, Is.Zero);
+                Assert.That(_controller.TryReturnToMainMenu(), Is.False);
+            }
+            finally { Directory.Delete(_savePath); }
+            Assert.That(_controller.TryReturnToMainMenu(), Is.True);
+            Assert.That(_controller.Progress.MineTickets, Is.EqualTo(4));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(500));
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(500));
         }
 
         [UnityTest]
@@ -515,6 +818,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(_controller.ReturnToPreparation(), Is.True);
             }
             Lose(); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(10));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(10));
             Assert.That(_controller.RunResult.ExperienceReward, Is.EqualTo(10));
             Assert.That(Text("Run Result Experience"), Does.Contain("+10"));
             _controller.TickCombat(200); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(10));
@@ -522,6 +826,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller.TryReturnToMainMenu(); _controller.TryStartRun();
             for (int i = 0; i < 11; i++) _controller.AdvanceRound();
             Win(); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(110));
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(110));
             Assert.That(_controller.RunResult.ExperienceReward, Is.EqualTo(100));
             _controller.TickCombat(200); Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(110));
             Capture("ExperienceClear.png");
@@ -542,6 +847,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 for (int i = 1; i < scenario.round; i++) _controller.AdvanceRound();
                 for (int i = 0; i < 3; i++) { Lose(); if (i < 2) _controller.ReturnToPreparation(); }
                 Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(scenario.expected), $"Round {scenario.round}");
+                Assert.That(_controller.Progress.OriginShards, Is.EqualTo(scenario.expected), $"Round {scenario.round} shards");
                 Assert.That(new PlayerProgressStore(_savePath).Load(out _).SharedExperience, Is.EqualTo(scenario.expected));
             }
         }

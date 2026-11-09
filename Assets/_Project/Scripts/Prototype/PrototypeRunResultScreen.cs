@@ -10,7 +10,7 @@ namespace BackpackAutoBattle.Prototype
         public RectTransform Root { get; }
         private readonly Text _title;
         private readonly Text _summary;
-        private readonly Text _experience, _notice;
+        private readonly Text _experience, _notice, _materials;
         private readonly Button _restart;
         private readonly Button _mainMenu;
 
@@ -27,8 +27,9 @@ namespace BackpackAutoBattle.Prototype
             _title = Text(panel.transform, "Run Result Title", 32, new Vector2(0, 164), new Vector2(550, 48));
             _summary = Text(panel.transform, "Run Result Summary", 20, new Vector2(0, 52), new Vector2(550, 184));
             _summary.lineSpacing = 1.4f;
-            _experience = Text(panel.transform, "Run Result Experience", 23, new Vector2(0, -70), new Vector2(550, 34));
+            _experience = Text(panel.transform, "Run Result Experience", 23, new Vector2(0, -31), new Vector2(550, 28));
             _experience.color = new Color(.95f, .88f, .72f);
+            _materials = Text(panel.transform, "Run Result Materials", 17, new Vector2(0, -79), new Vector2(550, 60));
             _notice = Text(panel.transform, "Run Result Save Notice", 14, new Vector2(0, -232), new Vector2(560, 26));
             _notice.color = new Color(1, .45f, .4f);
             var button = new GameObject("Restart Run Button", typeof(RectTransform), typeof(Image), typeof(Button));
@@ -46,13 +47,13 @@ namespace BackpackAutoBattle.Prototype
             Text(main.transform, "Return To Main Menu Label", 18, Vector2.zero, new Vector2(250, 48)).text = "메인으로 돌아가기";
             var stats = new GameObject("Run Statistics Button", typeof(RectTransform), typeof(Image), typeof(Button));
             stats.transform.SetParent(panel.transform, false); stats.GetComponent<Image>().color = new Color(.23f, .46f, .68f);
-            BackpackPrototypeController.SetRect((RectTransform)stats.transform, Vector2.one * .5f, new Vector2(0, -120), new Vector2(190, 36));
+            BackpackPrototypeController.SetRect((RectTransform)stats.transform, Vector2.one * .5f, new Vector2(0, -132), new Vector2(190, 30));
             stats.GetComponent<Button>().onClick.AddListener(() => statistics());
             Text(stats.transform, "Run Statistics Label", 18, Vector2.zero, new Vector2(180, 34)).text = "전투 통계";
             Hide();
         }
 
-        public void Show(PrototypeRunResult result, long? experience = null, string saveNotice = null)
+        public void Show(PrototypeRunResult result, long? experience = null, string saveNotice = null, string materials = null)
         {
             bool cleared = result.Outcome == PrototypeRunOutcome.Cleared;
             _title.text = cleared ? "스테이지 클리어!" : "게임 오버";
@@ -62,6 +63,7 @@ namespace BackpackAutoBattle.Prototype
                 + $"승리 {result.Victories} · 패배 {result.Defeats}\n"
                 + $"누적 전투 시간  {result.TotalBattleSeconds:0.0}초";
             _experience.text = experience.HasValue ? $"획득 경험치  +{experience.Value:N0}" : "";
+            _materials.text = materials ?? "";
             _notice.text = saveNotice ?? "";
             _restart.interactable = true;
             _mainMenu.interactable = true;
@@ -69,6 +71,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void Hide() => Root.gameObject.SetActive(false);
+        public void ShowNotice(string notice) => _notice.text = notice ?? "";
         public void SetRestartPending() { _restart.interactable = false; _mainMenu.interactable = false; }
         private static Text Text(Transform parent, string name, int size, Vector2 position, Vector2 dimensions)
         {

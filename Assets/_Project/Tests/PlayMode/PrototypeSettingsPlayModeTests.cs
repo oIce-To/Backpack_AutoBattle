@@ -58,13 +58,20 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Find("Combat Effects").GetComponent<AudioSource>().volume, Is.EqualTo(.4f).Within(.001f));
             Capture("SettingsAudio.png");
             Click("Settings Tab 1");
-            var next = Find("Settings Resolution Next").GetComponent<Button>();
+            yield return null; // uGUI initializes the newly visible Dropdown's tween runner in Start.
+            var dropdown = Find("Settings Resolution Dropdown").GetComponent<Dropdown>();
             string resolution = Text("Settings Resolution");
-            if (next.interactable)
+            dropdown.Show(); yield return new WaitForSecondsRealtime(.2f);
+            Assert.That(dropdown.GetComponentsInChildren<Toggle>().Length, Is.GreaterThan(0));
+            Capture("SettingsResolutionDropdown.png");
+            if (dropdown.interactable)
             {
-                next.onClick.Invoke();
+                var options = dropdown.GetComponentsInChildren<Toggle>();
+                options[(dropdown.value + 1) % dropdown.options.Count].isOn = true;
                 Assert.That(Text("Settings Resolution"), Is.Not.EqualTo(resolution));
             }
+            else dropdown.Hide();
+            yield return new WaitForSecondsRealtime(.2f);
             Click("Settings Full Screen");
             Click("Settings Display Apply");
             Assert.That(Find("Settings Display Confirmation").gameObject.activeInHierarchy, Is.True);

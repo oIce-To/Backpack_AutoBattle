@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.StageData
   _stageId: stage_02
   _clearExperience: 200
+  _clearOriginShards: 126
   _displayName: "2스테이지 · 고블린 전선"
   _rounds:
   - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}

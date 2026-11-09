@@ -24,3 +24,9 @@ MonoBehaviour:
   _uniqueGear:
   - {fileID: 11400000, guid: ce84af5a7abf44b29779ed8ecb4ee949, type: 2}
   - {fileID: 11400000, guid: c8318740d5b24ad18ad0879020d4a461, type: 2}
+  _originMines:
+  - {fileID: 11400000, guid: b4731fecd6044631b04ec3d8d461d5c4, type: 2}
+  - {fileID: 11400000, guid: bc16f1fb18434db58ee0389003382d76, type: 2}
+  - {fileID: 11400000, guid: 56e975fa217945c294b1d5341f94b441, type: 2}
+  - {fileID: 11400000, guid: a41336dd646849f88f41cd168a0c6d49, type: 2}
+  - {fileID: 11400000, guid: b18e19218f0b49d789292f3a8bc6120b, type: 2}

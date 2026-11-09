@@ -20,6 +20,9 @@ namespace BackpackAutoBattle.Prototype
             Gold = run.Gold; Victories = run.Victories; Defeats = run.Defeats; Draws = run.Draws;
             TotalBattleSeconds = run.TotalBattleSeconds; LastBattleResult = run.LastBattleResult.Value;
             ExperienceReward = StageExperienceReward.Calculate(run.ClearExperience, outcome == PrototypeRunOutcome.Cleared, Round);
+            OriginShardReward = run.IsOriginMine && outcome != PrototypeRunOutcome.Cleared ? 0
+                : StageExperienceReward.Calculate(run.ClearOriginShards, outcome == PrototypeRunOutcome.Cleared, Round);
+            BlueprintRewardCount = run.IsOriginMine && outcome == PrototypeRunOutcome.Cleared ? run.ClearBlueprints : 0;
         }
         public PrototypeRunOutcome Outcome { get; }
         public string StageId { get; }
@@ -35,13 +38,16 @@ namespace BackpackAutoBattle.Prototype
         public double TotalBattleSeconds { get; }
         public CombatResult LastBattleResult { get; }
         public long ExperienceReward { get; }
+        public long OriginShardReward { get; }
+        public int BlueprintRewardCount { get; }
     }
 
     /// <summary>Run progress lives independently of both screen roots.</summary>
     public sealed class PrototypeRunState
     {
         public PrototypeRunState(int startingGold, string stageId = null, CharacterStatsSnapshot stats = null,
-            string playerName = "플레이어", int startingLives = 3, string stageName = null, int clearExperience = 0)
+            string playerName = "플레이어", int startingLives = 3, string stageName = null, int clearExperience = 0,
+            int clearOriginShards = 0, bool isOriginMine = false, int clearBlueprints = 0, IEnumerable<string> blueprintPool = null)
         {
             if (startingGold < 0) throw new ArgumentOutOfRangeException(nameof(startingGold));
             if (startingLives < 1) throw new ArgumentOutOfRangeException(nameof(startingLives));
@@ -50,6 +56,10 @@ namespace BackpackAutoBattle.Prototype
             PlayerStats = stats ?? CharacterStatsSnapshot.Default; PlayerName = playerName;
             Lives = StartingLives = startingLives;
             ClearExperience = clearExperience;
+            ClearOriginShards = clearOriginShards;
+            IsOriginMine = isOriginMine;
+            ClearBlueprints = clearBlueprints;
+            BlueprintPool = new List<string>(blueprintPool ?? Array.Empty<string>()).AsReadOnly();
         }
         public CharacterStatsSnapshot PlayerStats { get; }
         internal IReadOnlyDictionary<string, StartingGear> StartingGear { get; set; } = new Dictionary<string, StartingGear>();
@@ -57,6 +67,11 @@ namespace BackpackAutoBattle.Prototype
         public string StageId { get; }
         public string StageName { get; }
         public int ClearExperience { get; }
+        public string RunId { get; } = Guid.NewGuid().ToString("N");
+        public int ClearOriginShards { get; }
+        public bool IsOriginMine { get; }
+        public int ClearBlueprints { get; }
+        public IReadOnlyList<string> BlueprintPool { get; }
         public int StartingLives { get; }
         public int Lives { get; private set; }
         public int Victories { get; private set; }
