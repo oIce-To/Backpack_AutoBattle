@@ -87,7 +87,23 @@ namespace BackpackAutoBattle.Prototype
 
         private bool CanChangeEquipment => IsMainMenu && !IsSettingsOpen && !_rewardPopup.IsOpen && _progressStore != null && _characterData != null;
 
-        private bool SaveEquipment(PlayerProgress candidate)
+        public bool TrySetUniqueGearLocked(string instanceId, bool locked)
+        {
+            if (!CanChangeEquipment) return false;
+            var candidate = PlayerProgress.FromData(_progress.Export());
+            if (!candidate.TrySetGearLocked(instanceId, locked) || !SaveEquipment(candidate, refreshScreen: false)) return false;
+            _equipment.RefreshGearLockState();
+            return true;
+        }
+
+        public bool TryDismantleUniqueGear(IReadOnlyList<string> instanceIds)
+        {
+            if (!CanChangeEquipment) return false;
+            var candidate = PlayerProgress.FromData(_progress.Export());
+            return candidate.TryDismantleGear(instanceIds) && SaveEquipment(candidate);
+        }
+
+        private bool SaveEquipment(PlayerProgress candidate, bool refreshScreen = true)
         {
             if (!_progressStore.TrySave(candidate, out _saveNotice))
             {
@@ -96,7 +112,7 @@ namespace BackpackAutoBattle.Prototype
                 return false;
             }
             _progress = candidate;
-            ShowMainMenuTab(ActiveMainTab);
+            if (refreshScreen) ShowMainMenuTab(ActiveMainTab);
             return true;
         }
     }

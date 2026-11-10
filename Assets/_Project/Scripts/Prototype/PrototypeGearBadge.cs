@@ -47,6 +47,19 @@ namespace BackpackAutoBattle.Prototype
             equipped.text = "E";
             equipped.color = new Color(.62f, .94f, .72f);
             equipped.gameObject.SetActive(!string.IsNullOrEmpty(item.EquippedBy));
+            var locked = badge.Find("Gear Locked") as RectTransform;
+            if (locked == null)
+            {
+                var obj = new GameObject("Gear Locked", typeof(RectTransform), typeof(PrototypeShopLockIcon));
+                obj.transform.SetParent(badge, false); locked = (RectTransform)obj.transform;
+                var glyph = obj.GetComponent<PrototypeShopLockIcon>(); glyph.raycastTarget = false;
+                glyph.color = new Color(1f, .81f, .19f);
+            }
+            float lockSize = equippedMarkerSize >= 28 ? 28 : 20;
+            locked.anchorMin = locked.anchorMax = new Vector2(0, 1);
+            locked.sizeDelta = Vector2.one * lockSize;
+            locked.anchoredPosition = new Vector2(4 + lockSize / 2, -4 - lockSize / 2);
+            locked.gameObject.SetActive(item.IsLocked);
             RenderBorder(badge, item.Rarity);
         }
 

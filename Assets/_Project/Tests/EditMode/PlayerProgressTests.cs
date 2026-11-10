@@ -153,7 +153,7 @@ namespace BackpackAutoBattle.Tests.Progression
 
         [TestCase("{invalid json")]
         [TestCase("{}")]
-        [TestCase("{\"version\":5,\"futureField\":123}")]
+        [TestCase("{\"version\":6,\"futureField\":123}")]
         public void UnreadableOrNewerSave_IsPreservedAndNeverSilentlyOverwritten(string json)
         {
             Directory.CreateDirectory(_directory); File.WriteAllText(_path, json);

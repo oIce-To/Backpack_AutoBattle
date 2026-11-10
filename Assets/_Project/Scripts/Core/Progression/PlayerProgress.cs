@@ -51,7 +51,7 @@ namespace BackpackAutoBattle.Progression
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
     public sealed partial class PlayerProgress
     {
-        public const int SaveVersion = 4;
+        public const int SaveVersion = 5;
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
         private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
         public long SharedExperience { get; private set; }

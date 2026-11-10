@@ -27,15 +27,24 @@ namespace BackpackAutoBattle.Prototype
         private readonly RectTransform _craftMaterials;
         private readonly Text _craftShardCost, _craftBlueprintCost;
         private readonly PrototypePromotionScreen _promotion;
+        private readonly PrototypeDismantleScreen _dismantle;
+        private readonly Button _dismantleButton, _lockModeButton;
+        private readonly Text _managementNotice;
+        private readonly RectTransform _detailLock;
+        private readonly Dictionary<string, Button> _ownedTiles = new(StringComparer.Ordinal);
         private readonly Dictionary<UniqueGearSlot, Button> _slots = new();
         private readonly Dictionary<UniqueGearSlot, Button> _craftCategories = new();
         private readonly RectTransform _craftTabs;
+        private readonly RectTransform _ownedTabs;
+        private readonly Button[] _ownedCategories = new Button[4];
+        private UniqueGearSlot? _ownedSlot;
         private UniqueGearSlot _craftSlot = UniqueGearSlot.Weapon;
         private string _selectedId;
         private Action _confirmationAction;
         private string _craftDefinitionId;
         private bool _craftMode;
-        internal bool IsDetailsOpen => _modal.gameObject.activeSelf;
+        private bool _lockMode;
+        internal bool IsDetailsOpen => _modal.gameObject.activeSelf || (_dismantle?.IsOpen ?? false);
 
         internal PrototypeEquipmentScreen(Transform canvas, BackpackPrototypeController controller)
         {
@@ -81,6 +90,18 @@ namespace BackpackAutoBattle.Prototype
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
                 _craftCategories.Add(slot, button);
             }
+            var ownedCategories = new GameObject("Owned Equipment Categories", typeof(RectTransform));
+            ownedCategories.transform.SetParent(inventory.transform, false); _ownedTabs = (RectTransform)ownedCategories.transform;
+            SelectionUi.Place(_ownedTabs, new Vector2(0, 180), new Vector2(572, 36));
+            const float ownedWidth = (572 - categoryGap * 3) / 4;
+            for (int i = 0; i < _ownedCategories.Length; i++)
+            {
+                UniqueGearSlot? slot = i == 0 ? null : (UniqueGearSlot)(i - 1);
+                _ownedCategories[i] = SelectionUi.Button(_ownedTabs, "Owned Category " + (slot?.ToString() ?? "All"),
+                    slot.HasValue ? SlotLabel(slot.Value) : "전체", new Vector2((i - 1.5f) * (ownedWidth + categoryGap), 0),
+                    new Vector2(ownedWidth, 36), () => SwitchOwnedCategory(slot));
+                _ownedCategories[i].navigation = new Navigation { mode = Navigation.Mode.None };
+            }
             var viewport = SelectionUi.Image(inventory.transform, "Equipment Inventory Viewport", new Color(.075f, .09f, .12f));
             SelectionUi.Place(viewport.rectTransform, new Vector2(0, -17), new Vector2(572, 360));
             viewport.raycastTarget = true;
@@ -98,6 +119,12 @@ namespace BackpackAutoBattle.Prototype
             _scroll.movementType = ScrollRect.MovementType.Clamped;
             _scroll.scrollSensitivity = 32;
             _empty = SelectionUi.Label(viewport.transform, "Empty Equipment Inventory", "보유한 고유 장비가 없습니다.", 18, Vector2.zero, new Vector2(540, 45));
+            _dismantleButton = SelectionUi.Button(panel.transform, "Open Gear Dismantle", "분해", new Vector2(75, -260), new Vector2(278, 44), OpenDismantle);
+            _dismantleButton.image.color = new Color(.65f, .27f, .26f);
+            _lockModeButton = SelectionUi.Button(panel.transform, "Gear Lock Mode", "장비 잠금 모드", new Vector2(369, -260), new Vector2(278, 44),
+                () => { _lockMode = !_lockMode; RefreshLockMode(); });
+            _managementNotice = SelectionUi.Label(panel.transform, "Equipment Management Notice", "", 14, new Vector2(222, -295), new Vector2(572, 20));
+            _managementNotice.color = new Color(1, .45f, .4f);
 
             var modal = new GameObject("Equipment Details Modal", typeof(RectTransform));
             modal.transform.SetParent(canvas, false);
@@ -113,6 +140,11 @@ namespace BackpackAutoBattle.Prototype
 
             _details = PrototypeItemTooltip.Create(_modal);
             _details.name = "Equipment Item Tooltip";
+            var detailLock = new GameObject("Equipment Detail Lock", typeof(RectTransform), typeof(PrototypeShopLockIcon));
+            detailLock.transform.SetParent(_details.transform, false); _detailLock = (RectTransform)detailLock.transform;
+            detailLock.GetComponent<PrototypeShopLockIcon>().color = new Color(1f, .81f, .19f);
+            detailLock.GetComponent<PrototypeShopLockIcon>().raycastTarget = false;
+            detailLock.SetActive(false);
             _equip = CreateAction("Equip Unique Gear", "장착", new Color(.18f, .52f, .32f), EquipSelectedGear);
             _unequip = CreateAction("Unequip Unique Gear", "장착 해제", new Color(.66f, .23f, .23f),
                 () => { if (SelectedGear() is { } item && item.EquippedBy == CharacterId) _controller.TryUnequipUniqueGear(item.Slot); });
@@ -155,6 +187,7 @@ namespace BackpackAutoBattle.Prototype
                 new Vector2(101, -49), new Vector2(180, 41), CloseTransfer);
             confirm.navigation = cancel.navigation = new Navigation { mode = Navigation.Mode.None };
             _promotion = new PrototypePromotionScreen(_modal, _controller, ClosePromotion);
+            _dismantle = new PrototypeDismantleScreen(canvas, _controller, () => _dismantle.Hide());
             Hide();
         }
 
@@ -190,6 +223,7 @@ namespace BackpackAutoBattle.Prototype
         internal void Hide()
         {
             CloseDetails();
+            _lockMode = false;
             _root.gameObject.SetActive(false);
         }
 
@@ -197,6 +231,7 @@ namespace BackpackAutoBattle.Prototype
         {
             CloseTransfer();
             _promotion.Hide();
+            _dismantle?.Hide();
             if (IsDetailsOpen) EventSystem.current?.SetSelectedGameObject(null);
             _selectedId = null;
             _craftDefinitionId = null;
@@ -205,7 +240,8 @@ namespace BackpackAutoBattle.Prototype
         }
         internal void DismissTopmost()
         {
-            if (_promotion.IsOpen) ClosePromotion();
+            if (_dismantle.IsOpen) _dismantle.Hide();
+            else if (_promotion.IsOpen) ClosePromotion();
             else if (_transferModal.gameObject.activeSelf) CloseTransfer();
             else CloseDetails();
         }
@@ -213,13 +249,50 @@ namespace BackpackAutoBattle.Prototype
         {
             _error.text = error ?? "";
             if (_promotion.IsOpen) _promotion.ShowError(error);
+            if (_dismantle.IsOpen) _dismantle.ShowError(error);
+            if (!IsDetailsOpen) _managementNotice.text = error ?? "";
         }
         private string CharacterId => _controller.SelectedCharacter?.CharacterId;
         private UniqueGearInstance SelectedGear() => _controller.Progress.UniqueGear.FirstOrDefault(item => item.InstanceId == _selectedId);
 
         private void SelectSlot(UniqueGearSlot slot)
         {
-            OpenDetails(_controller.Progress.GetEquippedGear(CharacterId, slot));
+            SelectOwnedGear(_controller.Progress.GetEquippedGear(CharacterId, slot)?.InstanceId);
+        }
+
+        private void SelectOwnedGear(string instanceId)
+        {
+            var item = _controller.Progress.UniqueGear.FirstOrDefault(gear => gear.InstanceId == instanceId);
+            if (item == null) return;
+            if (_lockMode) _controller.TrySetUniqueGearLocked(item.InstanceId, !item.IsLocked);
+            else OpenDetails(item);
+        }
+
+        private void RefreshLockMode()
+        {
+            _lockModeButton.image.color = _lockMode ? new Color(.55f, .40f, .12f) : SelectionUi.Idle;
+            _lockModeButton.GetComponentInChildren<Text>().text = _lockMode ? "잠금 모드 종료" : "장비 잠금 모드";
+            EventSystem.current?.SetSelectedGameObject(null);
+        }
+
+        internal void RefreshGearLockState()
+        {
+            _managementNotice.text = "";
+            foreach (var item in _controller.Progress.UniqueGear)
+                if (_ownedTiles.TryGetValue(item.InstanceId, out var tile))
+                    PrototypeGearBadge.Render(tile.transform, _controller.FindGearDefinition(item.GearId), item, EquippedMarkerSize);
+            foreach (var slot in _slots)
+            {
+                var item = _controller.Progress.GetEquippedGear(CharacterId, slot.Key);
+                PrototypeGearBadge.Render(slot.Value.transform, item == null ? null : _controller.FindGearDefinition(item.GearId), item, EquippedMarkerSize);
+            }
+        }
+
+        private void OpenDismantle()
+        {
+            if (_craftMode || IsDetailsOpen) return;
+            _lockMode = false; RefreshLockMode();
+            _dismantle.Show();
         }
 
         private void Render()
@@ -230,9 +303,16 @@ namespace BackpackAutoBattle.Prototype
             _stats.text = $"{character?.DisplayName}  Lv. {progress.GetCharacterLevel(CharacterId)}\n체력  {stats.MaximumHealth:0.##}"
                 + $"\n공격력  {stats.Attack:0.##}\n치명타 피해 보너스  +{stats.CriticalDamageBonusPercent:0.##}%";
             _inventoryTitle.gameObject.SetActive(_craftMode);
+            _managementNotice.text = "";
+            _dismantleButton.gameObject.SetActive(!_craftMode);
+            _lockModeButton.gameObject.SetActive(!_craftMode);
+            RefreshLockMode();
             _craftTabs.gameObject.SetActive(_craftMode);
-            SelectionUi.Place(_scroll.viewport, _craftMode ? new Vector2(0, -42) : Vector2.zero,
-                new Vector2(572, _craftMode ? 310 : 400));
+            _ownedTabs.gameObject.SetActive(!_craftMode);
+            for (int i = 0; i < _ownedCategories.Length; i++)
+                _ownedCategories[i].image.color = i == (_ownedSlot.HasValue ? (int)_ownedSlot.Value + 1 : 0) ? SelectionUi.Selected : SelectionUi.Idle;
+            SelectionUi.Place(_scroll.viewport, _craftMode ? new Vector2(0, -42) : new Vector2(0, -24),
+                new Vector2(572, _craftMode ? 310 : 352));
             _showInventory.GetComponent<Image>().color = _craftMode ? SelectionUi.Idle : SelectionUi.Selected;
             _showCrafting.GetComponent<Image>().color = _craftMode ? SelectionUi.Selected : SelectionUi.Idle;
             foreach (var pair in _slots)
@@ -246,20 +326,23 @@ namespace BackpackAutoBattle.Prototype
             }
 
             float scrollPosition = _scroll.verticalNormalizedPosition;
+            _ownedTiles.Clear();
             foreach (Transform child in _content) { child.gameObject.SetActive(false); UnityEngine.Object.Destroy(child.gameObject); }
             if (_craftMode) { RenderCrafting(); return; }
-            var items = progress.UniqueGear.Where(item => _controller.FindGearDefinition(item.GearId) != null).ToArray();
-            _empty.text = "보유한 고유 장비가 없습니다.";
+            var items = progress.UniqueGear.Where(item => _controller.FindGearDefinition(item.GearId) != null
+                && (!_ownedSlot.HasValue || item.Slot == _ownedSlot.Value)).ToArray();
+            _empty.text = _ownedSlot.HasValue ? "해당 종류의 보유 장비가 없습니다." : "보유한 고유 장비가 없습니다.";
             _empty.gameObject.SetActive(items.Length == 0);
             const int columns = 4;
             const float tileSize = 128f, stride = 140f;
-            _content.sizeDelta = new Vector2(0, Mathf.Max(400, Mathf.CeilToInt(items.Length / (float)columns) * stride + 8));
+            _content.sizeDelta = new Vector2(0, Mathf.Max(352, Mathf.CeilToInt(items.Length / (float)columns) * stride + 8));
             for (int index = 0; index < items.Length; index++)
             {
                 var item = items[index];
                 var definition = _controller.FindGearDefinition(item.GearId);
                 var button = SelectionUi.Button(_content, "Inventory Gear " + item.InstanceId, "", Vector2.zero,
-                    Vector2.one * tileSize, () => OpenDetails(item));
+                    Vector2.one * tileSize, () => SelectOwnedGear(item.InstanceId));
+                _ownedTiles.Add(item.InstanceId, button);
                 BackpackPrototypeController.SetRect((RectTransform)button.transform, new Vector2(.5f, 1),
                     new Vector2((index % columns - 1.5f) * stride, -72f - index / columns * stride), Vector2.one * tileSize);
                 PrototypeGearBadge.Render(button.transform, definition, item, equippedMarkerSize: EquippedMarkerSize);
@@ -270,8 +353,17 @@ namespace BackpackAutoBattle.Prototype
         private void SwitchCrafting(bool crafting)
         {
             _craftMode = crafting;
+            if (crafting) _lockMode = false;
             _scroll.verticalNormalizedPosition = 1f;
             Render();
+        }
+
+        private void SwitchOwnedCategory(UniqueGearSlot? slot)
+        {
+            if (_craftMode || _ownedSlot == slot) return;
+            _ownedSlot = slot;
+            Render();
+            _scroll.verticalNormalizedPosition = 1;
         }
 
         private void RenderCrafting()
@@ -334,6 +426,8 @@ namespace BackpackAutoBattle.Prototype
         private void ShowDetails(ItemTooltipContent content, string rank, string notes)
         {
             ShowError("");
+            _detailLock.gameObject.SetActive(false);
+            _details.transform.Find("Tooltip Name").GetComponent<Text>().resizeTextForBestFit = false;
             _modal.gameObject.SetActive(true); _modal.SetAsLastSibling();
             _details.ShowPinned(content, rank, notes, 88f);
             EventSystem.current?.SetSelectedGameObject(null);
@@ -371,6 +465,16 @@ namespace BackpackAutoBattle.Prototype
             string notes = BonusNotes(definition, item.Rarity, item.Enhancement);
             var content = ItemTooltipContent.FromItem(definition.Item, stats, item.Rarity, definition.EffectFor(item.Rarity));
             ShowDetails(content, $" +{item.Enhancement}", notes);
+            if (item.IsLocked)
+            {
+                var name = _details.transform.Find("Tooltip Name").GetComponent<Text>();
+                name.resizeTextForBestFit = true; name.resizeTextMinSize = 16; name.resizeTextMaxSize = 25;
+                name.rectTransform.sizeDelta = new Vector2(214, 36);
+                _detailLock.anchorMin = _detailLock.anchorMax = new Vector2(0, 1);
+                _detailLock.sizeDelta = Vector2.one * 25;
+                _detailLock.anchoredPosition = new Vector2(18 + Mathf.Min(name.preferredWidth, 214) + 18.5f, -26);
+                _detailLock.gameObject.SetActive(true);
+            }
         }
 
         private static string BonusNotes(UniqueGearData definition, ItemRarity rarity, int enhancement)

@@ -433,6 +433,33 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Show Owned Equipment"); yield return null;
             Assert.That(Find("Crafting Categories").gameObject.activeSelf, Is.False);
             Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
+            var ownedTabs = (RectTransform)Find("Owned Equipment Categories");
+            Assert.That(ownedTabs.gameObject.activeInHierarchy, Is.True);
+            Assert.That(ownedTabs.GetComponentsInChildren<Button>().Select(button => button.GetComponentInChildren<Text>().text),
+                Is.EqualTo(new[] { "전체", "무기", "방어구", "장신구 / 펫" }));
+            Assert.That(ownedTabs.rect.width, Is.EqualTo(viewport.rect.width));
+            Assert.That(viewport.anchoredPosition.y + viewport.rect.height / 2,
+                Is.LessThan(ownedTabs.anchoredPosition.y - ownedTabs.rect.height / 2));
+            Capture("OwnedEquipmentAllCategory.png");
+            Click("Gear Lock Mode");
+            foreach (var category in new[] { "Armor", "AccessoryOrPet" })
+            {
+                Click("Owned Category " + category); yield return null;
+                Assert.That(choices.GetComponentsInChildren<Button>(), Is.Empty);
+                Assert.That(Text("Empty Equipment Inventory"), Is.EqualTo("해당 종류의 보유 장비가 없습니다."));
+            }
+            Capture("OwnedEquipmentEmptyCategory.png");
+            Click("Owned Category Weapon"); yield return null;
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
+            var owned = _controller.Progress.UniqueGear.First(item => item.EquippedBy == "");
+            Click("Inventory Gear " + owned.InstanceId);
+            Assert.That(_controller.Progress.UniqueGear.Single(item => item.InstanceId == owned.InstanceId).IsLocked, Is.True);
+            Assert.That(Find("Equipment Details Modal").gameObject.activeSelf, Is.False);
+            Assert.That(Find("Inventory Gear " + owned.InstanceId).Find("Gear Badge/Gear Locked").gameObject.activeSelf, Is.True);
+            Click("Gear Lock Mode");
+            Capture("OwnedEquipmentWeaponCategory.png");
+            Click("Owned Category All"); yield return null;
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
         }
 
         [UnityTest]
@@ -478,6 +505,101 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(((RectTransform)Find("Stage Confirm Button")).anchoredPosition.y,
                 Is.EqualTo(((RectTransform)Find("Sweep Mine Stage")).anchoredPosition.y));
             Capture("CompactStageRewards.png");
+        }
+
+        [UnityTest]
+        public IEnumerator GearLockAndDismantle_ProtectOwnedItems_PreviewExactRewards_AndCommitOnlyAfterSaving()
+        {
+            var data = new PlayerProgress().Export();
+            data.uniqueGear.Add(new UniqueGearSaveData { instanceId = "salvage_sword_2", gearId = "knight_sword", rarity = ItemRarity.Common,
+                enhancement = 2, slot = UniqueGearSlot.Weapon, equippedBy = "" });
+            data.uniqueGear.Add(new UniqueGearSaveData { instanceId = "salvage_sword_0", gearId = "knight_sword", rarity = ItemRarity.Common,
+                slot = UniqueGearSlot.Weapon, equippedBy = "" });
+            data.uniqueGear.Add(new UniqueGearSaveData { instanceId = "salvage_bow_0", gearId = "silver_longbow", rarity = ItemRarity.Uncommon,
+                slot = UniqueGearSlot.Weapon, equippedBy = "" });
+            for (int i = 0; i < 18; i++)
+                data.uniqueGear.Add(new UniqueGearSaveData { instanceId = "protected_bow_" + i, gearId = "silver_longbow", rarity = ItemRarity.Uncommon,
+                    slot = UniqueGearSlot.Weapon, equippedBy = "", isLocked = true });
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(PlayerProgress.FromData(data), out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Tab Equipment"); yield return null;
+            Assert.That(((RectTransform)Find("Gear Lock Mode")).anchoredPosition.x,
+                Is.GreaterThan(((RectTransform)Find("Open Gear Dismantle")).anchoredPosition.x));
+            var tile = Find("Inventory Gear salvage_sword_2");
+            Click("Gear Lock Mode"); Click("Inventory Gear salvage_sword_2");
+            Assert.That(Find("Equipment Details Modal").gameObject.activeSelf, Is.False);
+            Assert.That(Find("Inventory Gear salvage_sword_2"), Is.SameAs(tile), "Lock mode must keep the visible list in place.");
+            Assert.That(tile.Find("Gear Badge/Gear Locked").gameObject.activeSelf, Is.True);
+            Assert.That(tile.Find("Gear Badge/Gear Locked").GetComponent<PrototypeShopLockIcon>().color.g, Is.GreaterThan(.7));
+            Assert.That(_controller.Progress.UniqueGear.Single(item => item.InstanceId == "salvage_sword_2").IsLocked, Is.True);
+            Capture("EquipmentLockMode.png");
+            Click("Gear Lock Mode"); Click("Inventory Gear salvage_sword_2");
+            var detailLock = (RectTransform)Find("Equipment Detail Lock");
+            Assert.That(detailLock.gameObject.activeInHierarchy, Is.True);
+            Assert.That(detailLock.rect.width, Is.EqualTo(25));
+            Assert.That(detailLock.anchoredPosition.x, Is.GreaterThan(100));
+            Capture("LockedGearDetail.png");
+            Click("Equipment Details Backdrop");
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.UniqueGear.Single(item => item.InstanceId == "salvage_sword_2").IsLocked, Is.True);
+            Click("Main Tab Equipment"); yield return null;
+            Click("Gear Lock Mode"); Click("Inventory Gear salvage_sword_2");
+            Click("Inventory Gear salvage_sword_0"); Click("Inventory Gear salvage_sword_0");
+            Assert.That(_controller.Progress.UniqueGear.Single(item => item.InstanceId == "salvage_sword_0").IsLocked, Is.False);
+            Click("Gear Lock Mode");
+            Click("Open Gear Dismantle"); yield return null;
+            Assert.That(_controller.TryOpenSettings(), Is.False);
+            var candidates = Find("Dismantle Inventory").GetComponentsInChildren<Button>();
+            Assert.That(candidates.Take(3).All(button => button.interactable), Is.True);
+            Assert.That(candidates.Skip(3).All(button => !button.interactable), Is.True);
+            Assert.That(candidates.Skip(3).All(button => button.GetComponent<CanvasGroup>().alpha < .5f), Is.True);
+            var scroll = Find("Dismantle Inventory Viewport").GetComponent<ScrollRect>();
+            Assert.That(scroll.content.rect.height, Is.GreaterThan(scroll.viewport.rect.height));
+            Assert.That(Find("Confirm Gear Dismantle").GetComponent<Button>().interactable, Is.False);
+            Click("Dismantle Candidate salvage_sword_2");
+            Assert.That(Text("Dismantle Shard Reward Amount"), Is.EqualTo("기원의 파편 850"));
+            Assert.That(Text("Dismantle Blueprint knight_sword Amount"), Is.EqualTo("기사의 보검 설계도 8"));
+            Click("Dismantle Candidate salvage_sword_0");
+            Assert.That(Text("Dismantle Shard Reward Amount"), Is.EqualTo("기원의 파편 1,100"));
+            Assert.That(Text("Dismantle Blueprint knight_sword Amount"), Is.EqualTo("기사의 보검 설계도 16"));
+            Click("Dismantle Candidate salvage_sword_0");
+            Assert.That(Text("Dismantle Shard Reward Amount"), Is.EqualTo("기원의 파편 850"));
+            Click("Dismantle Candidate salvage_sword_0");
+            Click("Dismantle Candidate salvage_bow_0");
+            Assert.That(Text("Dismantle Shard Reward Amount"), Is.EqualTo("기원의 파편 2,950"));
+            Assert.That(Text("Dismantle Blueprint silver_longbow Amount"), Is.EqualTo("은빛 장궁 설계도 24"));
+            Assert.That(Find("Dismantle Rewards").GetComponentsInChildren<Text>().Length, Is.EqualTo(3));
+            Capture("DismantleMixedBlueprintRewards.png");
+            Click("Dismantle Candidate salvage_bow_0");
+            Capture("DismantleSelectedRewards.png");
+            scroll.verticalNormalizedPosition = 0; yield return null;
+            Capture("DismantleProtectedItems.png");
+            File.Delete(_savePath); Directory.CreateDirectory(_savePath);
+            try
+            {
+                Click("Confirm Gear Dismantle");
+                Assert.That(Text("Dismantle Error"), Is.Not.Empty);
+                Assert.That(Find("Gear Dismantle Screen").gameObject.activeSelf, Is.True);
+                Assert.That(_controller.Progress.OriginShards, Is.Zero);
+                Assert.That(_controller.Progress.UniqueGear.Any(item => item.InstanceId == "salvage_sword_2"), Is.True);
+            }
+            finally { Directory.Delete(_savePath); }
+            Click("Confirm Gear Dismantle"); yield return null;
+            Assert.That(Find("Gear Dismantle Screen").gameObject.activeSelf, Is.False);
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(1100));
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword"), Is.EqualTo(16));
+            Assert.That(_controller.Progress.UniqueGear.Any(item => item.InstanceId.StartsWith("salvage_sword")), Is.False);
+            Assert.That(_controller.Progress.UniqueGear.Count(item => item.IsLocked), Is.EqualTo(18));
+            Assert.That(_controller.TryDismantleUniqueGear(new[] { "salvage_sword_2", "salvage_sword_0" }), Is.False);
+            yield return LoadMenu();
+            Assert.That(_controller.Progress.OriginShards, Is.EqualTo(1100));
+            Assert.That(_controller.Progress.GetBlueprints("knight_sword"), Is.EqualTo(16));
+            Assert.That(_controller.Progress.UniqueGear.Count(item => item.IsLocked), Is.EqualTo(18));
+            Assert.That(_controller.Progress.GetEquippedGear("allen", UniqueGearSlot.Weapon), Is.Not.Null);
+            Assert.That(_controller.Progress.GetEquippedGear("serena", UniqueGearSlot.Weapon), Is.Not.Null);
+            _controller.TryStartRun();
+            Assert.That(_controller.TrySetUniqueGearLocked("protected_bow_0", false), Is.False);
+            Assert.That(_controller.TryDismantleUniqueGear(new[] { "protected_bow_0" }), Is.False);
         }
 
         [UnityTest]

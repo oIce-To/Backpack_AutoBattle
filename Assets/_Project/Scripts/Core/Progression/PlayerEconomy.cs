@@ -28,6 +28,13 @@ namespace BackpackAutoBattle.Progression
         public IReadOnlyList<KeyValuePair<string, long>> Blueprints { get; }
     }
 
+    public readonly struct GearDismantleValue
+    {
+        internal GearDismantleValue(long shards, long blueprints) { OriginShards = shards; Blueprints = blueprints; }
+        public long OriginShards { get; }
+        public long Blueprints { get; }
+    }
+
     public sealed partial class PlayerProgress
     {
         public const int MaximumMineTickets = 5;
@@ -36,6 +43,7 @@ namespace BackpackAutoBattle.Progression
         public const long GearCraftBlueprintCost = 10;
         private static readonly long[] CommonEnhancementCosts = { 500, 700, 1000 };
         private static readonly long[] UncommonEnhancementCosts = { 2000, 2500, 3200, 4000, 5000, 6500 };
+        private static readonly Dictionary<(ItemRarity, int), GearDismantleValue> DismantleValues = BuildDismantleValues();
         private readonly Dictionary<string, long> _blueprints = new(StringComparer.Ordinal);
         private long _nextMineTicketUtcTicks, _ticketClockUtcTicks;
         private string _lastRewardClaim = "";
@@ -116,7 +124,7 @@ namespace BackpackAutoBattle.Progression
             long cost = EnhancementCost(gear);
             if (cost == 0 || OriginShards < cost) return false;
             _uniqueGear[instanceId] = new UniqueGearInstance(gear.InstanceId, gear.GearId, gear.Rarity,
-                gear.Enhancement + 1, gear.Slot, gear.EquippedBy);
+                gear.Enhancement + 1, gear.Slot, gear.EquippedBy, gear.IsLocked);
             OriginShards -= cost;
             return true;
         }
@@ -125,7 +133,7 @@ namespace BackpackAutoBattle.Progression
         {
             if (instanceId == null || !_uniqueGear.TryGetValue(instanceId, out var gear)) return Array.Empty<UniqueGearInstance>();
             return _uniqueGear.Values.Where(item => item.InstanceId != instanceId && item.GearId == gear.GearId
-                && item.Rarity == gear.Rarity && item.Enhancement == 0 && string.IsNullOrEmpty(item.EquippedBy))
+                && item.Rarity == gear.Rarity && item.Enhancement == 0 && string.IsNullOrEmpty(item.EquippedBy) && !item.IsLocked)
                 .OrderBy(item => item.InstanceId, StringComparer.Ordinal).ToArray();
         }
 
@@ -137,7 +145,57 @@ namespace BackpackAutoBattle.Progression
             var allowed = new HashSet<string>(PromotionMaterials(instanceId).Select(item => item.InstanceId));
             if (materialIds.Any(id => !allowed.Contains(id))) return false;
             foreach (string id in materialIds) _uniqueGear.Remove(id);
-            _uniqueGear[instanceId] = new UniqueGearInstance(gear.InstanceId, gear.GearId, ItemRarity.Uncommon, 0, gear.Slot, gear.EquippedBy);
+            _uniqueGear[instanceId] = new UniqueGearInstance(gear.InstanceId, gear.GearId, ItemRarity.Uncommon, 0, gear.Slot, gear.EquippedBy, gear.IsLocked);
+            return true;
+        }
+
+        private static Dictionary<(ItemRarity, int), GearDismantleValue> BuildDismantleValues()
+        {
+            var values = new Dictionary<(ItemRarity, int), GearDismantleValue>();
+            long baseShards = GearCraftShardCost, blueprints = GearCraftBlueprintCost;
+            var tiers = new[] { (ItemRarity.Common, CommonEnhancementCosts), (ItemRarity.Uncommon, UncommonEnhancementCosts) };
+            foreach (var (rarity, enhancementCosts) in tiers)
+            {
+                long total = baseShards;
+                for (int enhancement = 0; enhancement <= enhancementCosts.Length; enhancement++)
+                {
+                    values.Add((rarity, enhancement), new GearDismantleValue(total / 2, blueprints * 4 / 5));
+                    if (enhancement < enhancementCosts.Length) total += enhancementCosts[enhancement];
+                }
+                // A promotion consumes one fully enhanced center and two unenhanced copies of the same tier.
+                baseShards = total + baseShards * 2;
+                blueprints *= 3;
+            }
+            return values;
+        }
+
+        public static GearDismantleValue DismantleValue(UniqueGearInstance gear)
+            => gear != null && DismantleValues.TryGetValue((gear.Rarity, gear.Enhancement), out var value) ? value : default;
+
+        public static bool CanDismantleGear(UniqueGearInstance gear)
+            => gear != null && !gear.IsLocked && string.IsNullOrEmpty(gear.EquippedBy) && DismantleValue(gear).OriginShards > 0;
+
+        public bool TryDismantleGear(IReadOnlyList<string> instanceIds)
+        {
+            if (instanceIds == null || instanceIds.Count == 0) return false;
+            var distinct = new HashSet<string>(StringComparer.Ordinal);
+            var blueprints = new Dictionary<string, long>(StringComparer.Ordinal);
+            long shards = 0;
+            foreach (string id in instanceIds)
+            {
+                if (id == null || !distinct.Add(id) || !_uniqueGear.TryGetValue(id, out var gear) || !CanDismantleGear(gear)) return false;
+                var value = DismantleValue(gear);
+                if (value.OriginShards > long.MaxValue - shards) return false;
+                shards += value.OriginShards;
+                long count = blueprints.TryGetValue(gear.GearId, out long current) ? current : 0;
+                if (value.Blueprints > long.MaxValue - count) return false;
+                blueprints[gear.GearId] = count + value.Blueprints;
+            }
+            if (shards > long.MaxValue - OriginShards || blueprints.Any(pair => pair.Value > long.MaxValue - GetBlueprints(pair.Key))) return false;
+            // Validate the entire selection before removing anything or paying any reward.
+            foreach (string id in distinct) _uniqueGear.Remove(id);
+            OriginShards += shards;
+            foreach (var pair in blueprints) _blueprints[pair.Key] = GetBlueprints(pair.Key) + pair.Value;
             return true;
         }
 

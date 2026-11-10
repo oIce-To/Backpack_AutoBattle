@@ -14,15 +14,16 @@ namespace BackpackAutoBattle.Progression
         public int enhancement;
         public string equippedBy;
         public UniqueGearSlot slot;
+        public bool isLocked;
     }
 
     public sealed class UniqueGearInstance
     {
         internal UniqueGearInstance(string instanceId, string gearId, ItemRarity rarity, int enhancement,
-            UniqueGearSlot slot, string equippedBy)
+            UniqueGearSlot slot, string equippedBy, bool isLocked = false)
         {
             InstanceId = instanceId; GearId = gearId; Rarity = rarity; Enhancement = enhancement;
-            Slot = slot; EquippedBy = equippedBy;
+            Slot = slot; EquippedBy = equippedBy; IsLocked = isLocked;
         }
         public string InstanceId { get; }
         public string GearId { get; }
@@ -30,11 +31,13 @@ namespace BackpackAutoBattle.Progression
         public int Enhancement { get; }
         public UniqueGearSlot Slot { get; }
         public string EquippedBy { get; }
-        internal UniqueGearInstance WithOwner(string owner) => new(InstanceId, GearId, Rarity, Enhancement, Slot, owner);
+        public bool IsLocked { get; }
+        internal UniqueGearInstance WithOwner(string owner) => new(InstanceId, GearId, Rarity, Enhancement, Slot, owner, IsLocked);
+        internal UniqueGearInstance WithLock(bool locked) => new(InstanceId, GearId, Rarity, Enhancement, Slot, EquippedBy, locked);
         internal UniqueGearSaveData Export() => new()
         {
             instanceId = InstanceId, gearId = GearId, rarity = Rarity, enhancement = Enhancement,
-            slot = Slot, equippedBy = EquippedBy
+            slot = Slot, equippedBy = EquippedBy, isLocked = IsLocked
         };
     }
 
@@ -70,6 +73,13 @@ namespace BackpackAutoBattle.Progression
 
         public UniqueGearInstance GetEquippedGear(string characterId, UniqueGearSlot slot)
             => string.IsNullOrEmpty(characterId) ? null : _uniqueGear.Values.FirstOrDefault(item => item.EquippedBy == characterId && item.Slot == slot);
+
+        public bool TrySetGearLocked(string instanceId, bool locked)
+        {
+            if (instanceId == null || !_uniqueGear.TryGetValue(instanceId, out var gear)) return false;
+            _uniqueGear[instanceId] = gear.WithLock(locked);
+            return true;
+        }
 
         public bool TryEquipGear(string characterId, UniqueGearSlot slot, string instanceId, UniqueGearData definition,
             string expectedOwner = "")
@@ -107,7 +117,8 @@ namespace BackpackAutoBattle.Progression
                 string owner = item.equippedBy ?? "";
                 if (owner.Length > 0 && (!HasCharacter(owner) || !occupiedSlots.Add((owner, item.slot))))
                     throw new FormatException("Invalid unique gear assignment.");
-                var gear = new UniqueGearInstance(item.instanceId, item.gearId, item.rarity, item.enhancement, item.slot, owner);
+                var gear = new UniqueGearInstance(item.instanceId, item.gearId, item.rarity, item.enhancement, item.slot, owner,
+                    data.version >= 5 && item.isLocked);
                 if (!_uniqueGear.TryAdd(gear.InstanceId, gear)) throw new FormatException("Duplicate unique gear.");
             }
         }
