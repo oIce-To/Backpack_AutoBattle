@@ -127,7 +127,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.GetComponentsInChildren<BackpackItemView>(true).Count(v => v.Data.ItemId == "whetstone"), Is.EqualTo(1));
             Find("Restart Run Button").GetComponent<Button>().onClick.Invoke(); yield return null;
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
-            Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.CurrentRound, Is.EqualTo(1));
+            Assert.That(_controller.Lives, Is.EqualTo(4)); Assert.That(_controller.CurrentRound, Is.EqualTo(1));
             Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.StoredItemCount, Is.Zero);
             Assert.That(_controller.RunResult, Is.Null); Assert.That(_controller.ActiveCombat, Is.Null);
             Assert.That(_controller.IsFusionLocked(lockedId), Is.False); Assert.That(_controller.GetReadyFusions(), Is.Empty);
@@ -170,7 +170,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.AdvanceRound(), Is.False); Assert.That(_controller.ReturnToPreparation(), Is.False);
             Capture("ClearedRunResult.png");
             Find("Restart Run Button").GetComponent<Button>().onClick.Invoke(); yield return null;
-            Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.Gold, Is.EqualTo(20));
+            Assert.That(_controller.Lives, Is.EqualTo(4)); Assert.That(_controller.Gold, Is.EqualTo(20));
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(ended, Is.EqualTo(1));
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Capture("RestartedRunPreparation.png");
@@ -192,7 +192,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             // The future coordinator owns navigation; it can also explicitly request the shared fresh-run reset.
             Set(_controller, "_startingLives", 2);
             Assert.That(_controller.TryRestartRun(), Is.True); yield return null;
-            Assert.That(_controller.Lives, Is.EqualTo(2)); Assert.That(_controller.StartingLives, Is.EqualTo(2));
+            Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.StartingLives, Is.EqualTo(3));
             Assert.That(result.Lives, Is.EqualTo(3)); Assert.That(result.Victories, Is.EqualTo(1));
         }
 
@@ -212,7 +212,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 _controller.TryStartBattle();
                 Assert.That(_controller.ActiveCombat.PlayerMaxHealth, Is.EqualTo(105));
                 Assert.That(_controller.ActiveCombat.PlayerWeapons.Single().Stats.AttackDamage, Is.EqualTo(11.55).Within(.001));
-                Assert.That(_controller.Lives, Is.EqualTo(3));
+                Assert.That(_controller.Lives, Is.EqualTo(4));
             }
             finally { Set(_controller, "_characterData", original); Object.Destroy(changed); }
         }

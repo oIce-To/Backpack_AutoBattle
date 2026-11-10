@@ -110,6 +110,7 @@ namespace BackpackAutoBattle.Combat
             _maximumDuration = maximumDuration;
             InitializeStatistics();
             InitializeStatuses(statusEffects);
+            InitializeCharacterPassives();
         }
 
         public CombatantSnapshot Player { get; }
@@ -230,6 +231,7 @@ namespace BackpackAutoBattle.Combat
             var itemEvent = new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
                 damage, result.ArmorAbsorbed, result.HealthDamage, targetSide: target, attackOutcome: attack.Outcome);
             RecordItemEvent(events, itemEvent);
+            ApplyAttackPassive(weapon, side);
             if (itemEvent.TriggersAvoidance)
             {
                 _avoidanceCounts[target] = checked(GetAvoidanceCount(target) + 1);

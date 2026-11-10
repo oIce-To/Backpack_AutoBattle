@@ -121,6 +121,9 @@ namespace BackpackAutoBattle.Prototype
             RectTransform.anchoredPosition = new Vector2(-RectTransform.sizeDelta.x / 2f, RectTransform.sizeDelta.y / 2f);
         }
 
+        public void ShowDescription(Component owner, string title, string description, Color color, Vector2 pointer, Camera eventCamera)
+            => ShowStatus(owner, () => StatusTooltipContent.FromDescription(title, description, color), pointer, eventCamera);
+
         public void ShowStatus(Component owner, Func<StatusTooltipContent> content, Vector2 pointer, Camera eventCamera)
         {
             _owner = owner;

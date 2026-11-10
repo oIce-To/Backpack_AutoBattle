@@ -119,6 +119,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly PrototypeExperienceIcon _costIcon;
         private readonly Button _confirm, _levelUp;
         private readonly RectTransform[] _gearSlots = new RectTransform[3];
+        private readonly PrototypePassiveIcon _passive;
         private readonly Func<CharacterData, CharacterStatsSnapshot> _getStats;
         private readonly Func<string, UniqueGearData> _findGear;
         private PlayerProgress _progress;
@@ -143,12 +144,20 @@ namespace BackpackAutoBattle.Prototype
             for (int i = 0; i < _gearSlots.Length; i++)
             {
                 var slot = SelectionUi.Image(panel.transform, "Character Gear " + (UniqueGearSlot)i, SelectionUi.Idle);
-                float x = 340 + (i - 1) * 100;
-                SelectionUi.Place(slot.rectTransform, new Vector2(x, 17), Vector2.one * 88f);
+                float x = 220 + i * 80;
+                SelectionUi.Place(slot.rectTransform, new Vector2(x, 17), Vector2.one * 72f);
                 SelectionUi.Label(panel.transform, "Slot Type", PrototypeEquipmentScreen.SlotLabel((UniqueGearSlot)i), 11,
-                    new Vector2(x, -36), new Vector2(88, 15));
+                    new Vector2(x, -36), new Vector2(72, 15));
                 _gearSlots[i] = slot.rectTransform;
             }
+            var passiveSlot = SelectionUi.Image(detail.transform, "Character Passive Skill", SelectionUi.Idle);
+            passiveSlot.raycastTarget = true;
+            SelectionUi.Place(passiveSlot.rectTransform, new Vector2(120, 47), Vector2.one * 72);
+            _passive = passiveSlot.gameObject.AddComponent<PrototypePassiveIcon>();
+            var passiveTooltip = PrototypeItemTooltip.Create(Root);
+            passiveTooltip.name = "Character Passive Tooltip";
+            _passive.Configure(passiveTooltip);
+            SelectionUi.Label(detail.transform, "Character Passive Caption", "패시브", 11, new Vector2(120, -6), new Vector2(72, 15));
             var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(PrototypeRoundedPanel), typeof(Button));
             upgrade.transform.SetParent(panel.transform, false);
             SelectionUi.Place((RectTransform)upgrade.transform, new Vector2(340, -100), new Vector2(300, 104));
@@ -196,6 +205,8 @@ namespace BackpackAutoBattle.Prototype
                 var gear = _progress?.GetEquippedGear(character?.CharacterId, (UniqueGearSlot)i);
                 PrototypeGearBadge.Render(_gearSlots[i], gear == null ? null : _findGear(gear.GearId), gear);
             }
+            _passive.Bind(character?.Passive);
+            _passive.enabled = !moving;
             long cost = 0;
             bool canGrow = character?.ExperienceTable != null && character.ExperienceTable.TryGetCost(level, out cost);
             _levelUpTitle.text = canGrow ? "레벨 업" : "레벨업 불가";

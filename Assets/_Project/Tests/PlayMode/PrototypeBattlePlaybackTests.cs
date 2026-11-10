@@ -87,8 +87,8 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Battle.TogglePause(); Battle.TickCombat(1000); Assert.That(Battle.Simulation.Result, Is.EqualTo(CombatResult.Running));
                 Battle.TogglePause(); Battle.TickCombat(3f / speed);
                 Assert.That(Battle.Simulation.ElapsedSeconds, Is.EqualTo(90)); Assert.That(Battle.Simulation.IsForcedDefeat, Is.True);
-                Assert.That(_controller.Lives, Is.EqualTo(2)); Assert.That(_controller.CurrentRound, Is.EqualTo(1));
-                Battle.TickCombat(1000); Assert.That(_controller.Lives, Is.EqualTo(2));
+                Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives - 1)); Assert.That(_controller.CurrentRound, Is.EqualTo(1));
+                Battle.TickCombat(1000); Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives - 1));
                 Assert.That(Find("Combat Playback Controls").gameObject.activeSelf, Is.False);
                 Assert.That(Battle.TogglePause(), Is.False); Assert.That(Battle.SetPlaybackSpeed(1), Is.False);
             }
@@ -118,6 +118,12 @@ namespace BackpackAutoBattle.Tests.Prototype
             Battle.TickCombat(180); _controller.ReturnToPreparation(); yield return null;
             StartQuietBattle(); Assert.That(Battle.PlaybackSpeed, Is.EqualTo(1));
             Battle.SetPlaybackSpeed(2); Battle.TickCombat(45);
+            while (_controller.Lives > 0)
+            {
+                Assert.That(_controller.ReturnToPreparation(), Is.True);
+                StartQuietBattle(); Assert.That(Battle.PlaybackSpeed, Is.EqualTo(1));
+                Battle.SetPlaybackSpeed(2); Battle.TickCombat(45);
+            }
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.GameOver));
             Assert.That(_controller.TryRestartRun(), Is.True); yield return null;
             Assert.That(Battle.PlaybackSpeed, Is.EqualTo(1)); Assert.That(Battle.IsPaused, Is.False);

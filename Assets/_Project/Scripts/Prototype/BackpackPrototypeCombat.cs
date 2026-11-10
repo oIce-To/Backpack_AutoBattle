@@ -75,7 +75,8 @@ namespace BackpackAutoBattle.Prototype
             }
 
             var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack,
-                _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false, _run.PlayerStats.CriticalDamageBonusPercent);
+                _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false, _run.PlayerStats.CriticalDamageBonusPercent,
+                _run.Passive, _run.StartingLives - _run.Lives);
             CapturePendingFusions();
             if (!_run.TryBeginBattle()) return false;
             _itemTooltip.HideAll();

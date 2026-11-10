@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 namespace BackpackAutoBattle.Tests.Prototype
 {
-    // Tests for shop interactions, training-kit effects and fusion use a fixed loadout, independent of starter equipment.
+    // Shop/training/fusion fixtures use a fixed loadout and base life count without character passives.
     internal static class PrototypeCombatFixture
     {
         private const BindingFlags PrivateInstance = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -38,10 +38,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             var runField = type.GetField("_run", PrivateInstance);
             var run = (PrototypeRunState)runField.GetValue(controller);
             runField.SetValue(controller, new PrototypeRunState(run.Gold, run.StageId, stats,
-                run.PlayerName, run.StartingLives, run.StageName, run.ClearExperience));
+                run.PlayerName, run.StartingLives - run.Passive.BonusLives, run.StageName, run.ClearExperience));
             Assert.That(PlaceItem(controller, "training_blade", "starter_training_blade", new Vector2Int(0, 0)), Is.True);
             Assert.That(PlaceItem(controller, "wooden_shield", "starter_wooden_shield", new Vector2Int(1, 0)), Is.True);
             Assert.That(PlaceItem(controller, "swift_charm", "starter_swift_charm", new Vector2Int(3, 3)), Is.True);
+            type.GetMethod("RefreshCombatInterface", PrivateInstance).Invoke(controller, null);
         }
 
         internal static bool PlaceItem(BackpackPrototypeController controller, string itemId, string instanceId, Vector2Int origin)

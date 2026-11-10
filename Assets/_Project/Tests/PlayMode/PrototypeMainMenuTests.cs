@@ -62,7 +62,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Main Start Button");
             Assert.That(_controller.IsMainMenu, Is.False); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.TryStartRun(), Is.False);
-            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Lives, Is.EqualTo(3));
+            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Lives, Is.EqualTo(4));
             Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.CurrentShopItems, Has.Count.EqualTo(4));
             Assert.That(_controller.CaptureCombatSnapshot().Items.Single().ItemId, Is.EqualTo("knight_sword"));
             Assert.That(_controller.TryReturnToMainMenu(), Is.False, "An active run cannot be discarded by the result-only action.");
@@ -79,9 +79,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             var pointer = Pointer(slot.transform); slot.OnBeginDrag(pointer);
             pointer.position = Pointer(Find("Freeform Storage")).position; slot.OnDrag(pointer); slot.OnEndDrag(pointer);
             Assert.That(_controller.StoredItemCount, Is.EqualTo(1));
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < _controller.StartingLives; i++)
             {
-                Lose(); if (i < 2) _controller.ReturnToPreparation();
+                Lose(); if (i < _controller.StartingLives - 1) _controller.ReturnToPreparation();
             }
             var result = _controller.RunResult; Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.GameOver));
             Assert.That(Find("Return To Main Menu Button").gameObject.activeInHierarchy, Is.True);
@@ -97,10 +97,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.CurrentShopItems, Is.Empty); Assert.That(_controller.ItemTooltip.IsVisible, Is.False);
             Assert.That(_controller.TryRestartRun(), Is.False); Assert.That(_controller.RequestRunRestart(), Is.False);
             Click("Main Start Button");
-            Assert.That(_controller.Lives, Is.EqualTo(3)); Assert.That(_controller.Gold, Is.EqualTo(20));
+            Assert.That(_controller.Lives, Is.EqualTo(4)); Assert.That(_controller.Gold, Is.EqualTo(20));
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.RunResult, Is.Null);
             Assert.That(slot.Offer, Is.Not.SameAs(previousOffer)); Assert.That(slot.Offer.IsLocked, Is.False);
-            Assert.That(result.Lives, Is.Zero); Assert.That(result.Defeats, Is.EqualTo(3));
+            Assert.That(result.Lives, Is.Zero); Assert.That(result.Defeats, Is.EqualTo(4));
         }
 
         [UnityTest]

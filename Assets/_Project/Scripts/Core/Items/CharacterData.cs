@@ -34,6 +34,8 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private ExperienceTableData _experienceTable;
         [SerializeField] private bool _initiallyAvailable;
         [SerializeField] private UniqueGearData _starterGear;
+        [SerializeField] private CharacterPassiveData _passive;
+        public CharacterPassiveData Passive => _passive;
         public bool InitiallyAvailable => _initiallyAvailable;
         public UniqueGearData StarterGear => _starterGear;
         public string DisplayName => _displayName;

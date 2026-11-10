@@ -47,14 +47,16 @@ namespace BackpackAutoBattle.Prototype
     {
         public PrototypeRunState(int startingGold, string stageId = null, CharacterStatsSnapshot stats = null,
             string playerName = "플레이어", int startingLives = 3, string stageName = null, int clearExperience = 0,
-            int clearOriginShards = 0, bool isOriginMine = false, int clearBlueprints = 0, IEnumerable<string> blueprintPool = null)
+            int clearOriginShards = 0, bool isOriginMine = false, int clearBlueprints = 0, IEnumerable<string> blueprintPool = null,
+            CharacterPassiveSnapshot passive = null)
         {
             if (startingGold < 0) throw new ArgumentOutOfRangeException(nameof(startingGold));
             if (startingLives < 1) throw new ArgumentOutOfRangeException(nameof(startingLives));
             if (clearExperience < 0) throw new ArgumentOutOfRangeException(nameof(clearExperience));
             Gold = startingGold; StageId = stageId; StageName = stageName;
             PlayerStats = stats ?? CharacterStatsSnapshot.Default; PlayerName = playerName;
-            Lives = StartingLives = startingLives;
+            Passive = passive ?? CharacterPassiveSnapshot.None;
+            Lives = StartingLives = checked(startingLives + Passive.BonusLives);
             ClearExperience = clearExperience;
             ClearOriginShards = clearOriginShards;
             IsOriginMine = isOriginMine;
@@ -62,6 +64,7 @@ namespace BackpackAutoBattle.Prototype
             BlueprintPool = new List<string>(blueprintPool ?? Array.Empty<string>()).AsReadOnly();
         }
         public CharacterStatsSnapshot PlayerStats { get; }
+        public CharacterPassiveSnapshot Passive { get; }
         internal IReadOnlyDictionary<string, StartingGear> StartingGear { get; set; } = new Dictionary<string, StartingGear>();
         public string PlayerName { get; }
         public string StageId { get; }

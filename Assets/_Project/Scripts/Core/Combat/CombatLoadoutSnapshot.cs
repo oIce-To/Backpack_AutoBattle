@@ -79,7 +79,8 @@ namespace BackpackAutoBattle.Combat
     public sealed class CombatantSnapshot
     {
         public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10,
-            Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0)
+            Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0,
+            CharacterPassiveSnapshot passive = null, int lostLives = 0)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
@@ -89,6 +90,9 @@ namespace BackpackAutoBattle.Combat
             Loadout = loadout ?? throw new ArgumentNullException(nameof(loadout));
             Illustration = illustration;
             IllustrationFacesLeft = illustrationFacesLeft;
+            if (lostLives < 0) throw new ArgumentOutOfRangeException(nameof(lostLives));
+            Passive = passive ?? CharacterPassiveSnapshot.None;
+            LostLives = lostLives;
         }
 
         public string DisplayName { get; }
@@ -97,5 +101,7 @@ namespace BackpackAutoBattle.Combat
         public CombatLoadoutSnapshot Loadout { get; }
         public Sprite Illustration { get; }
         public bool IllustrationFacesLeft { get; }
+        public CharacterPassiveSnapshot Passive { get; }
+        public int LostLives { get; }
     }
 }

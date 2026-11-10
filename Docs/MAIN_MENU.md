@@ -26,6 +26,7 @@ Unity에서 `Assets/Scenes/MainMenu.unity`를 열고 Play를 누른다. 빌드�
 - `Assets/_Project/Data/AdventureCatalog.asset`의 Characters/Stages 목록으로 선택 가능한 원본 SO를 관리한다. 프로토타입 컨트롤러의 Adventure Catalog 필드에 연결한다.
 - 알렌은 `Character_Default.asset`, 세레나는 `Character_Serena.asset`이다. 각각 고유한 Character ID(`allen`, `serena`), 이름, Portrait, 체력·공격력을 가진다. 저장에 사용하는 ID는 표시 이름과 분리되어 있으며, 기존 캐릭터의 ID를 바꾸지 않는 것을 권장한다.
 - 알렌과 세레나의 기본 체력은 50, 공격력은 10이다. 이번 버전에서는 두 캐릭터를 바로 선택할 수 있다. 처음 획득할 때 알렌에게 일반 +0 기사의 보검, 세레나에게 일반 +0 은빛 장궁을 장착한다.
+- 캐릭터 SO의 Passive에 고유 패시브를 지정한다. 알렌의 `굴하지 않는 자`는 라이프 +1과 잃은 라이프에 비례하는 전투 시작 방어도, 세레나의 `궁수의 집중`은 원거리 공격 시도마다 30% 확률의 집중 1중첩을 제공한다. 상세 박스의 장비·패시브 아이콘은 72×72이며 패시브 위에 커서를 올리면 설명을 보여준다. 규칙과 그림 생성 프롬프트는 [캐릭터 패시브](CHARACTER_PASSIVES.md)를 참고한다.
 - 승인된 그림은 `Art/Characters/Allen/allen-standing-approved.png`, `Art/Characters/Serena/serena-standing-approved.png`의 기존 스프라이트를 참조한다. 원본 이미지와 임포트 설정을 변경하지 않는다.
 - 현재 선택 목록은 1~5스테이지다. 기존 8스테이지 강화 예시 SO와 목록 참조는 삭제했다. 1스테이지 원본을 유지하면서 2~5스테이지의 라운드별 HP·공격력을 단계적으로 높였다. 각 스테이지는 12라운드, 마지막 라운드는 보스 표시, 적 가방은 모두 6×6이다. 미정인 권장 능력치·보상 수치는 추가하지 않았다.
 - 처음에는 1스테이지만 도전 가능하며, 바로 이전 스테이지의 마지막 라운드를 승리해야 다음 스테이지가 열린다. Adventure Catalog의 Stages 순서가 진행 순서를 정의한다. 방문하거나 12라운드에 도달하는 것만으로는 해금되지 않는다. 잠긴 선택 박스는 옅은 회색으로 표시하고 클릭을 비활성화하며, 선택·출전 처리에서도 같은 제한을 검사한다.

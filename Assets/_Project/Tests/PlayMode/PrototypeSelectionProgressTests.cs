@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Progression;
@@ -261,7 +262,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Cancel Abandon Stage");
             Assert.That(_controller.CanEditLoadout, Is.True);
             Assert.That(_controller.CurrentRound, Is.EqualTo(5));
-            Assert.That(_controller.Lives, Is.EqualTo(2));
+            Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives - 1));
             Assert.That(_controller.Gold, Is.EqualTo(gold));
             Assert.That(_controller.CaptureCombatSnapshot().Items, Has.Count.EqualTo(1));
             Click("Abandon Stage Button");
@@ -274,7 +275,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(ended, Is.Zero);
             Assert.That(_controller.TryStartRun(), Is.True);
             Assert.That(_controller.CurrentRound, Is.EqualTo(1));
-            Assert.That(_controller.Lives, Is.EqualTo(3));
+            Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives));
         }
 
         [UnityTest]
@@ -703,7 +704,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return LoadMenu(); _controller.TrySelectCharacter("serena"); _controller.TrySelectStage("stage_05");
             _controller.TryStartRun(); _controller.AdvanceRound(); _controller.AdvanceRound();
             Assert.That(_controller.Progress.GetStage("stage_05").HighestRound, Is.EqualTo(3));
-            for (int i = 0; i < 3; i++) { Lose(); if (i < 2) _controller.ReturnToPreparation(); }
+            for (int i = 0; i < _controller.StartingLives; i++) { Lose(); if (i < _controller.StartingLives - 1) _controller.ReturnToPreparation(); }
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.GameOver));
             _controller.TryReturnToMainMenu();
             Assert.That(File.Exists(_savePath), Is.True);
@@ -715,7 +716,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Text("Main Stage Summary"), Does.Contain("최고 3라운드"));
             Assert.That(_controller.CurrentShopItems, Is.Empty);
             _controller.TryStartRun();
-            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.Lives, Is.EqualTo(3));
+            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives));
         }
 
         [UnityTest]
@@ -737,7 +738,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller.CloseSelectionScreens();
             Assert.That(_controller.TrySelectStage("stage_05"), Is.False); Assert.That(_controller.Progress.GetStage("stage_05").Cleared, Is.False);
             _controller.TrySelectStage("stage_01"); _controller.TryStartRun();
-            for (int i = 0; i < 3; i++) { Lose(); if (i < 2) _controller.ReturnToPreparation(); }
+            for (int i = 0; i < _controller.StartingLives; i++) { Lose(); if (i < _controller.StartingLives - 1) _controller.ReturnToPreparation(); }
             _controller.TryReturnToMainMenu(); yield return LoadMenu();
             Assert.That(_controller.Progress.GetStage("stage_01").Cleared, Is.True);
             Assert.That(_controller.Progress.GetStage("stage_01").HighestRound, Is.EqualTo(12));
@@ -927,6 +928,48 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.ActiveMainTab, Is.EqualTo(MainMenuTab.Home));
         }
 
+        [UnityTest]
+        public IEnumerator CharacterPassives_ShowHoverTooltips_AndApplyLifeAndMissingLifeArmorAtStageEntry()
+        {
+            yield return LoadMenu(); Click("Main Tab Characters"); yield return null;
+            var icon = Find("Character Passive Skill").GetComponent<PrototypePassiveIcon>();
+            Assert.That(((RectTransform)icon.transform).rect.size, Is.EqualTo(((RectTransform)Find("Character Gear Weapon")).rect.size));
+            Assert.That(icon.transform.Find("Character Passive Artwork").GetComponent<Image>().sprite, Is.Not.Null);
+            icon.OnPointerEnter(Pointer(icon.transform));
+            var tooltip = Find("Character Passive Tooltip");
+            Assert.That(tooltip.gameObject.activeInHierarchy, Is.True);
+            Assert.That(tooltip.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("굴하지 않는 자"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("라이프가 1 증가").And.Contain("10%"));
+            Capture("AllenPassiveTooltip.png");
+            Carousel().Move(1); SettleCarousel();
+            Assert.That(tooltip.gameObject.activeSelf, Is.False);
+            icon.OnPointerEnter(Pointer(icon.transform));
+            Assert.That(tooltip.Find("Tooltip Name").GetComponent<Text>().text, Is.EqualTo("궁수의 집중"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("30%").And.Contain("집중 1중첩"));
+            Capture("SerenaPassiveTooltip.png");
+            icon.OnPointerExit(Pointer(icon.transform)); Click("Character Confirm Button");
+            Assert.That(_controller.TryStartRun(), Is.True); Assert.That(_controller.StartingLives, Is.EqualTo(3));
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(_controller.ActiveCombat.Player.Passive.Kind, Is.EqualTo(CharacterPassiveKind.RangedAttackFocus));
+            yield return LoadMenu(); _controller.TrySelectCharacter("allen");
+            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.StartingLives, Is.EqualTo(4)); Assert.That(_controller.Lives, Is.EqualTo(4));
+            Assert.That(Find("Run Lives").GetComponent<PrototypeLifeHearts>().Capacity, Is.EqualTo(4));
+            Assert.That(_controller.TryStartBattle(), Is.True); Assert.That(_controller.ActiveCombat.PlayerArmor, Is.Zero);
+            foreach (var weapon in _controller.ActiveCombat.PlayerWeapons) weapon.Stats.AttackDamage = 0;
+            foreach (var weapon in _controller.ActiveCombat.EnemyWeapons) { weapon.Stats.AttackDamage = 10000; weapon.Stats.AccuracyPercent = 100; }
+            _controller.TickCombat(2.1f);
+            Assert.That(_controller.Lives, Is.EqualTo(3));
+            Assert.That(_controller.ReturnToPreparation(), Is.True);
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(_controller.ActiveCombat.Player.LostLives, Is.EqualTo(1));
+            Assert.That(_controller.ActiveCombat.PlayerArmor, Is.EqualTo(_controller.StageEntryStats.MaximumHealth * .1).Within(.0001));
+            Capture("AllenPassiveBattleArmor.png");
+            _controller.ActiveCombat.ApplyNonAttackDamage(CombatSide.Enemy, CombatSide.Player, 2, CombatDamageKind.Other);
+            Assert.That(_controller.ActiveCombat.CaptureStatistics().Items.Single(item => item.InstanceId == CombatSimulation.CharacterPassiveSourceId)
+                .DamageBlocked, Is.EqualTo(2));
+        }
+
         private PrototypeCharacterCarousel Carousel() => _controller.GetComponentInChildren<PrototypeCharacterCarousel>(true);
 
         [UnityTest]
@@ -934,7 +977,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         {
             SeedClearedStages(4); yield return LoadMenu();
             Assert.That(_controller.TrySelectStage("stage_01"), Is.True); _controller.TryStartRun();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < _controller.StartingLives - 1; i++)
             {
                 Lose(); Assert.That(_controller.Progress.SharedExperience, Is.Zero);
                 Assert.That(_controller.ReturnToPreparation(), Is.True);
@@ -967,7 +1010,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(new PlayerProgressStore(_savePath).TrySave(progress, out _), Is.True);
                 yield return LoadMenu(); _controller.TryStartRun();
                 for (int i = 1; i < scenario.round; i++) _controller.AdvanceRound();
-                for (int i = 0; i < 3; i++) { Lose(); if (i < 2) _controller.ReturnToPreparation(); }
+                for (int i = 0; i < _controller.StartingLives; i++) { Lose(); if (i < _controller.StartingLives - 1) _controller.ReturnToPreparation(); }
                 Assert.That(_controller.Progress.SharedExperience, Is.EqualTo(scenario.expected), $"Round {scenario.round}");
                 Assert.That(_controller.Progress.OriginShards, Is.EqualTo(scenario.expected), $"Round {scenario.round} shards");
                 Assert.That(new PlayerProgressStore(_savePath).Load(out _).SharedExperience, Is.EqualTo(scenario.expected));

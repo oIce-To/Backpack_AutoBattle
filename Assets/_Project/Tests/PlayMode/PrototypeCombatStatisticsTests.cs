@@ -80,7 +80,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             }
             Click("Restart Run Button"); yield return null;
             Assert.That(Find("Combat Statistics Screen").gameObject.activeSelf, Is.False);
-            Assert.That(_controller.ActiveCombat, Is.Null); Assert.That(_controller.Lives, Is.EqualTo(3));
+            Assert.That(_controller.ActiveCombat, Is.Null); Assert.That(_controller.Lives, Is.EqualTo(4));
             _controller.TryStartBattle(); Assert.That(_controller.ActiveCombat.CaptureStatistics().Items.Sum(i => i.DamageDealt), Is.Zero);
         }
         [UnityTest]

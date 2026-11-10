@@ -89,7 +89,8 @@ namespace BackpackAutoBattle.Prototype
             GetCharacterStats(_characterData),
             _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName,
             _stageData?.ClearExperience ?? 0, _stageData?.ClearOriginShards ?? 0,
-            _stageData?.IsOriginMine ?? false, _stageData?.ClearBlueprints ?? 0, AvailableGear.Select(gear => gear.GearId))
+            _stageData?.IsOriginMine ?? false, _stageData?.ClearBlueprints ?? 0, AvailableGear.Select(gear => gear.GearId),
+            _characterData?.Passive?.Capture())
         {
             StartingGear = EquippedGear(_characterData).Select(gear => new StartingGear(gear.instance, gear.definition))
                 .ToDictionary(gear => gear.InstanceId)

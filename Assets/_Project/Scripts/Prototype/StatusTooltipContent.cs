@@ -10,6 +10,9 @@ namespace BackpackAutoBattle.Prototype
         public string Description { get; private set; }
         public Color Color { get; private set; }
 
+        public static StatusTooltipContent FromDescription(string title, string description, Color color)
+            => new() { Title = title, Description = description, Color = color };
+
         public static StatusTooltipContent FromCombat(CombatSimulation combat, CombatSide side, StatusEffectKind kind)
         {
             long stacks = combat.GetStatusStacks(side, kind);

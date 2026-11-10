@@ -20,3 +20,4 @@ MonoBehaviour:
   _experienceTable: {fileID: 11400000, guid: 481ec39832414edfb8c729d86de26385, type: 2}
   _initiallyAvailable: 1
   _starterGear: {fileID: 11400000, guid: c8318740d5b24ad18ad0879020d4a461, type: 2}
+  _passive: {fileID: 11400000, guid: 058f4337e78145bab8d3ff761102162b, type: 2}
