@@ -56,6 +56,9 @@ namespace BackpackAutoBattle.Prototype
             Image background = CreateImage(transform, "Background", new Color(0.07f, 0.095f, 0.14f, 0.99f));
             BackpackPrototypeController.Stretch(background.rectTransform, 2f);
             _name = Label(transform, "Tooltip Name", 25, FontStyle.Bold);
+            _name.resizeTextForBestFit = true;
+            _name.resizeTextMinSize = 16;
+            _name.resizeTextMaxSize = 25;
             Place(_name.rectTransform, Padding, -26f, 245f, 36f);
             _rarity = Label(transform, "Tooltip Rarity", 20, FontStyle.Bold);
             _rarity.alignment = TextAnchor.MiddleRight;

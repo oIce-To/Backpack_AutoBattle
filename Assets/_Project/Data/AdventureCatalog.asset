@@ -24,6 +24,11 @@ MonoBehaviour:
   _uniqueGear:
   - {fileID: 11400000, guid: ce84af5a7abf44b29779ed8ecb4ee949, type: 2}
   - {fileID: 11400000, guid: c8318740d5b24ad18ad0879020d4a461, type: 2}
+  - {fileID: 11400000, guid: 5e39d65383ec4d27a7c6fa03ea07cde5, type: 2}
+  - {fileID: 11400000, guid: e7a58e9c3f66407f8d09d5fc671aa325, type: 2}
+  - {fileID: 11400000, guid: 91bf41ba9a2e430a919841c8c1c85b4f, type: 2}
+  - {fileID: 11400000, guid: d75f525f5af549498df0e99b166c360e, type: 2}
+  - {fileID: 11400000, guid: 0dc9b079e44d4c50992737a01e150faf, type: 2}
   _originMines:
   - {fileID: 11400000, guid: b4731fecd6044631b04ec3d8d461d5c4, type: 2}
   - {fileID: 11400000, guid: bc16f1fb18434db58ee0389003382d76, type: 2}

@@ -109,6 +109,8 @@ namespace BackpackAutoBattle.Combat
             _random = random ?? new Random();
             _maximumDuration = maximumDuration;
             InitializeStatistics();
+            InitializeUniqueGear(CombatSide.Player, player.Loadout);
+            InitializeUniqueGear(CombatSide.Enemy, enemy.Loadout);
             InitializeStatuses(statusEffects);
             InitializeCharacterPassives();
         }
@@ -188,7 +190,7 @@ namespace BackpackAutoBattle.Combat
                     if (periodic.NextTickAt >= ForcedDefeatAt || periodic.NextTickAt > targetTime + 1e-9d) break;
                     ElapsedSeconds = periodic.NextTickAt;
                     targetTime = Math.Max(targetTime, ElapsedSeconds);
-                    ResolvePeriodicTick(periodic);
+                    ResolvePeriodicTick(periodic, events);
                     continue;
                 }
                 if (next == null || next.Cycle.NextActivationAt >= ForcedDefeatAt || next.Cycle.NextActivationAt > targetTime + 1e-9d) break;
@@ -248,8 +250,10 @@ namespace BackpackAutoBattle.Combat
                     foreach (CombatItem source in GetItems(side))
                         if (source.Snapshot.GearEffect.Kind == UniqueGearEffectKind.MeleeHitArmor)
                             GainArmor(source, side, (side == CombatSide.Player ? Player : Enemy).Stats.Attack * source.Snapshot.GearEffect.Amount, events);
-                ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId));
+                ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId), events);
+                ResolveGearDamageReceived(side, target, result, events);
             }
+            ResolveGearAfterAttack(weapon, side, target, events);
             UpdateCombatResult(side);
         }
 
@@ -264,10 +268,9 @@ namespace BackpackAutoBattle.Combat
             {
                 StatusApplication status = effect.Status;
                 CombatSide target = TargetSide(side, status.Target);
-                ApplyStatus(target, status.Kind, status.Stacks, side, item.InstanceId);
-                RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, item, effect.Kind,
-                    statusKind: status.Kind, statusStacks: status.Stacks, targetSide: target));
+                ApplyItemStatus(item, side, target, status.Kind, status.Stacks, events);
             }
+            else if (effect.Kind == ItemEffectKind.UniqueGear) ResolveGearActivation(item, side, events);
         }
 
         private void GainArmor(CombatItem source, CombatSide side, double amount, ICollection<CombatItemEvent> events)
@@ -294,7 +297,7 @@ namespace BackpackAutoBattle.Combat
         }
 
         private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId,
-            IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null)
+            IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null, ICollection<CombatItemEvent> events = null)
         {
             damage *= GetIncomingDamageMultiplier(target);
             DamageResolution result = DamageResolver.Resolve(damage, target == CombatSide.Player ? PlayerArmor : EnemyArmor,
@@ -304,11 +307,12 @@ namespace BackpackAutoBattle.Combat
             CreditDamage(source, itemId, kind, result, credits, cause);
             CreditAbsorption(target, result.ArmorAbsorbed);
             DamageApplied?.Invoke(new CombatDamageEvent(source, target, kind, damage, result, itemId));
+            if (kind != CombatDamageKind.AttackItem) ResolveGearDamageReceived(source, target, result, events);
             return result;
         }
 
         private void RecordItemEvent(ICollection<CombatItemEvent> events, CombatItemEvent itemEvent)
-        { events.Add(itemEvent); ItemActivated?.Invoke(itemEvent); }
+        { events?.Add(itemEvent); ItemActivated?.Invoke(itemEvent); }
 
         private void UpdateCombatResult(CombatSide? attackingSide = null)
         {

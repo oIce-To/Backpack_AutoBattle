@@ -1,0 +1,663 @@
+fileFormatVersion: 2
+guid: bdbe86ae57adb444b9914cf0cbcdd647
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7296546492188388092
+    second: searing-twilight-2026-11-11-v2_0
+  - first:
+      213: -4365368274910948004
+    second: searing-twilight-2026-11-11-v2_1
+  - first:
+      213: 5220755158085791717
+    second: searing-twilight-2026-11-11-v2_2
+  - first:
+      213: 5118902175369281950
+    second: searing-twilight-2026-11-11-v2_3
+  - first:
+      213: -5072609599553097232
+    second: searing-twilight-2026-11-11-v2_4
+  - first:
+      213: 4645043685779924442
+    second: searing-twilight-2026-11-11-v2_5
+  - first:
+      213: -4676852410359630631
+    second: searing-twilight-2026-11-11-v2_6
+  - first:
+      213: -7091720485646843638
+    second: searing-twilight-2026-11-11-v2_7
+  - first:
+      213: -8155408469203508354
+    second: searing-twilight-2026-11-11-v2_8
+  - first:
+      213: -4342903132956034763
+    second: searing-twilight-2026-11-11-v2_9
+  - first:
+      213: 3959618232798863682
+    second: searing-twilight-2026-11-11-v2_10
+  - first:
+      213: -4127537217823596693
+    second: searing-twilight-2026-11-11-v2_11
+  - first:
+      213: 2852787863174172889
+    second: searing-twilight-2026-11-11-v2_12
+  - first:
+      213: 6294584440254025467
+    second: searing-twilight-2026-11-11-v2_13
+  - first:
+      213: -5562011619778515432
+    second: searing-twilight-2026-11-11-v2_14
+  - first:
+      213: -7546925506752721036
+    second: searing-twilight-2026-11-11-v2_15
+  - first:
+      213: 5670784242123673515
+    second: searing-twilight-2026-11-11-v2_16
+  - first:
+      213: 3468510704996233082
+    second: searing-twilight-2026-11-11-v2_17
+  - first:
+      213: 665072522456460186
+    second: searing-twilight-2026-11-11-v2_18
+  - first:
+      213: -5033012572064576796
+    second: searing-twilight-2026-11-11-v2_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 887
+        height: 1751
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfae20a306a824560800000000000000
+      internalID: 7296546492188388092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_1
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 1571
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c555c24cea81b63c0800000000000000
+      internalID: -4365368274910948004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_2
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 1517
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5efedf0d729d37840800000000000000
+      internalID: 5220755158085791717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_3
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 1458
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e914cda486ef90740800000000000000
+      internalID: 5118902175369281950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_4
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 1370
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f1b66ee1787a99b0800000000000000
+      internalID: -5072609599553097232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_5
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 1182
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad565192f92867040800000000000000
+      internalID: 4645043685779924442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_6
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1150
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d4b595038b781fb0800000000000000
+      internalID: -4676852410359630631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_7
+      rect:
+        serializedVersion: 2
+        x: 845
+        y: 1148
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a01c8a6bac5259d90800000000000000
+      internalID: -7091720485646843638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_8
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1138
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e73a9ead43b22de80800000000000000
+      internalID: -8155408469203508354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_9
+      rect:
+        serializedVersion: 2
+        x: 836
+        y: 1128
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 539793a3c98eab3c0800000000000000
+      internalID: -4342903132956034763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 879
+        width: 7
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 241e224cdc363f630800000000000000
+      internalID: 3959618232798863682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_11
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 715
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6f9b6ed4ca08b6c0800000000000000
+      internalID: -4127537217823596693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_12
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 622
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d0da046273279720800000000000000
+      internalID: 2852787863174172889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_13
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 472
+        width: 9
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfeca02c23bda5750800000000000000
+      internalID: 6294584440254025467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_14
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 346
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81ea18e86e3cfc2b0800000000000000
+      internalID: -5562011619778515432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_15
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 329
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f4ba7ac3fe34790800000000000000
+      internalID: -7546925506752721036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_16
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 322
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: baf0aad193ca2be40800000000000000
+      internalID: 5670784242123673515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_17
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 307
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7fa0f6fb10a22030800000000000000
+      internalID: 3468510704996233082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_18
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 281
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9be3ea7fefca3900800000000000000
+      internalID: 665072522456460186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: searing-twilight-2026-11-11-v2_19
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 233
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ea04045bb5272ab0800000000000000
+      internalID: -5033012572064576796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      searing-twilight-2026-11-11-v2_0: 7296546492188388092
+      searing-twilight-2026-11-11-v2_1: -4365368274910948004
+      searing-twilight-2026-11-11-v2_10: 3959618232798863682
+      searing-twilight-2026-11-11-v2_11: -4127537217823596693
+      searing-twilight-2026-11-11-v2_12: 2852787863174172889
+      searing-twilight-2026-11-11-v2_13: 6294584440254025467
+      searing-twilight-2026-11-11-v2_14: -5562011619778515432
+      searing-twilight-2026-11-11-v2_15: -7546925506752721036
+      searing-twilight-2026-11-11-v2_16: 5670784242123673515
+      searing-twilight-2026-11-11-v2_17: 3468510704996233082
+      searing-twilight-2026-11-11-v2_18: 665072522456460186
+      searing-twilight-2026-11-11-v2_19: -5033012572064576796
+      searing-twilight-2026-11-11-v2_2: 5220755158085791717
+      searing-twilight-2026-11-11-v2_3: 5118902175369281950
+      searing-twilight-2026-11-11-v2_4: -5072609599553097232
+      searing-twilight-2026-11-11-v2_5: 4645043685779924442
+      searing-twilight-2026-11-11-v2_6: -4676852410359630631
+      searing-twilight-2026-11-11-v2_7: -7091720485646843638
+      searing-twilight-2026-11-11-v2_8: -8155408469203508354
+      searing-twilight-2026-11-11-v2_9: -4342903132956034763
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

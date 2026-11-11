@@ -35,6 +35,7 @@ namespace BackpackAutoBattle.Prototype
             icon.sprite = definition.Icon;
             icon.enabled = definition.Icon != null;
             BackpackPrototypeController.Stretch(icon.rectTransform, definition.IconInset);
+            icon.rectTransform.localScale = Vector3.one * definition.IconScale;
             var drawn = badge.GetComponentInChildren<PrototypeGearGlyph>(true);
             drawn.enabled = !icon.enabled;
             BackpackPrototypeController.Stretch(drawn.rectTransform);

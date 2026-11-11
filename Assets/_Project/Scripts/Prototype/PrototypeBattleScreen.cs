@@ -171,7 +171,7 @@ namespace BackpackAutoBattle.Prototype
             {
                 string target = attack.TargetSide == CombatSide.Player ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
                 AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → {target} "
-                    + $"{_combat.GetStatusDefinition(attack.StatusKind).DisplayName} +{attack.StatusStacks}");
+                    + $"{_combat.GetStatusDefinition(attack.StatusKind).DisplayName} {attack.StatusStacks:+0;-0;0}");
                 return;
             }
             if (attack.Kind == ItemEffectKind.GainArmor)

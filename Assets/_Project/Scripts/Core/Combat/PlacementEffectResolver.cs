@@ -28,7 +28,7 @@ namespace BackpackAutoBattle.Combat
                 {
                     if (cell.x < 0 || cell.y < 0 || cell.x >= loadout.Width || cell.y >= loadout.Height) continue;
                     CombatItemSnapshot target = loadout.Items.FirstOrDefault(item => item.InstanceId != source.InstanceId && item.OccupiedCells.Contains(cell));
-                    bool matches = target != null && effect.AttackDamageBonus != 0f
+                    bool matches = target != null && (effect.TriggersGearEffect || effect.AttackDamageBonus != 0f)
                         && target.Activation.HasEffect(ItemEffectKind.Attack)
                         && (effect.TargetFilter?.Matches(target.Category, target.Tags) ?? true);
                     result.Add(new PlacementEffectCell(cell, index, matches ? target.InstanceId : null));
@@ -41,7 +41,7 @@ namespace BackpackAutoBattle.Combat
         {
             var bonuses = new Dictionary<string, float>();
             foreach (CombatItemSnapshot source in loadout.Items)
-                foreach (var target in GetCells(loadout, source).Where(cell => cell.ReceivesEffect)
+                foreach (var target in GetCells(loadout, source).Where(cell => cell.ReceivesEffect && !source.PlacementEffects[cell.EffectIndex].TriggersGearEffect)
                     .GroupBy(cell => (cell.EffectIndex, cell.TargetInstanceId)))
                 {
                     string id = target.Key.TargetInstanceId;

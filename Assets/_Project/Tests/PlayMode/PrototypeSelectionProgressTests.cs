@@ -279,6 +279,67 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
+        public IEnumerator ExpandedGear_CraftsAndEquipsBothSlots_AndKeepsStatsWhenStoredInStage()
+        {
+            var initial = new PlayerProgress();
+            var blueprints = Enumerable.Repeat("searing_twilight", 10).Concat(Enumerable.Repeat("stone_giant_cuirass", 10));
+            Assert.That(initial.TryClaimReward("expanded-gear", new StageReward(0, 1000, blueprints),
+                false, DateTimeOffset.UtcNow), Is.True);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Tab Equipment");
+            Click("Show Equipment Crafting"); yield return null;
+            var craftingIcon = Find("Crafting Choice searing_twilight").Find("Crafting Item Icon").GetComponent<Image>();
+            Assert.That(craftingIcon.sprite, Is.SameAs(_controller.FindGearDefinition("searing_twilight").Icon));
+            Assert.That(craftingIcon.rectTransform.localScale, Is.EqualTo(Vector3.one * 1.1f));
+            Click("Crafting Choice searing_twilight"); yield return null;
+            Assert.That(Find("Equipment Item Tooltip").GetComponentInChildren<TextMeshProUGUI>().text,
+                Does.Contain(ItemTooltipContent.PlacementIconTag).And.Contain("치명타 확률 +5%p"));
+            Capture("SearingTwilightCrafting.png");
+            Click("Craft Unique Gear");
+            Click("Equipment Details Backdrop"); yield return null;
+            Click("Crafting Category Armor"); yield return null;
+            Click("Crafting Choice stone_giant_cuirass");
+            Click("Craft Unique Gear");
+            Click("Equipment Details Backdrop");
+
+            var twilight = _controller.Progress.UniqueGear.Single(gear => gear.GearId == "searing_twilight");
+            var cuirass = _controller.Progress.UniqueGear.Single(gear => gear.GearId == "stone_giant_cuirass");
+            Assert.That(_controller.TryEquipUniqueGear(UniqueGearSlot.Weapon, twilight.InstanceId), Is.True);
+            Assert.That(_controller.TryEquipUniqueGear(UniqueGearSlot.Armor, cuirass.InstanceId), Is.True);
+            var equippedIcon = Find("Equipment Slot Weapon").Find("Gear Badge/Gear Sprite");
+            Assert.That(equippedIcon.localScale, Is.EqualTo(Vector3.one * 1.1f));
+            Assert.That(_controller.TryStartRun(), Is.True);
+            yield return null;
+            Assert.That(_controller.CaptureCombatSnapshot().Items.Select(item => item.ItemId),
+                Is.EquivalentTo(new[] { "searing_twilight", "stone_giant_cuirass" }));
+            var bagItems = _controller.GetComponentsInChildren<BackpackItemView>();
+            foreach (var item in bagItems)
+            {
+                Assert.That(item.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(item.Data.InventorySprite));
+                Assert.That(item.transform.Find("Label"), Is.Null);
+            }
+            Capture("ExpandedGearPreparation.png");
+            var dagger = bagItems.Single(item => item.Data.ItemId == "searing_twilight");
+            var pointer = Pointer(dagger.transform);
+            dagger.OnBeginDrag(pointer);
+            pointer.position = Pointer(Find("Freeform Storage")).position;
+            dagger.OnDrag(pointer); dagger.OnEndDrag(pointer);
+            Assert.That(_controller.StoredItemCount, Is.EqualTo(1));
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            var combat = _controller.ActiveCombat;
+            var armorView = _controller.GetComponentsInChildren<PrototypeBattleItemView>()
+                .Single(item => item.Snapshot.ItemId == "stone_giant_cuirass");
+            Assert.That(armorView.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(armorView.Snapshot.InventorySprite));
+            Assert.That(armorView.transform.Find("Label"), Is.Null);
+            Assert.That(combat.PlayerItems.Single().Snapshot.GearEffect.Kind, Is.EqualTo(UniqueGearEffectKind.StoneGiantCuirass));
+            Assert.That(combat.PlayerMaxHealth, Is.EqualTo(55).Within(.00001));
+            Assert.That(combat.Player.Stats.Attack, Is.EqualTo(10.5));
+            Assert.That(combat.Player.Stats.CriticalChanceBonusPercent, Is.EqualTo(5));
+            Assert.That(combat.Advance(2).Single(e => e.Side == CombatSide.Player).ArmorGained, Is.EqualTo(2.75).Within(.00001));
+        }
+
+        [UnityTest]
         public IEnumerator OriginGear_CraftsEnhancesAndPromotesThroughEquipmentUi_WithPersistentCosts()
         {
             var initial = new PlayerProgress();
@@ -399,15 +460,15 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(viewport.anchoredPosition.y + viewport.rect.height / 2,
                 Is.LessThan(categories.anchoredPosition.y - categories.rect.height / 2));
             var choices = Find("Equipment Inventory Items");
-            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(2));
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(3));
             Assert.That(choices.GetComponentsInChildren<Transform>().Any(t => t.name == "Gear Rarity Border"), Is.False);
             Capture("CraftingWeaponCategory.png");
-            foreach (var category in new[] { "Armor", "AccessoryOrPet" })
-            {
-                Click("Crafting Category " + category); yield return null;
-                Assert.That(choices.GetComponentsInChildren<Button>(), Is.Empty);
-                Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.True);
-            }
+            Click("Crafting Category Armor"); yield return null;
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
+            Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.False);
+            Click("Crafting Category AccessoryOrPet"); yield return null;
+            Assert.That(choices.GetComponentsInChildren<Button>(), Is.Empty);
+            Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.True);
             Capture("CraftingEmptyAccessoryCategory.png");
             Click("Crafting Category Weapon"); yield return null;
             Click("Crafting Choice knight_sword");
@@ -637,7 +698,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.Progress.MineTickets, Is.EqualTo(4));
             Assert.That(_controller.Progress.OriginShards, Is.EqualTo(500));
             Assert.That(_controller.Progress.SharedExperience, Is.Zero);
-            Assert.That(_controller.Progress.GetBlueprints("knight_sword") + _controller.Progress.GetBlueprints("silver_longbow"), Is.EqualTo(5));
+            Assert.That(_controller.AvailableGear.Sum(gear => _controller.Progress.GetBlueprints(gear.GearId)), Is.EqualTo(5));
             Assert.That(_controller.IsStageUnlocked("origin_mine_02"), Is.True);
             Assert.That(_controller.IsStageUnlocked("stage_02"), Is.False);
             Capture("OriginMineClearedRewards.png");

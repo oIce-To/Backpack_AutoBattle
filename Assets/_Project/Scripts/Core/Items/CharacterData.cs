@@ -11,14 +11,19 @@ namespace BackpackAutoBattle.Items
         public double MaximumHealth { get; }
         public double Attack { get; }
         public double CriticalDamageBonusPercent { get; }
-        public CharacterStatsSnapshot(double maximumHealth, double attack, double criticalDamageBonusPercent = 0)
+        public double CriticalChanceBonusPercent { get; }
+        public CharacterStatsSnapshot(double maximumHealth, double attack, double criticalDamageBonusPercent = 0,
+            double criticalChanceBonusPercent = 0)
         {
             if (!double.IsFinite(maximumHealth) || maximumHealth <= 0) throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             if (!double.IsFinite(attack) || attack < 0) throw new ArgumentOutOfRangeException(nameof(attack));
             if (!double.IsFinite(criticalDamageBonusPercent) || criticalDamageBonusPercent < 0)
                 throw new ArgumentOutOfRangeException(nameof(criticalDamageBonusPercent));
+            if (!double.IsFinite(criticalChanceBonusPercent) || criticalChanceBonusPercent < 0)
+                throw new ArgumentOutOfRangeException(nameof(criticalChanceBonusPercent));
             MaximumHealth = maximumHealth; Attack = attack;
             CriticalDamageBonusPercent = criticalDamageBonusPercent;
+            CriticalChanceBonusPercent = criticalChanceBonusPercent;
         }
     }
 

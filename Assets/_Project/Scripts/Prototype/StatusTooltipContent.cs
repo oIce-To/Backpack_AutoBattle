@@ -18,7 +18,7 @@ namespace BackpackAutoBattle.Prototype
             long stacks = combat.GetStatusStacks(side, kind);
             if (stacks == 0) return null;
             CombatStatusDefinition definition = combat.GetStatusDefinition(kind);
-            double percent = definition.PercentAt(stacks);
+            double percent = combat.GetStatusPercent(side, kind);
             string description = definition.AffectedStat switch
             {
                 StatusStat.ActivationSpeed => $"모든 아이템이 {percent:0.##}% {(definition.IsDebuff ? "감속" : "가속")}합니다.",

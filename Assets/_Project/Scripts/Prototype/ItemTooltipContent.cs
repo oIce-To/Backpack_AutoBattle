@@ -75,6 +75,10 @@ namespace BackpackAutoBattle.Prototype
             };
             result.SetStats(item.BaseWeaponStats, (runtime as CombatWeapon)?.Stats);
             result.SetActivation(item.Activation, runtime?.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds));
+            string period = result.ColorNumber($"{result.CooldownSeconds:0.0#}", result.CooldownSeconds,
+                item.Activation.CooldownSeconds, lowerIsBetter: true);
+            string gearDescription = item.GearEffect.Describe(item.OwnerStats, period, PlacementIconTag);
+            if (!string.IsNullOrWhiteSpace(gearDescription)) result.AppendEffect(gearDescription);
             result.SetBattleStart(item.BattleStartStatuses);
             result.SetPlacement(item.PlacementEffects);
             return result;
@@ -130,7 +134,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void SetPlacement(IEnumerable<ItemPlacementEffect> effects)
         {
-            PlacementDescriptions = effects.Where(effect => effect != null).Select(effect =>
+            PlacementDescriptions = effects.Where(effect => effect != null && !effect.TriggersGearEffect).Select(effect =>
                 $"{PlacementIconTag}에 배치되어 있는 {TargetLabel(effect.TargetFilter)}의 공격력을 {Mathf.Abs(effect.AttackDamageBonus):0.#} "
                 + $"{(effect.AttackDamageBonus >= 0f ? "증가" : "감소")}시킵니다.").ToArray();
         }

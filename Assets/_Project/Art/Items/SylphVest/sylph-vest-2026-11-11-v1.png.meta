@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: d8a20f807255efb4b9b203a4d553ae05
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5255074622864982775
+    second: sylph-vest-2026-11-11-v1_0
+  - first:
+      213: -1671607242397967856
+    second: sylph-vest-2026-11-11-v1_1
+  - first:
+      213: -8375890282874476740
+    second: sylph-vest-2026-11-11-v1_2
+  - first:
+      213: -3836297695894650757
+    second: sylph-vest-2026-11-11-v1_3
+  - first:
+      213: 2680432734529303171
+    second: sylph-vest-2026-11-11-v1_4
+  - first:
+      213: 2944063763218062532
+    second: sylph-vest-2026-11-11-v1_5
+  - first:
+      213: -1615015897575262353
+    second: sylph-vest-2026-11-11-v1_6
+  - first:
+      213: 975144705114469259
+    second: sylph-vest-2026-11-11-v1_7
+  - first:
+      213: -49944978311048418
+    second: sylph-vest-2026-11-11-v1_8
+  - first:
+      213: -2752629665647605947
+    second: sylph-vest-2026-11-11-v1_9
+  - first:
+      213: -5652302084289553960
+    second: sylph-vest-2026-11-11-v1_10
+  - first:
+      213: -1011501372889582605
+    second: sylph-vest-2026-11-11-v1_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_0
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 1163
+        height: 1193
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90d76fb19793217b0800000000000000
+      internalID: -5255074622864982775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_1
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 1158
+        width: 115
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01a16e0d1124dc8e0800000000000000
+      internalID: -1671607242397967856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_2
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 1158
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c37ee934a2cd2cb80800000000000000
+      internalID: -8375890282874476740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_3
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 972
+        width: 60
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b70cc87329bb2cac0800000000000000
+      internalID: -3836297695894650757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_4
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 972
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 382b2f9de5fc23520800000000000000
+      internalID: 2680432734529303171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_5
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 867
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cc56b2f46a6bd820800000000000000
+      internalID: 2944063763218062532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_6
+      rect:
+        serializedVersion: 2
+        x: 1141
+        y: 674
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f67fa6e099f4699e0800000000000000
+      internalID: -1615015897575262353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_7
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 682
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8373f851f8688d00800000000000000
+      internalID: 975144705114469259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_8
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 660
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e13947d8e4f8e4ff0800000000000000
+      internalID: -49944978311048418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_9
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 375
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5474fd437e1bcc9d0800000000000000
+      internalID: -2752629665647605947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_10
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 258
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d998b6933dfe81b0800000000000000
+      internalID: -5652302084289553960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sylph-vest-2026-11-11-v1_11
+      rect:
+        serializedVersion: 2
+        x: 977
+        y: 47
+        width: 24
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f3b81b4cdc66f1f0800000000000000
+      internalID: -1011501372889582605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sylph-vest-2026-11-11-v1_0: -5255074622864982775
+      sylph-vest-2026-11-11-v1_1: -1671607242397967856
+      sylph-vest-2026-11-11-v1_10: -5652302084289553960
+      sylph-vest-2026-11-11-v1_11: -1011501372889582605
+      sylph-vest-2026-11-11-v1_2: -8375890282874476740
+      sylph-vest-2026-11-11-v1_3: -3836297695894650757
+      sylph-vest-2026-11-11-v1_4: 2680432734529303171
+      sylph-vest-2026-11-11-v1_5: 2944063763218062532
+      sylph-vest-2026-11-11-v1_6: -1615015897575262353
+      sylph-vest-2026-11-11-v1_7: 975144705114469259
+      sylph-vest-2026-11-11-v1_8: -49944978311048418
+      sylph-vest-2026-11-11-v1_9: -2752629665647605947
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -302,6 +302,8 @@ namespace BackpackAutoBattle.Prototype
             var stats = _controller.GetCharacterStats(character);
             _stats.text = $"{character?.DisplayName}  Lv. {progress.GetCharacterLevel(CharacterId)}\n체력  {stats.MaximumHealth:0.##}"
                 + $"\n공격력  {stats.Attack:0.##}\n치명타 피해 보너스  +{stats.CriticalDamageBonusPercent:0.##}%";
+            if (stats.CriticalChanceBonusPercent > 0)
+                _stats.text += $"\n치명타 확률 보너스  +{stats.CriticalChanceBonusPercent:0.##}%p";
             _inventoryTitle.gameObject.SetActive(_craftMode);
             _managementNotice.text = "";
             _dismantleButton.gameObject.SetActive(!_craftMode);
@@ -381,8 +383,24 @@ namespace BackpackAutoBattle.Prototype
                     new Vector2(254, 164), () => OpenCraftDetails(definition));
                 BackpackPrototypeController.SetRect((RectTransform)button.transform, new Vector2(.5f, 1),
                     new Vector2(index % 2 == 0 ? -141 : 141, -89 - index / 2 * 178f), new Vector2(254, 164));
-                var icon = SelectionUi.Image(button.transform, "Crafting Item Icon", Color.white);
-                icon.sprite = definition.Icon; icon.preserveAspect = true;
+                Graphic icon;
+                if (definition.Icon != null)
+                {
+                    var sprite = SelectionUi.Image(button.transform, "Crafting Item Icon", Color.white);
+                    sprite.sprite = definition.Icon;
+                    sprite.preserveAspect = true;
+                    sprite.rectTransform.localScale = Vector3.one * definition.IconScale;
+                    icon = sprite;
+                }
+                else
+                {
+                    var glyph = new GameObject("Crafting Item Icon", typeof(RectTransform), typeof(PrototypeGearGlyph))
+                        .GetComponent<PrototypeGearGlyph>();
+                    glyph.transform.SetParent(button.transform, false);
+                    glyph.raycastTarget = false;
+                    glyph.Configure(definition.Slot, definition.Item.Tags, definition.Item.DisplayColor);
+                    icon = glyph;
+                }
                 SelectionUi.Place(icon.rectTransform, new Vector2(0, 25), new Vector2(90, 90));
                 SelectionUi.Label(button.transform, "Crafting Item Name", $"{definition.Item.DisplayName}\n설계도 {CompactNumber.Format(_controller.Progress.GetBlueprints(definition.GearId))} / 10",
                     17, new Vector2(0, -53), new Vector2(242, 48));
@@ -427,7 +445,6 @@ namespace BackpackAutoBattle.Prototype
         {
             ShowError("");
             _detailLock.gameObject.SetActive(false);
-            _details.transform.Find("Tooltip Name").GetComponent<Text>().resizeTextForBestFit = false;
             _modal.gameObject.SetActive(true); _modal.SetAsLastSibling();
             _details.ShowPinned(content, rank, notes, 88f);
             EventSystem.current?.SetSelectedGameObject(null);
@@ -479,9 +496,14 @@ namespace BackpackAutoBattle.Prototype
 
         private static string BonusNotes(UniqueGearData definition, ItemRarity rarity, int enhancement)
         {
-            string bonus = string.Join("\n", new[] { definition.BonusHealth ? "체력" : null,
-                definition.BonusAttack ? "공격력" : null, definition.BonusCriticalDamage ? "치명타 피해" : null }
-                .Where(label => label != null).Select(label => $"장착한 캐릭터의 {label} +{UniqueGearData.BonusPercent(rarity, enhancement):0.##}%"));
+            double value = definition.BonusPercentFor(rarity, enhancement);
+            string bonus = string.Join("\n", new[]
+            {
+                definition.BonusHealth ? $"장착한 캐릭터의 체력 +{value:0.##}%" : null,
+                definition.BonusAttack ? $"장착한 캐릭터의 공격력 +{value:0.##}%" : null,
+                definition.BonusCriticalChance ? $"장착한 캐릭터의 치명타 확률 +{value:0.##}%p" : null,
+                definition.BonusCriticalDamage ? $"장착한 캐릭터의 치명타 피해 +{value:0.##}%" : null
+            }.Where(line => line != null));
             return bonus.Length == 0 ? "" : "\n\n" + bonus;
         }
 

@@ -65,7 +65,7 @@ namespace BackpackAutoBattle.Items
         {
             WeaponStats stats = _weaponStats ?? new WeaponStats();
             return new WeaponStats(_attackScaling?.Resolve(stats.AttackDamage, owner) ?? stats.AttackDamage,
-                stats.CooldownSeconds, stats.AccuracyPercent, stats.CriticalChancePercent,
+                stats.CooldownSeconds, stats.AccuracyPercent, (float)(stats.CriticalChancePercent + (owner?.CriticalChanceBonusPercent ?? 0d)),
                 (float)(stats.CriticalDamagePercent * (1d + (owner?.CriticalDamageBonusPercent ?? 0d) / 100d)));
         }
         public ItemTags Tags => _tags;

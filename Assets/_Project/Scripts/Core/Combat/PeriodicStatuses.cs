@@ -53,7 +53,8 @@ namespace BackpackAutoBattle.Combat
             if (contribution == null)
             {
                 contribution = new PeriodicContribution { Source = source,
-                    DamagePerStack = GetStatusDefinition(kind).DamagePerStack((source == CombatSide.Player ? Player : Enemy).Stats) };
+                    DamagePerStack = GetStatusDefinition(kind).DamagePerStack((source == CombatSide.Player ? Player : Enemy).Stats)
+                        * StatusEffectMultiplier(source, kind) };
                 state.Contributions.Add(contribution);
             }
             contribution.Stacks = checked(contribution.Stacks + stacks);
@@ -96,17 +97,29 @@ namespace BackpackAutoBattle.Combat
             return next;
         }
 
-        private void ResolvePeriodicTick(PeriodicState state)
+        private void ResolvePeriodicTick(PeriodicState state, ICollection<CombatItemEvent> events)
         {
             // Advance the shared status clock before callbacks. Adding stacks does not postpone it.
             state.NextTickAt += GetStatusDefinition(state.Kind).TickIntervalSeconds;
+            ApplyPeriodicTick(state, events);
+        }
+
+        private void TickStatusImmediately(CombatSide target, StatusEffectKind kind, int count, ICollection<CombatItemEvent> events)
+        {
+            for (int tick = 0; tick < count && Result == CombatResult.Running
+                && _periodicStates.TryGetValue((target, kind), out var state); tick++)
+                ApplyPeriodicTick(state, events);
+        }
+
+        private void ApplyPeriodicTick(PeriodicState state, ICollection<CombatItemEvent> events)
+        {
             foreach (var contribution in state.Contributions.ToArray())
             {
                 if (Result != CombatResult.Running) break;
                 double damage = contribution.Stacks * contribution.DamagePerStack;
                 // Keep the original one-damage-event-per-source-side rule; provenance must not change combat outcomes.
                 DamageResolution resolution = DealDamage(contribution.Source, state.Target, damage, CombatDamageKind.StatusEffect,
-                    null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind);
+                    null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind, events);
                 UpdateCombatResult();
                 StatusTicked?.Invoke(new PeriodicStatusTickEvent(ElapsedSeconds, contribution.Source, state.Target,
                     state.Kind, contribution.Stacks, damage * GetIncomingDamageMultiplier(state.Target), resolution));

@@ -40,6 +40,8 @@ namespace BackpackAutoBattle.Combat
                 : _statusStacks.TryGetValue((side, kind), out long stacks) ? stacks : 0;
         public double GetEvasionPercent(CombatSide side)
             => Math.Clamp(GetStatusDefinition(StatusEffectKind.Agility).PercentAt(GetStatusStacks(side, StatusEffectKind.Agility)), 0d, 70d);
+        public double GetStatusPercent(CombatSide side, StatusEffectKind kind)
+            => GetStatusDefinition(kind).PercentAt(GetStatusStacks(side, kind)) * StatusEffectMultiplier(side, kind);
 
         public void ApplyStatus(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source = null, string sourceItemId = null)
         {
@@ -83,8 +85,7 @@ namespace BackpackAutoBattle.Combat
         }
 
         private double StatusSpeedPercent(CombatSide side)
-            => GetStatusDefinition(StatusEffectKind.Haste).PercentAt(GetStatusStacks(side, StatusEffectKind.Haste))
-                - GetStatusDefinition(StatusEffectKind.Freeze).PercentAt(GetStatusStacks(side, StatusEffectKind.Freeze));
+            => GetStatusPercent(side, StatusEffectKind.Haste) - GetStatusPercent(side, StatusEffectKind.Freeze);
 
         private void InitializeStatuses(IEnumerable<StatusEffectData> definitions)
         {

@@ -19,8 +19,8 @@ namespace BackpackAutoBattle.Combat
             ItemId = data.ItemId;
             DisplayName = data.DisplayName;
             Description = data.Description;
-            string uniqueDescription = gearEffect.Describe(ownerStats);
-            EffectDescription = string.Join("\n", new[] { data.EffectDescription, uniqueDescription }.Where(s => !string.IsNullOrWhiteSpace(s)));
+            EffectDescription = data.EffectDescription;
+            OwnerStats = ownerStats;
             Rarity = rarity ?? data.Rarity;
             GearEffect = gearEffect;
             Category = data.Category;
@@ -46,6 +46,7 @@ namespace BackpackAutoBattle.Combat
         public string EffectDescription { get; }
         public ItemRarity Rarity { get; }
         public UniqueGearEffect GearEffect { get; }
+        public CharacterStatsSnapshot OwnerStats { get; }
         public ItemCategory Category { get; }
         public ItemTags Tags { get; }
         public ItemShape Shape { get; }
@@ -80,13 +81,13 @@ namespace BackpackAutoBattle.Combat
     {
         public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10,
             Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0,
-            CharacterPassiveSnapshot passive = null, int lostLives = 0)
+            CharacterPassiveSnapshot passive = null, int lostLives = 0, double criticalChanceBonusPercent = 0)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             DisplayName = displayName;
             MaximumHealth = maximumHealth;
-            Stats = new CharacterStatsSnapshot(maximumHealth, attack, criticalDamageBonusPercent);
+            Stats = new CharacterStatsSnapshot(maximumHealth, attack, criticalDamageBonusPercent, criticalChanceBonusPercent);
             Loadout = loadout ?? throw new ArgumentNullException(nameof(loadout));
             Illustration = illustration;
             IllustrationFacesLeft = illustrationFacesLeft;
