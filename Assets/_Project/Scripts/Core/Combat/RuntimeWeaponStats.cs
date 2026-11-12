@@ -1,3 +1,4 @@
+using System;
 using BackpackAutoBattle.Items;
 using UnityEngine;
 
@@ -12,6 +13,9 @@ namespace BackpackAutoBattle.Combat
         private float _criticalChancePercent;
         private float _criticalDamagePercent;
         private double _statusAccuracyBonus, _statusCriticalBonus;
+        internal Func<double> PlacementAttackBonus { private get; set; }
+        internal Func<double> PlacementCriticalChanceBonus { private get; set; }
+        internal Func<double> PlacementCriticalDamageBonus { private get; set; }
 
         public RuntimeWeaponStats(WeaponStats baseStats, RuntimeItemCycle cycle)
         {
@@ -24,7 +28,7 @@ namespace BackpackAutoBattle.Combat
 
         public float AttackDamage
         {
-            get => _attackDamage;
+            get => (float)Math.Clamp(_attackDamage + (PlacementAttackBonus?.Invoke() ?? 0d), 0d, float.MaxValue);
             set => _attackDamage = Mathf.Max(0f, WeaponStats.FiniteOrDefault(value, 0f));
         }
 
@@ -42,7 +46,7 @@ namespace BackpackAutoBattle.Combat
 
         public float CriticalChancePercent
         {
-            get => (float)System.Math.Clamp(_criticalChancePercent + _statusCriticalBonus, 0d, float.MaxValue);
+            get => (float)Math.Clamp(_criticalChancePercent + _statusCriticalBonus + (PlacementCriticalChanceBonus?.Invoke() ?? 0d), 0d, float.MaxValue);
             set => _criticalChancePercent = Mathf.Max(0f, WeaponStats.FiniteOrDefault(value, 0f));
         }
 
@@ -52,7 +56,7 @@ namespace BackpackAutoBattle.Combat
 
         public float CriticalDamagePercent
         {
-            get => _criticalDamagePercent;
+            get => (float)Math.Clamp(_criticalDamagePercent + (PlacementCriticalDamageBonus?.Invoke() ?? 0d), 100d, float.MaxValue);
             set => _criticalDamagePercent = Mathf.Max(100f, WeaponStats.FiniteOrDefault(value, 200f));
         }
     }

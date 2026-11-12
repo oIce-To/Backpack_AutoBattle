@@ -60,8 +60,8 @@ namespace BackpackAutoBattle.Prototype
 
             var loadout = SelectionUi.Image(panel.transform, "Equipped Loadout", new Color(.10f, .12f, .16f));
             SelectionUi.Place(loadout.rectTransform, new Vector2(-313, -3), new Vector2(418, 440));
-            _stats = SelectionUi.Label(loadout.transform, "Equipped Character Stats", "", 22, new Vector2(0, 130), new Vector2(380, 142));
-            _stats.lineSpacing = 1.35f;
+            _stats = SelectionUi.Label(loadout.transform, "Equipped Character Stats", "", 19, new Vector2(0, 126), new Vector2(380, 166));
+            _stats.lineSpacing = 1.15f;
             foreach (UniqueGearSlot slot in Enum.GetValues(typeof(UniqueGearSlot)))
             {
                 var button = SelectionUi.Button(loadout.transform, "Equipment Slot " + slot, "",
@@ -301,9 +301,15 @@ namespace BackpackAutoBattle.Prototype
             var progress = _controller.Progress;
             var stats = _controller.GetCharacterStats(character);
             _stats.text = $"{character?.DisplayName}  Lv. {progress.GetCharacterLevel(CharacterId)}\n체력  {stats.MaximumHealth:0.##}"
-                + $"\n공격력  {stats.Attack:0.##}\n치명타 피해 보너스  +{stats.CriticalDamageBonusPercent:0.##}%";
+                + $"\n공격력  {stats.Attack:0.##}";
+            if (stats.CriticalDamageBonusPercent > 0)
+                _stats.text += $"\n치명타 피해 보너스  +{stats.CriticalDamageBonusPercent:0.##}%";
             if (stats.CriticalChanceBonusPercent > 0)
                 _stats.text += $"\n치명타 확률 보너스  +{stats.CriticalChanceBonusPercent:0.##}%p";
+            if (stats.ArmorGainBonusPercent > 0)
+                _stats.text += $"\n방어도 획득량  +{stats.ArmorGainBonusPercent:0.##}%";
+            if (stats.HealingBonusPercent > 0)
+                _stats.text += $"\n치유 효율  +{stats.HealingBonusPercent:0.##}%";
             _inventoryTitle.gameObject.SetActive(_craftMode);
             _managementNotice.text = "";
             _dismantleButton.gameObject.SetActive(!_craftMode);
@@ -327,7 +333,7 @@ namespace BackpackAutoBattle.Prototype
                 button.GetComponentInChildren<Text>().text = definition == null ? "비어 있음" : "";
             }
 
-            float scrollPosition = _scroll.verticalNormalizedPosition;
+            float scrollPosition = _content.childCount == 0 ? 1f : _scroll.verticalNormalizedPosition;
             _ownedTiles.Clear();
             foreach (Transform child in _content) { child.gameObject.SetActive(false); UnityEngine.Object.Destroy(child.gameObject); }
             if (_craftMode) { RenderCrafting(); return; }
@@ -502,7 +508,9 @@ namespace BackpackAutoBattle.Prototype
                 definition.BonusHealth ? $"장착한 캐릭터의 체력 +{value:0.##}%" : null,
                 definition.BonusAttack ? $"장착한 캐릭터의 공격력 +{value:0.##}%" : null,
                 definition.BonusCriticalChance ? $"장착한 캐릭터의 치명타 확률 +{value:0.##}%p" : null,
-                definition.BonusCriticalDamage ? $"장착한 캐릭터의 치명타 피해 +{value:0.##}%" : null
+                definition.BonusCriticalDamage ? $"장착한 캐릭터의 치명타 피해 +{value:0.##}%" : null,
+                definition.BonusArmorGain ? $"장착한 캐릭터의 방어도 획득량 +{value:0.##}%" : null,
+                definition.BonusHealing ? $"장착한 캐릭터의 치유 효율 +{value:0.##}%" : null
             }.Where(line => line != null));
             return bonus.Length == 0 ? "" : "\n\n" + bonus;
         }

@@ -333,10 +333,99 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(armorView.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(armorView.Snapshot.InventorySprite));
             Assert.That(armorView.transform.Find("Label"), Is.Null);
             Assert.That(combat.PlayerItems.Single().Snapshot.GearEffect.Kind, Is.EqualTo(UniqueGearEffectKind.StoneGiantCuirass));
-            Assert.That(combat.PlayerMaxHealth, Is.EqualTo(55).Within(.00001));
+            Assert.That(combat.PlayerMaxHealth, Is.EqualTo(52.5).Within(.00001));
             Assert.That(combat.Player.Stats.Attack, Is.EqualTo(10.5));
             Assert.That(combat.Player.Stats.CriticalChanceBonusPercent, Is.EqualTo(5));
-            Assert.That(combat.Advance(2).Single(e => e.Side == CombatSide.Player).ArmorGained, Is.EqualTo(2.75).Within(.00001));
+            Assert.That(combat.Player.Stats.ArmorGainBonusPercent, Is.EqualTo(5));
+            Assert.That(combat.Advance(2).Single(e => e.Side == CombatSide.Player).ArmorGained, Is.EqualTo(52.5 * .05 * 1.05).Within(.00001));
+        }
+
+        [UnityTest]
+        public IEnumerator SecondGearSet_UsesMenuIconsAndApprovedBackpackArtwork()
+        {
+            const string frost = "frost_dawn_fragment", lantern = "white_night_lantern";
+            var accessories = new[] { "stone_guardian_idol", "executioners_spiked_ball", "phoenix_feather", "snowflake_rabbit", "charm_amulet" };
+            var data = new PlayerProgress().Export();
+            foreach (string gearId in new[] { frost, lantern }.Concat(accessories))
+                data.uniqueGear.Add(new UniqueGearSaveData { instanceId = gearId, gearId = gearId, rarity = ItemRarity.Common,
+                    slot = gearId is frost or lantern ? UniqueGearSlot.Weapon : UniqueGearSlot.AccessoryOrPet });
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(PlayerProgress.FromData(data), out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Tab Equipment"); yield return null;
+            Assert.That(Find("Equipment Inventory Viewport").GetComponent<ScrollRect>().verticalNormalizedPosition,
+                Is.EqualTo(1f).Within(.001f));
+            foreach (string gearId in new[] { frost, lantern }.Concat(accessories))
+            {
+                var icon = Find("Inventory Gear " + gearId).Find("Gear Badge/Gear Sprite").GetComponent<Image>();
+                Assert.That(icon.enabled && icon.preserveAspect, Is.True, gearId);
+                Assert.That(icon.sprite, Is.SameAs(_controller.FindGearDefinition(gearId).Icon), gearId);
+            }
+            Capture("SecondGearSetMenu.png");
+            for (int i = 0; i < accessories.Length; i++)
+            {
+                string weapon = i % 2 == 0 ? frost : lantern;
+                Assert.That(_controller.TryEquipUniqueGear(UniqueGearSlot.Weapon, weapon), Is.True);
+                Assert.That(_controller.TryEquipUniqueGear(UniqueGearSlot.AccessoryOrPet, accessories[i]), Is.True);
+                Assert.That(_controller.TryStartRun(), Is.True);
+                yield return null;
+                var items = _controller.GetComponentsInChildren<BackpackItemView>();
+                Assert.That(items.Select(item => item.Data.ItemId), Is.EquivalentTo(new[] { weapon, accessories[i] }));
+                foreach (var item in items)
+                {
+                    var sprite = item.transform.Find("Item Artwork").GetComponent<Image>();
+                    Assert.That(sprite.sprite, Is.SameAs(item.Data.InventorySprite), item.Data.ItemId);
+                    Assert.That(item.transform.Find("Label"), Is.Null, item.Data.ItemId);
+                }
+                Capture($"SecondGearSetBag-{accessories[i]}.png");
+                Click("Abandon Stage Button");
+                Click("Confirm Abandon Stage");
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator Lantern_KeepsPlagueWhenStartingTheSameRoundAgain()
+        {
+            var initial = new PlayerProgress();
+            Assert.That(initial.TryClaimReward("lantern-retry", new StageReward(0, 500, Enumerable.Repeat("white_night_lantern", 10)),
+                false, DateTimeOffset.UtcNow), Is.True);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Tab Equipment");
+            Click("Show Equipment Crafting"); yield return null;
+            Click("Crafting Choice white_night_lantern"); yield return null;
+            var tooltip = Find("Equipment Item Tooltip");
+            Assert.That(tooltip.Find("Tooltip Weapon Type").GetComponent<Text>().text, Is.EqualTo("마법 무기"));
+            Click("Craft Unique Gear");
+            Click("Equipment Details Backdrop");
+            var lantern = _controller.Progress.UniqueGear.Single(item => item.GearId == "white_night_lantern");
+            Assert.That(_controller.TryEquipUniqueGear(UniqueGearSlot.Weapon, lantern.InstanceId), Is.True);
+            Assert.That(_controller.TryStartRun(), Is.True);
+            var startingItem = _controller.CaptureCombatSnapshot().Items.Single();
+            Assert.That(startingItem.Rotation, Is.EqualTo(ItemRotation.None));
+            Assert.That(startingItem.OccupiedCells.Select(cell => cell - startingItem.Origin),
+                Is.EquivalentTo(new[] { Vector2Int.zero, Vector2Int.right, new Vector2Int(2, 0), new Vector2Int(2, 1) }));
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            var combat = _controller.ActiveCombat;
+            var lanternView = _controller.GetComponentsInChildren<PrototypeBattleItemView>()
+                .Single(item => item.Snapshot.ItemId == "white_night_lantern");
+            Assert.That(lanternView.transform.Find("Item Artwork").GetComponent<Image>().sprite, Is.SameAs(startingItem.InventorySprite));
+            Capture("WhiteNightLanternBattle.png");
+            combat.PlayerWeapons.Single().Stats.CooldownSeconds = 40;
+            var enemyWeapon = combat.EnemyWeapons.First();
+            enemyWeapon.Stats.AttackDamage = 0;
+            enemyWeapon.Stats.AccuracyPercent = 100;
+            _controller.TickCombat(9.5f);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Poison, 5, CombatSide.Player);
+            _controller.TickCombat(.5f);
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague), Is.EqualTo(2));
+            enemyWeapon.Stats.AttackDamage = 10000;
+            _controller.TickCombat(2);
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Defeat));
+            Assert.That(_controller.ReturnToPreparation(), Is.True);
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(_controller.ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague), Is.EqualTo(2));
+            Assert.That(_controller.ActiveCombat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Poison), Is.Zero);
         }
 
         [UnityTest]
@@ -460,16 +549,16 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(viewport.anchoredPosition.y + viewport.rect.height / 2,
                 Is.LessThan(categories.anchoredPosition.y - categories.rect.height / 2));
             var choices = Find("Equipment Inventory Items");
-            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(3));
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(5));
             Assert.That(choices.GetComponentsInChildren<Transform>().Any(t => t.name == "Gear Rarity Border"), Is.False);
             Capture("CraftingWeaponCategory.png");
             Click("Crafting Category Armor"); yield return null;
             Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(4));
             Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.False);
             Click("Crafting Category AccessoryOrPet"); yield return null;
-            Assert.That(choices.GetComponentsInChildren<Button>(), Is.Empty);
-            Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.True);
-            Capture("CraftingEmptyAccessoryCategory.png");
+            Assert.That(choices.GetComponentsInChildren<Button>().Length, Is.EqualTo(5));
+            Assert.That(Find("Empty Equipment Inventory").gameObject.activeInHierarchy, Is.False);
+            Capture("CraftingAccessoryCategory.png");
             Click("Crafting Category Weapon"); yield return null;
             Click("Crafting Choice knight_sword");
             var popup = Find("Equipment Item Tooltip");

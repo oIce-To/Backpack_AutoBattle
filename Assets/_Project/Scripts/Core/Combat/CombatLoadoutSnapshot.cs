@@ -28,6 +28,8 @@ namespace BackpackAutoBattle.Combat
             Shape = data.CreateShape();
             PlacementEffects = Array.AsReadOnly(data.PlacementEffects.Where(effect => effect != null).Select(effect => effect.Resolve(ownerStats)).ToArray());
             Activation = activation?.Copy() ?? data.Activation?.Resolve(ownerStats) ?? new ItemActivationData();
+            if (gearEffect.Kind == UniqueGearEffectKind.CharmAmulet && gearEffect.Amount > 0)
+                Activation = Activation.CopyWithCooldown(gearEffect.Amount);
             BattleStartStatuses = Array.AsReadOnly(data.BattleStartStatuses.Where(status => status != null)
                 .Select(status => status.Copy()).ToArray());
             DisplayColor = data.DisplayColor;
@@ -81,13 +83,17 @@ namespace BackpackAutoBattle.Combat
     {
         public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10,
             Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0,
-            CharacterPassiveSnapshot passive = null, int lostLives = 0, double criticalChanceBonusPercent = 0)
+            CharacterPassiveSnapshot passive = null, int lostLives = 0, double criticalChanceBonusPercent = 0,
+            double armorGainBonusPercent = 0, double healingBonusPercent = 0, long plagueStacks = 0)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             DisplayName = displayName;
             MaximumHealth = maximumHealth;
-            Stats = new CharacterStatsSnapshot(maximumHealth, attack, criticalDamageBonusPercent, criticalChanceBonusPercent);
+            Stats = new CharacterStatsSnapshot(maximumHealth, attack, criticalDamageBonusPercent, criticalChanceBonusPercent,
+                armorGainBonusPercent, healingBonusPercent);
+            if (plagueStacks < 0) throw new ArgumentOutOfRangeException(nameof(plagueStacks));
+            PlagueStacks = plagueStacks;
             Loadout = loadout ?? throw new ArgumentNullException(nameof(loadout));
             Illustration = illustration;
             IllustrationFacesLeft = illustrationFacesLeft;
@@ -104,5 +110,6 @@ namespace BackpackAutoBattle.Combat
         public bool IllustrationFacesLeft { get; }
         public CharacterPassiveSnapshot Passive { get; }
         public int LostLives { get; }
+        public long PlagueStacks { get; }
     }
 }

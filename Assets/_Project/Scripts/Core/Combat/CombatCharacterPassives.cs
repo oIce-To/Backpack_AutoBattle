@@ -20,8 +20,7 @@ namespace BackpackAutoBattle.Combat
                 Name = $"캐릭터 패시브 · {passive.DisplayName}" });
             if (passive.Kind != CharacterPassiveKind.LostLifeArmor) return;
             double armor = owner.LostLives * (owner.MaximumHealth * passive.ArmorPercentPerLostLife / 100d);
-            AddArmorOrigin(side, CharacterPassiveSourceId, armor);
-            if (side == CombatSide.Player) PlayerArmor += armor; else EnemyArmor += armor;
+            AddArmor(side, CharacterPassiveSourceId, ApplyArmorBonus(side, armor));
         }
 
         private void ApplyAttackPassive(CombatWeapon weapon, CombatSide side)

@@ -88,6 +88,7 @@ namespace BackpackAutoBattle.Prototype
         public int Gold { get; internal set; }
         public int Round { get; internal set; } = 1;
         public int PurchasedItemSequence { get; internal set; }
+        public long PlagueStacks { get; private set; }
         public PrototypePhase Phase { get; internal set; } = PrototypePhase.Preparation;
 
         public bool TryBeginBattle()
@@ -107,12 +108,14 @@ namespace BackpackAutoBattle.Prototype
 
         /// <summary>Only a battle-to-result transition can spend a life or finish a run, exactly once.
         /// Draw is retained for explicit test deadlines; normal play forces defeat at 90 combat seconds.</summary>
-        public bool TryCompleteBattle(CombatResult result, int roundCount, double elapsedSeconds)
+        public bool TryCompleteBattle(CombatResult result, int roundCount, double elapsedSeconds, long? plagueStacks = null)
         {
             if (Phase != PrototypePhase.Battle || IsFinished || result == CombatResult.Running) return false;
             if (!Enum.IsDefined(typeof(CombatResult), result)) throw new ArgumentOutOfRangeException(nameof(result));
             if (roundCount < Round) throw new ArgumentOutOfRangeException(nameof(roundCount));
             if (!double.IsFinite(elapsedSeconds) || elapsedSeconds < 0) throw new ArgumentOutOfRangeException(nameof(elapsedSeconds));
+            if (plagueStacks < PlagueStacks) throw new ArgumentOutOfRangeException(nameof(plagueStacks));
+            if (plagueStacks.HasValue) PlagueStacks = plagueStacks.Value;
             LastBattleResult = result; TotalBattleSeconds += elapsedSeconds;
             if (result == CombatResult.Victory)
             {

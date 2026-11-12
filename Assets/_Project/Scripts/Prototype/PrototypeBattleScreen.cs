@@ -179,6 +179,11 @@ namespace BackpackAutoBattle.Prototype
                 AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → 방어도 +{attack.ArmorGained:0.#}");
                 return;
             }
+            if (attack.Kind == ItemEffectKind.Heal)
+            {
+                AppendLog($"{attack.Time:0.0}s {attacker} · {attack.DisplayName} → 체력 +{attack.HealthRestored:0.##}");
+                return;
+            }
             DamagePopups(attack.TargetSide).Show(attack.Damage,
                 attack.Critical ? new Color(1f, .81f, .28f) : Color.white, attack.Critical);
             string outcome = !attack.Hit ? (attack.AttackOutcome == AttackOutcome.Evaded ? "회피" : "명중 실패 · 회피 효과 발동")
@@ -190,9 +195,9 @@ namespace BackpackAutoBattle.Prototype
         public void ShowStatusDamage(PeriodicStatusTickEvent tick)
         {
             bool targetPlayer = tick.Target == CombatSide.Player;
-            DamagePopups(tick.Target).Show(tick.Damage, PrototypeStatusGlyph.ColorFor(tick.Kind));
+            DamagePopups(tick.Target).Show(tick.Damage, PrototypeStatusGlyph.ColorFor(tick.Kind), tick.Critical);
             string target = targetPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
-            AppendLog($"{tick.Time:0.0}s {target} · {_combat.GetStatusDefinition(tick.Kind).DisplayName} {tick.Stacks}중첩 → {tick.Damage:0.##} 피해"
+            AppendLog($"{tick.Time:0.0}s {target} · {_combat.GetStatusDefinition(tick.Kind).DisplayName} {tick.Stacks}중첩 → {(tick.Critical ? "치명타 " : "")}{tick.Damage:0.##} 피해"
                 + (tick.Resolution.ArmorAbsorbed > 0 ? $" (방어도 {tick.Resolution.ArmorAbsorbed:0.##} 흡수 · 체력 {tick.Resolution.HealthDamage:0.##})" : ""));
         }
 

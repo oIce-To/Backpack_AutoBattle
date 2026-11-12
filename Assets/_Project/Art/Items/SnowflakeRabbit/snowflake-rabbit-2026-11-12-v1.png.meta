@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 6221576517ca3e24ca9d5e85e1deb905
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1524920242558265838
+    second: snowflake-rabbit-2026-11-12-v1_0
+  - first:
+      213: 729566484295460779
+    second: snowflake-rabbit-2026-11-12-v1_1
+  - first:
+      213: 613334412288292626
+    second: snowflake-rabbit-2026-11-12-v1_2
+  - first:
+      213: -1336350290813045676
+    second: snowflake-rabbit-2026-11-12-v1_3
+  - first:
+      213: -5684716367470661180
+    second: snowflake-rabbit-2026-11-12-v1_4
+  - first:
+      213: 3049057153490191697
+    second: snowflake-rabbit-2026-11-12-v1_5
+  - first:
+      213: 2653404542027931522
+    second: snowflake-rabbit-2026-11-12-v1_6
+  - first:
+      213: -2543769564630285073
+    second: snowflake-rabbit-2026-11-12-v1_7
+  - first:
+      213: 7201877690966788928
+    second: snowflake-rabbit-2026-11-12-v1_8
+  - first:
+      213: -4842929978262564366
+    second: snowflake-rabbit-2026-11-12-v1_9
+  - first:
+      213: 7427078721767765136
+    second: snowflake-rabbit-2026-11-12-v1_10
+  - first:
+      213: 5891658204382528264
+    second: snowflake-rabbit-2026-11-12-v1_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 887
+        height: 1727
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21613876e1566dae0800000000000000
+      internalID: -1524920242558265838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_1
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 1695
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba726702ad0ff1a00800000000000000
+      internalID: 729566484295460779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_2
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 1700
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21777fcf560038800800000000000000
+      internalID: 613334412288292626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_3
+      rect:
+        serializedVersion: 2
+        x: 606
+        y: 1688
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4543994ad74547de0800000000000000
+      internalID: -1336350290813045676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_4
+      rect:
+        serializedVersion: 2
+        x: 629
+        y: 1689
+        width: 31
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c1ff0c2594db11b0800000000000000
+      internalID: -5684716367470661180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 376
+        width: 10
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15585a5935d605a20800000000000000
+      internalID: 3049057153490191697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_6
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 160
+        width: 175
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28f9bf46f59c2d420800000000000000
+      internalID: 2653404542027931522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_7
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 118
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe403c5fe07b2bcd0800000000000000
+      internalID: -2543769564630285073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_8
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 129
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04bc2ed4a9532f360800000000000000
+      internalID: 7201877690966788928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_9
+      rect:
+        serializedVersion: 2
+        x: 637
+        y: 120
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f1d19df7d47accb0800000000000000
+      internalID: -4842929978262564366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_10
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 112
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09474d14fb8421760800000000000000
+      internalID: 7427078721767765136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: snowflake-rabbit-2026-11-12-v1_11
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 25
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8038c3aebef53c150800000000000000
+      internalID: 5891658204382528264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      snowflake-rabbit-2026-11-12-v1_0: -1524920242558265838
+      snowflake-rabbit-2026-11-12-v1_1: 729566484295460779
+      snowflake-rabbit-2026-11-12-v1_10: 7427078721767765136
+      snowflake-rabbit-2026-11-12-v1_11: 5891658204382528264
+      snowflake-rabbit-2026-11-12-v1_2: 613334412288292626
+      snowflake-rabbit-2026-11-12-v1_3: -1336350290813045676
+      snowflake-rabbit-2026-11-12-v1_4: -5684716367470661180
+      snowflake-rabbit-2026-11-12-v1_5: 3049057153490191697
+      snowflake-rabbit-2026-11-12-v1_6: 2653404542027931522
+      snowflake-rabbit-2026-11-12-v1_7: -2543769564630285073
+      snowflake-rabbit-2026-11-12-v1_8: 7201877690966788928
+      snowflake-rabbit-2026-11-12-v1_9: -4842929978262564366
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

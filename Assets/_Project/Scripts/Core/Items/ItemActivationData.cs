@@ -7,7 +7,7 @@ namespace BackpackAutoBattle.Items
 {
     [Flags]
     public enum ItemTags { None = 0, Melee = 1, Ranged = 2, Magic = 4, Summon = 8 }
-    public enum ItemEffectKind { Attack, GainArmor, ApplyStatus, UniqueGear }
+    public enum ItemEffectKind { Attack, GainArmor, ApplyStatus, UniqueGear, Heal }
     public enum ItemEffectTrigger { Activation, OnHit }
 
     [Serializable]

@@ -76,7 +76,8 @@ namespace BackpackAutoBattle.Prototype
 
             var player = new CombatantSnapshot(_run.PlayerName, _run.PlayerStats.MaximumHealth, CaptureCombatSnapshot(), _run.PlayerStats.Attack,
                 _characterData?.Portrait, _characterData?.PortraitFacesLeft ?? false, _run.PlayerStats.CriticalDamageBonusPercent,
-                _run.Passive, _run.StartingLives - _run.Lives, _run.PlayerStats.CriticalChanceBonusPercent);
+                _run.Passive, _run.StartingLives - _run.Lives, _run.PlayerStats.CriticalChanceBonusPercent,
+                _run.PlayerStats.ArmorGainBonusPercent, _run.PlayerStats.HealingBonusPercent, _run.PlagueStacks);
             CapturePendingFusions();
             if (!_run.TryBeginBattle()) return false;
             _itemTooltip.HideAll();
@@ -118,7 +119,8 @@ namespace BackpackAutoBattle.Prototype
 
         private void OnBattleFinished(CombatResult result)
         {
-            if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds)) return;
+            if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds,
+                ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague))) return;
             if (_run.IsFinished) TrySettleRunReward();
             else RecordProgress();
             _battleController.ShowResult(Phase);

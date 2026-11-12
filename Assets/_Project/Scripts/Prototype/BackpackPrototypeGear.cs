@@ -56,7 +56,7 @@ namespace BackpackAutoBattle.Prototype
         public CharacterStatsSnapshot GetCharacterStats(CharacterData character)
         {
             var stats = character?.CaptureStats(_progress.GetCharacterLevel(character.CharacterId)) ?? CharacterStatsSnapshot.Default;
-            double health = 0, attack = 0, criticalDamage = 0, criticalChance = 0;
+            double health = 0, attack = 0, criticalDamage = 0, criticalChance = 0, armorGain = 0, healing = 0;
             foreach (var (instance, definition) in EquippedGear(character))
             {
                 double bonus = definition.BonusPercentFor(instance.Rarity, instance.Enhancement);
@@ -64,9 +64,11 @@ namespace BackpackAutoBattle.Prototype
                 if (definition.BonusAttack) attack += bonus;
                 if (definition.BonusCriticalDamage) criticalDamage += bonus;
                 if (definition.BonusCriticalChance) criticalChance += bonus;
+                if (definition.BonusArmorGain) armorGain += bonus;
+                if (definition.BonusHealing) healing += bonus;
             }
             return new CharacterStatsSnapshot(stats.MaximumHealth * (1 + health / 100),
-                stats.Attack * (1 + attack / 100), criticalDamage, criticalChance);
+                stats.Attack * (1 + attack / 100), criticalDamage, criticalChance, armorGain, healing);
         }
 
         public bool TryEquipUniqueGear(UniqueGearSlot slot, string instanceId, string expectedOwner = "")

@@ -20,6 +20,7 @@ namespace BackpackAutoBattle.Prototype
             StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
             StatusEffectKind.Burn => new Color(1f, 0.25f, 0.20f),
             StatusEffectKind.Poison => new Color(0.71f, 0.53f, 0.96f),
+            StatusEffectKind.Plague => new Color(0.63f, 0.90f, 0.39f),
             StatusEffectKind.Thorns => new Color(0.68f, 0.70f, 0.73f),
             StatusEffectKind.Lifesteal => new Color(0.94f, 0.17f, 0.23f),
             StatusEffectKind.Enrage => new Color(1f, 0.50f, 0.12f),
@@ -105,7 +106,7 @@ namespace BackpackAutoBattle.Prototype
                 points.RemoveAt(points.Count - 1); // Closing point is already the first vertex.
                 FillPolygon(vh, points, rect.center, scale, color);
             }
-            else if (Kind == StatusEffectKind.Poison)
+            else if (Kind is StatusEffectKind.Poison or StatusEffectKind.Plague)
             {
                 // Rounded skull outline with eyes, nose and three teeth. All holes stay transparent.
                 // Cheeks taper directly into the narrow jaw, without outward lower-face lobes.

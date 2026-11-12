@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_PhoenixFeather
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: phoenix_feather
+  _displayName: 불사조의 깃털
+  _category: 2
+  _tags: 0
+  _isUniqueGear: 1
+  _rarity: 0
+  _purchasePrice: 0
+  _inventorySprite: {fileID: 21300000, guid: 038c72688b1148df940f89e2c8394615, type: 3}
+  _displayColor: {r: 0.76, g: 0.3, b: 0.16, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}

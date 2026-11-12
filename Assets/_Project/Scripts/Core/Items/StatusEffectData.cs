@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace BackpackAutoBattle.Items
 {
-    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison, Thorns, Lifesteal, Enrage }
-    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage, ReflectedDamage, HealingOnAttack, DamageTaken }
+    public enum StatusEffectKind { Haste, Freeze, Precision, Focus, Blindness, Agility, Burn, Poison, Thorns, Lifesteal, Enrage, Plague }
+    public enum StatusStat { ActivationSpeed, CriticalChance, Accuracy, Evasion, PeriodicDamage, ReflectedDamage, HealingOnAttack, DamageTaken, PoisonPower }
     public enum StatusTarget { Self, Opponent }
 
     public static class StatusEffectRules
@@ -16,6 +16,7 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Burn => "화상", StatusEffectKind.Poison => "중독",
             StatusEffectKind.Thorns => "가시", StatusEffectKind.Lifesteal => "흡혈",
             StatusEffectKind.Enrage => "광폭화",
+            StatusEffectKind.Plague => "역병",
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static bool IsDebuff(StatusEffectKind kind) => kind is StatusEffectKind.Freeze or StatusEffectKind.Blindness or StatusEffectKind.Burn or StatusEffectKind.Poison or StatusEffectKind.Enrage;
@@ -29,6 +30,7 @@ namespace BackpackAutoBattle.Items
             StatusEffectKind.Thorns => StatusStat.ReflectedDamage,
             StatusEffectKind.Lifesteal => StatusStat.HealingOnAttack,
             StatusEffectKind.Enrage => StatusStat.DamageTaken,
+            StatusEffectKind.Plague => StatusStat.PoisonPower,
             _ => throw new ArgumentOutOfRangeException(nameof(kind))
         };
         public static StatusEffectKind? Opposite(StatusEffectKind kind) => kind switch

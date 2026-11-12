@@ -51,7 +51,8 @@ namespace BackpackAutoBattle.Combat
 
         public double GetStatusReactionAmount(CombatSide owner, StatusEffectKind status)
             => GetStatusDefinition(status).AmountPerStack((owner == CombatSide.Player ? Player : Enemy).Stats)
-                * GetStatusStacks(owner, status) * StatusEffectMultiplier(owner, status);
+                * GetStatusStacks(owner, status) * StatusEffectMultiplier(owner, status)
+                * (status == StatusEffectKind.Lifesteal ? HealingMultiplier(owner) : 1d);
 
         private void ResolveDamageReactions(CombatDamageEvent attack, ICollection<CombatItemEvent> events)
         {
@@ -63,11 +64,8 @@ namespace BackpackAutoBattle.Combat
                 if (amount <= 0) continue;
                 if (rule.Effect == CombatReactionKind.HealSelf)
                 {
-                    double health = owner == CombatSide.Player ? PlayerHealth : EnemyHealth;
-                    if (health <= 0) continue;
-                    double maximum = owner == CombatSide.Player ? PlayerMaxHealth : EnemyMaxHealth;
-                    double healed = Math.Min(amount, maximum - health);
-                    if (owner == CombatSide.Player) PlayerHealth += healed; else EnemyHealth += healed;
+                    if (CurrentHealth(owner) <= 0d) continue;
+                    double healed = RestoreHealth(owner, amount);
                     CreditHealing(owner, healed, StatusWeights(owner, rule.Status));
                     ReactionTriggered?.Invoke(new CombatReactionEvent(ElapsedSeconds, owner, owner, rule.Status,
                         rule.Effect, attack.SourceItemId, amount, healed));

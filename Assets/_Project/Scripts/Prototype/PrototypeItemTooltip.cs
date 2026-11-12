@@ -14,6 +14,7 @@ namespace BackpackAutoBattle.Prototype
         private Image _border;
         private Text _name;
         private Text _rarity;
+        private Text _weaponType;
         private Text _context;
         private RectTransform _statsRoot;
         private Image _divider;
@@ -66,6 +67,10 @@ namespace BackpackAutoBattle.Prototype
             _context = Label(transform, "Tooltip Context", 12, FontStyle.Normal);
             _context.color = new Color(0.60f, 0.68f, 0.79f);
             Place(_context.rectTransform, Padding, -57f, Width - Padding * 2f, 20f);
+            _weaponType = Label(transform, "Tooltip Weapon Type", 12, FontStyle.Bold);
+            _weaponType.color = _context.color;
+            _weaponType.alignment = TextAnchor.MiddleRight;
+            Place(_weaponType.rectTransform, 181f, -57f, 190f, 20f);
 
             var statsObject = new GameObject("Tooltip Stats", typeof(RectTransform));
             statsObject.transform.SetParent(transform, false);
@@ -178,6 +183,7 @@ namespace BackpackAutoBattle.Prototype
                 Place(_name.rectTransform, Padding, -26f, 264f, 36f);
                 _border.color = status.Color;
                 _rarity.gameObject.SetActive(false);
+                _weaponType.gameObject.SetActive(false);
                 _context.gameObject.SetActive(false);
                 _statsRoot.gameObject.SetActive(false);
                 _divider.gameObject.SetActive(false);
@@ -205,7 +211,10 @@ namespace BackpackAutoBattle.Prototype
             _rarity.color = _border.color = item.Rarity.GetDisplayColor();
             _context.text = "전투 중 실제 스탯";
             _context.gameObject.SetActive(item.IsRuntime && item.HasWeaponStats);
-            _statsRoot.anchoredPosition = new Vector2(0f, item.IsRuntime ? 0f : 18f);
+            bool showWeaponType = !string.IsNullOrWhiteSpace(item.WeaponType);
+            _weaponType.text = item.WeaponType;
+            _weaponType.gameObject.SetActive(showWeaponType);
+            _statsRoot.anchoredPosition = new Vector2(0f, item.IsRuntime || showWeaponType ? 0f : 18f);
             _statsRoot.gameObject.SetActive(item.HasWeaponStats);
             for (int index = 0; index < 5; index++)
             {
@@ -230,7 +239,7 @@ namespace BackpackAutoBattle.Prototype
             _values[2].text = $"{item.AccuracyPercent:0.#}%";
             _values[3].text = $"{item.CriticalChancePercent:0.#}%";
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
-            float descriptionTop = item.HasWeaponStats ? 211f - (item.IsRuntime ? 0f : 18f) : 62f;
+            float descriptionTop = item.HasWeaponStats ? 211f - (item.IsRuntime || showWeaponType ? 0f : 18f) : showWeaponType ? 76f : 62f;
             float dividerTop = descriptionTop;
             _description.text = item.GetDescriptionText() + notes;
             float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - footerHeight - Padding * 2f);

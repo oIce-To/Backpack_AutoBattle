@@ -20,8 +20,9 @@ MonoBehaviour:
   _bonusAttack: 0
   _bonusCriticalDamage: 0
   _bonusCriticalChance: 0
-  _commonBaseBonus: 10
-  _bonusPerEnhancement: 1
+  _bonusArmorGain: 1
+  _commonBaseBonus: 5
+  _bonusPerEnhancement: 0.5
   _effect: 4
   _commonEffect: 0.05
   _uncommonEffect: 0.07

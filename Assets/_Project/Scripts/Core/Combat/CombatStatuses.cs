@@ -41,7 +41,12 @@ namespace BackpackAutoBattle.Combat
         public double GetEvasionPercent(CombatSide side)
             => Math.Clamp(GetStatusDefinition(StatusEffectKind.Agility).PercentAt(GetStatusStacks(side, StatusEffectKind.Agility)), 0d, 70d);
         public double GetStatusPercent(CombatSide side, StatusEffectKind kind)
-            => GetStatusDefinition(kind).PercentAt(GetStatusStacks(side, kind)) * StatusEffectMultiplier(side, kind);
+        {
+            CombatStatusDefinition definition = GetStatusDefinition(kind);
+            if (kind == StatusEffectKind.Freeze)
+                return StatusWeights(side, kind).Sum(origin => origin.Weight * definition.PercentPerStack * StatusEffectMultiplier(origin.Side, kind));
+            return definition.PercentAt(GetStatusStacks(side, kind)) * StatusEffectMultiplier(side, kind);
+        }
 
         public void ApplyStatus(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source = null, string sourceItemId = null)
         {
@@ -59,10 +64,10 @@ namespace BackpackAutoBattle.Combat
                 RemoveStatusOrigins(side, opposite.Value, cancelled);
             }
             _statusStacks[(side, kind)] = total;
-            AddStatusOrigin(side, kind, source ?? (GetStatusDefinition(kind).AffectedStat == StatusStat.PeriodicDamage
-                ? TargetSide(side, StatusTarget.Opponent) : side), sourceItemId, stacks - cancelled);
+            CombatSide origin = source ?? (GetStatusDefinition(kind).IsDebuff ? TargetSide(side, StatusTarget.Opponent) : side);
+            AddStatusOrigin(side, kind, origin, sourceItemId, stacks - cancelled);
             if (GetStatusDefinition(kind).AffectedStat == StatusStat.PeriodicDamage)
-                AddPeriodicStacks(side, kind, source ?? TargetSide(side, StatusTarget.Opponent), stacks);
+                AddPeriodicStacks(side, kind, origin, stacks);
             switch (GetStatusDefinition(kind).AffectedStat)
             {
                 case StatusStat.ActivationSpeed: RefreshItemSpeeds(side); break;
@@ -96,6 +101,10 @@ namespace BackpackAutoBattle.Combat
                     if (data != null && data.Kind != StatusEffectKind.Enrage) _statusDefinitions[data.Kind] = new(data.Kind, data.DisplayName, data.PercentPerStack,
                         data.DamageScaling, data.TickIntervalSeconds, data.StacksLostPerTick);
             _statusDefinitions[StatusEffectKind.Enrage] = new(StatusEffectKind.Enrage, "광폭화", 10f);
+            _statusDefinitions[StatusEffectKind.Plague] = new(StatusEffectKind.Plague, "역병",
+                (float)(UniqueGearEffect.PoisonPowerPerPlagueStack * 100d));
+            ApplyStatus(CombatSide.Player, StatusEffectKind.Plague, Player.PlagueStacks);
+            ApplyStatus(CombatSide.Enemy, StatusEffectKind.Plague, Enemy.PlagueStacks);
             ApplyBattleStartStatuses(Player.Loadout, CombatSide.Player);
             ApplyBattleStartStatuses(Enemy.Loadout, CombatSide.Enemy);
         }

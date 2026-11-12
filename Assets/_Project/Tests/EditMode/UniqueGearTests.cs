@@ -123,7 +123,8 @@ namespace BackpackAutoBattle.Tests.Items
             }
             Assert.That(twilight.BonusCriticalChance, Is.True);
             Assert.That(twilight.BonusPercentFor(ItemRarity.Uncommon, 6), Is.EqualTo(9.5));
-            Assert.That(cuirass.BonusPercentFor(ItemRarity.Uncommon, 6), Is.EqualTo(19));
+            Assert.That(cuirass.BonusPercentFor(ItemRarity.Uncommon, 6), Is.EqualTo(9.5));
+            Assert.That(cuirass.BonusArmorGain && !cuirass.BonusAttack, Is.True);
             var stats = twilight.Item.ResolveWeaponStats(new CharacterStatsSnapshot(50, 10, criticalChanceBonusPercent: 5));
             Assert.That(stats.CriticalChancePercent, Is.EqualTo(20));
         }
@@ -153,22 +154,24 @@ namespace BackpackAutoBattle.Tests.Items
         }
 
         [Test]
-        public void TwilightBurst_FiresOnFifthAttackAttempt_DecaysEachTick_AndKeepsNormalClock()
+        public void TwilightBurst_FiresOnFixedClock_DecaysEachTick_AndKeepsNormalClock()
         {
             var gear = Gear("SearingTwilight");
-            var combat = Battle(new[] { Snapshot("twilight", gear, 0, ItemRarity.Uncommon) }, random: new MissAndProcRandom());
+            var combat = Battle(new[] { Snapshot("twilight", gear, 0, ItemRarity.Uncommon) }, random: new NeverProcRandom());
             var ticks = new System.Collections.Generic.List<PeriodicStatusTickEvent>();
             combat.StatusTicked += ticks.Add;
-            combat.Advance(.25);
-            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Burn, 1, CombatSide.Player, "twilight");
-            var events = combat.Advance(4.75);
-            Assert.That(events.Where(e => e.Kind == ItemEffectKind.Attack).All(e => !e.Hit), Is.True);
-            var burst = ticks.Where(tick => tick.Time == 5).ToArray();
+            combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, 50);
+            Assert.That(combat.Advance(9.25).Count(e => e.Kind == ItemEffectKind.Attack), Is.GreaterThan(5));
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Burn, 7, CombatSide.Player, "twilight");
+            combat.Advance(.74);
+            Assert.That(ticks, Is.Empty);
+            combat.Advance(.01);
+            var burst = ticks.Where(tick => tick.Time == 10).ToArray();
             Assert.That(burst.Select(tick => tick.Stacks), Is.EqualTo(new long[] { 7, 6, 5 }));
             Assert.That(burst[0].Damage, Is.EqualTo(7 * 1.2 * 1.14).Within(.00001));
             Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Burn), Is.EqualTo(4));
             combat.Advance(.25);
-            Assert.That(ticks.Last().Time, Is.EqualTo(5.25));
+            Assert.That(ticks.Last().Time, Is.EqualTo(10.25));
             Assert.That(ticks.Last().Stacks, Is.EqualTo(4));
             Assert.That(combat.CaptureStatistics().Items.Single(item => item.InstanceId == "twilight").BurnDamage,
                 Is.EqualTo(ticks.Sum(tick => tick.Damage)).Within(.00001));
@@ -226,6 +229,130 @@ namespace BackpackAutoBattle.Tests.Items
             Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Thorns), Is.EqualTo(2));
         }
 
+        [Test]
+        public void SecondGearSet_IsRegisteredForCraftingAndUsesTheRequestedFootprints()
+        {
+            var catalog = AssetDatabase.LoadAssetAtPath<AdventureCatalogData>(Data + "AdventureCatalog.asset");
+            var names = new[] { "FrostDawnFragment", "WhiteNightLantern", "StoneGuardianIdol", "ExecutionersSpikedBall",
+                "PhoenixFeather", "SnowflakeRabbit", "CharmAmulet" };
+            foreach (var (name, count) in names.Zip(new[] { 3, 4, 1, 4, 2, 2, 3 }, (name, count) => (name, count)))
+            {
+                var gear = Gear(name);
+                Assert.That(catalog.UniqueGear, Does.Contain(gear));
+                Assert.That(gear.FitsSlot && gear.Item.ExcludeFromShop, Is.True, name);
+                Assert.That(gear.Item.OccupiedCells, Has.Count.EqualTo(count), name);
+                Assert.That(gear.Item.InventorySprite, Is.Not.Null, name);
+                Assert.That(gear.Icon, Is.Not.Null, name);
+                Assert.That(gear.Icon, Is.Not.SameAs(gear.Item.InventorySprite), name);
+            }
+            Assert.That(Gear("WhiteNightLantern").BonusPercentFor(ItemRarity.Uncommon, 0), Is.EqualTo(13));
+            Assert.That(ItemTooltipContent.FromItem(Gear("WhiteNightLantern").Item).WeaponType, Is.EqualTo("마법 무기"));
+        }
+
+        [Test]
+        public void FrostAndIdol_ReadCurrentEnemyFreezeAndOwnArmorForLinkedAttackers()
+        {
+            var frost = Gear("FrostDawnFragment");
+            var idol = Gear("StoneGuardianIdol");
+            var staff = Item("staff", frost.Item, new Vector2Int(2, 2), ItemRotation.Clockwise90, frost.EffectFor(ItemRarity.Uncommon));
+            var guardian = Item("idol", idol.Item, new Vector2Int(5, 1), gear: idol.EffectFor(ItemRarity.Common));
+            var linked = Item("linked", DataItem("IronDagger"), new Vector2Int(4, 0));
+            var shield = Item("shield", DataItem("WoodenShield"), Vector2Int.zero);
+            var combat = Battle(new[] { staff, guardian, linked, shield });
+            Assert.That(PlacementEffectResolver.GetCells(combat.Loadout, staff).Select(cell => cell.Cell),
+                Is.EquivalentTo(new[] { new Vector2Int(4, 1), new Vector2Int(4, 3) }));
+            var dagger = combat.PlayerWeapons.Single(weapon => weapon.InstanceId == "linked");
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Freeze, 4, CombatSide.Player);
+            Assert.That(combat.GetStatusPercent(CombatSide.Enemy, StatusEffectKind.Freeze), Is.EqualTo(4.56).Within(.00001));
+            Assert.That(dagger.Stats.CriticalChancePercent, Is.EqualTo(dagger.BaseStats.CriticalChancePercent + 2));
+            Assert.That(dagger.Stats.CriticalDamagePercent, Is.EqualTo(dagger.BaseStats.CriticalDamagePercent + 12));
+            Assert.That(combat.PlayerWeapons.Single(weapon => weapon.InstanceId == "staff").Stats.CriticalChancePercent, Is.EqualTo(10));
+            combat.Advance(2);
+            Assert.That(dagger.Stats.AttackDamage, Is.EqualTo(dagger.BaseStats.AttackDamage + .25).Within(.00001));
+            combat.ApplyNonAttackDamage(CombatSide.Enemy, CombatSide.Player, 1, CombatDamageKind.Other);
+            Assert.That(dagger.Stats.AttackDamage, Is.EqualTo(dagger.BaseStats.AttackDamage + .15).Within(.00001));
+            combat.RemoveStatus(CombatSide.Enemy, StatusEffectKind.Freeze, 4);
+            Assert.That(dagger.Stats.CriticalDamagePercent, Is.EqualTo(dagger.BaseStats.CriticalDamagePercent));
+            combat.Advance(1);
+            Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Freeze), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Lantern_ConvertsPoisonAtTenSeconds_AndCarriesProtectedPlagueThroughRetry()
+        {
+            var lantern = Snapshot("lantern", Gear("WhiteNightLantern"), 0, ItemRarity.Uncommon);
+            var player = new CombatantSnapshot("player", 100, new CombatLoadoutSnapshot(new[] { lantern }), plagueStacks: 2);
+            var enemy = new CombatantSnapshot("enemy", 100, new CombatLoadoutSnapshot(Array.Empty<CombatItemSnapshot>()));
+            var combat = new CombatSimulation(player, enemy, new AlwaysHitRandom());
+            combat.PlayerWeapons.Single().Stats.CooldownSeconds = 40;
+            combat.ApplyStatus(CombatSide.Player, StatusEffectKind.Haste, 50);
+            combat.Advance(9.5);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Poison, 5, CombatSide.Player, "lantern");
+            Assert.That(combat.GetStatusDamagePerTick(CombatSide.Enemy, StatusEffectKind.Poison), Is.EqualTo(5 * 1.144).Within(.00001));
+            combat.Advance(.5);
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague), Is.EqualTo(4));
+            Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Poison), Is.EqualTo(3));
+            Assert.That(combat.GetStatusDamagePerTick(CombatSide.Enemy, StatusEffectKind.Poison), Is.EqualTo(3 * 1.148).Within(.00001));
+            Assert.That(combat.PlayerArmor, Is.EqualTo(.4).Within(.00001));
+            combat.RemoveStatus(CombatSide.Player, StatusEffectKind.Plague, 99);
+            var run = new PrototypeRunState(20);
+            Assert.That(run.TryBeginBattle(), Is.True);
+            Assert.That(run.TryCompleteBattle(CombatResult.Defeat, 12, 10,
+                combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague)), Is.True);
+            Assert.That(run.TryReturnToPreparation(), Is.True);
+            Assert.That(run.TryBeginBattle(), Is.True);
+            Assert.That(run.PlagueStacks, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void PhoenixFeather_RollsBurnCriticalAndCreditsTheBurnSource()
+        {
+            var dagger = Item("burn-source", DataItem("IronDagger"), Vector2Int.zero);
+            var feather = Snapshot("feather", Gear("PhoenixFeather"), 2, ItemRarity.Common);
+            var combat = Battle(new[] { dagger, feather });
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Burn, 20, CombatSide.Player, "burn-source");
+            PeriodicStatusTickEvent burn = null;
+            combat.StatusTicked += tick => burn = tick;
+            combat.Advance(1);
+            Assert.That(burn.Critical, Is.True);
+            Assert.That(burn.Damage, Is.EqualTo(48).Within(.00001));
+            Assert.That(combat.CaptureStatistics().Items.Single(item => item.InstanceId == "burn-source").BurnDamage, Is.EqualTo(48).Within(.00001));
+        }
+
+        [Test]
+        public void ExecutionerAndRabbit_UseLiveThornsAndFreezeForHealing()
+        {
+            var gear = Gear("ExecutionersSpikedBall");
+            var executioner = Item("spiked-ball", gear.Item, new Vector2Int(2, 2), gear: gear.EffectFor(ItemRarity.Common));
+            var linked = Item("dagger", DataItem("IronDagger"), new Vector2Int(2, 0));
+            var rabbit = Snapshot("rabbit", Gear("SnowflakeRabbit"), 0, ItemRarity.Uncommon);
+            var combat = new CombatSimulation(new CombatantSnapshot("player", 100, new CombatLoadoutSnapshot(new[] { rabbit }), healingBonusPercent: 5),
+                new CombatantSnapshot("enemy", 100, new CombatLoadoutSnapshot(new[] { executioner, linked })), new AlwaysHitRandom());
+            Assert.That(PlacementEffectResolver.GetCells(combat.Enemy.Loadout, executioner).Select(cell => cell.Cell),
+                Is.EquivalentTo(new[] { new Vector2Int(2, 1), new Vector2Int(4, 2), new Vector2Int(1, 3), new Vector2Int(3, 4) }));
+            combat.ApplyNonAttackDamage(CombatSide.Enemy, CombatSide.Player, 10, CombatDamageKind.Other);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Freeze, 2, CombatSide.Player);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Thorns, 20);
+            var events = combat.Advance(5);
+            Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Thorns), Is.EqualTo(24));
+            Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Freeze), Is.EqualTo(4));
+            Assert.That(events.Single(e => e.Kind == ItemEffectKind.Heal).HealthRestored, Is.EqualTo(4 * .35 * .81).Within(.00001));
+        }
+
+        [Test]
+        public void CharmStealsThreeIndividualBuffStacksAtRankCooldown_WithoutTakingPlague()
+        {
+            var combat = Battle(new[] { Snapshot("charm", Gear("CharmAmulet"), 0, ItemRarity.Uncommon) });
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Haste, 2);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Lifesteal, 1);
+            combat.ApplyStatus(CombatSide.Enemy, StatusEffectKind.Plague, 10);
+            Assert.That(combat.Advance(3.49), Is.Empty);
+            Assert.That(combat.Advance(.01).Count(e => e.Kind == ItemEffectKind.ApplyStatus), Is.EqualTo(3));
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Haste), Is.EqualTo(2));
+            Assert.That(combat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Lifesteal), Is.EqualTo(1));
+            Assert.That(combat.GetStatusStacks(CombatSide.Enemy, StatusEffectKind.Plague), Is.EqualTo(10));
+        }
+
         private static ItemData DataItem(string name) => AssetDatabase.LoadAssetAtPath<ItemData>($"{Data}Items/Item_{name}.asset");
 
         private static CombatItemSnapshot Item(string id, ItemData item, Vector2Int origin, ItemRotation rotation = ItemRotation.None,
@@ -238,10 +365,9 @@ namespace BackpackAutoBattle.Tests.Items
                 new CombatantSnapshot("enemy", 100, new CombatLoadoutSnapshot(enemy ?? Array.Empty<CombatItemSnapshot>())),
                 random ?? new AlwaysHitRandom());
 
-        private sealed class MissAndProcRandom : System.Random
+        private sealed class NeverProcRandom : System.Random
         {
-            private int _rolls;
-            public override double NextDouble() => _rolls++ % 2 == 0 ? .99 : .49;
+            public override double NextDouble() => .99;
         }
     }
 }

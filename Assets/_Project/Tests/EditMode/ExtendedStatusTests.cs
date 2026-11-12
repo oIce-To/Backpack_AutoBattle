@@ -153,6 +153,13 @@ namespace BackpackAutoBattle.Tests.Combat
                     Assert.That(timed.GetStatusDefinition(kind).IsDebuff, Is.True);
                     continue;
                 }
+                if (kind == StatusEffectKind.Plague)
+                {
+                    var persistent = new CombatSimulation(Unit(Array.Empty<ItemData>()), Unit(Array.Empty<ItemData>()));
+                    Assert.That(persistent.GetStatusDefinition(kind).PercentPerStack, Is.EqualTo(.2f));
+                    Assert.That(persistent.GetStatusDefinition(kind).AffectedStat, Is.EqualTo(StatusStat.PoisonPower));
+                    continue;
+                }
                 var definition = AssetDatabase.LoadAssetAtPath<StatusEffectData>($"Assets/_Project/Data/StatusEffects/Status_{kind}.asset");
                 Assert.That(definition, Is.Not.Null); Assert.That(definition.PercentPerStack, Is.EqualTo(1));
             }

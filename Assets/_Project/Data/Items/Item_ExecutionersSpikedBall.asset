@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_ExecutionersSpikedBall
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: executioners_spiked_ball
+  _displayName: 처형자의 가시공
+  _category: 2
+  _tags: 0
+  _isUniqueGear: 1
+  _rarity: 0
+  _purchasePrice: 0
+  _inventorySprite: {fileID: 21300000, guid: f6b4ab848586467282ebfd500f69f24d, type: 3}
+  _displayColor: {r: 0.42, g: 0.45, b: 0.5, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  _placementEffects:
+  - _cells:
+    - {x: 0, y: -1}
+    - {x: 2, y: 0}
+    - {x: -1, y: 1}
+    - {x: 1, y: 2}
+    _targetFilter:
+      _filterByCategory: 0
+      _requiredTags: 0
+    _attackDamageBonus: 0
+    _triggersGearEffect: 1

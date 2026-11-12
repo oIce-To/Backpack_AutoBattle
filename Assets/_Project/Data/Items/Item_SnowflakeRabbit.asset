@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_SnowflakeRabbit
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: snowflake_rabbit
+  _displayName: 눈꽃송이 토끼
+  _category: 5
+  _tags: 8
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 5
+    _effects:
+    - _kind: 0
+  _isUniqueGear: 1
+  _rarity: 0
+  _purchasePrice: 0
+  _attackScaling:
+    _stat: 1
+    _coefficient: 0.35
+  _weaponStats:
+    _attackDamage: 3.5
+    _cooldownSeconds: 5
+    _accuracyPercent: 95
+    _criticalChancePercent: 5
+    _criticalDamagePercent: 200
+  _inventorySprite: {fileID: 21300000, guid: d6f8937b356645c7877d41616d04054c, type: 3}
+  _displayColor: {r: 0.65, g: 0.78, b: 0.9, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}

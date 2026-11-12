@@ -17,6 +17,7 @@ namespace BackpackAutoBattle.Prototype
         private float _baseCooldownSeconds;
         private ItemCategory _category;
         public string DisplayName { get; private set; }
+        public string WeaponType { get; private set; }
         public ItemRarity Rarity { get; private set; }
         public string Description { get; private set; }
         public string EffectDescription { get; private set; }
@@ -65,6 +66,7 @@ namespace BackpackAutoBattle.Prototype
             var result = new ItemTooltipContent
             {
                 DisplayName = item.DisplayName,
+                WeaponType = item.Category == ItemCategory.Weapon ? WeaponTypeLabel(item.Tags) : null,
                 Rarity = item.Rarity,
                 _category = item.Category,
                 Description = item.Description,
@@ -74,7 +76,8 @@ namespace BackpackAutoBattle.Prototype
                 IsRuntime = runtime != null
             };
             result.SetStats(item.BaseWeaponStats, (runtime as CombatWeapon)?.Stats);
-            result.SetActivation(item.Activation, runtime?.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds));
+            result.SetActivation(item.Activation, runtime?.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds),
+                (float)item.OwnerStats.ArmorGainMultiplier);
             string period = result.ColorNumber($"{result.CooldownSeconds:0.0#}", result.CooldownSeconds,
                 item.Activation.CooldownSeconds, lowerIsBetter: true);
             string gearDescription = item.GearEffect.Describe(item.OwnerStats, period, PlacementIconTag);
@@ -93,7 +96,7 @@ namespace BackpackAutoBattle.Prototype
             CriticalDamagePercent = runtime?.CriticalDamagePercent ?? baseStats.CriticalDamagePercent;
         }
 
-        private void SetActivation(ItemActivationData baseline, ItemActivationData runtime, float interval)
+        private void SetActivation(ItemActivationData baseline, ItemActivationData runtime, float interval, float armorGainMultiplier)
         {
             _baseCooldownSeconds = baseline.CooldownSeconds;
             CooldownSeconds = interval;
@@ -109,7 +112,10 @@ namespace BackpackAutoBattle.Prototype
                 string trigger = effect.Trigger == ItemEffectTrigger.OnHit
                     ? $"해당 {subject}가 적에게 명중할 때마다 " : $"{period}초마다 ";
                 if (effect.Kind == ItemEffectKind.GainArmor)
-                    AppendEffect(trigger + $"방어도를 {ColorNumber($"{effect.Amount:0.#}", effect.Amount, original.Amount)} 얻습니다.");
+                {
+                    float armor = effect.Amount * armorGainMultiplier;
+                    AppendEffect(trigger + $"방어도를 {ColorNumber($"{armor:0.#}", armor, original.Amount * armorGainMultiplier)} 얻습니다.");
+                }
                 else if (effect.Kind == ItemEffectKind.ApplyStatus && effect.Status != null)
                     AppendEffect(trigger + DescribeStatus(effect.Status,
                         ColorNumber(effect.Status.Stacks.ToString(), effect.Status.Stacks, original.Status?.Stacks ?? effect.Status.Stacks)));
@@ -152,6 +158,15 @@ namespace BackpackAutoBattle.Prototype
             };
             tags.Add(category);
             return string.Join(" ", tags);
+        }
+
+        private static string WeaponTypeLabel(ItemTags tags)
+        {
+            var types = new List<string>();
+            if ((tags & ItemTags.Melee) != 0) types.Add("근접");
+            if ((tags & ItemTags.Ranged) != 0) types.Add("원거리");
+            if ((tags & ItemTags.Magic) != 0) types.Add("마법");
+            return types.Count == 0 ? "무기" : string.Join(" / ", types) + " 무기";
         }
 
         private static string DescribeStatus(StatusApplication status, string stacks = null)

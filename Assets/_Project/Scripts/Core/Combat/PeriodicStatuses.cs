@@ -14,9 +14,10 @@ namespace BackpackAutoBattle.Combat
         public long Stacks { get; }
         public double Damage { get; }
         public DamageResolution Resolution { get; }
+        public bool Critical { get; }
         public PeriodicStatusTickEvent(double time, CombatSide source, CombatSide target, StatusEffectKind kind,
-            long stacks, double damage, DamageResolution resolution)
-        { Time = time; Source = source; Target = target; Kind = kind; Stacks = stacks; Damage = damage; Resolution = resolution; }
+            long stacks, double damage, DamageResolution resolution, bool critical = false)
+        { Time = time; Source = source; Target = target; Kind = kind; Stacks = stacks; Damage = damage; Resolution = resolution; Critical = critical; }
     }
 
     public sealed partial class CombatSimulation
@@ -39,7 +40,7 @@ namespace BackpackAutoBattle.Combat
 
         public double GetStatusDamagePerTick(CombatSide target, StatusEffectKind kind)
             => _periodicStates.TryGetValue((target, kind), out var state)
-                ? state.Contributions.Sum(c => c.Stacks * c.DamagePerStack) * GetIncomingDamageMultiplier(target) : 0;
+                ? state.Contributions.Sum(c => c.Stacks * c.DamagePerStack * StatusEffectMultiplier(c.Source, kind)) * GetIncomingDamageMultiplier(target) : 0;
 
         private void AddPeriodicStacks(CombatSide target, StatusEffectKind kind, CombatSide source, long stacks)
         {
@@ -53,8 +54,7 @@ namespace BackpackAutoBattle.Combat
             if (contribution == null)
             {
                 contribution = new PeriodicContribution { Source = source,
-                    DamagePerStack = GetStatusDefinition(kind).DamagePerStack((source == CombatSide.Player ? Player : Enemy).Stats)
-                        * StatusEffectMultiplier(source, kind) };
+                    DamagePerStack = GetStatusDefinition(kind).DamagePerStack(OwnerStats(source)) };
                 state.Contributions.Add(contribution);
             }
             contribution.Stacks = checked(contribution.Stacks + stacks);
@@ -64,7 +64,7 @@ namespace BackpackAutoBattle.Combat
         {
             if (stacks < 0 || !Enum.IsDefined(typeof(CombatSide), target) || !_statusDefinitions.ContainsKey(kind))
                 throw new ArgumentOutOfRangeException(nameof(stacks));
-            if (Result != CombatResult.Running || kind == StatusEffectKind.Enrage) return;
+            if (Result != CombatResult.Running || kind is StatusEffectKind.Enrage or StatusEffectKind.Plague) return;
             RemoveStatusStacks(target, kind, stacks);
             if (GetStatusDefinition(kind).AffectedStat == StatusStat.ActivationSpeed) RefreshItemSpeeds(target);
             if (GetStatusDefinition(kind).AffectedStat is StatusStat.Accuracy or StatusStat.CriticalChance) RefreshWeaponStatusModifiers(target);
@@ -116,13 +116,15 @@ namespace BackpackAutoBattle.Combat
             foreach (var contribution in state.Contributions.ToArray())
             {
                 if (Result != CombatResult.Running) break;
-                double damage = contribution.Stacks * contribution.DamagePerStack;
+                double damage = contribution.Stacks * contribution.DamagePerStack * StatusEffectMultiplier(contribution.Source, state.Kind);
+                bool critical = state.Kind == StatusEffectKind.Burn && RollBurnCritical(contribution.Source, state.Target);
+                if (critical) damage *= 2d * (1d + OwnerStats(contribution.Source).CriticalDamageBonusPercent / 100d);
                 // Keep the original one-damage-event-per-source-side rule; provenance must not change combat outcomes.
                 DamageResolution resolution = DealDamage(contribution.Source, state.Target, damage, CombatDamageKind.StatusEffect,
                     null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind, events);
                 UpdateCombatResult();
                 StatusTicked?.Invoke(new PeriodicStatusTickEvent(ElapsedSeconds, contribution.Source, state.Target,
-                    state.Kind, contribution.Stacks, damage * GetIncomingDamageMultiplier(state.Target), resolution));
+                    state.Kind, contribution.Stacks, damage * GetIncomingDamageMultiplier(state.Target), resolution, critical));
             }
             RemoveStatusStacks(state.Target, state.Kind, GetStatusDefinition(state.Kind).StacksLostPerTick);
         }

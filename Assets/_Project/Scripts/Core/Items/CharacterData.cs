@@ -12,8 +12,12 @@ namespace BackpackAutoBattle.Items
         public double Attack { get; }
         public double CriticalDamageBonusPercent { get; }
         public double CriticalChanceBonusPercent { get; }
+        public double ArmorGainBonusPercent { get; }
+        public double HealingBonusPercent { get; }
+        public double ArmorGainMultiplier => 1d + ArmorGainBonusPercent / 100d;
+        public double HealingMultiplier => 1d + HealingBonusPercent / 100d;
         public CharacterStatsSnapshot(double maximumHealth, double attack, double criticalDamageBonusPercent = 0,
-            double criticalChanceBonusPercent = 0)
+            double criticalChanceBonusPercent = 0, double armorGainBonusPercent = 0, double healingBonusPercent = 0)
         {
             if (!double.IsFinite(maximumHealth) || maximumHealth <= 0) throw new ArgumentOutOfRangeException(nameof(maximumHealth));
             if (!double.IsFinite(attack) || attack < 0) throw new ArgumentOutOfRangeException(nameof(attack));
@@ -21,9 +25,15 @@ namespace BackpackAutoBattle.Items
                 throw new ArgumentOutOfRangeException(nameof(criticalDamageBonusPercent));
             if (!double.IsFinite(criticalChanceBonusPercent) || criticalChanceBonusPercent < 0)
                 throw new ArgumentOutOfRangeException(nameof(criticalChanceBonusPercent));
+            if (!double.IsFinite(armorGainBonusPercent) || armorGainBonusPercent < 0)
+                throw new ArgumentOutOfRangeException(nameof(armorGainBonusPercent));
+            if (!double.IsFinite(healingBonusPercent) || healingBonusPercent < 0)
+                throw new ArgumentOutOfRangeException(nameof(healingBonusPercent));
             MaximumHealth = maximumHealth; Attack = attack;
             CriticalDamageBonusPercent = criticalDamageBonusPercent;
             CriticalChanceBonusPercent = criticalChanceBonusPercent;
+            ArmorGainBonusPercent = armorGainBonusPercent;
+            HealingBonusPercent = healingBonusPercent;
         }
     }
 
