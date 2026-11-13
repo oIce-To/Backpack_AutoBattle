@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using BackpackAutoBattle.Items;
-using BackpackAutoBattle.Stages;
 using BackpackAutoBattle.Progression;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,78 +11,179 @@ namespace BackpackAutoBattle.Prototype
     {
         public RectTransform Root { get; }
         private readonly Image _portrait;
-        private readonly Text _name, _health, _attack, _stage, _error, _level;
+        private readonly Text _name, _health, _attack, _error, _level, _emptyInventory;
+        private readonly PrototypeItemTooltip _tooltip;
+        private readonly PrototypeMenuPopup _inventory, _mail;
+        private readonly ScrollRect _inventoryScroll;
+        private PlayerProgress _profile;
+        private IReadOnlyList<UniqueGearData> _gear;
 
-        public PrototypeMainMenuScreen(Transform canvas, Action start, Action quit, Action characters, Action stages)
+        public PrototypeMainMenuScreen(Transform canvas, PrototypeItemTooltip tooltip, Action quit)
         {
-            Image background = Image(canvas, "Main Menu Screen", new Color(.035f, .04f, .055f));
-            Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
+            _tooltip = tooltip;
+            var background = SelectionUi.Image(canvas, "Main Menu Screen", new Color(.035f, .04f, .055f));
+            Root = background.rectTransform;
+            BackpackPrototypeController.Stretch(Root);
             background.raycastTarget = true;
-            Image panel = Image(Root, "Main Menu Panel", new Color(.07f, .075f, .085f));
-            Place(panel.rectTransform, Vector2.zero, new Vector2(1100, 610));
-            _portrait = Image(panel.transform, "Main Character Illustration", Color.white);
-            Place(_portrait.rectTransform, new Vector2(-280, 0), new Vector2(390, 580));
+            var panel = SelectionUi.Image(Root, "Main Menu Panel", new Color(.07f, .075f, .085f));
+            SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(1100, 610));
+
+            var profile = MakeCard(panel.transform, "Main Profile Card", new Vector2(-347, 193), new Vector2(296, 79));
+            SelectionUi.Label(profile, "Main Profile Name", "플레이어", 25, Vector2.zero, new Vector2(256, 48)).alignment = TextAnchor.MiddleLeft;
+
+            var stats = MakeCard(panel.transform, "Main Character Card", new Vector2(-347, 23), new Vector2(296, 184));
+            _name = SelectionUi.Label(stats, "Main Character Name", "", 27, new Vector2(-43, 49), new Vector2(170, 36));
+            _name.alignment = TextAnchor.MiddleLeft;
+            _level = SelectionUi.Label(stats, "Main Character Level", "", 19, new Vector2(85, 49), new Vector2(90, 36));
+            _level.alignment = TextAnchor.MiddleRight;
+            _level.color = new Color(.88f, .77f, .55f);
+            _health = SelectionUi.Label(stats, "Main Character Health", "", 22, new Vector2(0, 2), new Vector2(256, 35));
+            _health.alignment = TextAnchor.MiddleLeft;
+            _attack = SelectionUi.Label(stats, "Main Character Attack", "", 22, new Vector2(0, -43), new Vector2(256, 35));
+            _attack.alignment = TextAnchor.MiddleLeft;
+
+            _portrait = SelectionUi.Image(panel.transform, "Main Character Illustration", Color.white);
+            SelectionUi.Place(_portrait.rectTransform, new Vector2(12, -1), new Vector2(371, 523));
             _portrait.preserveAspect = true;
-            // Use a rectangle so the illustration's authored background and soft edge are retained.
             _portrait.useSpriteMesh = false;
-            Image divider = Image(panel.transform, "Main Menu Divider", new Color(.64f, .47f, .26f, .5f));
-            Place(divider.rectTransform, new Vector2(-46, 0), new Vector2(1, 520));
-            Text title = Label(panel.transform, "Main Menu Title", "BACKPACK\nAUTO BATTLE", 36,
-                new Vector2(232, 216), new Vector2(450, 100));
-            title.color = new Color(.95f, .88f, .72f);
-            _level = Label(panel.transform, "Main Character Level", "", 19, new Vector2(232, 150), new Vector2(430, 24));
-            _name = Label(panel.transform, "Main Character Name", "", 36, new Vector2(232, 112), new Vector2(430, 52));
-            _health = Label(panel.transform, "Main Character Health", "", 23, new Vector2(128, 65), new Vector2(192, 40));
-            _attack = Label(panel.transform, "Main Character Attack", "", 23, new Vector2(338, 65), new Vector2(192, 40));
-            Button(panel.transform, "Main Character Select Button", "캐릭터 선택", new Vector2(232, 12), new Vector2(350, 38),
-                new Color(.15f, .18f, .23f), characters);
-            _stage = Label(panel.transform, "Main Stage Summary", "", 17, new Vector2(232, -54), new Vector2(450, 70));
-            _stage.color = new Color(.69f, .73f, .8f);
-            Button(panel.transform, "Main Stage Select Button", "스테이지 선택", new Vector2(232, -112), new Vector2(350, 38),
-                new Color(.15f, .18f, .23f), stages);
-            Button(panel.transform, "Main Start Button", "스테이지 시작", new Vector2(232, -166), new Vector2(350, 52),
-                new Color(.39f, .29f, .17f), start);
-            Button(panel.transform, "Main Quit Button", "게임 종료", new Vector2(232, -225), new Vector2(350, 40),
-                new Color(.15f, .18f, .23f), quit);
-            _error = Label(panel.transform, "Main Menu Error", "", 14, new Vector2(232, -275), new Vector2(450, 42));
-            _error.color = new Color(1, .45f, .4f); _error.fontStyle = FontStyle.Normal;
+
+            AddShortcut(panel.transform, "Main Inventory Button", "가방", new Vector2(415, 163), "UI/HomeBackpackIcon", ShowInventory);
+            AddShortcut(panel.transform, "Main Mail Button", "우편함", new Vector2(415, 40), "UI/HomeMailboxIcon", () => _mail.Show());
+            SelectionUi.Button(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247), new Vector2(125, 38), quit);
+            _error = SelectionUi.Label(panel.transform, "Main Menu Error", "", 14, new Vector2(-344, -252), new Vector2(300, 62));
+            _error.color = new Color(1f, .45f, .4f);
+
+            _inventory = new PrototypeMenuPopup(canvas, "Main Inventory Popup", "가방", new Vector2(674, 506), ClosePopup, PrototypeMenuPopup.CloseStyle.Pixel);
+            var viewport = SelectionUi.Image(_inventory.Panel, "Main Blueprint Viewport", new Color(.065f, .08f, .11f));
+            SelectionUi.Place(viewport.rectTransform, new Vector2(0, -22), new Vector2(608, 390));
+            viewport.raycastTarget = true;
+            viewport.gameObject.AddComponent<RectMask2D>();
+            var content = new GameObject("Main Blueprint Items", typeof(RectTransform));
+            content.transform.SetParent(viewport.transform, false);
+            var contentRect = (RectTransform)content.transform;
+            contentRect.anchorMin = new Vector2(0, 1);
+            contentRect.anchorMax = Vector2.one;
+            contentRect.pivot = new Vector2(.5f, 1);
+            _inventoryScroll = viewport.gameObject.AddComponent<ScrollRect>();
+            _inventoryScroll.viewport = viewport.rectTransform;
+            _inventoryScroll.content = contentRect;
+            _inventoryScroll.horizontal = false;
+            _inventoryScroll.movementType = ScrollRect.MovementType.Clamped;
+            _emptyInventory = SelectionUi.Label(viewport.transform, "Main Blueprint Empty", "보유한 설계도가 없습니다.", 19, Vector2.zero, new Vector2(525, 55));
+
+            _mail = new PrototypeMenuPopup(canvas, "Main Mail Popup", "우편함", new Vector2(490, 274), ClosePopup, PrototypeMenuPopup.CloseStyle.Pixel);
+            SelectionUi.Label(_mail.Panel, "Main Mail Empty", "수령할 편지가 없습니다.", 20, new Vector2(0, -15), new Vector2(418, 55));
             Hide();
         }
 
-        public void Show(CharacterData character, StageData stage, StageProgress progress, PlayerProgress profile, CharacterStatsSnapshot stats)
+        internal bool IsPopupOpen => _inventory.IsOpen || _mail.IsOpen;
+
+        public void Show(CharacterData character, PlayerProgress profile, CharacterStatsSnapshot stats, IReadOnlyList<UniqueGearData> gear)
         {
-            int level = profile.GetCharacterLevel(character?.CharacterId);
-            _level.text = $"Lv. {level}";
+            _profile = profile;
+            _gear = gear;
+            _level.text = $"Lv. {profile.GetCharacterLevel(character?.CharacterId)}";
             _portrait.sprite = character?.Portrait;
             _portrait.enabled = _portrait.sprite != null;
-            _name.text = character != null ? character.DisplayName : "플레이어";
+            _name.text = character != null ? character.DisplayName : "캐릭터";
             _health.text = $"체력  {stats.MaximumHealth:0.##}";
             _attack.text = $"공격력  {stats.Attack:0.##}";
-            _stage.text = stage != null ? $"{stage.DisplayName}\n{stage.RoundCount}라운드 · "
-                + (progress.Cleared ? "클리어" : progress.HighestRound > 0 ? $"최고 {progress.HighestRound}라운드" : "도전 기록 없음")
-                : "스테이지가 지정되지 않았습니다.";
             _error.text = "";
-            Root.gameObject.SetActive(true); Root.SetAsLastSibling();
+            Root.gameObject.SetActive(true);
+            Root.SetAsLastSibling();
         }
-        public void ShowError(string error) => _error.text = error.Split('\n')[0];
-        public void Hide() => Root.gameObject.SetActive(false);
-        private static void Place(RectTransform rect, Vector2 position, Vector2 size)
-            => BackpackPrototypeController.SetRect(rect, Vector2.one * .5f, position, size);
-        private static Image Image(Transform parent, string name, Color color)
+
+        private void ShowInventory()
         {
-            var obj = new GameObject(name, typeof(RectTransform), typeof(Image)); obj.transform.SetParent(parent, false);
-            Image image = obj.GetComponent<Image>(); image.color = color; image.raycastTarget = false; return image;
+            if (_profile == null || IsPopupOpen) return;
+            RectTransform content = _inventoryScroll.content;
+            foreach (Transform previous in content)
+            {
+                previous.gameObject.SetActive(false);
+                UnityEngine.Object.Destroy(previous.gameObject);
+            }
+            const int columns = 5;
+            const float stride = 115f;
+            int count = 0;
+            foreach (UniqueGearData definition in _gear)
+            {
+                long quantity = _profile.GetBlueprints(definition.GearId);
+                if (quantity <= 0) continue;
+                var tile = SelectionUi.Image(content, "Blueprint " + definition.GearId, SelectionUi.Idle);
+                tile.raycastTarget = true;
+                BackpackPrototypeController.SetRect(tile.rectTransform, new Vector2(.5f, 1),
+                    new Vector2((count % columns - 2) * stride, -62 - count / columns * stride), Vector2.one * 103);
+                PrototypeGearBadge.RenderBorder(tile.transform, ItemRarity.Common);
+                if (definition.Icon != null)
+                {
+                    var illustration = SelectionUi.Image(tile.transform, "Blueprint Item Illustration", Color.white);
+                    illustration.sprite = definition.Icon;
+                    illustration.preserveAspect = true;
+                    SelectionUi.Place(illustration.rectTransform, new Vector2(2, 4), Vector2.one * 79);
+                }
+                var paper = new GameObject("Blueprint Paper Icon", typeof(RectTransform), typeof(PrototypeEconomyIcon));
+                paper.transform.SetParent(tile.transform, false);
+                var glyph = paper.GetComponent<PrototypeEconomyIcon>();
+                glyph.SetKind(EconomyIconKind.Blueprint);
+                glyph.raycastTarget = false;
+                SelectionUi.Place(glyph.rectTransform, definition.Icon == null ? Vector2.zero : new Vector2(-30, 29),
+                    Vector2.one * (definition.Icon == null ? 61 : 28));
+                var label = SelectionUi.Label(tile.transform, "Blueprint Quantity", CompactNumber.Format(quantity), 19,
+                    new Vector2(1, -36), new Vector2(84, 24));
+                label.alignment = TextAnchor.MiddleRight;
+                var outline = label.gameObject.AddComponent<Outline>();
+                outline.effectColor = new Color(.035f, .04f, .07f);
+                outline.effectDistance = new Vector2(1.3f, -1.3f);
+                tile.gameObject.AddComponent<PrototypeBlueprintHover>().Bind(_tooltip, definition.Item.DisplayName + " 설계도", quantity);
+                count++;
+            }
+            _emptyInventory.gameObject.SetActive(count == 0);
+            content.sizeDelta = new Vector2(0f, Mathf.Max(390, Mathf.CeilToInt(count / (float)columns) * stride + 8));
+            _inventory.Show();
+            _inventoryScroll.StopMovement();
+            _inventoryScroll.verticalNormalizedPosition = 1;
         }
-        private static Text Label(Transform parent, string name, string value, int size, Vector2 position, Vector2 dimensions)
+
+        internal void ClosePopup()
         {
-            Text text = BackpackPrototypeController.CreateText(parent, name, value, size, FontStyle.Bold, TextAnchor.MiddleCenter);
-            text.raycastTarget = false; Place(text.rectTransform, position, dimensions); return text;
+            if (!IsPopupOpen) return;
+            _tooltip.HideAll();
+            _inventory.Hide();
+            _mail.Hide();
         }
-        private static void Button(Transform parent, string name, string label, Vector2 position, Vector2 size, Color color, Action action)
+
+        public void ShowError(string error) => _error.text = (error ?? "").Split('\n')[0];
+
+        public void Hide()
         {
-            Image image = Image(parent, name, color); Place(image.rectTransform, position, size); image.raycastTarget = true;
-            var button = image.gameObject.AddComponent<Button>(); button.onClick.AddListener(() => action());
-            Label(image.transform, name + " Label", label, 21, Vector2.zero, size - new Vector2(12, 0));
+            ClosePopup();
+            Root.gameObject.SetActive(false);
+        }
+
+        private static RectTransform MakeCard(Transform parent, string name, Vector2 position, Vector2 size)
+        {
+            var card = new GameObject(name, typeof(RectTransform), typeof(PrototypeRoundedPanel));
+            card.transform.SetParent(parent, false);
+            var face = card.GetComponent<PrototypeRoundedPanel>();
+            face.color = new Color(.12f, .15f, .20f);
+            face.DrawBorder = false;
+            face.raycastTarget = false;
+            SelectionUi.Place(face.rectTransform, position, size);
+            return face.rectTransform;
+        }
+
+        private static void AddShortcut(Transform parent, string name, string caption, Vector2 center, string spritePath, Action open)
+        {
+            var icon = SelectionUi.Image(parent, name, Color.white);
+            icon.sprite = Resources.Load<Sprite>(spritePath);
+            icon.preserveAspect = true;
+            icon.raycastTarget = true;
+            SelectionUi.Place(icon.rectTransform, center + new Vector2(0, 10), new Vector2(84, 78));
+            var button = icon.gameObject.AddComponent<Button>();
+            button.targetGraphic = icon;
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
+            button.onClick.AddListener(() => open());
+            SelectionUi.Label(parent, name + " Label", caption, 19, center + new Vector2(0, -45), new Vector2(112, 27));
         }
     }
 }

@@ -80,7 +80,12 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _name, _details, _record;
         private readonly Button _confirm;
         private readonly Button _normalMode, _mineMode, _sweep;
-        private readonly Text _error;
+        private readonly Text _error, _entryCharacter, _entryLevel, _entryError;
+        private readonly Image _entryPortrait;
+        private readonly PrototypeMenuPopup _entry;
+        private readonly RectTransform[] _entrySlots = new RectTransform[3];
+        private readonly Text[] _entryGearNames = new Text[3];
+        private StageData _pendingStage;
         private readonly RectTransform _rewardRoot;
         private readonly RectTransform[] _rewardSlots = new RectTransform[3];
         private readonly Text[] _rewardAmounts = new Text[3];
@@ -90,7 +95,8 @@ namespace BackpackAutoBattle.Prototype
         private StageData _selected;
         private PlayerProgress _progress;
         private string[] _stageOrder = Array.Empty<string>();
-        public PrototypeStageSelectionScreen(Transform canvas, Action<StageData> confirm, Action close, Action<StageData> sweep)
+        public PrototypeStageSelectionScreen(Transform canvas, Action<StageData> previewEntry, Action<StageData> enter,
+            Action close, Action<StageData> sweep)
         {
             _frame = new SelectionFrame(canvas, "Stage", "스테이지 선택", close);
             _name = SelectionUi.Label(_frame.Panel, "Stage Preview Name", "", 29, new Vector2(195, 158), new Vector2(580, 84));
@@ -98,8 +104,8 @@ namespace BackpackAutoBattle.Prototype
             _details.fontStyle = FontStyle.Normal; _details.lineSpacing = 1.2f;
             _record = SelectionUi.Label(_frame.Panel, "Stage Preview Progress", "", 22, new Vector2(195, -138), new Vector2(580, 78));
             _record.color = new Color(.95f, .88f, .72f);
-            _confirm = SelectionUi.Button(_frame.Panel, "Stage Confirm Button", "선택 완료", new Vector2(240, -247), new Vector2(300, 64),
-                () => { if (_confirm.interactable && IsUnlocked(_selected)) confirm(_selected); });
+            _confirm = SelectionUi.Button(_frame.Panel, "Stage Confirm Button", "스테이지 입장", new Vector2(240, -247), new Vector2(300, 64),
+                () => { if (_confirm.interactable && IsUnlocked(_selected) && !IsEntryOpen) previewEntry(_selected); });
             _normalMode = SelectionUi.Button(_frame.Panel, "Normal Stage Category", "일반 스테이지", new Vector2(-440, 211), new Vector2(155, 30), () => SwitchCategory(false));
             _mineMode = SelectionUi.Button(_frame.Panel, "Mine Stage Category", "기원의 광산", new Vector2(-270, 211), new Vector2(155, 30), () => SwitchCategory(true));
             var viewport = (RectTransform)_frame.Content.parent;
@@ -149,6 +155,66 @@ namespace BackpackAutoBattle.Prototype
                 new Vector2(0, -24), new Vector2(160, 18));
             _error = SelectionUi.Label(_frame.Panel, "Stage Economy Error", "", 14, new Vector2(195, -201), new Vector2(580, 31));
             _error.color = new Color(1, .45f, .4f);
+
+            _entry = new PrototypeMenuPopup(canvas, "Stage Entry Popup", "", new Vector2(704, 518),
+                CloseEntry, PrototypeMenuPopup.CloseStyle.None);
+            RectTransform entryPanel = _entry.Panel;
+            _entry.Title.resizeTextForBestFit = true;
+            _entry.Title.resizeTextMinSize = 18;
+            _entry.Title.resizeTextMaxSize = 27;
+            _entryPortrait = SelectionUi.Image(entryPanel, "Stage Entry Illustration", Color.white);
+            SelectionUi.Place(_entryPortrait.rectTransform, new Vector2(-177, 17), new Vector2(264, 268));
+            _entryPortrait.preserveAspect = true;
+            _entryCharacter = SelectionUi.Label(entryPanel, "Stage Entry Character", "", 25, new Vector2(142, 115), new Vector2(334, 34));
+            _entryLevel = SelectionUi.Label(entryPanel, "Stage Entry Level", "", 18, new Vector2(142, 84), new Vector2(334, 25));
+            _entryLevel.color = new Color(.91f, .80f, .58f);
+            string[] slotLabels = { "무기", "방어구", "장신구 / 펫" };
+            for (int i = 0; i < _entrySlots.Length; i++)
+            {
+                var slot = SelectionUi.Image(entryPanel, "Stage Entry Slot " + (UniqueGearSlot)i, SelectionUi.Idle).rectTransform;
+                SelectionUi.Place(slot, new Vector2(28 + i * 114, 1), Vector2.one * 92);
+                _entrySlots[i] = slot;
+                SelectionUi.Label(slot, "Stage Entry Slot Label", slotLabels[i], 13, new Vector2(0, -61), new Vector2(108, 22));
+                var name = SelectionUi.Label(slot, "Stage Entry Gear Name", "", 13, new Vector2(0, -85), new Vector2(108, 24));
+                name.resizeTextForBestFit = true; name.resizeTextMinSize = 9; name.resizeTextMaxSize = 13;
+                _entryGearNames[i] = name;
+            }
+            _entryError = SelectionUi.Label(entryPanel, "Stage Entry Error", "", 15, new Vector2(0, -151), new Vector2(634, 46));
+            _entryError.color = _error.color;
+            SelectionUi.Button(entryPanel, "Stage Entry Back Button", "뒤로 가기", new Vector2(-131, -211), new Vector2(232, 48), CloseEntry);
+            var entryButton = SelectionUi.Button(entryPanel, "Stage Entry Start Button", "스테이지 입장",
+                new Vector2(131, -211), new Vector2(232, 48), () =>
+                {
+                    if (IsEntryOpen && _pendingStage != null) enter(_pendingStage);
+                });
+            entryButton.GetComponent<Image>().color = SelectionUi.Selected;
+        }
+
+        internal bool IsEntryOpen => _entry.IsOpen;
+
+        internal void ShowEntry(StageData stage, CharacterData character, PlayerProgress progress, Func<string, UniqueGearData> findGear)
+        {
+            _pendingStage = stage;
+            _entry.Title.text = stage.DisplayName;
+            _entryCharacter.text = character.DisplayName;
+            _entryLevel.text = $"Lv. {progress.GetCharacterLevel(character.CharacterId)}";
+            _entryPortrait.sprite = character.Portrait;
+            _entryPortrait.enabled = _entryPortrait.sprite != null;
+            for (int i = 0; i < _entrySlots.Length; i++)
+            {
+                var gear = progress.GetEquippedGear(character.CharacterId, (UniqueGearSlot)i);
+                var definition = gear == null ? null : findGear(gear.GearId);
+                PrototypeGearBadge.Render(_entrySlots[i], definition, gear);
+                _entryGearNames[i].text = definition == null ? "비어 있음" : definition.Item.DisplayName;
+            }
+            _entryError.text = "";
+            _entry.Show();
+        }
+
+        internal void CloseEntry()
+        {
+            _pendingStage = null;
+            _entry.Hide();
         }
         public void Show(IReadOnlyList<StageData> stages, StageData current, PlayerProgress progress, IReadOnlyList<StageData> mines = null)
         {
@@ -223,7 +289,11 @@ namespace BackpackAutoBattle.Prototype
             _progress = progress;
             RefreshTickets();
         }
-        public void ShowError(string error) => _error.text = error ?? "";
-        public void Hide() => _frame.Hide();
+        public void ShowError(string error) => (IsEntryOpen ? _entryError : _error).text = error ?? "";
+        public void Hide()
+        {
+            CloseEntry();
+            _frame.Hide();
+        }
     }
 }

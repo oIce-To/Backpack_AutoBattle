@@ -54,7 +54,8 @@ namespace BackpackAutoBattle.Prototype
 
         public bool ShowMainMenuTab(MainMenuTab tab)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen
+                || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
             _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide(); _equipment.Hide();
             switch (tab)
             {
@@ -75,7 +76,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TrySelectCharacter(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null || string.IsNullOrWhiteSpace(id)) return false;
             _characterData = character; _progress.SelectCharacter(id);
@@ -83,7 +84,7 @@ namespace BackpackAutoBattle.Prototype
         }
         public bool TrySelectStage(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen) return false;
             StageData stage = AllStages.FirstOrDefault(s => s.StageId == id);
             if (stage == null || !IsStageUnlocked(id) || stage.GetValidationErrors().Count > 0) return false;
             _stageData = stage; _progress.SelectStage(id);
@@ -92,7 +93,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryLevelUpCharacter(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _progressStore == null) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _stageSelection.IsEntryOpen || _progressStore == null) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null) return false;
             var candidate = PlayerProgress.FromData(_progress.Export());
@@ -124,24 +125,44 @@ namespace BackpackAutoBattle.Prototype
         }
         private void RefreshMainMenu()
         {
-            _mainMenu.Show(_characterData, _stageData, _progress.GetStage(_stageData?.StageId), _progress, GetCharacterStats(_characterData));
+            _mainMenu.Show(_characterData, _progress, GetCharacterStats(_characterData), AvailableGear);
             if (!string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
 
-        public bool TryStartRun()
+        private void ShowStageEntry(StageData stage)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
-            if (!IsStageUnlocked(_stageData?.StageId))
+            if (!IsMainMenu || ActiveMainTab != MainMenuTab.Stages || IsSettingsOpen || _rewardPopup.IsOpen
+                || _stageSelection.IsEntryOpen || !IsStageUnlocked(stage?.StageId)) return;
+            if (_characterData == null)
             {
-                _mainMenu.ShowError("이전 스테이지를 먼저 클리어해주세요.");
+                _stageSelection.ShowError("출전할 캐릭터를 선택해주세요.");
+                return;
+            }
+            _itemTooltip.HideAll();
+            _stageSelection.ShowEntry(stage, _characterData, _progress, FindGearDefinition);
+        }
+
+        public bool TryStartRun() => !_stageSelection.IsEntryOpen && TryEnterStage(_stageData);
+
+        private bool TryEnterStage(StageData stage)
+        {
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen) return false;
+            if (!IsStageUnlocked(stage?.StageId))
+            {
+                ShowEconomyError("이전 스테이지를 먼저 클리어해주세요.");
                 return false;
             }
+            StageData previous = _stageData;
+            _stageData = stage;
             if (!TryResolveEnemy(1, out _, out string error))
             {
-                _mainMenu.ShowError(error);
+                _stageData = previous;
+                ShowEconomyError(error);
                 return false;
             }
-            return StartNewRun();
+            if (StartNewRun()) return true;
+            _stageData = previous;
+            return false;
         }
 
         public bool TryReturnToMainMenu()

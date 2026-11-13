@@ -32,7 +32,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Initialize(CombatItemSnapshot item, CombatSide side, float pitch,
             Action<CombatItemSnapshot> inspect, PrototypeItemTooltip tooltip, Func<ItemTooltipContent> tooltipContent,
-            Action showPlacement = null, Action hidePlacement = null)
+            Action showPlacement = null, Action hidePlacement = null, bool animateCooldown = true)
         {
             Snapshot = item;
             Side = side;
@@ -50,7 +50,7 @@ namespace BackpackAutoBattle.Prototype
             RectTransform rect = (RectTransform)transform;
             rect.pivot = new Vector2(0f, 1f);
             rect.sizeDelta = new Vector2(width * pitch - 6f, _itemHeight);
-            bool hasCycle = item.Activation.HasCycle;
+            bool hasCycle = animateCooldown && item.Activation.HasCycle;
             Color.RGBToHSV(item.DisplayColor, out float hue, out float saturation, out float brightness);
             Color muted = Color.HSVToRGB(hue, saturation * 0.18f, Mathf.Lerp(brightness, 0.65f, 0.3f));
             muted.a = item.DisplayColor.a;
@@ -149,7 +149,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Left) _inspect(Snapshot);
+            if (eventData.button == PointerEventData.InputButton.Left) _inspect?.Invoke(Snapshot);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

@@ -39,7 +39,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Text("Main Character Name"), Is.EqualTo("알렌"));
             Assert.That(Text("Main Character Health"), Is.EqualTo("체력  52.5"));
             Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  10.5"));
-            Assert.That(Text("Main Stage Summary"), Does.Contain("12라운드"));
+            Assert.That(Text("Main Profile Name"), Is.EqualTo("플레이어"));
             var portrait = Find("Main Character Illustration").GetComponent<Image>();
             Assert.That(portrait.sprite, Is.SameAs(Character().Portrait)); Assert.That(portrait.sprite, Is.Not.Null);
             Assert.That(portrait.sprite.texture.name, Is.EqualTo("allen-standing-approved"));
@@ -52,14 +52,17 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.TryRerollShop(), Is.False); Assert.That(_controller.AdvanceRound(), Is.False);
             Assert.That(_controller.TryReturnToMainMenu(), Is.False);
             Assert.That(Find("Main Quit Button").GetComponent<Button>().interactable, Is.True);
-            var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(Find("Main Start Button")), hits);
-            Assert.That(hits.Any(hit => hit.gameObject == Find("Main Start Button").gameObject), Is.True,
-                $"Hits: {string.Join(", ", hits.Select(hit => hit.gameObject.name))}; "
-                + $"depth: {Find("Main Start Button").GetComponent<Image>().depth}");
+            Assert.That(Find("Main Inventory Button").GetComponent<Image>().sprite?.name, Is.EqualTo("HomeBackpackIcon"));
+            Assert.That(Find("Main Mail Button").GetComponent<Image>().sprite?.name, Is.EqualTo("HomeMailboxIcon"));
+            var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(Find("Main Inventory Button")), hits);
+            Assert.That(hits.First().gameObject, Is.SameAs(Find("Main Inventory Button").gameObject));
+            hits.Clear();
+            EventSystem.current.RaycastAll(Pointer(Find("Main Inventory Button Label")), hits);
+            Assert.That(hits.Any(hit => hit.gameObject == Find("Main Inventory Button").gameObject), Is.False);
             foreach (var label in Find("Main Menu Panel").GetComponentsInChildren<Text>())
                 Assert.That(label.preferredHeight, Is.LessThanOrEqualTo(label.rectTransform.rect.height + 1), label.name);
             Capture("MainMenuAllen.png");
-            Click("Main Start Button");
+            EnterStage();
             Assert.That(_controller.IsMainMenu, Is.False); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.TryStartRun(), Is.False);
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Lives, Is.EqualTo(4));
@@ -72,7 +75,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator GameOver_ReturnsToMain_ClearsOldItemsOffersAndStatistics_ThenStartsNewRun()
         {
-            yield return Setup(); Click("Main Start Button");
+            yield return Setup(); EnterStage();
             var slot = _controller.GetComponentsInChildren<PrototypeShopSlotView>().First();
             slot.Bind(new ShopOffer(_controller.ItemCatalog.Single(i => i.ItemId == "healing_potion"), true));
             _controller.TryToggleShopLock(slot); var previousOffer = slot.Offer;
@@ -96,7 +99,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.GetComponentsInChildren<PrototypeShopSlotView>(true).All(s => s.Offer == null), Is.True);
             Assert.That(_controller.CurrentShopItems, Is.Empty); Assert.That(_controller.ItemTooltip.IsVisible, Is.False);
             Assert.That(_controller.TryRestartRun(), Is.False); Assert.That(_controller.RequestRunRestart(), Is.False);
-            Click("Main Start Button");
+            EnterStage();
             Assert.That(_controller.Lives, Is.EqualTo(4)); Assert.That(_controller.Gold, Is.EqualTo(20));
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.RunResult, Is.Null);
             Assert.That(slot.Offer, Is.Not.SameAs(previousOffer)); Assert.That(slot.Offer.IsLocked, Is.False);
@@ -106,7 +109,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator ClearedRun_ReturnsToMainAndRecapturesOutsideStatsOnlyOnEntry()
         {
-            yield return Setup(); Click("Main Start Button");
+            yield return Setup(); EnterStage();
             for (int i = 0; i < 11; i++) _controller.AdvanceRound();
             _controller.TryStartBattle(); var sword = _controller.ActiveCombat.PlayerWeapons.First();
             sword.Stats.AttackDamage = 10000; sword.Stats.AccuracyPercent = 100; _controller.TickCombat(2);
@@ -120,7 +123,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(Text("Main Character Health"), Is.EqualTo("체력  84"));
                 Assert.That(Text("Main Character Attack"), Is.EqualTo("공격력  21"));
                 Capture("MainMenuAfterClear.png");
-                Click("Main Start Button");
+                EnterStage();
                 Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(84));
                 Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(21));
                 Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(result.Round, Is.EqualTo(12));
@@ -143,6 +146,15 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); _controller.BattleController.AutoTick = false;
             Assert.That(_controller.IsMainMenu, Is.False); Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.CaptureCombatSnapshot().Items.Single().ItemId, Is.EqualTo("knight_sword"));
+        }
+
+        private void EnterStage()
+        {
+            Click("Main Tab Stages");
+            Assert.That(Text("Stage Confirm Button Label"), Is.EqualTo("스테이지 입장"));
+            Click("Stage Confirm Button");
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.MainMenu));
+            Click("Stage Entry Start Button");
         }
 
         private void Lose()

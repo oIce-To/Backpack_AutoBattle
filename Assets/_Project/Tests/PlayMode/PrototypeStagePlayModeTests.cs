@@ -30,11 +30,20 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.CurrentRound, Is.EqualTo(2));
             Assert.That(second.MaximumHealth, Is.EqualTo(35d));
             Assert.That(second.Loadout.Items.Single().BaseWeaponStats.AttackDamage, Is.EqualTo(6f));
-            string preview = Text(controller, "Next Enemy").text;
-            Assert.That(preview, Does.Contain("체력 35"));
-            Assert.That(preview, Does.Contain("공격력 6"));
-            Assert.That(preview, Does.Contain("6×6"));
+            Assert.That(controller.IsEnemyPreviewOpen, Is.False);
             PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound2Preparation.png");
+            Assert.That(controller.TryOpenEnemyPreview(), Is.True);
+            Assert.That(Text(controller, "Enemy Preview Health").text, Is.EqualTo("체력 35 / 35"));
+            Assert.That(Find(controller, "Enemy Preview Illustration").GetComponent<Image>().sprite, Is.SameAs(second.Illustration));
+            Assert.That(Find(controller, "Enemy Preview Backpack").GetComponentsInChildren<Image>()
+                .Count(cell => cell.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(36));
+            var previewItem = Find(controller, "Enemy Preview Backpack").GetComponentInChildren<PrototypeBattleItemView>();
+            Assert.That(previewItem.Snapshot.BaseWeaponStats.AttackDamage, Is.EqualTo(6f));
+            Assert.That(controller.TryStartBattle(), Is.False);
+            Assert.That(controller.AdvanceRound(), Is.False);
+            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "EnemyPreview.png");
+            Find(controller, "Enemy Preview Popup Close").GetComponent<Button>().onClick.Invoke();
+            Assert.That(controller.IsEnemyPreviewOpen, Is.False);
             Assert.That(controller.TryStartBattle(), Is.True);
             Assert.That(controller.ActiveCombat.Enemy, Is.SameAs(second));
             Assert.That(controller.ActiveCombat.EnemyMaxHealth, Is.EqualTo(35d));
@@ -105,8 +114,9 @@ namespace BackpackAutoBattle.Tests.Prototype
                 controller.BattleController.AutoTick = false;
                 Assert.That(controller.CurrentStageId, Is.EqualTo("stage_08_playtest"));
                 Assert.That(controller.CurrentRound, Is.EqualTo(1));
-                Assert.That(Text(controller, "Next Enemy").text, Does.Contain("체력 180"));
-                Assert.That(Text(controller, "Next Enemy").text, Does.Contain("공격력 25"));
+                Assert.That(controller.TryOpenEnemyPreview(), Is.True);
+                Assert.That(Text(controller, "Enemy Preview Health").text, Is.EqualTo("체력 180 / 180"));
+                controller.CloseEnemyPreview();
                 Assert.That(controller.TryStartBattle(), Is.True);
                 Assert.That(controller.ActiveCombat.Enemy.DisplayName, Is.EqualTo("고블린"));
                 Assert.That(controller.ActiveCombat.EnemyMaxHealth, Is.EqualTo(180d));
@@ -135,7 +145,8 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(controller.RefreshEncounterPreview(), Is.False);
                 Assert.That(controller.PreparedEnemy, Is.Null);
                 Assert.That(controller.EnemyConfigurationError, Does.Contain("ROUND 2"));
-                Assert.That(Text(controller, "Next Enemy").text, Does.Contain("적 설정 오류"));
+                Assert.That(Text(controller, "Enemy Configuration Error").text, Does.Contain("적 설정 오류"));
+                Assert.That(controller.TryOpenEnemyPreview(), Is.False);
                 Assert.That(controller.GetComponentsInChildren<Button>().Single(button => button.name == "Start Battle Button").interactable, Is.False);
                 Assert.That(controller.TryStartBattle(), Is.False);
                 Assert.That(controller.AdvanceRound(), Is.False);
@@ -148,6 +159,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             finally { Set(controller, "_stageData", original); Object.Destroy(copy); }
         }
 
+        private static Transform Find(BackpackPrototypeController controller, string name)
+            => controller.GetComponentsInChildren<Transform>(true).Single(transform => transform.name == name);
         private static Text Text(BackpackPrototypeController controller, string name)
             => controller.GetComponentsInChildren<Text>(true).Single(text => text.name == name);
         private static void Set(object value, string name, object content)

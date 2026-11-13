@@ -49,34 +49,89 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
+        public IEnumerator HomePopups_ShowOwnedBlueprintCountsAndEmptyMailbox()
+        {
+            var initial = new PlayerProgress();
+            Assert.That(initial.TryClaimReward("blueprint-test",
+                new StageReward(0, 0, Enumerable.Repeat("white_night_lantern", 1234).Concat(new[] { "knight_sword" })),
+                false, DateTimeOffset.UtcNow), Is.True);
+            Assert.That(new PlayerProgressStore(_savePath).TrySave(initial, out _), Is.True);
+            yield return LoadMenu();
+            Click("Main Inventory Button");
+            yield return null;
+            var viewport = Find("Main Blueprint Items");
+            Assert.That(viewport.childCount, Is.EqualTo(2));
+            var tile = Find("Blueprint white_night_lantern");
+            Assert.That(tile.Find("Blueprint Item Illustration").GetComponent<Image>().sprite,
+                Is.SameAs(_controller.FindGearDefinition("white_night_lantern").Icon));
+            Assert.That(tile.Find("Blueprint Quantity").GetComponent<Text>().text, Is.EqualTo(CompactNumber.Format(1234)));
+            ExecuteEvents.Execute(tile.gameObject, Pointer(tile), ExecuteEvents.pointerEnterHandler);
+            Assert.That(_controller.ItemTooltip.gameObject.activeSelf, Is.True);
+            Assert.That(_controller.ItemTooltip.GetComponentsInChildren<Text>().Single(label => label.name == "Tooltip Name").text,
+                Is.EqualTo("백야의 랜턴 설계도"));
+            Assert.That(_controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().text, Does.Contain("1,234"));
+            Assert.That(_controller.ShowStageSelection(), Is.False);
+            Assert.That(Find("Main Inventory Popup Close").GetComponentInChildren<PrototypeSettingsCloseGlyph>(), Is.Not.Null);
+            Capture("MainBlueprintInventory.png");
+            Click("Main Inventory Popup Close");
+            Assert.That(_controller.ItemTooltip.gameObject.activeSelf, Is.False);
+            Assert.That(Find("Main Inventory Popup").gameObject.activeSelf, Is.False);
+            Click("Main Mail Button");
+            Assert.That(Find("Main Mail Popup").gameObject.activeSelf, Is.True);
+            Assert.That(Text("Main Mail Empty"), Is.EqualTo("수령할 편지가 없습니다."));
+            Assert.That(Find("Main Mail Popup Close").GetComponentInChildren<PrototypeSettingsCloseGlyph>(), Is.Not.Null);
+            Capture("MainMailbox.png");
+            Click("Main Mail Popup Close");
+            Assert.That(Find("Main Mail Popup").gameObject.activeSelf, Is.False);
+        }
+
+        [UnityTest]
         public IEnumerator CharacterAndStagePreview_CanCancelOrConfirm_AndSelectionsDriveActualBattle()
         {
             SeedClearedStages(4);
             yield return LoadMenu();
             Assert.That(_controller.AvailableCharacters.Select(c => c.CharacterId), Is.EquivalentTo(new[] { "allen", "serena" }));
             Assert.That(_controller.AvailableStages.Count, Is.EqualTo(5));
-            Click("Main Character Select Button"); yield return null;
+            Click("Main Tab Characters"); yield return null;
             Carousel().Move(1); SettleCarousel();
             Assert.That(Text("Character Preview Name"), Is.EqualTo("세레나"));
             Assert.That(Find("Character Preview Illustration").GetComponent<Image>().sprite,
                 Is.SameAs(_controller.AvailableCharacters.Single(c => c.CharacterId == "serena").Portrait));
             Capture("CharacterSelectionSerena.png");
             Click("Character Selection Back Button"); Assert.That(_controller.SelectedCharacter.CharacterId, Is.EqualTo("allen"));
-            Click("Main Character Select Button"); yield return null; Carousel().Move(1); SettleCarousel();
+            Click("Main Tab Characters"); yield return null; Carousel().Move(1); SettleCarousel();
             var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(Find("Character Confirm Button")), hits);
             Assert.That(hits.Any(h => h.gameObject == Find("Character Confirm Button").gameObject), Is.True);
             Click("Character Confirm Button");
             Assert.That(Text("Main Character Name"), Is.EqualTo("세레나"));
-            Click("Main Stage Select Button"); yield return null;
+            Click("Main Tab Stages"); yield return null;
             Click("Stage Choice stage_05");
             Assert.That(Text("Stage Preview Name"), Does.Contain("5스테이지"));
             Assert.That(Text("Stage Preview Details"), Does.Contain("12라운드").And.Contain("주요 적").And.Contain("보스"));
             Capture("StageSelectionFive.png");
             Click("Stage Selection Back Button"); Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
-            _controller.ShowStageSelection(); yield return null; Click("Stage Choice stage_05"); Click("Stage Confirm Button");
-            Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_05"));
             Capture("MainMenuSerena.png");
-            Click("Main Start Button");
+            _controller.ShowStageSelection(); yield return null; Click("Stage Choice stage_05"); Click("Stage Confirm Button");
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.MainMenu));
+            Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
+            Assert.That(Text("Stage Entry Popup Title"), Is.EqualTo("5스테이지 · 고블린 전선"));
+            Assert.That(Text("Stage Entry Character"), Is.EqualTo("세레나"));
+            Assert.That(Text("Stage Entry Level"), Is.EqualTo("Lv. 1"));
+            Assert.That(Find("Stage Entry Illustration").GetComponent<Image>().sprite, Is.SameAs(_controller.SelectedCharacter.Portrait));
+            var entryWeapon = Find("Stage Entry Slot Weapon");
+            Assert.That(entryWeapon.Find("Stage Entry Gear Name").GetComponent<Text>().text, Is.EqualTo("은빛 장궁"));
+            Assert.That(entryWeapon.Find("Gear Badge/Gear Sprite").GetComponent<Image>().sprite,
+                Is.SameAs(_controller.FindGearDefinition("silver_longbow").Icon));
+            Assert.That(Find("Stage Entry Slot Armor").Find("Stage Entry Gear Name").GetComponent<Text>().text, Is.EqualTo("비어 있음"));
+            Assert.That(_controller.ShowCharacterSelection(), Is.False);
+            Capture("StageEntrySerena.png");
+            Click("Stage Entry Back Button");
+            Assert.That(Find("Stage Entry Popup").gameObject.activeSelf, Is.False);
+            Assert.That(Text("Stage Preview Name"), Does.Contain("5스테이지"));
+            Click("Stage Confirm Button");
+            Click("Stage Entry Start Button");
+            Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_05"));
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_05"));
             Assert.That(_controller.PreparedEnemy.MaximumHealth, Is.EqualTo(78));
             Assert.That(_controller.StageEntryStats.MaximumHealth, Is.EqualTo(50)); Assert.That(_controller.StageEntryStats.Attack, Is.EqualTo(10.5));
@@ -773,7 +828,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Find("Sweep Mine Stage").GetComponent<Button>().interactable, Is.False);
             Capture("OriginMineSelection.png");
             Click("Stage Confirm Button");
-            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.MainMenu));
+            Click("Stage Entry Start Button");
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
             Lose();
             Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
@@ -863,7 +920,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_05"));
             Assert.That(_controller.Progress.GetStage("stage_05").HighestRound, Is.EqualTo(3));
             Assert.That(_controller.Progress.GetStage("stage_05").Cleared, Is.False);
-            Assert.That(Text("Main Stage Summary"), Does.Contain("최고 3라운드"));
+            _controller.ShowStageSelection();
+            Assert.That(Text("Stage Preview Progress"), Does.Contain("최고 도달 3"));
             Assert.That(_controller.CurrentShopItems, Is.Empty);
             _controller.TryStartRun();
             Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(20)); Assert.That(_controller.Lives, Is.EqualTo(_controller.StartingLives));
@@ -988,8 +1046,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             }
             Capture("StagesLocked.png");
             Click("Stage Confirm Button");
+            Click("Stage Entry Start Button");
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
-            Assert.That(_controller.TryStartRun(), Is.True);
+            Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
         }
 

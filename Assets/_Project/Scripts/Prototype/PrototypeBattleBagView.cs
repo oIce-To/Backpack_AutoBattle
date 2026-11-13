@@ -23,13 +23,13 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
-            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content)
+            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, bool animateCooldown = true)
         {
             Clear();
             float pitch = Mathf.Min(50f, 228f / Mathf.Max(loadout.Width, loadout.Height));
             Vector2 boardSize = new(loadout.Width * pitch, loadout.Height * pitch);
             _root.sizeDelta = boardSize;
-            BuildContents(loadout, side, inspect, tooltip, content, pitch, boardSize);
+            BuildContents(loadout, side, inspect, tooltip, content, pitch, boardSize, animateCooldown);
         }
 
         public void Clear()
@@ -44,7 +44,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         private void BuildContents(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
-            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, float pitch, Vector2 boardSize)
+            PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, float pitch, Vector2 boardSize, bool animateCooldown)
         {
             for (int y = 0; y < loadout.Height; y++)
             {
@@ -70,7 +70,7 @@ namespace BackpackAutoBattle.Prototype
                     boardSize.y / 2f - item.Origin.y * pitch - 3f);
                 PrototypeBattleItemView view = obj.GetComponent<PrototypeBattleItemView>();
                 view.Initialize(item, side, pitch, inspect, tooltip, () => content(item),
-                    () => _placementOverlay.Show(view, loadout, item), () => _placementOverlay.Hide(view));
+                    () => _placementOverlay.Show(view, loadout, item), () => _placementOverlay?.Hide(view), animateCooldown);
                 _items.Add(item.InstanceId, view);
             }
             _placementOverlay = new PrototypePlacementOverlay(_root, pitch);

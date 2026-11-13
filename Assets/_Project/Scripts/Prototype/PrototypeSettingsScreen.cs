@@ -46,7 +46,7 @@ namespace BackpackAutoBattle.Prototype
             var reset = Button(_panel, "Settings Reset", "기본값 복원", new Vector2(-225, -195), new Vector2(180, 46), ResetCurrentPage);
             reset.image.color = new Color(.48f, .77f, .94f);
             reset.GetComponentInChildren<Text>().color = new Color(.08f, .17f, .25f);
-            CreateCloseButton(_panel, _controller.CloseSettings);
+            CreateCloseButton(_panel, "Settings Close", new Vector2(339, 217), _controller.CloseSettings);
             _notice = SelectionUi.Label(_panel, "Settings Notice", "", 15, new Vector2(0, -151), new Vector2(620, 28));
             _notice.color = new Color(1, .57f, .48f);
 
@@ -315,11 +315,11 @@ namespace BackpackAutoBattle.Prototype
             return dropdown;
         }
 
-        private static void CreateCloseButton(Transform parent, Action close)
+        internal static void CreateCloseButton(Transform parent, string name, Vector2 position, Action close)
         {
-            var face = SelectionUi.Image(parent, "Settings Close", new Color(.76f, .18f, .23f));
+            var face = SelectionUi.Image(parent, name, new Color(.76f, .18f, .23f));
             face.raycastTarget = true;
-            SelectionUi.Place(face.rectTransform, new Vector2(339, 217), new Vector2(42, 42));
+            SelectionUi.Place(face.rectTransform, position, new Vector2(42, 42));
             var button = face.gameObject.AddComponent<Button>();
             button.targetGraphic = face;
             button.navigation = new Navigation { mode = Navigation.Mode.None };

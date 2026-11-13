@@ -94,6 +94,9 @@ namespace BackpackAutoBattle.Prototype
                 if (_equipment.IsDetailsOpen) _equipment.DismissTopmost();
                 else if (_rewardPopup.IsOpen) _rewardPopup.Hide();
                 else if (IsStageAbandonOpen) CancelStageAbandon();
+                else if (IsEnemyPreviewOpen) CloseEnemyPreview();
+                else if (_mainMenu.IsPopupOpen) _mainMenu.ClosePopup();
+                else if (_stageSelection.IsEntryOpen) _stageSelection.CloseEntry();
             }
             // A slow screen-switch frame must not skip most of the visible fusion sequence.
             if (AutoTickFusionPresentation) TickFusionPresentation(Mathf.Min(Time.unscaledDeltaTime, .05f));
@@ -339,7 +342,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool AdvanceRound()
         {
-            if (IsMainMenu || IsSettingsOpen || IsStageAbandonOpen || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
+            if (IsMainMenu || IsSettingsOpen || IsStageAbandonOpen || IsEnemyPreviewOpen || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
                 && !(_enableDebugRoundAdvance && _run.Phase == PrototypePhase.Preparation)))
             {
                 return false;
@@ -439,9 +442,6 @@ namespace BackpackAutoBattle.Prototype
             Image background = CreateImage(_shopScreenRoot, "Background", new Color(0.055f, 0.07f, 0.10f, 1f));
             Stretch(background.rectTransform);
 
-            Text title = CreateText(_shopScreenRoot, "Title", "BACKPACK AUTO BATTLE PROTOTYPE", 28, FontStyle.Bold, TextAnchor.MiddleCenter);
-            SetRect(title.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(720f, 46f));
-
             Text instructions = CreateText(
                 _shopScreenRoot,
                 "Instructions",
@@ -450,7 +450,7 @@ namespace BackpackAutoBattle.Prototype
                 FontStyle.Normal,
                 TextAnchor.MiddleCenter);
             instructions.color = new Color(0.67f, 0.73f, 0.82f, 1f);
-            SetRect(instructions.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -72f), new Vector2(980f, 30f));
+            SetRect(instructions.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -45f), new Vector2(980f, 30f));
 
             BuildShop(_shopScreenRoot);
 
@@ -486,18 +486,17 @@ namespace BackpackAutoBattle.Prototype
             }
 
             BuildStorage(_shopScreenRoot);
-            _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot);
+            _preparationPanel = new PrototypePreparationPanel(this, _shopScreenRoot, canvasObject.transform, _itemTooltip);
             InitializeBattleScreen(canvasObject.transform);
             _runResultScreen = new PrototypeRunResultScreen(canvasObject.transform, () => RequestRunRestart(),
                 () => _battleController.ShowStatistics(), () => TryReturnToMainMenu());
-            _mainMenu = new PrototypeMainMenuScreen(canvasObject.transform, () => TryStartRun(), QuitGame,
-                () => ShowCharacterSelection(), () => ShowStageSelection());
+            _mainMenu = new PrototypeMainMenuScreen(canvasObject.transform, _itemTooltip, QuitGame);
             _characterSelection = new PrototypeCharacterSelectionScreen(canvasObject.transform,
                 character => TrySelectCharacter(character.CharacterId), CloseSelectionScreens,
                 character => TryLevelUpCharacter(character.CharacterId), GetCharacterStats, FindGearDefinition);
             _equipment = new PrototypeEquipmentScreen(canvasObject.transform, this);
             _stageSelection = new PrototypeStageSelectionScreen(canvasObject.transform,
-                stage => TrySelectStage(stage.StageId), CloseSelectionScreens, stage => TrySweepStage(stage.StageId));
+                ShowStageEntry, stage => TryEnterStage(stage), CloseSelectionScreens, stage => TrySweepStage(stage.StageId));
             _rewardPopup = new PrototypeRewardPopup(canvasObject.transform);
             _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab), () => TryOpenSettings());
             InitializeSettings(canvasObject.transform);

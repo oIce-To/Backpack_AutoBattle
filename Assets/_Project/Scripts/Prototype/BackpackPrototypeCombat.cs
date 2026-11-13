@@ -47,7 +47,27 @@ namespace BackpackAutoBattle.Prototype
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
-        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen && !IsStageAbandonOpen;
+        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
+        public bool IsEnemyPreviewOpen => _preparationPanel?.IsEnemyPreviewOpen == true;
+
+        public bool TryOpenEnemyPreview()
+        {
+            if (!CanEditLoadout || _draggingItem != null || _preparedEnemy == null) return false;
+            _itemTooltip.HideAll();
+            _fusionHoverOwner = null;
+            ClearPlacementOverlay();
+            _preparationPanel.ShowEnemy(_preparedEnemy);
+            RefreshCombatInterface();
+            return true;
+        }
+
+        public void CloseEnemyPreview()
+        {
+            if (!IsEnemyPreviewOpen) return;
+            _itemTooltip.HideAll();
+            _preparationPanel.HideEnemy();
+            RefreshCombatInterface();
+        }
         public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
         public CombatLoadoutSnapshot CaptureCombatSnapshot()
@@ -145,9 +165,9 @@ namespace BackpackAutoBattle.Prototype
             _lifeHearts.gameObject.SetActive(!IsMainMenu);
             _lifeHearts.SetLives(_run.Lives, _run.StartingLives);
             _stageSettingsButton.gameObject.SetActive(!IsMainMenu);
-            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion && !IsStageAbandonOpen;
+            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
             _stageAbandonButton.interactable = CanEditLoadout;
-            if (!IsMainMenu && !IsSettingsOpen && !IsStageAbandonOpen)
+            if (!IsMainMenu && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen)
             {
                 _lifeHearts.transform.SetAsLastSibling();
                 _stageSettingsButton.transform.SetAsLastSibling();
@@ -158,7 +178,6 @@ namespace BackpackAutoBattle.Prototype
             if (_debugNextRoundButton != null)
                 _debugNextRoundButton.interactable = CanEditLoadout && _preparedEnemy != null && _run.Round < StageRoundCount;
             if (showShop) RenderEncounterPreview();
-            _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null);
         }
 
         /// <summary>Explicitly reload edited SO values during preparation. Does not spend gold or advance the round.</summary>
@@ -188,9 +207,8 @@ namespace BackpackAutoBattle.Prototype
 
         private void RenderEncounterPreview()
         {
-            _preparationPanel.Render(_stageData?.DisplayName, _run.Round, _preparedEnemy, _enemyConfigurationError,
-                _preparedEnemy != null && _stageData != null && _run.Round <= StageRoundCount && _stageData.GetRound(_run.Round).IsBoss,
-                _debugEnemyOverride != null);
+            _preparationPanel.Render(_enemyConfigurationError);
+            _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null);
         }
 
         public void ShowItemTooltip(Component owner, ItemData item, PointerEventData pointer)

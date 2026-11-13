@@ -1,4 +1,3 @@
-using System.Linq;
 using BackpackAutoBattle.Combat;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,50 +6,65 @@ namespace BackpackAutoBattle.Prototype
 {
     public sealed class PrototypePreparationPanel
     {
-        private readonly Text _enemyText;
-        private readonly Button _startButton;
+        private readonly Text _error, _enemyName, _health;
+        private readonly Button _startButton, _infoButton;
+        private readonly PrototypeMenuPopup _enemyPopup;
+        private readonly PrototypeBattleBagView _bag;
+        private readonly Image _portrait;
+        private readonly PrototypeItemTooltip _tooltip;
 
-        public PrototypePreparationPanel(BackpackPrototypeController controller, Transform parent)
+        internal PrototypePreparationPanel(BackpackPrototypeController controller, Transform shop, Transform canvas, PrototypeItemTooltip tooltip)
         {
-            var panelObject = new GameObject("Preparation Panel", typeof(RectTransform), typeof(Image));
-            panelObject.transform.SetParent(parent, false);
-            panelObject.GetComponent<Image>().color = new Color(0.08f, 0.10f, 0.14f, 1f);
-            BackpackPrototypeController.SetRect((RectTransform)panelObject.transform, new Vector2(0.5f, 0.5f), new Vector2(500f, 34f), new Vector2(220f, 472f));
-            Text title = Label(panelObject.transform, "Title", "전투 준비", -30f, 42f, 22);
-            title.alignment = TextAnchor.MiddleCenter;
-            _enemyText = Label(panelObject.transform, "Next Enemy", string.Empty, -192f, 270f, 15);
+            _tooltip = tooltip;
+            _infoButton = SelectionUi.Button(shop, "Enemy Info Button", "적 정보",
+                new Vector2(500f, -113f), new Vector2(194f, 42f), () => controller.TryOpenEnemyPreview());
+            _startButton = SelectionUi.Button(shop, "Start Battle Button", "전투 시작",
+                new Vector2(500f, -164f), new Vector2(194f, 46f), () => controller.TryStartBattle());
+            _startButton.image.color = new Color(.24f, .48f, .70f);
+            _error = SelectionUi.Label(shop, "Enemy Configuration Error", "", 14, new Vector2(500f, -66f), new Vector2(194f, 52f));
+            _error.color = new Color(1f, .55f, .48f);
 
-            var buttonObject = new GameObject("Start Battle Button", typeof(RectTransform), typeof(Image), typeof(Button));
-            buttonObject.transform.SetParent(panelObject.transform, false);
-            buttonObject.GetComponent<Image>().color = new Color(0.24f, 0.48f, 0.70f, 1f);
-            BackpackPrototypeController.SetRect((RectTransform)buttonObject.transform, new Vector2(0.5f, 0f), new Vector2(0f, 38f), new Vector2(194f, 46f));
-            _startButton = buttonObject.GetComponent<Button>();
-            _startButton.onClick.AddListener(() => controller.TryStartBattle());
-            Text label = BackpackPrototypeController.CreateText(buttonObject.transform, "Label", "전투 시작", 18, FontStyle.Bold, TextAnchor.MiddleCenter);
-            label.raycastTarget = false;
-            BackpackPrototypeController.Stretch(label.rectTransform);
+            _enemyPopup = new PrototypeMenuPopup(canvas, "Enemy Preview Popup", "적 정보", new Vector2(652, 454), controller.CloseEnemyPreview);
+            RectTransform panel = _enemyPopup.Panel;
+            _enemyName = SelectionUi.Label(panel, "Enemy Preview Name", "", 22, new Vector2(-149, 117), new Vector2(242, 35));
+            _portrait = SelectionUi.Image(panel, "Enemy Preview Illustration", Color.white);
+            SelectionUi.Place(_portrait.rectTransform, new Vector2(-149, -22), new Vector2(248, 223));
+            _portrait.preserveAspect = true;
+
+            var healthBar = SelectionUi.Image(panel, "Enemy Preview Health Bar", new Color(.80f, .27f, .25f));
+            SelectionUi.Place(healthBar.rectTransform, new Vector2(-149, -164), new Vector2(242, 30));
+            _health = SelectionUi.Label(healthBar.transform, "Enemy Preview Health", "", 16, Vector2.zero, new Vector2(230, 26));
+
+            var bagPanel = SelectionUi.Image(panel, "Enemy Preview Bag Panel", new Color(.075f, .09f, .13f));
+            SelectionUi.Place(bagPanel.rectTransform, new Vector2(146, -29), new Vector2(264, 264));
+            _bag = new PrototypeBattleBagView(bagPanel.transform, "Enemy Preview Backpack");
+            _bag.Root.anchoredPosition = Vector2.zero;
         }
 
-        public void Render(string stageName, int round, CombatantSnapshot enemy, string error, bool isBoss, bool isDebug)
+        internal bool IsEnemyPreviewOpen => _enemyPopup.IsOpen;
+
+        internal void ShowEnemy(CombatantSnapshot enemy)
         {
-            _startButton.interactable = enemy != null;
-            _enemyText.text = enemy == null ? $"적 설정 오류\n{error}" :
-                $"{stageName}\nROUND {round}{(isBoss ? " · 보스" : "")}\n상대: {enemy.DisplayName}\n"
-                + $"체력 {enemy.MaximumHealth:0.#} · 가방 {enemy.Loadout.Width}×{enemy.Loadout.Height}\n"
-                + (isDebug ? "[시험 적 사용 중]\n" : "")
-                + "\n" + string.Join("\n", enemy.Loadout.Items.Select(item => item.Activation.HasEffect(BackpackAutoBattle.Items.ItemEffectKind.Attack)
-                    ? $"{item.DisplayName}\n공격력 {item.BaseWeaponStats.AttackDamage:0.#} · {item.Activation.CooldownSeconds:0.0#}s"
-                    : item.DisplayName));
+            _enemyName.text = enemy.DisplayName;
+            _portrait.sprite = enemy.Illustration;
+            _portrait.enabled = _portrait.sprite != null;
+            _health.text = $"체력 {enemy.MaximumHealth:0.#} / {enemy.MaximumHealth:0.#}";
+            _bag.Build(enemy.Loadout, CombatSide.Enemy, null, _tooltip, item => ItemTooltipContent.FromCombat(item, null),
+                animateCooldown: false);
+            _enemyPopup.Show();
         }
 
-        public void SetInputEnabled(bool enabled) => _startButton.interactable = enabled;
-
-        private static Text Label(Transform parent, string name, string content, float y, float height, int fontSize)
+        internal void HideEnemy()
         {
-            Text text = BackpackPrototypeController.CreateText(parent, name, content, fontSize, FontStyle.Normal, TextAnchor.UpperLeft);
-            BackpackPrototypeController.SetRect(text.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, y), new Vector2(194f, height));
-            text.raycastTarget = false;
-            return text;
+            _enemyPopup.Hide();
+            _bag.Clear();
         }
+
+        internal void Render(string error)
+        {
+            _error.text = string.IsNullOrEmpty(error) ? "" : "적 설정 오류\n" + error.Split('\n')[0];
+        }
+
+        public void SetInputEnabled(bool enabled) => _startButton.interactable = _infoButton.interactable = enabled;
     }
 }

@@ -88,7 +88,8 @@ namespace BackpackAutoBattle.Prototype
             return candidate.TryUnequipGear(_characterData.CharacterId, slot) && SaveEquipment(candidate);
         }
 
-        private bool CanChangeEquipment => IsMainMenu && !IsSettingsOpen && !_rewardPopup.IsOpen && _progressStore != null && _characterData != null;
+        private bool CanChangeEquipment => IsMainMenu && !IsSettingsOpen && !_rewardPopup.IsOpen
+            && !_mainMenu.IsPopupOpen && !_stageSelection.IsEntryOpen && _progressStore != null && _characterData != null;
 
         public bool TrySetUniqueGearLocked(string instanceId, bool locked)
         {

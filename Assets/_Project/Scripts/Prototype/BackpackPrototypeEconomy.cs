@@ -60,7 +60,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TrySweepStage(string stageId)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _stageSelection.IsEntryOpen) return false;
             var stage = AvailableMineStages.FirstOrDefault(s => s.StageId == stageId);
             if (stage == null || !IsStageUnlocked(stageId) || !_progress.GetStage(stageId).Cleared
                 || stage.GetValidationErrors().Count > 0 || AvailableGear.Count == 0) return false;

@@ -70,7 +70,8 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryOpenSettings()
         {
-            if (IsSettingsOpen || _equipment.IsDetailsOpen || _rewardPopup.IsOpen || IsStageAbandonOpen || Phase == PrototypePhase.Fusion || _draggingItem != null) return false;
+            if (IsSettingsOpen || _equipment.IsDetailsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen
+                || IsStageAbandonOpen || IsEnemyPreviewOpen || Phase == PrototypePhase.Fusion || _draggingItem != null) return false;
             _itemTooltip.HideAll();
             _battleController.SetSettingsSuspended(true);
             _characterSelection.Carousel.enabled = false;
