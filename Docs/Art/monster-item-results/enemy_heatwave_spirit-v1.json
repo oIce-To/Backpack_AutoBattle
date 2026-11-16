@@ -1,0 +1,8 @@
+{
+  "id": "enemy_heatwave_spirit",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-4429264d-f3ca-4d78-9a1d-07b7f18d5df0.png",
+  "output": "Assets/_Project/Art/Items/Monsters/enemy_heatwave_spirit/enemy_heatwave_spirit-2026-11-17-v2.png",
+  "prompt": "Use case precise-object-edit. Preserve exactly this claw/flame design, colors and coarse pixel-art style. Make the WHOLE connected silhouette including all three claws and forearm flames 25% narrower around central x512 axis, preserving length. It must fit central x335..685 strip on1024x1536canvas with completeoutline,all sides transparent. Tall1:4item. No glow haze outside outline. No redesign, no sword, no new parts. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

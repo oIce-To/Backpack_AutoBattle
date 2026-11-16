@@ -34,6 +34,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _logText;
         private readonly Image _playerIllustration;
         private readonly Image _enemyIllustration;
+        private readonly PrototypeIllustrationHitFeedback _playerHit, _enemyHit;
         private readonly PrototypeDamagePopups _playerDamage;
         private readonly PrototypeDamagePopups _enemyDamage;
         private readonly Button _continueButton;
@@ -79,6 +80,8 @@ namespace BackpackAutoBattle.Prototype
             _enemyName = Label(enemyGroup, "Enemy Name", new Vector2(-CharacterOffsetX, 164), new Vector2(224, 30), 22, TextAnchor.MiddleCenter);
             _playerIllustration = CharacterSpace(playerGroup, "Player Character Illustration", CharacterOffsetX);
             _enemyIllustration = CharacterSpace(enemyGroup, "Enemy Character Illustration", -CharacterOffsetX);
+            _playerHit = new PrototypeIllustrationHitFeedback(_playerIllustration.rectTransform);
+            _enemyHit = new PrototypeIllustrationHitFeedback(_enemyIllustration.rectTransform);
             _playerEvasion = EvasionReadout(playerGroup, "Player", -92);
             _enemyEvasion = EvasionReadout(enemyGroup, "Enemy", 92);
             _playerHealthFill = HealthBar(playerGroup, "Player Health", new Color(0.20f, 0.67f, 0.37f), CharacterOffsetX);
@@ -132,6 +135,7 @@ namespace BackpackAutoBattle.Prototype
             _enemyName.text = combat.Enemy.DisplayName;
             SetIllustration(_playerIllustration, combat.Player, facesLeft: false);
             SetIllustration(_enemyIllustration, combat.Enemy, facesLeft: true);
+            _playerHit.Reset(); _enemyHit.Reset();
             _title.text = string.Empty;
             _title.gameObject.SetActive(false);
             _configurationError.text = string.Empty;
@@ -148,6 +152,8 @@ namespace BackpackAutoBattle.Prototype
 
         public void Render(CombatSimulation combat)
         {
+            _playerHit.Tick(combat.ElapsedSeconds);
+            _enemyHit.Tick(combat.ElapsedSeconds);
             _timer.text = $"ROUND {_round} · {combat.ElapsedSeconds:0.0}초";
             SetHealth(_playerHealthFill, _playerHealthText, combat.PlayerHealth, combat.PlayerMaxHealth);
             SetHealth(_enemyHealthFill, _enemyHealthText, combat.EnemyHealth, combat.EnemyMaxHealth);
@@ -171,6 +177,14 @@ namespace BackpackAutoBattle.Prototype
         public void ShowAttack(CombatItemEvent attack)
         {
             bool fromPlayer = attack.Side == CombatSide.Player;
+            var items = fromPlayer ? _combat.PlayerItems : _combat.EnemyItems;
+            if (attack.Kind == ItemEffectKind.Attack)
+                foreach (var item in items)
+                    if (item.InstanceId == attack.InstanceId)
+                    {
+                        (attack.TargetSide == CombatSide.Player ? _playerHit : _enemyHit).Show(attack, item.Snapshot.Category);
+                        break;
+                    }
             (fromPlayer ? _playerBag : _enemyBag).ShowAttack(attack);
             string attacker = fromPlayer ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
             if (attack.Kind == ItemEffectKind.ApplyStatus)
@@ -238,6 +252,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void Clear()
         {
+            _playerHit.Reset(); _enemyHit.Reset();
             SetPlaybackState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(false);
             _tooltip.HideAll();
@@ -251,6 +266,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void ShowResult(PrototypePhase phase, int? income = null)
         {
+            _playerHit.Reset(); _enemyHit.Reset();
             SetPlaybackState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(true);
             _title.gameObject.SetActive(true);

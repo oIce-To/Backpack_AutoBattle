@@ -1,0 +1,4022 @@
+[
+  {
+    "id": "enemy_apostle_of_death",
+    "name": "죽음의 독안개 지팡이",
+    "monsterId": "apostle_of_death",
+    "monsterName": "죽음의 사도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ApostleOfDeath.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ApostleOfDeath/apostle-of-death-standing-approved.png",
+    "monsterDesign": "A slender demonic death apostle with dark gray-violet skin, small curved horns visible around a hood and eerie green eyes. Wears ragged black and desaturated purple robes, leather gloves and boots, a beaked bone-like face mask and carries a crooked staff with a sealed venom-green crystal. One small opaque violet-black mist coil around the free hand and acid-green droplets around the crystal communicate blindness and poison. No gore, no giant effect cloud, one figure.",
+    "stage": 6,
+    "round": "4R",
+    "trait": 1,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ApostleOfDeath.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "9843611e55d1449d94b38d7650dece82",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_apostle_of_death.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "중독에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 7,
+            "_target": 1,
+            "_stacks": 4
+          }
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 4,
+            "_target": 1,
+            "_stacks": 4
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 21,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_apostle_of_death",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_apostle_of_death",
+      "_displayName": "죽음의 독안개 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "중독에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 7,
+              "_target": 1,
+              "_stacks": 4
+            }
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 4,
+              "_target": 1,
+              "_stacks": 4
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 21,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_blood_priest",
+    "name": "피의 홀",
+    "monsterId": "blood_priest",
+    "monsterName": "피의 제사장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_BloodPriest.asset",
+    "illustration": "Assets/_Project/Art/Monsters/BloodPriest/blood-priest-standing-approved.png",
+    "monsterDesign": "A sinister adult human blood priest wearing long deep-crimson and black ritual robes with a high collar, pale face, pointed ceremonial headpiece and dark leather gloves. One hand holds a short black staff topped with a ruby, the other cups a small suspended dark-red magical orb with a few crimson droplets drawn inward, conveying vampiric life drain. Fully clothed, dignified sinister stance, magical red energy without gore or victims.",
+    "stage": 4,
+    "round": "8R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_BloodPriest.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "08e9a6dafc6640888f0c72ae3650d5e6",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_blood_priest.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 20,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_blood_priest",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_blood_priest",
+      "_displayName": "피의 홀",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 9,
+          "_target": 0,
+          "_stacks": 12
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 20,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_boulder_guardian",
+    "name": "거석 주먹",
+    "monsterId": "boulder_guardian",
+    "monsterName": "거석 수호자",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_BoulderGuardian.asset",
+    "illustration": "Assets/_Project/Art/Monsters/BoulderGuardian/boulder-guardian-standing-approved.png",
+    "monsterDesign": "A massive squat stone golem guardian built from overlapping gray granite slabs, oversized stacked stone shoulder and chest armor, huge rock fists, stout articulated legs and moss in crevices. Bright amber geometric core peeks through small cracks in the heavily armored chest, conveying strength while armored. Full intact heavily plated form, ancient forest guardian, no weapon or human rider.",
+    "stage": 2,
+    "round": "8R",
+    "trait": 2,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_BoulderGuardian.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "58e30d59b3cf43b5968f91bc4f386a79",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_boulder_guardian.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "전투 시작 시 최대 체력의 35%만큼 방어도를 얻습니다. 방어도가 처음으로 모두 사라질 때까지 공격력이 50% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_boulder_guardian",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_boulder_guardian",
+      "_displayName": "거석 주먹",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투 시작 시 최대 체력의 35%만큼 방어도를 얻습니다. 방어도가 처음으로 모두 사라질 때까지 공격력이 50% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_cultist",
+    "name": "의식용 단검",
+    "monsterId": "cultist",
+    "monsterName": "광신도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Cultist.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Cultist/cultist-standing-approved.png",
+    "monsterDesign": "A sinister human cultist in ragged charcoal-brown hooded robes with dark crimson lining, simple cord belt, worn boots and a small ritual dagger held low. Face largely in shadow but a narrow pale lower face visible, tense forward-leaning standing pose. Modest common follower, no elite armor. No real religious symbols, no gore.",
+    "stage": 4,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Cultist.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "47dbda7e972e491b8d4df6ee9d1dcd70",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_cultist.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 11,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_cultist",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_cultist",
+      "_displayName": "의식용 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 11,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_legion_commander",
+    "name": "군단장의 대검",
+    "monsterId": "demon_legion_commander",
+    "monsterName": "마족 군단장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonLegionCommander.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+    "monsterDesign": "A towering regal demon legion commander boss with dark charcoal-red skin, two imposing swept-back black horns, stern angular face and burning amber eyes. Layered obsidian plate armor with restrained dark gold trim, deep crimson torn commander cape, armored boots, one large black greatsword held down at his side. His open gauntlet draws a few emerald-violet power motes inward while a cracked ruby-red chest core glows, conveying buff theft and resurrection into a stronger form. Commanding complete standing silhouette, no giant wings, no throne, no extra characters. One normal boss illustration, not a two-form sheet.",
+    "stage": 6,
+    "round": "12R",
+    "trait": 12,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonLegionCommander.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "1ab1cc182f804ff8ac076969cc561280",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_legion_commander.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "effect": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 33,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_legion_commander",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_legion_commander",
+      "_displayName": "군단장의 대검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 33,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "471b2c1f320e4938aa3973b576e8fc4b",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_legion_commander_skill",
+    "name": "권능 강탈",
+    "monsterId": "demon_legion_commander",
+    "monsterName": "마족 군단장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonLegionCommander.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+    "monsterDesign": "A towering regal demon legion commander boss with dark charcoal-red skin, two imposing swept-back black horns, stern angular face and burning amber eyes. Layered obsidian plate armor with restrained dark gold trim, deep crimson torn commander cape, armored boots, one large black greatsword held down at his side. His open gauntlet draws a few emerald-violet power motes inward while a cracked ruby-red chest core glows, conveying buff theft and resurrection into a stronger form. Commanding complete standing silhouette, no giant wings, no throne, no extra characters. One normal boss illustration, not a two-form sheet.",
+    "stage": 6,
+    "round": "12R",
+    "trait": 12,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonLegionCommander.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "fa650ab3a2b44035864eb821c8731039",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_legion_commander_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대의 버프를 최대 3중첩 강탈합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_legion_commander_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_legion_commander_skill",
+      "_displayName": "권능 강탈",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대의 버프를 최대 3중첩 강탈합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_soldier",
+    "name": "마족군 제식 검",
+    "monsterId": "demon_soldier",
+    "monsterName": "마족 병사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonSoldier.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonSoldier/demon-soldier-standing-approved.png",
+    "monsterDesign": "A common demon infantry soldier with muted dark red-gray skin, two short swept-back horns, pointed ears, yellow eyes and a sturdy humanoid build. Wears practical battered black iron armor over dark leather, simple crimson waistcloth and heavy boots. Holds one plain broad iron sword and a small battered shield. Disciplined guarded standing stance, modest rank, no giant wings or elaborate crown.",
+    "stage": 6,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonSoldier.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "64ca85fd4c8043c781a965a76afb3fcb",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_soldier.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_soldier",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_soldier",
+      "_displayName": "마족군 제식 검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c835d63c126646f9829ec987ba15828a",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_weapon_master",
+    "name": "마족의 곡검",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "f134e409d6e1414dbf65a21c36542d6b",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "어느 무기든 명중할 때마다 모든 무기의 치명타 확률이 1%p 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 14,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master",
+      "_displayName": "마족의 곡검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "어느 무기든 명중할 때마다 모든 무기의 치명타 확률이 1%p 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 14,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c835d63c126646f9829ec987ba15828a",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_weapon_master_axe",
+    "name": "마족의 손도끼",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "axe",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "e59abcdfc61e4cd280de440770d27d21",
+        "type": 2
+      },
+      "_origin": {
+        "x": 3,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_axe.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/#./#.",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 3,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 3,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_axe",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_axe",
+      "_displayName": "마족의 손도끼",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 3,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 3,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "71bd26d9a1574d22955ac1206bee0bb8",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_weapon_master_spear",
+    "name": "마족의 장창",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "spear",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "95b400c25ead47e5bc56d828aa529925",
+        "type": 2
+      },
+      "_origin": {
+        "x": 5,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_spear.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 4,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 8,
+      "_cooldownSeconds": 4,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_spear",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_spear",
+      "_displayName": "마족의 장창",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 4,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 8,
+        "_cooldownSeconds": 4,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "f7cf220649d648419bcb4c7b8142c959",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_demon_weapon_master_dagger",
+    "name": "마족의 단검",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "dagger",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "192a3b53b40b46c4b81c157e3622b67e",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 3
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_dagger.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7.5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_dagger",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_dagger",
+      "_displayName": "마족의 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 7.5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_desert_guardian_pharaoh",
+    "name": "파라오의 홀",
+    "monsterId": "desert_guardian_pharaoh",
+    "monsterName": "사막의 수호자(파라오)",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DesertGuardianPharaoh.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DesertGuardianPharaoh/desert-guardian-pharaoh-standing-approved.png",
+    "monsterDesign": "An ancient regal pharaoh guardian boss, humanoid undead king fully dressed in gold-and-lapis striped nemes headdress, ornate gold funerary mask, broad jeweled collar, ivory pleated ceremonial robe and dark gold armor. Holds a long ceremonial crook staff, with a small radiant scarab gem centered over the chest. A few solid golden fragments form a compact protective arc near one shoulder to suggest resurrection and brief invulnerability. Commanding standing pose, no throne or pyramid.",
+    "stage": 3,
+    "round": "12R",
+    "trait": 5,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DesertGuardianPharaoh.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c7a63c0d468a4a15b1e94b381738b504",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_desert_guardian_pharaoh.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 공격력이 50%, 공격 속도가 30% 증가하며 3초간 피해를 받지 않습니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 20,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_desert_guardian_pharaoh",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_desert_guardian_pharaoh",
+      "_displayName": "파라오의 홀",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 공격력이 50%, 공격 속도가 30% 증가하며 3초간 피해를 받지 않습니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 20,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_dryad",
+    "name": "가시 덩굴",
+    "monsterId": "dryad",
+    "monsterName": "드라이어드",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Dryad.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+    "monsterDesign": "A regal adult female dryad forest boss with living bark armor fully covering torso and hips, leaf-woven skirt, long dark green vine-like hair and graceful branching antler crown. Slender humanoid tree body, root-shaped feet, amber-green eyes and elegant open hand drawing a few emerald rune-like motes inward toward a luminous heartwood gem. Buff-stealing and healing visual motif, serene dangerous expression. One figure, modest full costume, no text runes.",
+    "stage": 2,
+    "round": "12R",
+    "trait": 3,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Dryad.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "522162d1a5bb44dc88fd9553e76b7221",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_dryad.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_dryad",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_dryad",
+      "_displayName": "가시 덩굴",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "420d094e8ad44afc86000657db2197d9",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_dryad_skill",
+    "name": "숲의 손길",
+    "monsterId": "dryad",
+    "monsterName": "드라이어드",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Dryad.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+    "monsterDesign": "A regal adult female dryad forest boss with living bark armor fully covering torso and hips, leaf-woven skirt, long dark green vine-like hair and graceful branching antler crown. Slender humanoid tree body, root-shaped feet, amber-green eyes and elegant open hand drawing a few emerald rune-like motes inward toward a luminous heartwood gem. Buff-stealing and healing visual motif, serene dangerous expression. One figure, modest full costume, no text runes.",
+    "stage": 2,
+    "round": "12R",
+    "trait": 3,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Dryad.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "10e94cc0e35a421885fe496464e42c84",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_dryad_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대의 버프를 최대 2중첩 강탈합니다. 강탈한 중첩당 최대 체력의 3%만큼 회복합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_dryad_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_dryad_skill",
+      "_displayName": "숲의 손길",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대의 버프를 최대 2중첩 강탈합니다. 강탈한 중첩당 최대 체력의 3%만큼 회복합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_false_idol",
+    "name": "핏빛 발톱",
+    "monsterId": "false_idol",
+    "monsterName": "거짓된 우상",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FalseIdol.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+    "monsterDesign": "A monstrous DARK CRIMSON RAVEN boss, unmistakably an avian crow/raven and not a humanoid. Powerful hooked black beak, ominous pale gold eyes, layered wine-red and near-black feathers, clawed black talons, spread partly lifted wings and long ragged tail. A jagged crown-like crest of dark red feathers and a few tiny violet/amber curse motes near the wing tips imply unpredictable afflictions. One complete standing bird on talons, no perch, no separate halo or background. Wings fully inside frame.",
+    "stage": 4,
+    "round": "12R",
+    "trait": 7,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FalseIdol.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "257a3fc01ddc4fb9952b6833135d2758",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_false_idol.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "상대에게 부여된 빙결, 실명, 화상, 중독 중첩당 공격력이 2% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 24,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_false_idol",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_false_idol",
+      "_displayName": "핏빛 발톱",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "상대에게 부여된 빙결, 실명, 화상, 중독 중첩당 공격력이 2% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 24,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_false_idol_skill",
+    "name": "우상의 저주",
+    "monsterId": "false_idol",
+    "monsterName": "거짓된 우상",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FalseIdol.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+    "monsterDesign": "A monstrous DARK CRIMSON RAVEN boss, unmistakably an avian crow/raven and not a humanoid. Powerful hooked black beak, ominous pale gold eyes, layered wine-red and near-black feathers, clawed black talons, spread partly lifted wings and long ragged tail. A jagged crown-like crest of dark red feathers and a few tiny violet/amber curse motes near the wing tips imply unpredictable afflictions. One complete standing bird on talons, no perch, no separate halo or background. Wings fully inside frame.",
+    "stage": 4,
+    "round": "12R",
+    "trait": 7,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FalseIdol.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "1fccc7b6385e4407a6c483c7938dc559",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_false_idol_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대에게 무작위로 빙결, 실명, 화상, 중독 중 하나를 3중첩 부여합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_false_idol_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_false_idol_skill",
+      "_displayName": "우상의 저주",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대에게 무작위로 빙결, 실명, 화상, 중독 중 하나를 3중첩 부여합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_forest_spirit",
+    "name": "뿌리 채찍",
+    "monsterId": "forest_spirit",
+    "monsterName": "숲의 정령",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ForestSpirit.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ForestSpirit/forest-spirit-standing-approved.png",
+    "monsterDesign": "A small living woodland spirit made of gnarled warm-brown wood, moss and green leaves. Compact humanoid tree-sprite body with root feet, branch arms, a carved expressive wooden face and two soft amber eyes, a few leafy twigs like a crown. Friendly-looking but alert guardian enemy stance. No human costume, no separate tree or forest backdrop.",
+    "stage": 2,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ForestSpirit.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "b2e1f6a034b94c4ba9d202d070e29ab1",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_forest_spirit.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_forest_spirit",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_forest_spirit",
+      "_displayName": "뿌리 채찍",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 7,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_frost_wolf",
+    "name": "서리 송곳니",
+    "monsterId": "frost_wolf",
+    "monsterName": "서리늑대",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FrostWolf.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FrostWolf/frost-wolf-standing-approved.png",
+    "monsterDesign": "A fierce WHITE frost wolf in a natural four-legged three-quarter standing pose, thick white coat with cool blue shadows, spiky frosted ruff, long bushy tail and sharp icy blue eyes. Lips slightly curled to reveal fangs, lean powerful legs and low ready posture imply ferocity. A few icy blue highlights on claws and fur, no armor, no rider, no bloody wounds, no second wolf.",
+    "stage": 5,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FrostWolf.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "11880be202bb4ed090463569dcd815f7",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_frost_wolf.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_frost_wolf",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_frost_wolf",
+      "_displayName": "서리 송곳니",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_goblin",
+    "name": "고블린 곤봉",
+    "monsterId": "goblin",
+    "monsterName": "고블린",
+    "monsterPath": "Assets/_Project/Data/Enemies/EnemyType_Goblin.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Goblin/goblin-standing-approved.png",
+    "monsterDesign": "",
+    "stage": 1,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Goblin.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c7fa143835f74fb691dfb36ee3469d88",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin",
+      "_displayName": "고블린 곤봉",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_goblin_chieftain",
+    "name": "약탈자의 도끼",
+    "monsterId": "goblin_chieftain",
+    "monsterName": "고블린 족장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinChieftain.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinChieftain/goblin-chieftain-standing-approved.png",
+    "monsterDesign": "A broad powerful dark-green goblin chieftain, larger and more imposing than the common goblin but unmistakably the same pointed-eared species. Worn dark iron and leather armor, rough fur shoulder mantle, a crude iron crown, dark crimson sash, one heavy cleaver with a restrained ruby-red life-stealing rune. Small red energy motes drawn into his free gauntlet convey vampirism without gore. Proud grounded standing stance.",
+    "stage": 1,
+    "round": "12R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinChieftain.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "df90967420fb4159b02d80d6418d2533",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_chieftain.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/#./#.",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 11,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_chieftain",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_chieftain",
+      "_displayName": "약탈자의 도끼",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 9,
+          "_target": 0,
+          "_stacks": 8
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 11,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "71bd26d9a1574d22955ac1206bee0bb8",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_goblin_master_thief",
+    "name": "대도의 단검",
+    "monsterId": "goblin_master_thief",
+    "monsterName": "고블린 대도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinMasterThief.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinMasterThief/goblin-master-thief-standing-approved.png",
+    "monsterDesign": "A wiry dark-green goblin master thief with long pointed ears, a ragged charcoal hood pushed back enough to show his face, light patched dark-brown leather, two short curved daggers and a small belt pouch. Low nimble standing stance with one foot forward, mischievous sharp eyes, scarf ends angled to suggest speed. Same goblin species as the approved club goblin, distinct rogue silhouette. No motion blur.",
+    "stage": 1,
+    "round": "4R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinMasterThief.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "77a7d9b13f30473a856fab4b3a120032",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_master_thief.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_master_thief",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_master_thief",
+      "_displayName": "대도의 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 0,
+          "_target": 0,
+          "_stacks": 10
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 7,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_goblin_shaman",
+    "name": "눈먼 영혼의 지팡이",
+    "monsterId": "goblin_shaman",
+    "monsterName": "고블린 주술사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinShaman.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinShaman/goblin-shaman-standing-approved.png",
+    "monsterDesign": "A dark-green goblin shaman with pointed ears, hunched small body, ragged plum-brown ritual robe, bone beads and a crooked wooden staff topped with a dark violet eye-shaped charm. A compact opaque violet-black magical smoke curl near his free hand conveys blinding magic. Face and complete silhouette visible, smoke limited to a small localized effect. Same species as the approved goblin.",
+    "stage": 1,
+    "round": "8R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinShaman.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "2a74e143b5f54f89891557a0677ed72d",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_shaman.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 4,
+            "_target": 1,
+            "_stacks": 3
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_shaman",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_shaman",
+      "_displayName": "눈먼 영혼의 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 4,
+              "_target": 1,
+              "_stacks": 3
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_heatwave_spirit",
+    "name": "작열하는 손톱",
+    "monsterId": "heatwave_spirit",
+    "monsterName": "폭염의 정령",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_HeatwaveSpirit.asset",
+    "illustration": "Assets/_Project/Art/Monsters/HeatwaveSpirit/heatwave-spirit-standing-approved.png",
+    "monsterDesign": "A compact fierce fire elemental made of sharply shaped red-orange flames surrounding a dark cracked volcanic core. Humanoid upper body with broad flame shoulders, simple bright eyes in a dark mask-like face, two burning claw hands and a tapered whirling flame lower body. Strong orange and yellow stepped pixel flames, no smoky background; self-contained silhouette depicts living heat immune to fire. Not a human in armor.",
+    "stage": 3,
+    "round": "8R",
+    "trait": 4,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_HeatwaveSpirit.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "d99f7f4a66794e4392c1ccddf20608b3",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_heatwave_spirit.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "effect": "화상에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 6,
+            "_target": 1,
+            "_stacks": 4
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 16,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_heatwave_spirit",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_heatwave_spirit",
+      "_displayName": "작열하는 손톱",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "화상에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 6,
+              "_target": 1,
+              "_stacks": 4
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 16,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "73dea6eede534bb48469604ee2647efb",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_iceberg_witch",
+    "name": "빙산의 지팡이",
+    "monsterId": "iceberg_witch",
+    "monsterName": "빙산의 마녀",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_IcebergWitch.asset",
+    "illustration": "Assets/_Project/Art/Monsters/IcebergWitch/iceberg-witch-standing-approved.png",
+    "monsterDesign": "A regal adult ice witch boss with pale cool skin, long silver-blue hair, angular ice-crystal crown, fully clothed midnight blue and icy white layered robes with fur-trimmed shoulders, tall boots and a long frost staff. Compact sharp crystalline ice shapes float above her free palm, and crystalline facets edge her skirt, expressing powerful freezing magic and cold immunity. Calm severe expression, elegant full-body standing pose. No large backdrop or ice platform.",
+    "stage": 5,
+    "round": "12R",
+    "trait": 10,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_IcebergWitch.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "aaa6fcf8981b413385f7f22b0ddd947e",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_iceberg_witch.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "빙결에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 1,
+            "_target": 1,
+            "_stacks": 5
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 29,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_iceberg_witch",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_iceberg_witch",
+      "_displayName": "빙산의 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "빙결에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 1,
+              "_target": 1,
+              "_stacks": 5
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 29,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "5410f85c9d024f93a5f7a76169e2ca98",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_man_eating_plant",
+    "name": "독니",
+    "monsterId": "man_eating_plant",
+    "monsterName": "식인식물",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ManEatingPlant.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ManEatingPlant/man-eating-plant-standing-approved.png",
+    "monsterDesign": "One rooted carnivorous fantasy plant monster with a large open tooth-lined flower maw, dark emerald serrated leaves, purple-red fleshy petals and two curling vine arms. Knotted roots form its standing base, no soil mound. Small acid-green poison droplets gathered on thorns and near the mouth convey potent poison; tough waxy leaves suggest immunity. Stylized plant teeth, no human victim or gore.",
+    "stage": 2,
+    "round": "4R",
+    "trait": 1,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ManEatingPlant.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "b3b5bd16a8ee4ec49cebd60449e1d831",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_man_eating_plant.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "중독에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 7,
+            "_target": 1,
+            "_stacks": 3
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 10,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_man_eating_plant",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_man_eating_plant",
+      "_displayName": "독니",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "중독에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 7,
+              "_target": 1,
+              "_stacks": 3
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 10,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "420d094e8ad44afc86000657db2197d9",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_mummy",
+    "name": "붕대 손아귀",
+    "monsterId": "mummy",
+    "monsterName": "미라",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Mummy.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Mummy/mummy-standing-approved.png",
+    "monsterDesign": "A classic shambling adult mummy wrapped head to toe in tattered sand-beige linen bandages, narrow dark eye sockets with dim amber eyes, strips hanging from forearms and hips, simple aged burial belt. Dry desiccated shape without exposed gore, slightly hunched idle stance with both arms reaching mildly forward, both feet visible. Minimal worn bronze accents.",
+    "stage": 3,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Mummy.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "01c21c6ffe0e48a99b6a1e73e9887607",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_mummy.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_mummy",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_mummy",
+      "_displayName": "붕대 손아귀",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_nameless_guardian_knight",
+    "name": "갑주 분쇄 망치",
+    "monsterId": "nameless_guardian_knight",
+    "monsterName": "이름 없는 수호기사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_NamelessGuardianKnight.asset",
+    "illustration": "Assets/_Project/Art/Monsters/NamelessGuardianKnight/nameless-guardian-knight-standing-approved.png",
+    "monsterDesign": "A HEADLESS DULLAHAN guardian knight wearing extremely heavy weathered blue-black plate armor with massive pauldrons, broad breastplate and armored boots, ragged dark teal tabard. The empty neck opening emits a short compact cold blue spirit flame: NO head or helmet above shoulders. Holds a great armor-breaking warhammer with both hands resting diagonally beside the body, complete hammer visible. Formidable standing guardian, no horse, no severed flesh or gore.",
+    "stage": 5,
+    "round": "8R",
+    "trait": 9,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_NamelessGuardianKnight.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "ff92e63209354dcd8661f96020454bb0",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_nameless_guardian_knight.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "방어도가 남아 있는 상대에게 1.5배의 피해를 입힙니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 23,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_nameless_guardian_knight",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_nameless_guardian_knight",
+      "_displayName": "갑주 분쇄 망치",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "방어도가 남아 있는 상대에게 1.5배의 피해를 입힙니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 23,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_penitent_priest",
+    "name": "속죄의 철퇴",
+    "monsterId": "penitent_priest",
+    "monsterName": "속죄의 제사장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_PenitentPriest.asset",
+    "illustration": "Assets/_Project/Art/Monsters/PenitentPriest/penitent-priest-standing-approved.png",
+    "monsterDesign": "A human penitential priest enemy wearing an iron half-mask, ragged ash-gray ritual robes with deep red waist cloth, leather bracers and simple iron shoulder plates. Holds one heavy iron mace with a short chain-linked spiked head (flail), entire chain and head visible and hanging clearly away from legs. Coiled tense posture and small red stepped marks on the mace suggest gathering attack speed. No self-injury or wounds, no real religious emblem.",
+    "stage": 4,
+    "round": "4R",
+    "trait": 6,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_PenitentPriest.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c6769f6535f148c89bfd9fba8b1249c1",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_penitent_priest.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "명중할 때마다 공격 속도가 5%씩 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_penitent_priest",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_penitent_priest",
+      "_displayName": "속죄의 철퇴",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "명중할 때마다 공격 속도가 5%씩 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_skeleton_miner_pickaxe",
+    "name": "광부의 곡괭이",
+    "monsterId": "skeleton_miner",
+    "monsterName": "스켈레톤 광부",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_SkeletonMiner.asset",
+    "illustration": "Assets/_Project/Art/Monsters/SkeletonMiner/skeleton-miner-standing-approved.png",
+    "monsterDesign": "",
+    "stage": "mine",
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_SkeletonMiner.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "a0a37adf8c4d4d67ad67b96b8dd13432",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_skeleton_miner_pickaxe.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_skeleton_miner_pickaxe",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_skeleton_miner_pickaxe",
+      "_displayName": "광부의 곡괭이",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_spiny_armadillo",
+    "name": "갑각 돌진",
+    "monsterId": "spiny_armadillo",
+    "monsterName": "가시 아르마딜로",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_SpinyArmadillo.asset",
+    "illustration": "Assets/_Project/Art/Monsters/SpinyArmadillo/spiny-armadillo-standing-approved.png",
+    "monsterDesign": "A squat desert armadillo enemy in a natural four-legged three-quarter standing pose. Layered sandy dark-brown segmented armor shell covered in conspicuous ivory thorns, short clawed legs, small pointed snout, alert dark eyes and a tapering armored tail. Visually clear defensive spiked shell, cute enough for stylized fantasy but a dangerous creature. No humanoid anatomy or weapon.",
+    "stage": 3,
+    "round": "4R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_SpinyArmadillo.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "297404527ae9415cbd30ba164096ae1b",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_spiny_armadillo.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_spiny_armadillo",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_spiny_armadillo",
+      "_displayName": "갑각 돌진",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 8,
+          "_target": 0,
+          "_stacks": 7
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c60e1bb7630a427cb8845eb0336bfa7f",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "review-draft"
+  },
+  {
+    "id": "enemy_yeti",
+    "name": "설인의 주먹",
+    "monsterId": "yeti",
+    "monsterName": "설인",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Yeti.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Yeti/yeti-standing-approved.png",
+    "monsterDesign": "A stocky white-furred yeti monster with long heavy arms, broad hands, short sturdy legs and blue-gray face, palms and feet. Shaggy cream-white fur rendered in large stepped clumps, small dark eyes, slightly protruding lower canine teeth, hunched simple idle stance. Classic snow mountain ape-like monster, no horns, no weapon or clothing, no snowy ground.",
+    "stage": 5,
+    "round": "4R",
+    "trait": 8,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Yeti.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "4f77fd44d01740d5ad0703f47e87cec0",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_yeti.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 18,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_yeti",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_yeti",
+      "_displayName": "설인의 주먹",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 18,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "review-draft"
+  }
+]

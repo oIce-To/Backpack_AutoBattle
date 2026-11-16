@@ -1,0 +1,192 @@
+{
+  "approved": [
+    {
+      "id": "enemy_apostle_of_death",
+      "name": "죽음의 독안개 지팡이",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_apostle_of_death/enemy_apostle_of_death-2026-11-17-v1.png",
+      "sha256": "ee891c161c4fe1b103a34a4f0ed398d0d2a6ac371b000dc0a5f5bbeb47a5ad2c"
+    },
+    {
+      "id": "enemy_blood_priest",
+      "name": "피의 홀",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_blood_priest/enemy_blood_priest-2026-11-17-v1.png",
+      "sha256": "d01f1ea66ee6ba6f6db4074127325d6e5d5eaa1b4b702965aaa9183e69ed4942"
+    },
+    {
+      "id": "enemy_boulder_guardian",
+      "name": "거석 주먹",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_boulder_guardian/enemy_boulder_guardian-2026-11-17-v1.png",
+      "sha256": "f00998de462dc30c327d4c8760cf98bdeb0021dd794987405cb35fb860fab007"
+    },
+    {
+      "id": "enemy_cultist",
+      "name": "의식용 단검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_cultist/enemy_cultist-2026-11-17-v1.png",
+      "sha256": "3354acb0d51a6a5bb8523c5123e94691f006c980f792b6984dde978355b3f5f6"
+    },
+    {
+      "id": "enemy_demon_legion_commander",
+      "name": "군단장의 대검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_legion_commander/enemy_demon_legion_commander-2026-11-17-v1.png",
+      "sha256": "3ea757c82c361523644841af771659a06413bce874418220c5d745d9b07c2f5c"
+    },
+    {
+      "id": "enemy_demon_legion_commander_skill",
+      "name": "권능 강탈",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_legion_commander_skill/enemy_demon_legion_commander_skill-2026-11-17-v1.png",
+      "sha256": "ebd5d8eac2c4dc4c2f71987f224ad8960e29812dd4720df408ed0ea44a563f73"
+    },
+    {
+      "id": "enemy_demon_soldier",
+      "name": "마족군 제식 검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_soldier/enemy_demon_soldier-2026-11-17-v1.png",
+      "sha256": "c23dfc7a9adeab477818e594c32b057d3b5fd9c0fac7b928db447e9e7dea77de"
+    },
+    {
+      "id": "enemy_demon_weapon_master",
+      "name": "마족의 곡검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master/enemy_demon_weapon_master-2026-11-17-v1.png",
+      "sha256": "95a89d1f12463db4ec42ef0b738ed96f1d735407da418cf0e302b7e90a00f1fe"
+    },
+    {
+      "id": "enemy_demon_weapon_master_axe",
+      "name": "마족의 손도끼",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_axe/enemy_demon_weapon_master_axe-2026-11-17-v3.png",
+      "sha256": "55d5ac24a1766e2040438069a99253f00f50a5ed85098b5984b04f215041c149"
+    },
+    {
+      "id": "enemy_demon_weapon_master_spear",
+      "name": "마족의 장창",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_spear/enemy_demon_weapon_master_spear-2026-11-17-v1.png",
+      "sha256": "b48d75342f47d5548388d98bb553142107aa4d78a8dc223937e870d9e98199bf"
+    },
+    {
+      "id": "enemy_demon_weapon_master_dagger",
+      "name": "마족의 단검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_dagger/enemy_demon_weapon_master_dagger-2026-11-17-v1.png",
+      "sha256": "65cb8e532a637b55acb7deed71387497d760ce8d8c228b7ab58e53821175458f"
+    },
+    {
+      "id": "enemy_desert_guardian_pharaoh",
+      "name": "파라오의 홀",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_desert_guardian_pharaoh/enemy_desert_guardian_pharaoh-2026-11-17-v1.png",
+      "sha256": "619f30a7a0df136c9ed3750f6d11ce32efd7242fa62080052652739487322643"
+    },
+    {
+      "id": "enemy_dryad",
+      "name": "가시 덩굴",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_dryad/enemy_dryad-2026-11-17-v1.png",
+      "sha256": "44c0d934147e7bd57316b54f599f47a944da16300a56ae5def2d38546e85b629"
+    },
+    {
+      "id": "enemy_dryad_skill",
+      "name": "숲의 손길",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_dryad_skill/enemy_dryad_skill-2026-11-17-v1.png",
+      "sha256": "d6e65417e8b3e38922bd82d1f0a885fb74ef941beb84485cd67916ae3ed783b5"
+    },
+    {
+      "id": "enemy_false_idol",
+      "name": "핏빛 발톱",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_false_idol/enemy_false_idol-2026-11-17-v1.png",
+      "sha256": "78331221972e387cdd27b48ed6712cd00eb9e0db05440a8ae031cc9b2167c4bf"
+    },
+    {
+      "id": "enemy_false_idol_skill",
+      "name": "우상의 저주",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_false_idol_skill/enemy_false_idol_skill-2026-11-17-v1.png",
+      "sha256": "91dcb360f86da42515a654aacdb5f1e1d450c3abd3d036c109561d1b87fd45ad"
+    },
+    {
+      "id": "enemy_forest_spirit",
+      "name": "뿌리 채찍",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_forest_spirit/enemy_forest_spirit-2026-11-17-v1.png",
+      "sha256": "9e6e78eb8544f712e1ec9c382d3138f6c8978348fe999897cc9fe06f075c97f0"
+    },
+    {
+      "id": "enemy_frost_wolf",
+      "name": "서리 송곳니",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_frost_wolf/enemy_frost_wolf-2026-11-17-v1.png",
+      "sha256": "10c6d405907ec4624868881d4ad8f35eb746239faa73c5fe8589d608108d9354"
+    },
+    {
+      "id": "enemy_goblin",
+      "name": "고블린 곤봉",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin/enemy_goblin-2026-11-17-v1.png",
+      "sha256": "33fdcd59df7f3d510ea8a3e7f02dd96f5412f50d3af727d484430c32b3ec5ef1"
+    },
+    {
+      "id": "enemy_goblin_chieftain",
+      "name": "약탈자의 도끼",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v2.png",
+      "sha256": "08733bdc31e2dc8ac202bdd0b502b8133e85e478bccb32cc131fa2fb203b62a7"
+    },
+    {
+      "id": "enemy_goblin_master_thief",
+      "name": "대도의 단검",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_master_thief/enemy_goblin_master_thief-2026-11-17-v1.png",
+      "sha256": "bdfe845171229b28b6288e77121ae668fb9f0d8e40b0bc2f48b57eda1e1e7fc3"
+    },
+    {
+      "id": "enemy_goblin_shaman",
+      "name": "눈먼 영혼의 지팡이",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_shaman/enemy_goblin_shaman-2026-11-17-v1.png",
+      "sha256": "0eb44e9bfb9c862335387057877965b0f4e4b268b0b33496eeab514c9dabef97"
+    },
+    {
+      "id": "enemy_heatwave_spirit",
+      "name": "작열하는 손톱",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_heatwave_spirit/enemy_heatwave_spirit-2026-11-17-v2.png",
+      "sha256": "5531b321f444f894870aafd2d08cea08a45545d759f71e9f57d0e4bfb1bca94a"
+    },
+    {
+      "id": "enemy_iceberg_witch",
+      "name": "빙산의 지팡이",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_iceberg_witch/enemy_iceberg_witch-2026-11-17-v1.png",
+      "sha256": "09ae2f2ad93dbb5f45c5fa2f087bc92b511856b56143110e6ef6bffaf95e5078"
+    },
+    {
+      "id": "enemy_man_eating_plant",
+      "name": "독니",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_man_eating_plant/enemy_man_eating_plant-2026-11-17-v1.png",
+      "sha256": "fa9b52ea343558f631445fbdf8be5a126b9a911d4d7c03d821cfabbefc6a0583"
+    },
+    {
+      "id": "enemy_mummy",
+      "name": "붕대 손아귀",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_mummy/enemy_mummy-2026-11-17-v1.png",
+      "sha256": "4a29417238356343cda126c7c50968f4aa63ca61ef17b22e8d3ef05bd86f2115"
+    },
+    {
+      "id": "enemy_nameless_guardian_knight",
+      "name": "갑주 분쇄 망치",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_nameless_guardian_knight/enemy_nameless_guardian_knight-2026-11-17-v1.png",
+      "sha256": "4ae31595bf167329558781a8433f7ae2de8990c568199ed9d1d08c9e76894a75"
+    },
+    {
+      "id": "enemy_penitent_priest",
+      "name": "속죄의 철퇴",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_penitent_priest/enemy_penitent_priest-2026-11-17-v1.png",
+      "sha256": "0ca09c2be172886e6faa40eed935e7328087f3e2fd63ba86da3572880c033907"
+    },
+    {
+      "id": "enemy_skeleton_miner_pickaxe",
+      "name": "광부의 곡괭이",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_skeleton_miner_pickaxe/enemy_skeleton_miner_pickaxe-2026-11-17-v2.png",
+      "sha256": "cd4076f478c82edbc865889bf89746ad6a8b622df0fec64c7a5b8f030ee126c0"
+    },
+    {
+      "id": "enemy_spiny_armadillo",
+      "name": "갑각 돌진",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_spiny_armadillo/enemy_spiny_armadillo-2026-11-17-v1.png",
+      "sha256": "2fabc344d11ad0fb28826869b99b258899bbd2c416951dd98dc0be92796824ab"
+    },
+    {
+      "id": "enemy_yeti",
+      "name": "설인의 주먹",
+      "output": "Assets/_Project/Art/Items/Monsters/enemy_yeti/enemy_yeti-2026-11-17-v2.png",
+      "sha256": "3c92f3121003d768d13d8abf6e33626767b90741ca4c715f74a37602874b0b82"
+    }
+  ],
+  "pending": [],
+  "reason": "사용자가 마족의 손도끼 v3까지 확정하여 전체 31종 확정 완료"
+}

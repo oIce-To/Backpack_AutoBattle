@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>일러스트 애니메이션 · 첫 동작 시안</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#151c26;color:#eef0e7;font:16px system-ui,sans-serif;padding:30px;max-width:1400px;margin:auto}h1{font-size:27px;margin:0 0 12px}p{line-height:1.65;color:#bec9d5}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}button,select{padding:11px 15px;background:#293849;color:white;border:1px solid #52647a;border-radius:7px;cursor:pointer}button:hover{background:#40546b}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}article{background:#202c3b;border:1px solid #43536a;border-radius:12px;overflow:hidden}h2{font-size:20px;margin:16px 20px 0}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;background:radial-gradient(ellipse at 50% 70%,#42536b,#202c3b 70%)}.status{padding:12px 20px;color:#c2d7ab;min-height:45px}#log{white-space:pre-wrap;max-height:170px;overflow:auto;color:#a8bdd1;font:14px monospace}label{display:flex;align-items:center;gap:8px}footer{margin-top:24px;color:#a6b4c8}@media(max-width:850px){.cards{grid-template-columns:1fr}canvas{max-width:400px;margin:auto}}
+</style>
+<h1>대기 · 공격 · 피격 — 첫 동작 시안</h1>
+<p>과거 비교용 시안입니다. 2026-11-17 사용자 요청으로 대기·공격 프레임의 게임 적용을 취소했습니다.<br>현재 게임은 기존 확정 스탠딩 일러스트와 피격 흔들림만 사용합니다. 아래 시안은 게임에서 사용하지 않습니다.</p>
+<div class="controls">
+<button id="single">한 번 공격</button><button id="triple">A → B → C · 0.1초 간격</button><button id="repeat">지속 연타 시작</button>
+<label>간격 <select id="interval"><option value=".1">0.1초</option><option value=".05">0.05초</option><option value=".025">0.025초</option><option value=".3">0.3초</option></select></label>
+<button data-hit="health">체력 피해</button><button data-hit="armor">방어도 흡수</button><button data-hit="evade">회피</button><button data-hit="immune">무적</button>
+<button id="pause">일시정지</button><label>배속 <select id="speed"><option>1</option><option>0.5</option><option>2</option><option>4</option></select></label>
+</div>
+<div class="cards" id="cards"></div><p id="clock"></p><div id="log" aria-live="polite"></div>
+<footer>첫 줄의 대기 4프레임과 둘째 줄의 공격 4프레임을 순서대로 표시합니다. 피격은 프레임 재생을 중단하지 않습니다.<br>원본 대비 도트 밀도, 장비 형태, 프레임 연결과 투명 가장자리는 추가 검토 대상입니다.</footer>
+<script src="playback.js"></script><script>
+const specs=[['알렌','allen-animation-v2.png',14],['세레나','serena-animation-v1.png',6],['고블린','goblin-animation-v1.png',19]];
+const model=new AnimationPlayback(), cards=[], events=[]; let paused=false, repeat=false, nextRepeat=0, serial=0;
+const log=document.querySelector('#log');
+function note(text){log.textContent=`${model.time.toFixed(3)}s · ${text}\n`+log.textContent.slice(0,1800)}
+for(const [name,file,alignment] of specs){
+ const article=document.createElement('article');article.innerHTML=`<h2>${name}</h2><canvas width="362" height="543"></canvas><div class="status">이미지 불러오는 중</div>`;document.querySelector('#cards').append(article);
+ const image=new Image();image.src=file;image.onerror=()=>article.querySelector('.status').textContent='이미지를 불러올 수 없습니다';
+ cards.push({image,alignment,canvas:article.querySelector('canvas'),status:article.querySelector('.status')});
+}
+function attack(label){model.attack(label);note(`${label} 시작 · 이전 공격 즉시 중단`)}
+document.querySelector('#single').onclick=()=>attack(`공격 ${++serial}`);
+document.querySelector('#triple').onclick=()=>{attack('아이템 A');events.push({at:model.time+.1,label:'아이템 B'},{at:model.time+.2,label:'아이템 C'});events.sort((a,b)=>a.at-b.at)};
+document.querySelector('#repeat').onclick=e=>{repeat=!repeat;nextRepeat=model.time;e.target.textContent=repeat?'지속 연타 중지':'지속 연타 시작'};
+document.querySelector('#pause').onclick=e=>{paused=!paused;e.target.textContent=paused?'재개':'일시정지'};
+document.querySelectorAll('[data-hit]').forEach(button=>button.onclick=()=>{model.hit(button.dataset.hit);note(button.textContent+(button.dataset.hit==='health'||button.dataset.hit==='armor'?' · 동일한 피격 흔들림':' · 흔들림 없음'))});
+let previous=performance.now();
+function tick(now){
+ const delta=Math.min((now-previous)/1000,.1);previous=now;
+ if(!paused){
+  const target=model.time+delta*Number(document.querySelector('#speed').value);
+  while(true){
+   const eventAt=events.length?events[0].at:Infinity;
+   const repeatAt=repeat?nextRepeat:Infinity;
+   const at=Math.min(eventAt,repeatAt);if(at>target)break;
+   model.time=Math.max(model.time,at);
+   if(eventAt<=repeatAt)attack(events.shift().label);
+   else{attack(`연타 ${++serial}`);nextRepeat=at+Number(document.querySelector('#interval').value)}
+  }
+  model.time=target;
+ }
+ for(const card of cards){
+  const ctx=card.canvas.getContext('2d');ctx.clearRect(0,0,362,543);ctx.imageSmoothingEnabled=false;
+  if(card.image.complete&&card.image.naturalWidth){const w=card.image.naturalWidth/4,h=card.image.naturalHeight/2,f=model.frame;ctx.drawImage(card.image,(f%4)*w,Math.floor(f/4)*h,w,h,model.shake,f>=4?card.alignment:0,362,543);card.status.textContent=model.attacking?`${model.label} · 공격 ${model.frame-3}/4`:`대기 ${model.frame+1}/4`}
+ }
+ document.querySelector('#clock').textContent=`전투 시계 ${model.time.toFixed(2)}초${paused?' · 일시정지':''}`;requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script></html>

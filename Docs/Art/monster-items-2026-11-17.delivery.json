@@ -1,0 +1,4671 @@
+[
+  {
+    "id": "enemy_apostle_of_death",
+    "name": "죽음의 독안개 지팡이",
+    "monsterId": "apostle_of_death",
+    "monsterName": "죽음의 사도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ApostleOfDeath.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ApostleOfDeath/apostle-of-death-standing-approved.png",
+    "monsterDesign": "A slender demonic death apostle with dark gray-violet skin, small curved horns visible around a hood and eerie green eyes. Wears ragged black and desaturated purple robes, leather gloves and boots, a beaked bone-like face mask and carries a crooked staff with a sealed venom-green crystal. One small opaque violet-black mist coil around the free hand and acid-green droplets around the crystal communicate blindness and poison. No gore, no giant effect cloud, one figure.",
+    "stage": 6,
+    "round": "4R",
+    "trait": 1,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ApostleOfDeath.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "9843611e55d1449d94b38d7650dece82",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_apostle_of_death.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "중독에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 7,
+            "_target": 1,
+            "_stacks": 4
+          }
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 4,
+            "_target": 1,
+            "_stacks": 4
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 21,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_apostle_of_death",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_apostle_of_death",
+      "_displayName": "죽음의 독안개 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "중독에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 7,
+              "_target": 1,
+              "_stacks": 4
+            }
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 4,
+              "_target": 1,
+              "_stacks": 4
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 21,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Death apostle poison-mist staff. Copy crooked brown wooden staff design from monster: large angular acid-green diamond crystal cradled by forked dark wood at top, ivory cross binding below it, small red wax skull seal with purple ribbon, two ivory shaft wraps. A compact opaque violet wisp hugging crystal conveys blindness alongside poison. Entire staff, head at top.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_apostle_of_death/enemy_apostle_of_death-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/ApostleOfDeath/apostle-of-death-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"죽음의 독안개 지팡이\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Death apostle poison-mist staff. Copy crooked brown wooden staff design from monster: large angular acid-green diamond crystal cradled by forked dark wood at top, ivory cross binding below it, small red wax skull seal with purple ribbon, two ivory shaft wraps. A compact opaque violet wisp hugging crystal conveys blindness alongside poison. Entire staff, head at top.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "ee891c161c4fe1b103a34a4f0ed398d0d2a6ac371b000dc0a5f5bbeb47a5ad2c",
+    "spriteGuid": "b2bf800e02df4f91a9ae88b92bcb665c",
+    "effectSummary": "기본 공격력 21 · 주기 2초 / 명중 시: 상대에게 중독 4중첩 / 명중 시: 상대에게 실명 4중첩 / 중독에 면역입니다."
+  },
+  {
+    "id": "enemy_blood_priest",
+    "name": "피의 홀",
+    "monsterId": "blood_priest",
+    "monsterName": "피의 제사장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_BloodPriest.asset",
+    "illustration": "Assets/_Project/Art/Monsters/BloodPriest/blood-priest-standing-approved.png",
+    "monsterDesign": "A sinister adult human blood priest wearing long deep-crimson and black ritual robes with a high collar, pale face, pointed ceremonial headpiece and dark leather gloves. One hand holds a short black staff topped with a ruby, the other cups a small suspended dark-red magical orb with a few crimson droplets drawn inward, conveying vampiric life drain. Fully clothed, dignified sinister stance, magical red energy without gore or victims.",
+    "stage": 4,
+    "round": "8R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_BloodPriest.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "08e9a6dafc6640888f0c72ae3650d5e6",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_blood_priest.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 20,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_blood_priest",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_blood_priest",
+      "_displayName": "피의 홀",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 9,
+          "_target": 0,
+          "_stacks": 12
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 20,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Blood scepter. Copy blood priest's black staff and elongated ruby red crystal, held by two curved gold prongs, small gold shaft bands. Deep crimson crystal with bright red inset highlight suggests life drain. Entire staff upright.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_blood_priest/enemy_blood_priest-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/BloodPriest/blood-priest-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"피의 홀\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Blood scepter. Copy blood priest's black staff and elongated ruby red crystal, held by two curved gold prongs, small gold shaft bands. Deep crimson crystal with bright red inset highlight suggests life drain. Entire staff upright.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "d01f1ea66ee6ba6f6db4074127325d6e5d5eaa1b4b702965aaa9183e69ed4942",
+    "spriteGuid": "6709d8bc3abc41518af6221b29b24289",
+    "effectSummary": "기본 공격력 20 · 주기 2초 / 전투 시작: 자신에게 흡혈 12중첩"
+  },
+  {
+    "id": "enemy_boulder_guardian",
+    "name": "거석 주먹",
+    "monsterId": "boulder_guardian",
+    "monsterName": "거석 수호자",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_BoulderGuardian.asset",
+    "illustration": "Assets/_Project/Art/Monsters/BoulderGuardian/boulder-guardian-standing-approved.png",
+    "monsterDesign": "A massive squat stone golem guardian built from overlapping gray granite slabs, oversized stacked stone shoulder and chest armor, huge rock fists, stout articulated legs and moss in crevices. Bright amber geometric core peeks through small cracks in the heavily armored chest, conveying strength while armored. Full intact heavily plated form, ancient forest guardian, no weapon or human rider.",
+    "stage": 2,
+    "round": "8R",
+    "trait": 2,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_BoulderGuardian.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "58e30d59b3cf43b5968f91bc4f386a79",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_boulder_guardian.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "전투 시작 시 최대 체력의 35%만큼 방어도를 얻습니다. 방어도가 처음으로 모두 사라질 때까지 공격력이 50% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_boulder_guardian",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_boulder_guardian",
+      "_displayName": "거석 주먹",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투 시작 시 최대 체력의 35%만큼 방어도를 얻습니다. 방어도가 처음으로 모두 사라질 때까지 공격력이 50% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Stone fist. Isolate one massive clenched granite fist and short stacked rock forearm from the golem, knuckles at top, forearm down. Pale gray angular overlapping heavy slabs, olive moss in joints and tiny amber light between slabs. Broad sturdy upper fist narrowing toward lower wrist. No flesh, no complete monster.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_boulder_guardian/enemy_boulder_guardian-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/BoulderGuardian/boulder-guardian-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"거석 주먹\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Stone fist. Isolate one massive clenched granite fist and short stacked rock forearm from the golem, knuckles at top, forearm down. Pale gray angular overlapping heavy slabs, olive moss in joints and tiny amber light between slabs. Broad sturdy upper fist narrowing toward lower wrist. No flesh, no complete monster.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "f00998de462dc30c327d4c8760cf98bdeb0021dd794987405cb35fb860fab007",
+    "spriteGuid": "9f8659a8317c40368c3066b6ef2c0677",
+    "effectSummary": "기본 공격력 13 · 주기 2초 / 전투 시작 시 최대 체력의 35%만큼 방어도를 얻습니다. 방어도가 처음으로 모두 사라질 때까지 공격력이 50% 증가합니다."
+  },
+  {
+    "id": "enemy_cultist",
+    "name": "의식용 단검",
+    "monsterId": "cultist",
+    "monsterName": "광신도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Cultist.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Cultist/cultist-standing-approved.png",
+    "monsterDesign": "A sinister human cultist in ragged charcoal-brown hooded robes with dark crimson lining, simple cord belt, worn boots and a small ritual dagger held low. Face largely in shadow but a narrow pale lower face visible, tense forward-leaning standing pose. Modest common follower, no elite armor. No real religious symbols, no gore.",
+    "stage": 4,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Cultist.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "47dbda7e972e491b8d4df6ee9d1dcd70",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_cultist.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 11,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_cultist",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_cultist",
+      "_displayName": "의식용 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 11,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Ritual dagger. Copy cultist's modest short curved silver blade, simple brown small crossguard and dark wood grip. Blade points up, pointed slender dagger, worn gray metal, tiny crimson cloth tied flush around grip. No magical ornament.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_cultist/enemy_cultist-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/Cultist/cultist-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"의식용 단검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Ritual dagger. Copy cultist's modest short curved silver blade, simple brown small crossguard and dark wood grip. Blade points up, pointed slender dagger, worn gray metal, tiny crimson cloth tied flush around grip. No magical ornament.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "3354acb0d51a6a5bb8523c5123e94691f006c980f792b6984dde978355b3f5f6",
+    "spriteGuid": "746b22263ba6496099c10d60b343179f",
+    "effectSummary": "기본 공격력 11 · 주기 2초"
+  },
+  {
+    "id": "enemy_demon_legion_commander",
+    "name": "군단장의 대검",
+    "monsterId": "demon_legion_commander",
+    "monsterName": "마족 군단장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonLegionCommander.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+    "monsterDesign": "A towering regal demon legion commander boss with dark charcoal-red skin, two imposing swept-back black horns, stern angular face and burning amber eyes. Layered obsidian plate armor with restrained dark gold trim, deep crimson torn commander cape, armored boots, one large black greatsword held down at his side. His open gauntlet draws a few emerald-violet power motes inward while a cracked ruby-red chest core glows, conveying buff theft and resurrection into a stronger form. Commanding complete standing silhouette, no giant wings, no throne, no extra characters. One normal boss illustration, not a two-form sheet.",
+    "stage": 6,
+    "round": "12R",
+    "trait": 12,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonLegionCommander.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "1ab1cc182f804ff8ac076969cc561280",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_legion_commander.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "effect": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 33,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_legion_commander",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_legion_commander",
+      "_displayName": "군단장의 대검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 33,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "471b2c1f320e4938aa3973b576e8fc4b",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Commander's greatsword. Reproduce commander's sword: long imposing black charcoal blade with irregular angular shoulder notches, silver-gray bevels and thin jagged red fissure along center, antique gold hooked crossguard framing large diamond ruby, black wrapped grip and gold pommel. Blade points UP. Very long blade, restrained regal dark-gold hilt. Crossguard kept narrow enough for one cell. Entire sword, no hand.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_legion_commander/enemy_demon_legion_commander-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"군단장의 대검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Commander's greatsword. Reproduce commander's sword: long imposing black charcoal blade with irregular angular shoulder notches, silver-gray bevels and thin jagged red fissure along center, antique gold hooked crossguard framing large diamond ruby, black wrapped grip and gold pommel. Blade points UP. Very long blade, restrained regal dark-gold hilt. Crossguard kept narrow enough for one cell. Entire sword, no hand.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 4 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 384 pixels (x=320..704), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 350px. Critical true item aspect ratio 1:4, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      320,
+      0,
+      384,
+      1536
+    ],
+    "sha256": "3ea757c82c361523644841af771659a06413bce874418220c5d745d9b07c2f5c",
+    "spriteGuid": "0d85fbd9dae84e5dbcc949c5d026f980",
+    "effectSummary": "기본 공격력 33 · 주기 2초 / 전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다."
+  },
+  {
+    "id": "enemy_demon_legion_commander_skill",
+    "name": "권능 강탈",
+    "monsterId": "demon_legion_commander",
+    "monsterName": "마족 군단장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonLegionCommander.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+    "monsterDesign": "A towering regal demon legion commander boss with dark charcoal-red skin, two imposing swept-back black horns, stern angular face and burning amber eyes. Layered obsidian plate armor with restrained dark gold trim, deep crimson torn commander cape, armored boots, one large black greatsword held down at his side. His open gauntlet draws a few emerald-violet power motes inward while a cracked ruby-red chest core glows, conveying buff theft and resurrection into a stronger form. Commanding complete standing silhouette, no giant wings, no throne, no extra characters. One normal boss illustration, not a two-form sheet.",
+    "stage": 6,
+    "round": "12R",
+    "trait": 12,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonLegionCommander.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "fa650ab3a2b44035864eb821c8731039",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_legion_commander_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대의 버프를 최대 3중첩 강탈합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_legion_commander_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_legion_commander_skill",
+      "_displayName": "권능 강탈",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대의 버프를 최대 3중첩 강탈합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Power theft spell icon: one charcoal-violet clawed armored demon hand cupping and drawing in a small emerald and violet magical orb, curved two compact pixel streams flowing INTO palm. Antique gold wrist cuff, small ruby detail matching commander armor. Single compact square inventory ability symbol, no badge frame.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_legion_commander_skill/enemy_demon_legion_commander_skill-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonLegionCommander/demon-legion-commander-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"권능 강탈\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Power theft spell icon: one charcoal-violet clawed armored demon hand cupping and drawing in a small emerald and violet magical orb, curved two compact pixel streams flowing INTO palm. Antique gold wrist cuff, small ruby detail matching commander armor. Single compact square inventory ability symbol, no badge frame.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "ebd5d8eac2c4dc4c2f71987f224ad8960e29812dd4720df408ed0ea44a563f73",
+    "spriteGuid": "21be3449bab4402ca4f4a246e89941a4",
+    "effectSummary": "5초마다 상대의 버프를 최대 3중첩 강탈합니다."
+  },
+  {
+    "id": "enemy_demon_soldier",
+    "name": "마족군 제식 검",
+    "monsterId": "demon_soldier",
+    "monsterName": "마족 병사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonSoldier.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonSoldier/demon-soldier-standing-approved.png",
+    "monsterDesign": "A common demon infantry soldier with muted dark red-gray skin, two short swept-back horns, pointed ears, yellow eyes and a sturdy humanoid build. Wears practical battered black iron armor over dark leather, simple crimson waistcloth and heavy boots. Holds one plain broad iron sword and a small battered shield. Disciplined guarded standing stance, modest rank, no giant wings or elaborate crown.",
+    "stage": 6,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonSoldier.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "64ca85fd4c8043c781a965a76afb3fcb",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_soldier.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_soldier",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_soldier",
+      "_displayName": "마족군 제식 검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c835d63c126646f9829ec987ba15828a",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Demon army standard sword. Copy plain broad gray-black iron sword from common demon soldier, silver cutting edge, modest straight worn iron guard, dark brown leather grip, squared iron pommel. Upright blade point up, simple practical inexpensive infantry equipment.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_soldier/enemy_demon_soldier-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonSoldier/demon-soldier-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"마족군 제식 검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Demon army standard sword. Copy plain broad gray-black iron sword from common demon soldier, silver cutting edge, modest straight worn iron guard, dark brown leather grip, squared iron pommel. Upright blade point up, simple practical inexpensive infantry equipment.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 3 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 512 pixels (x=256..768), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 466.6666666666667px. Critical true item aspect ratio 1:3, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      256,
+      0,
+      512,
+      1536
+    ],
+    "sha256": "c23dfc7a9adeab477818e594c32b057d3b5fd9c0fac7b928db447e9e7dea77de",
+    "spriteGuid": "259a5440f400444d861a2c2205272530",
+    "effectSummary": "기본 공격력 15 · 주기 2초"
+  },
+  {
+    "id": "enemy_demon_weapon_master",
+    "name": "마족의 곡검",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "f134e409d6e1414dbf65a21c36542d6b",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "어느 무기든 명중할 때마다 모든 무기의 치명타 확률이 1%p 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 14,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master",
+      "_displayName": "마족의 곡검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "어느 무기든 명중할 때마다 모든 무기의 치명타 확률이 1%p 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 14,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c835d63c126646f9829ec987ba15828a",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Demon curved sword. Copy weapon master's silver single-edge curved saber with gray-purple flat steel center, pale cutting bevel, small curved brass guard, dark brown wrapped handle and brass pommel. Point up, narrow elegant curve fitting vertical strip. No sheath.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master/enemy_demon_weapon_master-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"마족의 곡검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Demon curved sword. Copy weapon master's silver single-edge curved saber with gray-purple flat steel center, pale cutting bevel, small curved brass guard, dark brown wrapped handle and brass pommel. Point up, narrow elegant curve fitting vertical strip. No sheath.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 3 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 512 pixels (x=256..768), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 466.6666666666667px. Critical true item aspect ratio 1:3, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      256,
+      0,
+      512,
+      1536
+    ],
+    "sha256": "95a89d1f12463db4ec42ef0b738ed96f1d735407da418cf0e302b7e90a00f1fe",
+    "spriteGuid": "2ae211e91b684e30bcfc5356ca1e5b79",
+    "effectSummary": "기본 공격력 14 · 주기 2초 / 어느 무기든 명중할 때마다 모든 무기의 치명타 확률이 1%p 증가합니다."
+  },
+  {
+    "id": "enemy_demon_weapon_master_axe",
+    "name": "마족의 손도끼",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "axe",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "e59abcdfc61e4cd280de440770d27d21",
+        "type": 2
+      },
+      "_origin": {
+        "x": 3,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_axe.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/#./#.",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 3,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 3,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_axe",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_axe",
+      "_displayName": "마족의 손도끼",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 3,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 3,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "71bd26d9a1574d22955ac1206bee0bb8",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Demon hand axe. Copy compact black-steel axe with bright pale gray curved cutting edge and brown leather grip from weapon master. Reorient intact head at TOP of vertical handle: shaft center x256, blade to RIGHT in top row. Preserve complete sweeping crescent edge and pointed tips, small gold end cap. Head x170..890,y80..460; haft x200..320,y430..1440. Upper head may cross both columns; BELOW y490 only LEFT column, all x>=512,y>=512 totally empty. Scale full head to fit without chopping its tips.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_axe/enemy_demon_weapon_master_axe-2026-11-17-v3.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_axe/enemy_demon_weapon_master_axe-2026-11-17-v2.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v2.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master/enemy_demon_weapon_master-2026-11-17-v1.png"
+    ],
+    "prompt": "Use case: style-transfer / precise-object-edit. Asset: ONE transparent pixel-art inventory sprite for \"마족의 손도끼\" (Demon hand axe).\nInput1 is the target axe whose DESIGN and LAYOUT must be preserved. Input2 raider axe and input3 curved sword are the APPROVED PIXEL ART STYLE to match.\nRedraw the FIRST axe in the same chunky crisp pixel rendering as the other two. Main defect to fix: the first axe has a hair-thin black vector-like contour, flat lifeless planar shading, and thin outlines separating the leather sections. Replace those with a substantial dark charcoal-purple stepped pixel contour, about 12-18 output pixels thick on a 1024px-wide canvas. Use coherent blocky pixel clusters and simple 3-4 tone material planes like references2/3. No thin vector strokes. Treat leather grip as ONE connected dark handle with broad diagonal brown wrap highlights, not rectangles individually bordered by fine black lines. Steel is cool gray-violet with broad ivory-silver cutting bevel and short pale highlight at upper-left, matching sword. Gold pommel gets broad dark ochre shadow, gold middle tone and cream highlight, matching sword pommel.\nPreserve existing single right-facing crescent steel axe head with two pointed curved tips, squared socket, long straight left-column brown wrapped shaft, small faceted golden pommel. Do not add runes, ornaments, spikes or red colors from reference2.\nCRITICAL same inventory footprint: 2 columns by3 rows, occupied top row BOTH cells, lower2 rows LEFT cell only: ##/#./#.\n1024x1536 canvas. Straight shaft centered x270, from head socket down to y1455. Whole intact head INCLUDING thick outline and bottom point stays x190..650, y50..470. Head must visibly enter top RIGHT cell x>512 but must never extend belowy490. Every pixel in lower right rectangle x>=512,y>=512 must be fully transparent. Never clip off tips: scale the whole complete blade slightly if necessary. Preserve slender long handle and normal material proportions. Maintain clear gap before y512.\nMatch medium-coarse pixel style of inputs2/3. Sharp square clusters, no microscopic texture, no smooth curves, no glow, no haze, no gradients, no cast shadow. Genuine transparent RGBA background right up to stepped outline. No monster, no text, no grid, no frame. Only one axe.",
+    "previousOutput": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_axe/enemy_demon_weapon_master_axe-2026-11-17-v2.png",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "sha256": "55d5ac24a1766e2040438069a99253f00f50a5ed85098b5984b04f215041c149",
+    "spriteGuid": "8afacd222eb44a93838f7556d386d996",
+    "effectSummary": "기본 공격력 9 · 주기 3초",
+    "revisionNote": "외곽선을 굵은 짙은 보라색 도트로 통일하고 금속·가죽·금색 명암을 기존 아이템에 맞춤. 4칸 모양 유지."
+  },
+  {
+    "id": "enemy_demon_weapon_master_spear",
+    "name": "마족의 장창",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "spear",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "95b400c25ead47e5bc56d828aa529925",
+        "type": 2
+      },
+      "_origin": {
+        "x": 5,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_spear.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 4,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 8,
+      "_cooldownSeconds": 4,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_spear",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_spear",
+      "_displayName": "마족의 장창",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 4,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 8,
+        "_cooldownSeconds": 4,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "f7cf220649d648419bcb4c7b8142c959",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Demon long spear. Copy back-mounted spear from weapon master: large silver angular leaf head with gray center ridge, short brass socket, tiny deep-red cloth tucked close below head, long straight brown wooden shaft, small gold ferrule at bottom. Upright point up, narrow long silhouette.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_spear/enemy_demon_weapon_master_spear-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"마족의 장창\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Demon long spear. Copy back-mounted spear from weapon master: large silver angular leaf head with gray center ridge, short brass socket, tiny deep-red cloth tucked close below head, long straight brown wooden shaft, small gold ferrule at bottom. Upright point up, narrow long silhouette.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 3 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 512 pixels (x=256..768), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 466.6666666666667px. Critical true item aspect ratio 1:3, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      256,
+      0,
+      512,
+      1536
+    ],
+    "sha256": "b48d75342f47d5548388d98bb553142107aa4d78a8dc223937e870d9e98199bf",
+    "spriteGuid": "4329d69592584a0f88685924e51ac67f",
+    "effectSummary": "기본 공격력 8 · 주기 4초"
+  },
+  {
+    "id": "enemy_demon_weapon_master_dagger",
+    "name": "마족의 단검",
+    "monsterId": "demon_weapon_master",
+    "monsterName": "무기 전문가",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DemonWeaponMaster.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+    "monsterDesign": "A muscular demonic weapon expert with slate-red skin, short black horns and focused golden eyes, wearing fitted dark leather and practical black steel armor with multiple weapon straps. MANY clearly distinct functional weapons: one curved sword held in one hand, one compact axe held in the other, a sheathed straight sword and a spear secured diagonally across the back, two daggers in belt sheaths. Keep every limb anatomically clear and separate handles from limbs. Subtle amber notches on bracers imply accumulating precision, confident balanced standing pose. No text or numeric counters.",
+    "stage": 6,
+    "round": "8R",
+    "trait": 11,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DemonWeaponMaster.asset",
+    "placement": {
+      "_slotId": "dagger",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "192a3b53b40b46c4b81c157e3622b67e",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 3
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_demon_weapon_master_dagger.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7.5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_demon_weapon_master_dagger",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_demon_weapon_master_dagger",
+      "_displayName": "마족의 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 7.5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Demon dagger. Copy one of weapon master's belt daggers drawn from sheath: pointed straight triangular dark-steel blade with pale silver edge and central ridge, small straight silver guard, brown leather handle and round brass pommel. A compact precise balanced weapon, point up.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_dagger/enemy_demon_weapon_master_dagger-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DemonWeaponMaster/demon-weapon-master-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"마족의 단검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Demon dagger. Copy one of weapon master's belt daggers drawn from sheath: pointed straight triangular dark-steel blade with pale silver edge and central ridge, small straight silver guard, brown leather handle and round brass pommel. A compact precise balanced weapon, point up.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "65cb8e532a637b55acb7deed71387497d760ce8d8c228b7ab58e53821175458f",
+    "spriteGuid": "2b77ed0e3179499993191c1c02d9441d",
+    "effectSummary": "기본 공격력 7.5 · 주기 5초"
+  },
+  {
+    "id": "enemy_desert_guardian_pharaoh",
+    "name": "파라오의 홀",
+    "monsterId": "desert_guardian_pharaoh",
+    "monsterName": "사막의 수호자(파라오)",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_DesertGuardianPharaoh.asset",
+    "illustration": "Assets/_Project/Art/Monsters/DesertGuardianPharaoh/desert-guardian-pharaoh-standing-approved.png",
+    "monsterDesign": "An ancient regal pharaoh guardian boss, humanoid undead king fully dressed in gold-and-lapis striped nemes headdress, ornate gold funerary mask, broad jeweled collar, ivory pleated ceremonial robe and dark gold armor. Holds a long ceremonial crook staff, with a small radiant scarab gem centered over the chest. A few solid golden fragments form a compact protective arc near one shoulder to suggest resurrection and brief invulnerability. Commanding standing pose, no throne or pyramid.",
+    "stage": 3,
+    "round": "12R",
+    "trait": 5,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_DesertGuardianPharaoh.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c7a63c0d468a4a15b1e94b381738b504",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_desert_guardian_pharaoh.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 공격력이 50%, 공격 속도가 30% 증가하며 3초간 피해를 받지 않습니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 20,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_desert_guardian_pharaoh",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_desert_guardian_pharaoh",
+      "_displayName": "파라오의 홀",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 공격력이 50%, 공격 속도가 30% 증가하며 3초간 피해를 받지 않습니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 20,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Pharaoh scepter. Reproduce illustrated ceremonial crook: curled shepherd-hook head with alternating lapis blue and gold bands, small gold winged collar with red oval gem directly below crook, long dark-blue shaft with narrow gold collars and pointed golden bottom ferrule. Upright complete compact ceremonial staff. Wings fit narrow width.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_desert_guardian_pharaoh/enemy_desert_guardian_pharaoh-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/DesertGuardianPharaoh/desert-guardian-pharaoh-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"파라오의 홀\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Pharaoh scepter. Reproduce illustrated ceremonial crook: curled shepherd-hook head with alternating lapis blue and gold bands, small gold winged collar with red oval gem directly below crook, long dark-blue shaft with narrow gold collars and pointed golden bottom ferrule. Upright complete compact ceremonial staff. Wings fit narrow width.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "619f30a7a0df136c9ed3750f6d11ce32efd7242fa62080052652739487322643",
+    "spriteGuid": "cb37b190b3494a94b2d1ee04fa25262b",
+    "effectSummary": "기본 공격력 20 · 주기 2초 / 전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 공격력이 50%, 공격 속도가 30% 증가하며 3초간 피해를 받지 않습니다."
+  },
+  {
+    "id": "enemy_dryad",
+    "name": "가시 덩굴",
+    "monsterId": "dryad",
+    "monsterName": "드라이어드",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Dryad.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+    "monsterDesign": "A regal adult female dryad forest boss with living bark armor fully covering torso and hips, leaf-woven skirt, long dark green vine-like hair and graceful branching antler crown. Slender humanoid tree body, root-shaped feet, amber-green eyes and elegant open hand drawing a few emerald rune-like motes inward toward a luminous heartwood gem. Buff-stealing and healing visual motif, serene dangerous expression. One figure, modest full costume, no text runes.",
+    "stage": 2,
+    "round": "12R",
+    "trait": 3,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Dryad.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "522162d1a5bb44dc88fd9553e76b7221",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_dryad.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_dryad",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_dryad",
+      "_displayName": "가시 덩굴",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "420d094e8ad44afc86000657db2197d9",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Thorn vine. One small elegant coiled dark-green vine with sharp warm-ivory thorns and two light olive serrated leaves, woody brown base matching dryad bark armor. Compact loose spiral curling within square, negative space inside, no pot, no whole character.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_dryad/enemy_dryad-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"가시 덩굴\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Thorn vine. One small elegant coiled dark-green vine with sharp warm-ivory thorns and two light olive serrated leaves, woody brown base matching dryad bark armor. Compact loose spiral curling within square, negative space inside, no pot, no whole character.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "44c0d934147e7bd57316b54f599f47a944da16300a56ae5def2d38546e85b629",
+    "spriteGuid": "67a497a5530d44f7928b8323c10b1b5b",
+    "effectSummary": "기본 공격력 15 · 주기 2초"
+  },
+  {
+    "id": "enemy_dryad_skill",
+    "name": "숲의 손길",
+    "monsterId": "dryad",
+    "monsterName": "드라이어드",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Dryad.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+    "monsterDesign": "A regal adult female dryad forest boss with living bark armor fully covering torso and hips, leaf-woven skirt, long dark green vine-like hair and graceful branching antler crown. Slender humanoid tree body, root-shaped feet, amber-green eyes and elegant open hand drawing a few emerald rune-like motes inward toward a luminous heartwood gem. Buff-stealing and healing visual motif, serene dangerous expression. One figure, modest full costume, no text runes.",
+    "stage": 2,
+    "round": "12R",
+    "trait": 3,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Dryad.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "10e94cc0e35a421885fe496464e42c84",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_dryad_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대의 버프를 최대 2중첩 강탈합니다. 강탈한 중첩당 최대 체력의 3%만큼 회복합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_dryad_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_dryad_skill",
+      "_displayName": "숲의 손길",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대의 버프를 최대 2중첩 강탈합니다. 강탈한 중첩당 최대 체력의 3%만큼 회복합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Forest touch spell icon. Graceful living bark hand with slender fingers and green leaf wrist cuff gently drawing two small emerald leaf-shaped motes toward a bright yellow-green diamond heartwood gem in palm. Matching dryad leaf/bark palette, healing and buff absorption conveyed by small inward arcs. Compact square symbol no border.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_dryad_skill/enemy_dryad_skill-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/Dryad/dryad-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"숲의 손길\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Forest touch spell icon. Graceful living bark hand with slender fingers and green leaf wrist cuff gently drawing two small emerald leaf-shaped motes toward a bright yellow-green diamond heartwood gem in palm. Matching dryad leaf/bark palette, healing and buff absorption conveyed by small inward arcs. Compact square symbol no border.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "d6e65417e8b3e38922bd82d1f0a885fb74ef941beb84485cd67916ae3ed783b5",
+    "spriteGuid": "035963439e224ab9b81e47abf2dbbebd",
+    "effectSummary": "5초마다 상대의 버프를 최대 2중첩 강탈합니다. 강탈한 중첩당 최대 체력의 3%만큼 회복합니다."
+  },
+  {
+    "id": "enemy_false_idol",
+    "name": "핏빛 발톱",
+    "monsterId": "false_idol",
+    "monsterName": "거짓된 우상",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FalseIdol.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+    "monsterDesign": "A monstrous DARK CRIMSON RAVEN boss, unmistakably an avian crow/raven and not a humanoid. Powerful hooked black beak, ominous pale gold eyes, layered wine-red and near-black feathers, clawed black talons, spread partly lifted wings and long ragged tail. A jagged crown-like crest of dark red feathers and a few tiny violet/amber curse motes near the wing tips imply unpredictable afflictions. One complete standing bird on talons, no perch, no separate halo or background. Wings fully inside frame.",
+    "stage": 4,
+    "round": "12R",
+    "trait": 7,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FalseIdol.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "257a3fc01ddc4fb9952b6833135d2758",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_false_idol.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "상대에게 부여된 빙결, 실명, 화상, 중독 중첩당 공격력이 2% 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 24,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_false_idol",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_false_idol",
+      "_displayName": "핏빛 발톱",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "상대에게 부여된 빙결, 실명, 화상, 중독 중첩당 공격력이 2% 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 24,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Crimson talon. Isolated raven claw from false idol: dark charcoal scaly long foot with three prominent sharply hooked talons, deep wine-red feather cuff at upper end and crimson edging along curved black nails. Claws angle down; feathered ankle high, grasping claw lower. Raven anatomy, no human fingers, no gore.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_false_idol/enemy_false_idol-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"핏빛 발톱\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Crimson talon. Isolated raven claw from false idol: dark charcoal scaly long foot with three prominent sharply hooked talons, deep wine-red feather cuff at upper end and crimson edging along curved black nails. Claws angle down; feathered ankle high, grasping claw lower. Raven anatomy, no human fingers, no gore.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "78331221972e387cdd27b48ed6712cd00eb9e0db05440a8ae031cc9b2167c4bf",
+    "spriteGuid": "e09faaef8e2a4c1680c4c147366d195b",
+    "effectSummary": "기본 공격력 24 · 주기 2초 / 상대에게 부여된 빙결, 실명, 화상, 중독 중첩당 공격력이 2% 증가합니다."
+  },
+  {
+    "id": "enemy_false_idol_skill",
+    "name": "우상의 저주",
+    "monsterId": "false_idol",
+    "monsterName": "거짓된 우상",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FalseIdol.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+    "monsterDesign": "A monstrous DARK CRIMSON RAVEN boss, unmistakably an avian crow/raven and not a humanoid. Powerful hooked black beak, ominous pale gold eyes, layered wine-red and near-black feathers, clawed black talons, spread partly lifted wings and long ragged tail. A jagged crown-like crest of dark red feathers and a few tiny violet/amber curse motes near the wing tips imply unpredictable afflictions. One complete standing bird on talons, no perch, no separate halo or background. Wings fully inside frame.",
+    "stage": 4,
+    "round": "12R",
+    "trait": 7,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FalseIdol.asset",
+    "placement": {
+      "_slotId": "skill",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "1fccc7b6385e4407a6c483c7938dc559",
+        "type": 2
+      },
+      "_origin": {
+        "x": 0,
+        "y": 2
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_false_idol_skill.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "{period}초마다 상대에게 무작위로 빙결, 실명, 화상, 중독 중 하나를 3중첩 부여합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 5,
+      "_effects": [
+        {
+          "_kind": 6
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 5,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_false_idol_skill",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_false_idol_skill",
+      "_displayName": "우상의 저주",
+      "_category": 2,
+      "_tags": 0,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "{period}초마다 상대에게 무작위로 빙결, 실명, 화상, 중독 중 하나를 3중첩 부여합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 5,
+        "_effects": [
+          {
+            "_kind": 6
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 5,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Idol curse spell icon. Small sinister golden raven eye inset in a compact cluster of dark wine-red raven feathers, tiny jagged antique gold crown ridge. Four small clearly separated crystalline curse motes around it: icy cyan, dark violet, orange fire, acid green. Matching false idol colors. All compact inside square, no writing or background disc.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_false_idol_skill/enemy_false_idol_skill-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/FalseIdol/false-idol-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"우상의 저주\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Idol curse spell icon. Small sinister golden raven eye inset in a compact cluster of dark wine-red raven feathers, tiny jagged antique gold crown ridge. Four small clearly separated crystalline curse motes around it: icy cyan, dark violet, orange fire, acid green. Matching false idol colors. All compact inside square, no writing or background disc.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "91dcb360f86da42515a654aacdb5f1e1d450c3abd3d036c109561d1b87fd45ad",
+    "spriteGuid": "bc920f4eec1442b1bf6a5d7d3daf34ed",
+    "effectSummary": "5초마다 상대에게 무작위로 빙결, 실명, 화상, 중독 중 하나를 3중첩 부여합니다."
+  },
+  {
+    "id": "enemy_forest_spirit",
+    "name": "뿌리 채찍",
+    "monsterId": "forest_spirit",
+    "monsterName": "숲의 정령",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ForestSpirit.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ForestSpirit/forest-spirit-standing-approved.png",
+    "monsterDesign": "A small living woodland spirit made of gnarled warm-brown wood, moss and green leaves. Compact humanoid tree-sprite body with root feet, branch arms, a carved expressive wooden face and two soft amber eyes, a few leafy twigs like a crown. Friendly-looking but alert guardian enemy stance. No human costume, no separate tree or forest backdrop.",
+    "stage": 2,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ForestSpirit.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "b2e1f6a034b94c4ba9d202d070e29ab1",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_forest_spirit.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_forest_spirit",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_forest_spirit",
+      "_displayName": "뿌리 채찍",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 7,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Root whip. Single slender warm brown gnarled living root curled in tall S shape, thick woody graspable base at bottom tapering to flexible tip up, a few olive moss patches and two tiny green leaves like forest spirit. Entire whip within two vertical cells. No face, no humanoid body.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_forest_spirit/enemy_forest_spirit-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/ForestSpirit/forest-spirit-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"뿌리 채찍\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Root whip. Single slender warm brown gnarled living root curled in tall S shape, thick woody graspable base at bottom tapering to flexible tip up, a few olive moss patches and two tiny green leaves like forest spirit. Entire whip within two vertical cells. No face, no humanoid body.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "9e6e78eb8544f712e1ec9c382d3138f6c8978348fe999897cc9fe06f075c97f0",
+    "spriteGuid": "680b88533e5242738965f4dc638b8fc6",
+    "effectSummary": "기본 공격력 7 · 주기 2초"
+  },
+  {
+    "id": "enemy_frost_wolf",
+    "name": "서리 송곳니",
+    "monsterId": "frost_wolf",
+    "monsterName": "서리늑대",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_FrostWolf.asset",
+    "illustration": "Assets/_Project/Art/Monsters/FrostWolf/frost-wolf-standing-approved.png",
+    "monsterDesign": "A fierce WHITE frost wolf in a natural four-legged three-quarter standing pose, thick white coat with cool blue shadows, spiky frosted ruff, long bushy tail and sharp icy blue eyes. Lips slightly curled to reveal fangs, lean powerful legs and low ready posture imply ferocity. A few icy blue highlights on claws and fur, no armor, no rider, no bloody wounds, no second wolf.",
+    "stage": 5,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_FrostWolf.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "11880be202bb4ed090463569dcd815f7",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_frost_wolf.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_frost_wolf",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_frost_wolf",
+      "_displayName": "서리 송곳니",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Frost fang. One long curved ivory-white canine fang with cool pale blue shadows, blue-white icy facets near thick root and a tiny white fur tuft at root. Broad root top, sharp gently curling point down. Same wolf's frost-white/cyan palette; clean fantasy item no blood, no jaw.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_frost_wolf/enemy_frost_wolf-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/FrostWolf/frost-wolf-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"서리 송곳니\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Frost fang. One long curved ivory-white canine fang with cool pale blue shadows, blue-white icy facets near thick root and a tiny white fur tuft at root. Broad root top, sharp gently curling point down. Same wolf's frost-white/cyan palette; clean fantasy item no blood, no jaw.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "10c6d405907ec4624868881d4ad8f35eb746239faa73c5fe8589d608108d9354",
+    "spriteGuid": "aec17d8f5fe94caa9b14c62d09f510f3",
+    "effectSummary": "기본 공격력 13 · 주기 2초"
+  },
+  {
+    "id": "enemy_goblin",
+    "name": "고블린 곤봉",
+    "monsterId": "goblin",
+    "monsterName": "고블린",
+    "monsterPath": "Assets/_Project/Data/Enemies/EnemyType_Goblin.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Goblin/goblin-standing-approved.png",
+    "monsterDesign": "",
+    "stage": 1,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Goblin.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c7fa143835f74fb691dfb36ee3469d88",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin",
+      "_displayName": "고블린 곤봉",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Goblin club. Reproduce goblin's plain warm-brown wooden club: thick uneven pear-shaped wood head at top, two broad carved wood grain streaks, tapering handle at bottom with beige cloth strips. Very simple crude wooden weapon, no metal spikes, no magic.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin/enemy_goblin-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/Goblin/goblin-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"고블린 곤봉\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Goblin club. Reproduce goblin's plain warm-brown wooden club: thick uneven pear-shaped wood head at top, two broad carved wood grain streaks, tapering handle at bottom with beige cloth strips. Very simple crude wooden weapon, no metal spikes, no magic.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "33fdcd59df7f3d510ea8a3e7f02dd96f5412f50d3af727d484430c32b3ec5ef1",
+    "spriteGuid": "d98ba32f9b3c4b1fa4c0f4186d62d25a",
+    "effectSummary": "기본 공격력 5 · 주기 2초"
+  },
+  {
+    "id": "enemy_goblin_chieftain",
+    "name": "약탈자의 도끼",
+    "monsterId": "goblin_chieftain",
+    "monsterName": "고블린 족장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinChieftain.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinChieftain/goblin-chieftain-standing-approved.png",
+    "monsterDesign": "A broad powerful dark-green goblin chieftain, larger and more imposing than the common goblin but unmistakably the same pointed-eared species. Worn dark iron and leather armor, rough fur shoulder mantle, a crude iron crown, dark crimson sash, one heavy cleaver with a restrained ruby-red life-stealing rune. Small red energy motes drawn into his free gauntlet convey vampirism without gore. Proud grounded standing stance.",
+    "stage": 1,
+    "round": "12R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinChieftain.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "df90967420fb4159b02d80d6418d2533",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_chieftain.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/#./#.",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 11,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_chieftain",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_chieftain",
+      "_displayName": "약탈자의 도끼",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 9,
+          "_target": 0,
+          "_stacks": 8
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 11,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "71bd26d9a1574d22955ac1206bee0bb8",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Raider axe. Adapt goblin chieftain's pictured broad rune cleaver to a SINGLE-EDGED AXE on long left-column haft. Preserve dark iron head, broad silver cutting bevel, angular ruby-red diamond rune, tiny rivets and worn brown grip. Intact broad convex blade to RIGHT at TOP row, top head x170..900,y70..460; shaft x200..330,y410..1440. Large complete curved cutting edge within top row, no artificially clipped blade. ALL pixels right ofx512 belowy512 absent. Strong crude heavy boss axe.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v1.png"
+    ],
+    "prompt": "Use case precise-object-edit. ONLY uniformly shrink COMPLETE axe HEAD to 70% of current size and move it upwards so entire head incl bottom curved edge stays inside top 30% canvas(y40..450 of1024x1536). Keep intact original curved edge, diamond rune, rivets, collar and rear loop. Head spans x100..740. Keep haft x260 to y1480. Extend haft up to connect naturally. All right half x512..1024 belowy512 must be fully transparent. Do NOT clip blade to fit. Preserve dark-iron/redrune design and coarse pixel style. Remove faint diffuse halo outside solid outline. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+    "previousOutput": "Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v1.png",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "sha256": "08733bdc31e2dc8ac202bdd0b502b8133e85e478bccb32cc131fa2fb203b62a7",
+    "spriteGuid": "cf34dabf68694647b0a38c42a5c32217",
+    "effectSummary": "기본 공격력 11 · 주기 2초 / 전투 시작: 자신에게 흡혈 8중첩"
+  },
+  {
+    "id": "enemy_goblin_master_thief",
+    "name": "대도의 단검",
+    "monsterId": "goblin_master_thief",
+    "monsterName": "고블린 대도",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinMasterThief.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinMasterThief/goblin-master-thief-standing-approved.png",
+    "monsterDesign": "A wiry dark-green goblin master thief with long pointed ears, a ragged charcoal hood pushed back enough to show his face, light patched dark-brown leather, two short curved daggers and a small belt pouch. Low nimble standing stance with one foot forward, mischievous sharp eyes, scarf ends angled to suggest speed. Same goblin species as the approved club goblin, distinct rogue silhouette. No motion blur.",
+    "stage": 1,
+    "round": "4R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinMasterThief.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "77a7d9b13f30473a856fab4b3a120032",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_master_thief.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 7,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_master_thief",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_master_thief",
+      "_displayName": "대도의 단검",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 0,
+          "_target": 0,
+          "_stacks": 10
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 7,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c56740de788b4594a5968689693f6ddf",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Master thief dagger. Reproduce ONE of thief's slim hooked curved daggers, gray steel blade with pale silver edge and slight inward notch, small brass curved guard, dark brown wrapped grip and brass cap. Small narrow crimson scarf tie close to handle echoing thief scarf; fast light agile shape, point up.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_master_thief/enemy_goblin_master_thief-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/GoblinMasterThief/goblin-master-thief-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"대도의 단검\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Master thief dagger. Reproduce ONE of thief's slim hooked curved daggers, gray steel blade with pale silver edge and slight inward notch, small brass curved guard, dark brown wrapped grip and brass cap. Small narrow crimson scarf tie close to handle echoing thief scarf; fast light agile shape, point up.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "bdfe845171229b28b6288e77121ae668fb9f0d8e40b0bc2f48b57eda1e1e7fc3",
+    "spriteGuid": "508f2226c78f4e6b998ced9e1d0894aa",
+    "effectSummary": "기본 공격력 7 · 주기 2초 / 전투 시작: 자신에게 신속 10중첩"
+  },
+  {
+    "id": "enemy_goblin_shaman",
+    "name": "눈먼 영혼의 지팡이",
+    "monsterId": "goblin_shaman",
+    "monsterName": "고블린 주술사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_GoblinShaman.asset",
+    "illustration": "Assets/_Project/Art/Monsters/GoblinShaman/goblin-shaman-standing-approved.png",
+    "monsterDesign": "A dark-green goblin shaman with pointed ears, hunched small body, ragged plum-brown ritual robe, bone beads and a crooked wooden staff topped with a dark violet eye-shaped charm. A compact opaque violet-black magical smoke curl near his free hand conveys blinding magic. Face and complete silhouette visible, smoke limited to a small localized effect. Same species as the approved goblin.",
+    "stage": 1,
+    "round": "8R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_GoblinShaman.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "2a74e143b5f54f89891557a0677ed72d",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_goblin_shaman.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 4,
+            "_target": 1,
+            "_stacks": 3
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_goblin_shaman",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_goblin_shaman",
+      "_displayName": "눈먼 영혼의 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 4,
+              "_target": 1,
+              "_stacks": 3
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Blind soul staff. Reproduce goblin shaman crooked warm-brown wooden staff with forked angular top, suspended purple eye-shaped diamond charm with black vertical pupil, three tiny ivory bone beads on short strings. Keep beads within staff head width. Shaft thin crooked upright, purple eye clearly legible, whole staff.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_shaman/enemy_goblin_shaman-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/GoblinShaman/goblin-shaman-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"눈먼 영혼의 지팡이\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Blind soul staff. Reproduce goblin shaman crooked warm-brown wooden staff with forked angular top, suspended purple eye-shaped diamond charm with black vertical pupil, three tiny ivory bone beads on short strings. Keep beads within staff head width. Shaft thin crooked upright, purple eye clearly legible, whole staff.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "0eb44e9bfb9c862335387057877965b0f4e4b268b0b33496eeab514c9dabef97",
+    "spriteGuid": "989fe0d85835472d874312b230d28cd4",
+    "effectSummary": "기본 공격력 9 · 주기 2초 / 명중 시: 상대에게 실명 3중첩"
+  },
+  {
+    "id": "enemy_heatwave_spirit",
+    "name": "작열하는 손톱",
+    "monsterId": "heatwave_spirit",
+    "monsterName": "폭염의 정령",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_HeatwaveSpirit.asset",
+    "illustration": "Assets/_Project/Art/Monsters/HeatwaveSpirit/heatwave-spirit-standing-approved.png",
+    "monsterDesign": "A compact fierce fire elemental made of sharply shaped red-orange flames surrounding a dark cracked volcanic core. Humanoid upper body with broad flame shoulders, simple bright eyes in a dark mask-like face, two burning claw hands and a tapered whirling flame lower body. Strong orange and yellow stepped pixel flames, no smoky background; self-contained silhouette depicts living heat immune to fire. Not a human in armor.",
+    "stage": 3,
+    "round": "8R",
+    "trait": 4,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_HeatwaveSpirit.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "d99f7f4a66794e4392c1ccddf20608b3",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_heatwave_spirit.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "effect": "화상에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 6,
+            "_target": 1,
+            "_stacks": 4
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 16,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_heatwave_spirit",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_heatwave_spirit",
+      "_displayName": "작열하는 손톱",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "화상에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 6,
+              "_target": 1,
+              "_stacks": 4
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 16,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "73dea6eede534bb48469604ee2647efb",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Scorching claw. One elongated fiery elemental claw: three narrow hooked yellow-orange talon tips at top emerging from a charcoal volcanic knuckle and long tapering flame forearm below. Red-orange flame tongues hug the vertical wrist, yellow hot centers, tiny dark volcanic slabs and orange seams match heat spirit. This is an elemental claw/forearm, NOT sword or staff, no handle, no whole monster. A tall thin four-cell silhouette with knuckle and claws upper section, flowing connected flame down to fourth cell.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_heatwave_spirit/enemy_heatwave_spirit-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_heatwave_spirit/enemy_heatwave_spirit-2026-11-17-v1.png"
+    ],
+    "prompt": "Use case precise-object-edit. Preserve exactly this claw/flame design, colors and coarse pixel-art style. Make the WHOLE connected silhouette including all three claws and forearm flames 25% narrower around central x512 axis, preserving length. It must fit central x335..685 strip on1024x1536canvas with completeoutline,all sides transparent. Tall1:4item. No glow haze outside outline. No redesign, no sword, no new parts. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+    "previousOutput": "Assets/_Project/Art/Items/Monsters/enemy_heatwave_spirit/enemy_heatwave_spirit-2026-11-17-v1.png",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      320,
+      0,
+      384,
+      1536
+    ],
+    "sha256": "5531b321f444f894870aafd2d08cea08a45545d759f71e9f57d0e4bfb1bca94a",
+    "spriteGuid": "4f836b7f99114d539be63d5c07035c91",
+    "effectSummary": "기본 공격력 16 · 주기 2초 / 명중 시: 상대에게 화상 4중첩 / 화상에 면역입니다."
+  },
+  {
+    "id": "enemy_iceberg_witch",
+    "name": "빙산의 지팡이",
+    "monsterId": "iceberg_witch",
+    "monsterName": "빙산의 마녀",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_IcebergWitch.asset",
+    "illustration": "Assets/_Project/Art/Monsters/IcebergWitch/iceberg-witch-standing-approved.png",
+    "monsterDesign": "A regal adult ice witch boss with pale cool skin, long silver-blue hair, angular ice-crystal crown, fully clothed midnight blue and icy white layered robes with fur-trimmed shoulders, tall boots and a long frost staff. Compact sharp crystalline ice shapes float above her free palm, and crystalline facets edge her skirt, expressing powerful freezing magic and cold immunity. Calm severe expression, elegant full-body standing pose. No large backdrop or ice platform.",
+    "stage": 5,
+    "round": "12R",
+    "trait": 10,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_IcebergWitch.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "aaa6fcf8981b413385f7f22b0ddd947e",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_iceberg_witch.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "effect": "빙결에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 1,
+            "_target": 1,
+            "_stacks": 5
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 29,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_iceberg_witch",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_iceberg_witch",
+      "_displayName": "빙산의 지팡이",
+      "_category": 0,
+      "_tags": 4,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "빙결에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 1,
+              "_target": 1,
+              "_stacks": 5
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 29,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "5410f85c9d024f93a5f7a76169e2ca98",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Iceberg staff. Reproduce witch's elaborate silver-white staff with dark-indigo shaft insets, main large cyan-blue diamond crystal at top inside pointed silver prong crown, three smaller outward blue ice crystals, small diamond beneath crown and near pointed bottom, silver segmented collars. Shrink full intact crystal crown to fit one-cell width, long straight shaft. Upright entire staff.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_iceberg_witch/enemy_iceberg_witch-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/IcebergWitch/iceberg-witch-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"빙산의 지팡이\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Iceberg staff. Reproduce witch's elaborate silver-white staff with dark-indigo shaft insets, main large cyan-blue diamond crystal at top inside pointed silver prong crown, three smaller outward blue ice crystals, small diamond beneath crown and near pointed bottom, silver segmented collars. Shrink full intact crystal crown to fit one-cell width, long straight shaft. Upright entire staff.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 3 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 512 pixels (x=256..768), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 466.6666666666667px. Critical true item aspect ratio 1:3, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      256,
+      0,
+      512,
+      1536
+    ],
+    "sha256": "09ae2f2ad93dbb5f45c5fa2f087bc92b511856b56143110e6ef6bffaf95e5078",
+    "spriteGuid": "fccbfbd87332405a9e61187c7cdf64ba",
+    "effectSummary": "기본 공격력 29 · 주기 2초 / 명중 시: 상대에게 빙결 5중첩 / 빙결에 면역입니다."
+  },
+  {
+    "id": "enemy_man_eating_plant",
+    "name": "독니",
+    "monsterId": "man_eating_plant",
+    "monsterName": "식인식물",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_ManEatingPlant.asset",
+    "illustration": "Assets/_Project/Art/Monsters/ManEatingPlant/man-eating-plant-standing-approved.png",
+    "monsterDesign": "One rooted carnivorous fantasy plant monster with a large open tooth-lined flower maw, dark emerald serrated leaves, purple-red fleshy petals and two curling vine arms. Knotted roots form its standing base, no soil mound. Small acid-green poison droplets gathered on thorns and near the mouth convey potent poison; tough waxy leaves suggest immunity. Stylized plant teeth, no human victim or gore.",
+    "stage": 2,
+    "round": "4R",
+    "trait": 1,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_ManEatingPlant.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "b3b5bd16a8ee4ec49cebd60449e1d831",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_man_eating_plant.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "중독에 면역입니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        },
+        {
+          "_kind": 2,
+          "_trigger": 1,
+          "_status": {
+            "_kind": 7,
+            "_target": 1,
+            "_stacks": 3
+          }
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 10,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_man_eating_plant",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_man_eating_plant",
+      "_displayName": "독니",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "중독에 면역입니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          },
+          {
+            "_kind": 2,
+            "_trigger": 1,
+            "_status": {
+              "_kind": 7,
+              "_target": 1,
+              "_stacks": 3
+            }
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 10,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "420d094e8ad44afc86000657db2197d9",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Poison fang. A compact chunky curved ivory fang rooted in a small purple-red petal collar with dark emerald leaf accent, one bright acid-green poison bead clinging to pointed tip. Matches plant's ivory teeth, crimson petals and green venom. One isolated tooth item diagonally across square, no entire mouth, no gore.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_man_eating_plant/enemy_man_eating_plant-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/ManEatingPlant/man-eating-plant-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"독니\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Poison fang. A compact chunky curved ivory fang rooted in a small purple-red petal collar with dark emerald leaf accent, one bright acid-green poison bead clinging to pointed tip. Matches plant's ivory teeth, crimson petals and green venom. One isolated tooth item diagonally across square, no entire mouth, no gore.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "fa9b52ea343558f631445fbdf8be5a126b9a911d4d7c03d821cfabbefc6a0583",
+    "spriteGuid": "1d50aa0b8a284b9e8800af7d9b267f28",
+    "effectSummary": "기본 공격력 10 · 주기 2초 / 명중 시: 상대에게 중독 3중첩 / 중독에 면역입니다."
+  },
+  {
+    "id": "enemy_mummy",
+    "name": "붕대 손아귀",
+    "monsterId": "mummy",
+    "monsterName": "미라",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Mummy.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Mummy/mummy-standing-approved.png",
+    "monsterDesign": "A classic shambling adult mummy wrapped head to toe in tattered sand-beige linen bandages, narrow dark eye sockets with dim amber eyes, strips hanging from forearms and hips, simple aged burial belt. Dry desiccated shape without exposed gore, slightly hunched idle stance with both arms reaching mildly forward, both feet visible. Minimal worn bronze accents.",
+    "stage": 3,
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Mummy.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "01c21c6ffe0e48a99b6a1e73e9887607",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_mummy.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 9,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_mummy",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_mummy",
+      "_displayName": "붕대 손아귀",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 9,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Bandaged grasp. One reaching hand and short wrist entirely wrapped in layered sand-beige ancient linen strips with dark brown crevices and one small worn bronze wrist band. Fingers slightly curled in grasp, a short loose bandage tail winds downward to fill lower cell. No exposed flesh, no cut end, no entire mummy.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_mummy/enemy_mummy-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/Mummy/mummy-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"붕대 손아귀\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Bandaged grasp. One reaching hand and short wrist entirely wrapped in layered sand-beige ancient linen strips with dark brown crevices and one small worn bronze wrist band. Fingers slightly curled in grasp, a short loose bandage tail winds downward to fill lower cell. No exposed flesh, no cut end, no entire mummy.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "4a29417238356343cda126c7c50968f4aa63ca61ef17b22e8d3ef05bd86f2115",
+    "spriteGuid": "6e2f142950504cc2b02d8ea3daf5cbf7",
+    "effectSummary": "기본 공격력 9 · 주기 2초"
+  },
+  {
+    "id": "enemy_nameless_guardian_knight",
+    "name": "갑주 분쇄 망치",
+    "monsterId": "nameless_guardian_knight",
+    "monsterName": "이름 없는 수호기사",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_NamelessGuardianKnight.asset",
+    "illustration": "Assets/_Project/Art/Monsters/NamelessGuardianKnight/nameless-guardian-knight-standing-approved.png",
+    "monsterDesign": "A HEADLESS DULLAHAN guardian knight wearing extremely heavy weathered blue-black plate armor with massive pauldrons, broad breastplate and armored boots, ragged dark teal tabard. The empty neck opening emits a short compact cold blue spirit flame: NO head or helmet above shoulders. Holds a great armor-breaking warhammer with both hands resting diagonally beside the body, complete hammer visible. Formidable standing guardian, no horse, no severed flesh or gore.",
+    "stage": 5,
+    "round": "8R",
+    "trait": 9,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_NamelessGuardianKnight.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "ff92e63209354dcd8661f96020454bb0",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_nameless_guardian_knight.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "방어도가 남아 있는 상대에게 1.5배의 피해를 입힙니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 23,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_nameless_guardian_knight",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_nameless_guardian_knight",
+      "_displayName": "갑주 분쇄 망치",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "방어도가 남아 있는 상대에게 1.5배의 피해를 입힙니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 23,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Armor-crushing hammer. Copy headless guardian knight's massive blue-black iron rectangular hammer with pale antique brass frame strips, pyramid silver studs on face, short conical spikes at top and sides, dark purple-brown haft with leather grip. Entire hammer upright head at top, hammer head compact enough for single-cell width. Heavy squared hammer, no hands.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_nameless_guardian_knight/enemy_nameless_guardian_knight-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/NamelessGuardianKnight/nameless-guardian-knight-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"갑주 분쇄 망치\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Armor-crushing hammer. Copy headless guardian knight's massive blue-black iron rectangular hammer with pale antique brass frame strips, pyramid silver studs on face, short conical spikes at top and sides, dark purple-brown haft with leather grip. Entire hammer upright head at top, hammer head compact enough for single-cell width. Heavy squared hammer, no hands.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "4ae31595bf167329558781a8433f7ae2de8990c568199ed9d1d08c9e76894a75",
+    "spriteGuid": "d2fb7ca4d93b48d3b9d7222fe088447a",
+    "effectSummary": "기본 공격력 23 · 주기 2초 / 방어도가 남아 있는 상대에게 1.5배의 피해를 입힙니다."
+  },
+  {
+    "id": "enemy_penitent_priest",
+    "name": "속죄의 철퇴",
+    "monsterId": "penitent_priest",
+    "monsterName": "속죄의 제사장",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_PenitentPriest.asset",
+    "illustration": "Assets/_Project/Art/Monsters/PenitentPriest/penitent-priest-standing-approved.png",
+    "monsterDesign": "A human penitential priest enemy wearing an iron half-mask, ragged ash-gray ritual robes with deep red waist cloth, leather bracers and simple iron shoulder plates. Holds one heavy iron mace with a short chain-linked spiked head (flail), entire chain and head visible and hanging clearly away from legs. Coiled tense posture and small red stepped marks on the mace suggest gathering attack speed. No self-injury or wounds, no real religious emblem.",
+    "stage": 4,
+    "round": "4R",
+    "trait": 6,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_PenitentPriest.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "c6769f6535f148c89bfd9fba8b1249c1",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_penitent_priest.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "명중할 때마다 공격 속도가 5%씩 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 15,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_penitent_priest",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_penitent_priest",
+      "_displayName": "속죄의 철퇴",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "명중할 때마다 공격 속도가 5%씩 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 15,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Penitent flail. Copy priest's plain dark iron spherical spiked flail, short three-link chain and brown wood handle with simple iron collars. For tall two-cell layout: spiked ball at top, visible taut chain immediately below it, handle continuing down in same vertical axis. Every chain link similar size, centered attached loops. One tiny dark red wrap at grip, no red motion arrows.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_penitent_priest/enemy_penitent_priest-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/PenitentPriest/penitent-priest-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"속죄의 철퇴\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Penitent flail. Copy priest's plain dark iron spherical spiked flail, short three-link chain and brown wood handle with simple iron collars. For tall two-cell layout: spiked ball at top, visible taut chain immediately below it, handle continuing down in same vertical axis. Every chain link similar size, centered attached loops. One tiny dark red wrap at grip, no red motion arrows.\nLAYOUT: 1024x1536 portrait canvas. Item occupies 2 vertical SQUARE inventory cells in a single column. Keep entire object within central vertical strip width 768 pixels (x=128..896), with 5% padding INSIDE strip. Outside strip fully transparent. Object extends y65..1470; width nowhere exceeds 700px. Critical true item aspect ratio 1:2, not a broad 2:3 object.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "0ca09c2be172886e6faa40eed935e7328087f3e2fd63ba86da3572880c033907",
+    "spriteGuid": "8f0f0e787e69431ba27f552c517350a3",
+    "effectSummary": "기본 공격력 15 · 주기 2초 / 명중할 때마다 공격 속도가 5%씩 증가합니다."
+  },
+  {
+    "id": "enemy_skeleton_miner_pickaxe",
+    "name": "광부의 곡괭이",
+    "monsterId": "skeleton_miner",
+    "monsterName": "스켈레톤 광부",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_SkeletonMiner.asset",
+    "illustration": "Assets/_Project/Art/Monsters/SkeletonMiner/skeleton-miner-standing-approved.png",
+    "monsterDesign": "",
+    "stage": "mine",
+    "round": "기본",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_SkeletonMiner.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "a0a37adf8c4d4d67ad67b96b8dd13432",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_skeleton_miner_pickaxe.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 5,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_skeleton_miner_pickaxe",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_skeleton_miner_pickaxe",
+      "_displayName": "광부의 곡괭이",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 5,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Miner pickaxe. Reproduce skeleton miner's modest two-point gray iron pickaxe with faceted rectangular central socket and warm brown plain wooden handle. Full gently arched metal head sits horizontally across upper portion within width; long haft down. Very practical worn tool, no gems, no flames, no skeleton hands.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_skeleton_miner_pickaxe/enemy_skeleton_miner_pickaxe-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_skeleton_miner_pickaxe/enemy_skeleton_miner_pickaxe-2026-11-17-v1.png"
+    ],
+    "prompt": "Use case precise-object-edit. Precise cleanup of this SAME pickaxe. REMOVE white/gray luminous cloudy patch behind iron head, and all diffuse halo around handle; background must be fully transparent right up to dark stepped outline. Preserve wood and iron colors, full two curved tips and all design. Reduce whole pickaxe size to90% centered so entire object fits x160..864,y120..1440 on1024x1536canvas. Same coarse pixel style, no other changes. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+    "previousOutput": "Assets/_Project/Art/Items/Monsters/enemy_skeleton_miner_pickaxe/enemy_skeleton_miner_pickaxe-2026-11-17-v1.png",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "cd4076f478c82edbc865889bf89746ad6a8b622df0fec64c7a5b8f030ee126c0",
+    "spriteGuid": "f03f014ad726480fb8fe504e2aee7efc",
+    "effectSummary": "기본 공격력 5 · 주기 2초"
+  },
+  {
+    "id": "enemy_spiny_armadillo",
+    "name": "갑각 돌진",
+    "monsterId": "spiny_armadillo",
+    "monsterName": "가시 아르마딜로",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_SpinyArmadillo.asset",
+    "illustration": "Assets/_Project/Art/Monsters/SpinyArmadillo/spiny-armadillo-standing-approved.png",
+    "monsterDesign": "A squat desert armadillo enemy in a natural four-legged three-quarter standing pose. Layered sandy dark-brown segmented armor shell covered in conspicuous ivory thorns, short clawed legs, small pointed snout, alert dark eyes and a tapering armored tail. Visually clear defensive spiked shell, cute enough for stylized fantasy but a dangerous creature. No humanoid anatomy or weapon.",
+    "stage": 3,
+    "round": "4R",
+    "trait": 0,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_SpinyArmadillo.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "297404527ae9415cbd30ba164096ae1b",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_spiny_armadillo.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "effect": "",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 13,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_spiny_armadillo",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_spiny_armadillo",
+      "_displayName": "갑각 돌진",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_battleStartStatuses": [
+        {
+          "_kind": 8,
+          "_target": 0,
+          "_stacks": 7
+        }
+      ],
+      "_weaponStats": {
+        "_attackDamage": 13,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_inventorySprite": {
+        "fileID": 21300000,
+        "guid": "c60e1bb7630a427cb8845eb0336bfa7f",
+        "type": 3
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Carapace charge icon. Compact domed brown armadillo shell curled into a defensive rolling ball, segmented overlapping ochre and dark-brown armor bands with many ivory conical thorns matching monster. One small tapered tail tucked along lower edge, no face required. Clear spiny shell item silhouette within square, no ground, no motion blur.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_spiny_armadillo/enemy_spiny_armadillo-2026-11-17-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Monsters/SpinyArmadillo/spiny-armadillo-standing-approved.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "prompt": "Create ONE isolated fantasy game inventory item sprite, named \"갑각 돌진\". First reference is ONLY source of monster-specific object design, materials and palette. Second and third references are existing INVENTORY PIXEL ART STYLE examples: match those coarse square pixel clusters and simple stepped dark outlines, broad readable color planes. Do not draw the monster. Carapace charge icon. Compact domed brown armadillo shell curled into a defensive rolling ball, segmented overlapping ochre and dark-brown armor bands with many ivory conical thorns matching monster. One small tapered tail tucked along lower edge, no face required. Clear spiny shell item silhouette within square, no ground, no motion blur.\nLAYOUT: 1024x1024 square canvas. One square inventory cell; icon occupies central 85%, balanced silhouette.\nSTYLE: deliberately low-resolution pixel art, approximately 32 logical square pixels per inventory cell, uniformly enlarged crisp blocks. 3-5 discrete shades per material, dark charcoal-purple outline, pale highlight upper left, no fine microtexture, no smooth gradients, no antialias blur, no photorealism. Preserve large iconic shapes legible at 48px per cell. Transparent RGBA background, alpha zero outside item. No vignette, no glow haze, no shadow under item, no frame, no grid lines, no text, no watermark, no extra unrelated objects. Full intact silhouette with safe margins. Any magic must be solid sharply stepped pixels confined to occupied cells.",
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "2fabc344d11ad0fb28826869b99b258899bbd2c416951dd98dc0be92796824ab",
+    "spriteGuid": "e15a7f55967f4893a1bcd154f0263396",
+    "effectSummary": "기본 공격력 13 · 주기 2초 / 전투 시작: 자신에게 가시 7중첩"
+  },
+  {
+    "id": "enemy_yeti",
+    "name": "설인의 주먹",
+    "monsterId": "yeti",
+    "monsterName": "설인",
+    "monsterPath": "Assets/_Project/Data/Enemies/Stages/EnemyType_Yeti.asset",
+    "illustration": "Assets/_Project/Art/Monsters/Yeti/yeti-standing-approved.png",
+    "monsterDesign": "A stocky white-furred yeti monster with long heavy arms, broad hands, short sturdy legs and blue-gray face, palms and feet. Shaggy cream-white fur rendered in large stepped clumps, small dark eyes, slightly protruding lower canine teeth, hunched simple idle stance. Classic snow mountain ape-like monster, no horns, no weapon or clothing, no snowy ground.",
+    "stage": 5,
+    "round": "4R",
+    "trait": 8,
+    "encounter": "Assets/_Project/Data/Enemies/Stages/Encounter_Yeti.asset",
+    "placement": {
+      "_slotId": "weapon",
+      "_item": {
+        "fileID": 11400000,
+        "guid": "4f77fd44d01740d5ad0703f47e87cec0",
+        "type": 2
+      },
+      "_origin": {
+        "x": 1,
+        "y": 0
+      },
+      "_rotation": 0
+    },
+    "path": "Assets/_Project/Data/Enemies/Stages/Items/Item_Enemy_yeti.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "effect": "잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다.",
+    "activation": {
+      "_enabled": 1,
+      "_cooldownSeconds": 2,
+      "_effects": [
+        {
+          "_kind": 0
+        }
+      ]
+    },
+    "weaponStats": {
+      "_attackDamage": 18,
+      "_cooldownSeconds": 2,
+      "_accuracyPercent": 100,
+      "_criticalChancePercent": 0,
+      "_criticalDamagePercent": 200
+    },
+    "data": {
+      "m_ObjectHideFlags": 0,
+      "m_CorrespondingSourceObject": {
+        "fileID": 0
+      },
+      "m_PrefabInstance": {
+        "fileID": 0
+      },
+      "m_PrefabAsset": {
+        "fileID": 0
+      },
+      "m_GameObject": {
+        "fileID": 0
+      },
+      "m_Enabled": 1,
+      "m_EditorHideFlags": 0,
+      "m_Script": {
+        "fileID": 11500000,
+        "guid": "75bc35fa9b73a7443b61c464c2ed8688",
+        "type": 3
+      },
+      "m_Name": "Item_Enemy_yeti",
+      "m_EditorClassIdentifier": "BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData",
+      "_itemId": "enemy_yeti",
+      "_displayName": "설인의 주먹",
+      "_category": 0,
+      "_tags": 1,
+      "_excludeFromShop": 1,
+      "_purchasePrice": 0,
+      "_effectDescription": "잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다.",
+      "_activation": {
+        "_enabled": 1,
+        "_cooldownSeconds": 2,
+        "_effects": [
+          {
+            "_kind": 0
+          }
+        ]
+      },
+      "_weaponStats": {
+        "_attackDamage": 18,
+        "_cooldownSeconds": 2,
+        "_accuracyPercent": 100,
+        "_criticalChancePercent": 0,
+        "_criticalDamagePercent": 200
+      },
+      "_displayColor": {
+        "r": 0.53,
+        "g": 0.37,
+        "b": 0.27,
+        "a": 1
+      },
+      "_canRotate": 1,
+      "_occupiedCells": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ]
+    },
+    "status": "approved",
+    "design": "Yeti fist. One powerful clenched blue-gray ape hand with broad squared knuckles and thumb, attached to a short thick wrist covered in shaggy cream-white fur. Fist upper cell, fur wrist lower cell. Large coarse white stepped fur tufts, cool blue shaded fingers matching yeti. Clean isolated natural-weapon icon, no blood, no cut flesh.",
+    "output": "Assets/_Project/Art/Items/Monsters/enemy_yeti/enemy_yeti-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Monsters/enemy_yeti/enemy_yeti-2026-11-17-v1.png"
+    ],
+    "prompt": "Use case precise-object-edit. Preserve exact clenched blue-gray fist and cream-white furry wrist design and coarse pixel style. Uniformly shrink whole object to90% of current size around canvas center, leaving more transparent margin. Entire silhouette within x160..864,y120..1440 on1024x1536canvas. Remove ALL diffuse purple haze outside dark pixel outline. Transparent background. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+    "previousOutput": "Assets/_Project/Art/Items/Monsters/enemy_yeti/enemy_yeti-2026-11-17-v1.png",
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "spriteRectTopLeft": [
+      128,
+      0,
+      768,
+      1536
+    ],
+    "sha256": "3c92f3121003d768d13d8abf6e33626767b90741ca4c715f74a37602874b0b82",
+    "spriteGuid": "448dc26630524fbab94c3b552be09e3e",
+    "effectSummary": "기본 공격력 18 · 주기 2초 / 잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다."
+  }
+]

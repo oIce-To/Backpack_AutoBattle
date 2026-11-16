@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: 58a76e577eb3ba449ba146721a2f26e6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1239844510920065764
+    second: enemy_heatwave_spirit-2026-11-17-v1_0
+  - first:
+      213: -1463480725356564318
+    second: enemy_heatwave_spirit-2026-11-17-v1_1
+  - first:
+      213: -718944928889025061
+    second: enemy_heatwave_spirit-2026-11-17-v1_2
+  - first:
+      213: -2143384224167122292
+    second: enemy_heatwave_spirit-2026-11-17-v1_3
+  - first:
+      213: 2313026085276721920
+    second: enemy_heatwave_spirit-2026-11-17-v1_4
+  - first:
+      213: -8606843323069052913
+    second: enemy_heatwave_spirit-2026-11-17-v1_5
+  - first:
+      213: -3354429273474367788
+    second: enemy_heatwave_spirit-2026-11-17-v1_6
+  - first:
+      213: -9216220098299418224
+    second: enemy_heatwave_spirit-2026-11-17-v1_7
+  - first:
+      213: 8069140568722955610
+    second: enemy_heatwave_spirit-2026-11-17-v1_8
+  - first:
+      213: -5930649164818263690
+    second: enemy_heatwave_spirit-2026-11-17-v1_9
+  - first:
+      213: 226673898358719336
+    second: enemy_heatwave_spirit-2026-11-17-v1_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 23
+        width: 983
+        height: 1513
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e2cb128300d43110800000000000000
+      internalID: 1239844510920065764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_1
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1205
+        width: 131
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a0bd7db80ca0bbe0800000000000000
+      internalID: -1463480725356564318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_2
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1141
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdd4084756bc506f0800000000000000
+      internalID: -718944928889025061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_3
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 1045
+        width: 167
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8aa75d776b2142e0800000000000000
+      internalID: -2143384224167122292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_4
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 864
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 003a12938f4891020800000000000000
+      internalID: 2313026085276721920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_5
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 721
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08c60349995e8880800000000000000
+      internalID: -8606843323069052913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_6
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 452
+        width: 21
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4de736a295ca271d0800000000000000
+      internalID: -3354429273474367788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_7
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 359
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0992c0576a8691080800000000000000
+      internalID: -9216220098299418224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_8
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 339
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5ddc6958985bff60800000000000000
+      internalID: 8069140568722955610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_9
+      rect:
+        serializedVersion: 2
+        x: 776
+        y: 245
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6715a8ba10a12bda0800000000000000
+      internalID: -5930649164818263690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_heatwave_spirit-2026-11-17-v1_10
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 15
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8634687a5be452300800000000000000
+      internalID: 226673898358719336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      enemy_heatwave_spirit-2026-11-17-v1_0: 1239844510920065764
+      enemy_heatwave_spirit-2026-11-17-v1_1: -1463480725356564318
+      enemy_heatwave_spirit-2026-11-17-v1_10: 226673898358719336
+      enemy_heatwave_spirit-2026-11-17-v1_2: -718944928889025061
+      enemy_heatwave_spirit-2026-11-17-v1_3: -2143384224167122292
+      enemy_heatwave_spirit-2026-11-17-v1_4: 2313026085276721920
+      enemy_heatwave_spirit-2026-11-17-v1_5: -8606843323069052913
+      enemy_heatwave_spirit-2026-11-17-v1_6: -3354429273474367788
+      enemy_heatwave_spirit-2026-11-17-v1_7: -9216220098299418224
+      enemy_heatwave_spirit-2026-11-17-v1_8: 8069140568722955610
+      enemy_heatwave_spirit-2026-11-17-v1_9: -5930649164818263690
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

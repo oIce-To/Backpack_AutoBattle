@@ -1,0 +1,8 @@
+{
+  "id": "enemy_skeleton_miner_pickaxe",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-e5c49054-c217-4f5c-b74e-03000c92b6bd.png",
+  "output": "Assets/_Project/Art/Items/Monsters/enemy_skeleton_miner_pickaxe/enemy_skeleton_miner_pickaxe-2026-11-17-v2.png",
+  "prompt": "Use case precise-object-edit. Precise cleanup of this SAME pickaxe. REMOVE white/gray luminous cloudy patch behind iron head, and all diffuse halo around handle; background must be fully transparent right up to dark stepped outline. Preserve wood and iron colors, full two curved tips and all design. Reduce whole pickaxe size to90% centered so entire object fits x160..864,y120..1440 on1024x1536canvas. Same coarse pixel style, no other changes. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

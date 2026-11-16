@@ -1,0 +1,8 @@
+{
+  "id": "enemy_demon_weapon_master_axe",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-b1105527-c854-4797-ac61-5a2e7507038f.png",
+  "output": "Assets/_Project/Art/Items/Monsters/enemy_demon_weapon_master_axe/enemy_demon_weapon_master_axe-2026-11-17-v2.png",
+  "prompt": "Use case precise-object-edit. ONLY shrink the COMPLETE axe HEAD uniformly to 52% of its current size and move it upward so ALL of it including lower crescent tip and socket is entirely inside top 30% of canvas (y40..460 in 1024x1536). Keep full original head silhouette, do NOT crop or flatten lower tip. Keep shaft at x270 running to bottom y1460, extend shaft upward to meet smaller head. Whole head should span x200..620, crossing into top right cell. All right half below y512 must be completely alpha zero. Existing blade design, colors and pixel style unchanged. Remove all faint diffuse purple halo outside solid outline. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

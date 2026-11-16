@@ -1,0 +1,26 @@
+# Animation pilot prompts — 2026-11-17
+
+Tool: built-in image_gen. Output: transparent PNG. Status: archived experiment. On 2026-11-17 the user withdrew the frame-animation integration after reviewing the game. Runtime copies and frame playback were removed; the original standing illustrations and position-only hit feedback are used instead.
+
+## Allen v2
+
+Saved: `allen-animation-v2.png`
+Source: `exec-bc405746-c0e5-4496-b555-79a5ac2b82f8.png`
+
+Use case: stylized-concept. Create a production pixel-art animation sprite sheet of Allen, exactly the character in the reference image. Reference role: approved identity, costume, proportions, palette and pixel style; do not redesign. Transparent background, no glow or shadows outside silhouette. Canvas landscape, exactly 4 columns by 2 rows of equally sized cells, 8 full-body poses, no labels no grid lines. All cells must use exactly the same scale, fixed feet baseline and fixed body anchor, generous margins for sword, absolutely no clipping and no overlap across cells. Upper row: four subtle idle breathing loop frames, feet fixed, shoulders rise and fall slightly, same sword-down shield resting stance. Lower row: four chronological fast sword attack frames aimed toward screen LEFT, first frame already making a forceful cut with arm raised, second frame full striking extension to left (blade visible), third followthrough and fourth return toward rest. Same sword in right hand and same wood/metal shield in left hand throughout. Distinct limb articulation, not merely translating or rotating the whole person. Brown hair, leather cuirass over cream tunic, brown boots, dark trousers, original facial identity. Faithful pixel-art clusters and limited stepped shading, no painterly smoothing. All 8 faces, anatomy, equipment, costume and size consistent. Intended to animate in game, not a concept lineup. Requested 2048x1536 canvas if supported, grid exactly 4x2.
+CRITICAL LAYOUT REVISION: Character must be much smaller in every cell with at least 20% cell width empty on both sides at idle. Sword attack must fit entirely inside its cell. In attack impact use a compact diagonal downward slash, NOT a horizontal straight thrust. Every foot stays on exactly same horizontal baseline within cell, body center same anchor. No sprite may reach its cell border. Strictly uniform 4x2 grid, identical scale all frames. Opaque character pixels and fully transparent empty pixels; clean cutout without semi-transparent colored fringes.
+
+## Serena v1
+
+Saved: `serena-animation-v1.png`
+Source: `exec-3988eb02-70e0-4071-b5e9-0538f795b4c9.png`
+
+Use case: stylized-concept. Animation sprite sheet for the exact approved archer Serena in reference. Keep her silver-gray long hair black headband, white blouse, navy gold-trimmed vest and skirt, short green one-shoulder cape, bare legs, dark brown boots and white-gold bow. Preserve face, adult proportions and pixel cluster style. Genuine transparent backdrop, no surrounding glow. Exactly FOUR columns and TWO rows, eight full body animation frames. Each equal cell has generous 18 percent horizontal margins. Make character SMALL ENOUGH that even horizontal drawn bow and both arms fit INSIDE her own cell; NEVER cross cell boundaries. All poses same body scale and foot baseline. Top row four subtle breathing idle frames holding bow at rest, shoulders/hair/cape move a little, feet planted. Bottom row four fast attack poses aiming screen RIGHT: 1 bow already raised with string pulled halfway, 2 full draw with string hand at cheek, 3 release with drawing hand back and bow extended, 4 lowering bow toward rest. Same camera and identity every frame. Crisp discrete pixel clusters and stepped shading, no smooth illustration, no text no borders no grid no duplicates. Reference image is identity/style reference, generate articulated poses. Landscape sheet requested 2048x1536, 4x2 exact equal grid.
+
+## Goblin v1
+
+Saved: `goblin-animation-v1.png`
+Source: `exec-87dbb210-3a19-4f5b-9cc9-76a378132db1.png`
+
+Use case: stylized-concept. Create game animation sprite sheet of the EXACT goblin in reference image. Faithfully preserve its big chunky pixel blocks, flat stepped olive dark-green skin, pointy ears, angry eyes, ragged dark brown leather vest skirt boots, wooden club held in right hand. Do NOT increase detail, do NOT smooth or change to painted/anime rendering. True transparent background with NO halo, NO shadow, NO glow. Exactly 4 columns x 2 rows equally spaced, eight full body poses. Each sprite entirely inside its own cell, 15 percent margins all sides, smaller figure to fit extended club. Same scale and feet baseline, fixed camera, no labels borders or grid. Row 1: four subtly different breathing idle frames, shoulders and elbows rise and fall, feet absolutely planted. Row2: four distinct fast club attack frames toward screen LEFT: raised club already in forward swing, club extended diagonally down-left at impact, low followthrough with torso forward, returning to the original stance. Keep the wooden club short enough to stay inside each cell. All eight depict same proportions, size, club, clothes, face. Pixel animation poses not variations of character design. Landscape 2048x1536 if available.
+

@@ -1,0 +1,8 @@
+{
+  "id": "enemy_goblin_chieftain",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-58e3a858-cd99-4fa8-9336-75125de403db.png",
+  "output": "Assets/_Project/Art/Items/Monsters/enemy_goblin_chieftain/enemy_goblin_chieftain-2026-11-17-v2.png",
+  "prompt": "Use case precise-object-edit. ONLY uniformly shrink COMPLETE axe HEAD to 70% of current size and move it upwards so entire head incl bottom curved edge stays inside top 30% canvas(y40..450 of1024x1536). Keep intact original curved edge, diamond rune, rivets, collar and rear loop. Head spans x100..740. Keep haft x260 to y1480. Extend haft up to connect naturally. All right half x512..1024 belowy512 must be fully transparent. Do NOT clip blade to fit. Preserve dark-iron/redrune design and coarse pixel style. Remove faint diffuse halo outside solid outline. One inventory item PNG with genuine alpha background. No text, grid or new backdrop.",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

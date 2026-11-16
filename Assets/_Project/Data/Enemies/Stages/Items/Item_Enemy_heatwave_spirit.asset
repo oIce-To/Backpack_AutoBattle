@@ -36,7 +36,7 @@ MonoBehaviour:
     _accuracyPercent: 100
     _criticalChancePercent: 0
     _criticalDamagePercent: 200
-  _inventorySprite: {fileID: 21300000, guid: 73dea6eede534bb48469604ee2647efb, type: 3}
+  _inventorySprite: {fileID: 21300000, guid: 4f836b7f99114d539be63d5c07035c91, type: 3}
   _displayColor: {r: 0.53, g: 0.37, b: 0.27, a: 1}
   _canRotate: 1
   _occupiedCells:
