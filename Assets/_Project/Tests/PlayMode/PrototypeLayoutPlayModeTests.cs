@@ -113,7 +113,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator Layout_ReservesCharacterAndHealthArmorAreasBelowBothBags()
+        public IEnumerator Layout_EnlargesCharactersBesideFullSizeBagsAndReservesHealthArmorAreas()
         {
             yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
@@ -132,14 +132,14 @@ namespace BackpackAutoBattle.Tests.Prototype
                 RectTransform name = Rect(controller, $"{side} Name");
                 RectTransform frame = Rect(controller, $"{side} Battle Frame");
                 var armor = Rect(controller, $"{side} Armor Badge").GetComponent<PrototypeArmorBadge>();
-                Assert.That(Mathf.Max(bag.sizeDelta.x, bag.sizeDelta.y), Is.LessThanOrEqualTo(228f));
-                Assert.That(art.anchoredPosition.y + art.sizeDelta.y / 2f,
-                    Is.LessThan(bag.anchoredPosition.y - bag.sizeDelta.y / 2f));
+                Assert.That(bag.sizeDelta, Is.EqualTo(Vector2.one * 228f));
+                Assert.That(art.sizeDelta, Is.EqualTo(new Vector2(224, 350)));
+                Assert.That(Mathf.Abs(art.anchoredPosition.x - frame.anchoredPosition.x),
+                    Is.GreaterThan((art.sizeDelta.x + frame.sizeDelta.x) / 2f));
                 Assert.That(health.anchoredPosition.y + health.sizeDelta.y / 2f,
                     Is.LessThan(art.anchoredPosition.y - art.sizeDelta.y / 2f));
                 Assert.That(frame.sizeDelta, Is.EqualTo(bag.sizeDelta + Vector2.one * 24f));
-                Assert.That(name.anchoredPosition.y + name.sizeDelta.y / 2f,
-                    Is.LessThan(frame.anchoredPosition.y - frame.sizeDelta.y / 2f));
+                Assert.That(name.anchoredPosition.x, Is.EqualTo(art.anchoredPosition.x));
                 Assert.That(art.anchoredPosition.y + art.sizeDelta.y / 2f,
                     Is.LessThan(name.anchoredPosition.y - name.sizeDelta.y / 2f));
                 Assert.That(frame.parent.GetComponent<Image>(), Is.Null, "Only the bag gets a colored frame.");
@@ -210,7 +210,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                     Assert.That(area.rect.Contains(popup.rectTransform.anchoredPosition), Is.True);
             }
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "BattlePortraitsAndDamage.png");
-            yield return new WaitForSecondsRealtime(.8f);
+            yield return new WaitForSecondsRealtime(1.25f);
             Assert.That(Popups("Player"), Is.Empty);
             Assert.That(Popups("Enemy"), Is.Empty);
 
@@ -237,16 +237,15 @@ namespace BackpackAutoBattle.Tests.Prototype
             {
                 var shield = Rect(controller, $"{side} Armor Badge").GetComponent<PrototypeArmorBadge>();
                 RectTransform health = Rect(controller, $"{side} Health");
-                Vector3 shieldCenter = shield.rectTransform.TransformPoint(shield.rectTransform.rect.center);
+                Vector3 shieldRight = shield.rectTransform.TransformPoint(new Vector2(shield.rectTransform.rect.xMax, 0));
                 Vector3 healthLeft = health.TransformPoint(new Vector2(health.rect.xMin, health.rect.center.y));
-                Assert.That(Vector3.Distance(shieldCenter, healthLeft), Is.LessThan(0.01f),
-                    "The shield center should overlap the HP bar's left endpoint on both sides.");
+                Assert.That(shieldRight.x, Is.LessThan(healthLeft.x), "Armor must not cover the HP frame or value.");
+                Assert.That(shieldRight.y, Is.EqualTo(healthLeft.y).Within(.01f));
                 Vector3[] vertices = shield.canvasRenderer.GetMesh().vertices;
-                Assert.That(vertices.Length, Is.GreaterThan(0));
-                float peakY = vertices.Max(vertex => vertex.y);
-                Assert.That(vertices.Where(vertex => Mathf.Abs(vertex.y - peakY) < 0.01f)
-                    .All(vertex => Mathf.Abs(vertex.x) < 0.01f), Is.True,
-                    "The shield should have a single central peak, not raised horns at either side.");
+                Assert.That(vertices.Length, Is.GreaterThan(12));
+                Assert.That(vertices.All(vertex => Mathf.Approximately(vertex.x / 2, Mathf.Round(vertex.x / 2))
+                    && Mathf.Approximately(vertex.y / 2, Mathf.Round(vertex.y / 2))), Is.True,
+                    "Shield edges must stay on the two-pixel grid.");
             }
             Assert.That(badge.GetComponentsInChildren<Graphic>().All(graphic => !graphic.raycastTarget), Is.True);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "ArmorBadgePreview.png");

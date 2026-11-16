@@ -174,6 +174,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             pointer.position = RectTransformUtility.WorldToScreenPoint(null, slots[2].transform.position);
             stored.OnDrag(pointer);
             Assert.That(preview.text, Does.Contain("놓으면 판매됩니다"));
+            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "PixelSellPreview.png");
             stored.OnEndDrag(pointer);
             yield return null;
             Assert.That(controller.Gold, Is.EqualTo(18));

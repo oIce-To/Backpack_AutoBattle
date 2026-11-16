@@ -12,7 +12,7 @@ namespace BackpackAutoBattle.Prototype
     {
         private readonly List<PrototypeStatusIcon> _icons = new();
         private const float ViewportHeight = 488f;
-        private const float Spacing = 12f;
+        private const float Spacing = 6f;
         private readonly RectTransform _content;
         public RectTransform Root { get; }
 
@@ -21,6 +21,9 @@ namespace BackpackAutoBattle.Prototype
             Root = Rect(parent, $"{side} Status Area");
             BackpackPrototypeController.SetRect(Root, new Vector2(leftEdge ? 0f : 1f, 0.5f),
                 new Vector2(leftEdge ? 72f : -72f, -14f), new Vector2(64f, 500f));
+            var frame = Root.gameObject.AddComponent<Image>();
+            PrototypePixelSkin.Apply(frame, PrototypePixelSkin.Surface.Panel);
+            frame.raycastTarget = false;
             RectTransform viewport = Rect(Root, $"{side} Status Viewport");
             BackpackPrototypeController.Stretch(viewport, 6f);
             viewport.gameObject.AddComponent<RectMask2D>();

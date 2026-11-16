@@ -16,7 +16,7 @@ namespace BackpackAutoBattle.Prototype
         {
             StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
             StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
-            StatusEffectKind.Blindness => Color.black,
+            StatusEffectKind.Blindness => new Color(.85f, .77f, 1f),
             StatusEffectKind.Freeze => new Color(0.40f, 0.80f, 1f),
             StatusEffectKind.Burn => new Color(1f, 0.25f, 0.20f),
             StatusEffectKind.Poison => new Color(0.71f, 0.53f, 0.96f),
@@ -290,7 +290,7 @@ namespace BackpackAutoBattle.Prototype
             PrototypeStatusIcon icon = obj.GetComponent<PrototypeStatusIcon>();
             icon._combat = combat; icon._tooltip = tooltip; icon.Side = side; icon.Kind = kind;
             Image background = obj.GetComponent<Image>();
-            background.color = Color.clear; // Invisible hover target; only the glyph and stack count are drawn.
+            background.color = Color.clear;
             background.raycastTarget = true;
             RectTransform rect = (RectTransform)obj.transform;
             rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f);

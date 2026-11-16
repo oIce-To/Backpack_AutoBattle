@@ -44,7 +44,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Overlay.raycastTarget, Is.False);
             Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>().Single().text, Is.EqualTo("강철 검"));
             Canvas.ForceUpdateCanvases();
-            Assert.That(Overlay.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(100), "Curved strokes include feathered edges, a glow and rounded caps.");
+            Assert.That(Overlay.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(100), "Continuous curves include feathered edges, rounded caps and a central diamond.");
             PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionReady.png");
             int gold = _controller.Gold;
             string swordId = Sword.InstanceId;

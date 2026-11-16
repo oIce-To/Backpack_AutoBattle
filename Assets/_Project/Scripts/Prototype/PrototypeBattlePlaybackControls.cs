@@ -14,8 +14,6 @@ namespace BackpackAutoBattle.Prototype
         private readonly PrototypePlaybackGlyph _glyph;
         private readonly Text _pausedLabel;
         private readonly Dictionary<float, Button> _speeds = new();
-        private static readonly Color Idle = new(.10f, .15f, .22f);
-        private static readonly Color Selected = new(.23f, .46f, .68f);
 
         public PrototypeBattlePlaybackControls(Transform parent, Action<float> changeSpeed, Action togglePause)
         {
@@ -46,13 +44,14 @@ namespace BackpackAutoBattle.Prototype
         {
             _root.gameObject.SetActive(running);
             _pause.interactable = running;
-            _pause.GetComponent<Image>().color = paused ? Selected : Idle;
+            _pause.GetComponent<PrototypePixelButtonFeedback>().SetSelected(paused);
+            _glyph.color = paused ? PrototypePixelSkin.Hex(0x1e2928) : PrototypePixelSkin.Ink;
             _glyph.ShowPlay = paused;
             _pausedLabel.gameObject.SetActive(paused);
             foreach (var pair in _speeds)
             {
                 pair.Value.interactable = running;
-                pair.Value.GetComponent<Image>().color = pair.Key == speed ? Selected : Idle;
+                pair.Value.GetComponent<PrototypePixelButtonFeedback>().SetSelected(pair.Key == speed);
             }
         }
 
@@ -62,6 +61,7 @@ namespace BackpackAutoBattle.Prototype
             obj.transform.SetParent(_root, false);
             BackpackPrototypeController.SetRect((RectTransform)obj.transform, Vector2.one * .5f, new Vector2(x, 0), new Vector2(width, 36));
             Button button = obj.GetComponent<Button>(); button.targetGraphic = obj.GetComponent<Image>();
+            PrototypePixelSkin.Apply(button, wood: true);
             button.onClick.AddListener(() => action()); return button;
         }
     }

@@ -21,42 +21,53 @@ namespace BackpackAutoBattle.Prototype
         public PrototypeMainMenuScreen(Transform canvas, PrototypeItemTooltip tooltip, Action quit)
         {
             _tooltip = tooltip;
-            var background = SelectionUi.Image(canvas, "Main Menu Screen", new Color(.035f, .04f, .055f));
+            var background = SelectionUi.Image(canvas, "Main Menu Screen", PrototypeGuildStyle.Hex(0x151b1d));
             Root = background.rectTransform;
             BackpackPrototypeController.Stretch(Root);
             background.raycastTarget = true;
             var panel = SelectionUi.Image(Root, "Main Menu Panel", new Color(.07f, .075f, .085f));
             SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(1100, 610));
+            PrototypeGuildHall.Add(panel.rectTransform);
 
-            var profile = MakeCard(panel.transform, "Main Profile Card", new Vector2(-347, 193), new Vector2(296, 79));
-            SelectionUi.Label(profile, "Main Profile Name", "플레이어", 25, Vector2.zero, new Vector2(256, 48)).alignment = TextAnchor.MiddleLeft;
+            var profile = MakeCard(panel.transform, "Main Profile Card", new Vector2(-347, 187), new Vector2(244, 68));
+            SelectionUi.Label(profile, "Main Profile Name", "플레이어", 25, Vector2.zero, new Vector2(204, 40)).color = PrototypeGuildStyle.Ink;
 
-            var stats = MakeCard(panel.transform, "Main Character Card", new Vector2(-347, 23), new Vector2(296, 184));
-            _name = SelectionUi.Label(stats, "Main Character Name", "", 27, new Vector2(-43, 49), new Vector2(170, 36));
+            var stats = MakeCard(panel.transform, "Main Character Card", new Vector2(-347, 45), new Vector2(244, 166));
+            _name = SelectionUi.Label(stats, "Main Character Name", "", 27, new Vector2(-48, 43), new Vector2(112, 36));
             _name.alignment = TextAnchor.MiddleLeft;
-            _level = SelectionUi.Label(stats, "Main Character Level", "", 19, new Vector2(85, 49), new Vector2(90, 36));
+            _level = SelectionUi.Label(stats, "Main Character Level", "", 23, new Vector2(60, 43), new Vector2(84, 36));
             _level.alignment = TextAnchor.MiddleRight;
-            _level.color = new Color(.88f, .77f, .55f);
-            _health = SelectionUi.Label(stats, "Main Character Health", "", 22, new Vector2(0, 2), new Vector2(256, 35));
+            _level.resizeTextForBestFit = true;
+            _level.resizeTextMinSize = 20;
+            _level.resizeTextMaxSize = 23;
+            _name.color = _level.color = PrototypeGuildStyle.Ink;
+            _health = SelectionUi.Label(stats, "Main Character Health", "", 22, Vector2.zero, new Vector2(204, 35));
             _health.alignment = TextAnchor.MiddleLeft;
-            _attack = SelectionUi.Label(stats, "Main Character Attack", "", 22, new Vector2(0, -43), new Vector2(256, 35));
+            _attack = SelectionUi.Label(stats, "Main Character Attack", "", 22, new Vector2(0, -43), new Vector2(204, 35));
             _attack.alignment = TextAnchor.MiddleLeft;
+            _health.color = _attack.color = PrototypeGuildStyle.Ink;
 
             _portrait = SelectionUi.Image(panel.transform, "Main Character Illustration", Color.white);
-            SelectionUi.Place(_portrait.rectTransform, new Vector2(12, -1), new Vector2(371, 523));
+            SelectionUi.Place(_portrait.rectTransform, new Vector2(12, -37), new Vector2(371, 460));
             _portrait.preserveAspect = true;
             _portrait.useSpriteMesh = false;
 
+            var storage = SelectionUi.Image(panel.transform, "Guild Storage Board", Color.white);
+            SelectionUi.Place(storage.rectTransform, new Vector2(415, 85), new Vector2(194, 340));
+            PrototypeGuildStyle.Apply(storage);
             AddShortcut(panel.transform, "Main Inventory Button", "가방", new Vector2(415, 163), "UI/HomeBackpackIcon", ShowInventory);
             AddShortcut(panel.transform, "Main Mail Button", "우편함", new Vector2(415, 40), "UI/HomeMailboxIcon", () => _mail.Show());
-            SelectionUi.Button(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247), new Vector2(125, 38), quit);
+            PrototypeGuildStyle.Apply(SelectionUi.Button(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247), new Vector2(152, 42), quit));
             _error = SelectionUi.Label(panel.transform, "Main Menu Error", "", 14, new Vector2(-344, -252), new Vector2(300, 62));
             _error.color = new Color(1f, .45f, .4f);
 
             _inventory = new PrototypeMenuPopup(canvas, "Main Inventory Popup", "가방", new Vector2(674, 506), ClosePopup, PrototypeMenuPopup.CloseStyle.Pixel);
+            PrototypeGuildStyle.Apply(_inventory.Panel.GetComponent<Image>());
+            _inventory.Title.color = PrototypeGuildStyle.Cream;
             var viewport = SelectionUi.Image(_inventory.Panel, "Main Blueprint Viewport", new Color(.065f, .08f, .11f));
             SelectionUi.Place(viewport.rectTransform, new Vector2(0, -22), new Vector2(608, 390));
             viewport.raycastTarget = true;
+            PrototypeGuildStyle.Apply(viewport, PrototypeGuildStyle.Surface.Iron);
             viewport.gameObject.AddComponent<RectMask2D>();
             var content = new GameObject("Main Blueprint Items", typeof(RectTransform));
             content.transform.SetParent(viewport.transform, false);
@@ -72,6 +83,8 @@ namespace BackpackAutoBattle.Prototype
             _emptyInventory = SelectionUi.Label(viewport.transform, "Main Blueprint Empty", "보유한 설계도가 없습니다.", 19, Vector2.zero, new Vector2(525, 55));
 
             _mail = new PrototypeMenuPopup(canvas, "Main Mail Popup", "우편함", new Vector2(490, 274), ClosePopup, PrototypeMenuPopup.CloseStyle.Pixel);
+            PrototypeGuildStyle.Apply(_mail.Panel.GetComponent<Image>());
+            _mail.Title.color = PrototypeGuildStyle.Cream;
             SelectionUi.Label(_mail.Panel, "Main Mail Empty", "수령할 편지가 없습니다.", 20, new Vector2(0, -15), new Vector2(418, 55));
             Hide();
         }
@@ -162,12 +175,8 @@ namespace BackpackAutoBattle.Prototype
 
         private static RectTransform MakeCard(Transform parent, string name, Vector2 position, Vector2 size)
         {
-            var card = new GameObject(name, typeof(RectTransform), typeof(PrototypeRoundedPanel));
-            card.transform.SetParent(parent, false);
-            var face = card.GetComponent<PrototypeRoundedPanel>();
-            face.color = new Color(.12f, .15f, .20f);
-            face.DrawBorder = false;
-            face.raycastTarget = false;
+            var face = SelectionUi.Image(parent, name, Color.white);
+            PrototypeGuildStyle.Apply(face, PrototypeGuildStyle.Surface.Paper);
             SelectionUi.Place(face.rectTransform, position, size);
             return face.rectTransform;
         }

@@ -60,11 +60,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             weapon.Stats.CriticalChancePercent = 0f;
             controller.TickCombat(2f);
             Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(47.5d));
-            PrototypeBattleItemView enemyView = controller.GetComponentsInChildren<PrototypeBattleItemView>()
-                .Single(view => view.Side == CombatSide.Enemy);
-            enemyView.OnPointerClick(pointer);
-            Assert.That(Find(controller, "Battle Item Details").GetComponent<Text>().text, Does.Contain("고블린 몽둥이"));
-            Assert.That((object)enemyView, Is.Not.InstanceOf<IBeginDragHandler>());
+            foreach (var view in controller.GetComponentsInChildren<PrototypeBattleItemView>())
+            {
+                Assert.That(ExecuteEvents.Execute(view.gameObject, pointer, ExecuteEvents.pointerClickHandler), Is.False);
+                Assert.That((object)view, Is.Not.InstanceOf<IBeginDragHandler>());
+            }
             PrototypeScreenCapture.CaptureIfRequested(canvas, "Battle.png");
 
             weapon.Stats.AttackDamage = 100f;
@@ -106,7 +106,9 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(controller.Phase, Is.EqualTo(PrototypePhase.Victory));
                 Assert.That(Find(controller, "Enemy Health Text").GetComponent<Text>().text, Does.Contain("0 / 30"));
                 Assert.That(Find(controller, "Combat Log").GetComponent<Text>().text, Does.Contain("명중"));
-                Assert.That(Find(controller, "Enemy Health").GetChild(0).GetComponent<RectTransform>().anchorMax.x, Is.Zero);
+                var emptyHealth = Find(controller, "Enemy Health").Find("Health Inset/Fill").GetComponent<RectTransform>();
+                Assert.That(emptyHealth.anchorMax.x, Is.Zero);
+                Assert.That(emptyHealth.rect.width, Is.Zero, "The inset health fill must not reverse direction at zero HP.");
             }
             finally
             {

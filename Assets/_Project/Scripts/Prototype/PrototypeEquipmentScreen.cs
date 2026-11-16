@@ -55,28 +55,33 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.Stretch(_root);
             var panel = SelectionUi.Image(_root, "Equipment Panel", new Color(.07f, .075f, .085f));
             SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(1100, 610));
+            PrototypeGuildHall.Add(panel.rectTransform, darkness: .78f, prefix: "Equipment Background");
             SelectionUi.Label(panel.transform, "Equipment Title", "고유 장비", 30, new Vector2(0, 253), new Vector2(1000, 48))
                 .color = new Color(.95f, .88f, .72f);
 
             var loadout = SelectionUi.Image(panel.transform, "Equipped Loadout", new Color(.10f, .12f, .16f));
             SelectionUi.Place(loadout.rectTransform, new Vector2(-313, -3), new Vector2(418, 440));
+            PrototypeGuildStyle.Apply(loadout, PrototypeGuildStyle.Surface.Paper);
             _stats = SelectionUi.Label(loadout.transform, "Equipped Character Stats", "", 19, new Vector2(0, 126), new Vector2(380, 166));
             _stats.lineSpacing = 1.15f;
+            _stats.color = PrototypeGuildStyle.Ink;
             foreach (UniqueGearSlot slot in Enum.GetValues(typeof(UniqueGearSlot)))
             {
-                var button = SelectionUi.Button(loadout.transform, "Equipment Slot " + slot, "",
+                var button = SelectionUi.GuildButton(loadout.transform, "Equipment Slot " + slot, "",
                     new Vector2(((int)slot - 1) * 128, -38), Vector2.one * 114f, () => SelectSlot(slot));
                 _slots.Add(slot, button);
+                PrototypeGuildStyle.Apply(button.image, PrototypeGuildStyle.Surface.Iron);
                 SelectionUi.Label(loadout.transform, "Equipment Slot Label", SlotLabel(slot), 15,
-                    new Vector2(((int)slot - 1) * 128, -114), new Vector2(120, 27));
+                    new Vector2(((int)slot - 1) * 128, -114), new Vector2(120, 27)).color = PrototypeGuildStyle.Ink;
             }
-            _showInventory = SelectionUi.Button(loadout.transform, "Show Owned Equipment", "보유 장비",
+            _showInventory = SelectionUi.GuildButton(loadout.transform, "Show Owned Equipment", "보유 장비",
                 new Vector2(-87, -174), new Vector2(164, 40), () => SwitchCrafting(false));
-            _showCrafting = SelectionUi.Button(loadout.transform, "Show Equipment Crafting", "장비 제작",
+            _showCrafting = SelectionUi.GuildButton(loadout.transform, "Show Equipment Crafting", "장비 제작",
                 new Vector2(87, -174), new Vector2(164, 40), () => SwitchCrafting(true));
 
             var inventory = SelectionUi.Image(panel.transform, "Shared Gear Inventory", new Color(.10f, .12f, .16f));
             SelectionUi.Place(inventory.rectTransform, new Vector2(222, -3), new Vector2(614, 440));
+            PrototypeGuildStyle.Apply(inventory);
             _inventoryTitle = SelectionUi.Label(inventory.transform, "Crafting Title", "고유 장비 제작", 22, new Vector2(0, 190), new Vector2(568, 35));
             var categories = new GameObject("Crafting Categories", typeof(RectTransform));
             categories.transform.SetParent(inventory.transform, false); _craftTabs = (RectTransform)categories.transform;
@@ -84,7 +89,7 @@ namespace BackpackAutoBattle.Prototype
             const float categoryGap = 6, categoryWidth = (572 - categoryGap * 2) / 3;
             foreach (UniqueGearSlot slot in Enum.GetValues(typeof(UniqueGearSlot)))
             {
-                var button = SelectionUi.Button(_craftTabs, "Crafting Category " + slot, SlotLabel(slot),
+                var button = SelectionUi.GuildButton(_craftTabs, "Crafting Category " + slot, SlotLabel(slot),
                     new Vector2(((int)slot - 1) * (categoryWidth + categoryGap), 0), new Vector2(categoryWidth, 36),
                     () => SwitchCraftCategory(slot));
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
@@ -97,12 +102,13 @@ namespace BackpackAutoBattle.Prototype
             for (int i = 0; i < _ownedCategories.Length; i++)
             {
                 UniqueGearSlot? slot = i == 0 ? null : (UniqueGearSlot)(i - 1);
-                _ownedCategories[i] = SelectionUi.Button(_ownedTabs, "Owned Category " + (slot?.ToString() ?? "All"),
+                _ownedCategories[i] = SelectionUi.GuildButton(_ownedTabs, "Owned Category " + (slot?.ToString() ?? "All"),
                     slot.HasValue ? SlotLabel(slot.Value) : "전체", new Vector2((i - 1.5f) * (ownedWidth + categoryGap), 0),
                     new Vector2(ownedWidth, 36), () => SwitchOwnedCategory(slot));
                 _ownedCategories[i].navigation = new Navigation { mode = Navigation.Mode.None };
             }
             var viewport = SelectionUi.Image(inventory.transform, "Equipment Inventory Viewport", new Color(.075f, .09f, .12f));
+            PrototypeGuildStyle.Apply(viewport, PrototypeGuildStyle.Surface.Iron);
             SelectionUi.Place(viewport.rectTransform, new Vector2(0, -17), new Vector2(572, 360));
             viewport.raycastTarget = true;
             viewport.gameObject.AddComponent<RectMask2D>();
@@ -119,9 +125,9 @@ namespace BackpackAutoBattle.Prototype
             _scroll.movementType = ScrollRect.MovementType.Clamped;
             _scroll.scrollSensitivity = 32;
             _empty = SelectionUi.Label(viewport.transform, "Empty Equipment Inventory", "보유한 고유 장비가 없습니다.", 18, Vector2.zero, new Vector2(540, 45));
-            _dismantleButton = SelectionUi.Button(panel.transform, "Open Gear Dismantle", "분해", new Vector2(75, -260), new Vector2(278, 44), OpenDismantle);
-            _dismantleButton.image.color = new Color(.65f, .27f, .26f);
-            _lockModeButton = SelectionUi.Button(panel.transform, "Gear Lock Mode", "장비 잠금 모드", new Vector2(369, -260), new Vector2(278, 44),
+            _dismantleButton = SelectionUi.GuildButton(panel.transform, "Open Gear Dismantle", "분해", new Vector2(75, -260), new Vector2(278, 44), OpenDismantle);
+            _dismantleButton.GetComponentInChildren<Text>().color = new Color(1, .72f, .62f);
+            _lockModeButton = SelectionUi.GuildButton(panel.transform, "Gear Lock Mode", "장비 잠금 모드", new Vector2(369, -260), new Vector2(278, 44),
                 () => { _lockMode = !_lockMode; RefreshLockMode(); });
             _managementNotice = SelectionUi.Label(panel.transform, "Equipment Management Notice", "", 14, new Vector2(222, -295), new Vector2(572, 20));
             _managementNotice.color = new Color(1, .45f, .4f);
@@ -178,12 +184,13 @@ namespace BackpackAutoBattle.Prototype
             _transferModal = transferBackdrop.rectTransform;
             BackpackPrototypeController.Stretch(_transferModal);
             var transferPanel = SelectionUi.Image(_transferModal, "Equipment Transfer Panel", new Color(.10f, .13f, .19f));
+            PrototypeGuildStyle.Apply(transferPanel);
             SelectionUi.Place(transferPanel.rectTransform, Vector2.zero, new Vector2(460, 178));
             _transferMessage = SelectionUi.Label(transferPanel.transform, "Equipment Transfer Message", "", 20,
                 new Vector2(0f, 25f), new Vector2(412, 85));
-            var confirm = SelectionUi.Button(transferPanel.transform, "Confirm Equipment Transfer", "예",
+            var confirm = SelectionUi.GuildButton(transferPanel.transform, "Confirm Equipment Transfer", "예",
                 new Vector2(-101, -49), new Vector2(180, 41), ConfirmTransfer);
-            var cancel = SelectionUi.Button(transferPanel.transform, "Cancel Equipment Transfer", "아니오",
+            var cancel = SelectionUi.GuildButton(transferPanel.transform, "Cancel Equipment Transfer", "아니오",
                 new Vector2(101, -49), new Vector2(180, 41), CloseTransfer);
             confirm.navigation = cancel.navigation = new Navigation { mode = Navigation.Mode.None };
             _promotion = new PrototypePromotionScreen(_modal, _controller, ClosePromotion);
@@ -193,10 +200,11 @@ namespace BackpackAutoBattle.Prototype
 
         private Button CreateAction(string name, string label, Color color, Action action)
         {
-            var button = SelectionUi.Button(_details.transform, name, label, Vector2.zero, new Vector2(112, 64),
+            var button = SelectionUi.GuildButton(_details.transform, name, label, Vector2.zero, new Vector2(112, 64),
                 () => { if (IsDetailsOpen && !_transferModal.gameObject.activeSelf && !_promotion.IsOpen) action(); });
             BackpackPrototypeController.SetRect((RectTransform)button.transform, Vector2.zero, new Vector2(74f, 48f), new Vector2(112, 64));
-            button.GetComponent<Image>().color = color;
+            // Preserve action accents in the caption while using the shared wooden face.
+            button.GetComponentInChildren<Text>().color = Color.Lerp(color, Color.white, .65f);
             button.gameObject.AddComponent<CanvasGroup>();
             var colors = button.colors; colors.fadeDuration = 0; colors.disabledColor = Color.white; button.colors = colors;
             return button;
@@ -270,7 +278,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void RefreshLockMode()
         {
-            _lockModeButton.image.color = _lockMode ? new Color(.55f, .40f, .12f) : SelectionUi.Idle;
+            PrototypeGuildStyle.Apply(_lockModeButton, _lockMode);
             _lockModeButton.GetComponentInChildren<Text>().text = _lockMode ? "잠금 모드 종료" : "장비 잠금 모드";
             EventSystem.current?.SetSelectedGameObject(null);
         }
@@ -318,11 +326,11 @@ namespace BackpackAutoBattle.Prototype
             _craftTabs.gameObject.SetActive(_craftMode);
             _ownedTabs.gameObject.SetActive(!_craftMode);
             for (int i = 0; i < _ownedCategories.Length; i++)
-                _ownedCategories[i].image.color = i == (_ownedSlot.HasValue ? (int)_ownedSlot.Value + 1 : 0) ? SelectionUi.Selected : SelectionUi.Idle;
+                PrototypeGuildStyle.Apply(_ownedCategories[i], i == (_ownedSlot.HasValue ? (int)_ownedSlot.Value + 1 : 0));
             SelectionUi.Place(_scroll.viewport, _craftMode ? new Vector2(0, -42) : new Vector2(0, -24),
                 new Vector2(572, _craftMode ? 310 : 352));
-            _showInventory.GetComponent<Image>().color = _craftMode ? SelectionUi.Idle : SelectionUi.Selected;
-            _showCrafting.GetComponent<Image>().color = _craftMode ? SelectionUi.Selected : SelectionUi.Idle;
+            PrototypeGuildStyle.Apply(_showInventory, !_craftMode);
+            PrototypeGuildStyle.Apply(_showCrafting, _craftMode);
             foreach (var pair in _slots)
             {
                 var (slot, button) = (pair.Key, pair.Value);
@@ -348,8 +356,9 @@ namespace BackpackAutoBattle.Prototype
             {
                 var item = items[index];
                 var definition = _controller.FindGearDefinition(item.GearId);
-                var button = SelectionUi.Button(_content, "Inventory Gear " + item.InstanceId, "", Vector2.zero,
+                var button = SelectionUi.GuildButton(_content, "Inventory Gear " + item.InstanceId, "", Vector2.zero,
                     Vector2.one * tileSize, () => SelectOwnedGear(item.InstanceId));
+                PrototypeGuildStyle.Apply(button.image, PrototypeGuildStyle.Surface.Iron);
                 _ownedTiles.Add(item.InstanceId, button);
                 BackpackPrototypeController.SetRect((RectTransform)button.transform, new Vector2(.5f, 1),
                     new Vector2((index % columns - 1.5f) * stride, -72f - index / columns * stride), Vector2.one * tileSize);
@@ -378,15 +387,16 @@ namespace BackpackAutoBattle.Prototype
         {
             var definitions = _controller.AvailableGear.Where(definition => definition.Slot == _craftSlot).ToArray();
             foreach (var category in _craftCategories)
-                category.Value.image.color = category.Key == _craftSlot ? SelectionUi.Selected : SelectionUi.Idle;
+                PrototypeGuildStyle.Apply(category.Value, category.Key == _craftSlot);
             _empty.text = "제작 가능한 장비가 없습니다.";
             _empty.gameObject.SetActive(definitions.Length == 0);
             _content.sizeDelta = new Vector2(0, Mathf.Max(310, Mathf.CeilToInt(definitions.Length / 2f) * 178f + 8));
             for (int index = 0; index < definitions.Length; index++)
             {
                 var definition = definitions[index];
-                var button = SelectionUi.Button(_content, "Crafting Choice " + definition.GearId, "", Vector2.zero,
+                var button = SelectionUi.GuildButton(_content, "Crafting Choice " + definition.GearId, "", Vector2.zero,
                     new Vector2(254, 164), () => OpenCraftDetails(definition));
+                PrototypeGuildStyle.Apply(button.image, PrototypeGuildStyle.Surface.Iron);
                 BackpackPrototypeController.SetRect((RectTransform)button.transform, new Vector2(.5f, 1),
                     new Vector2(index % 2 == 0 ? -141 : 141, -89 - index / 2 * 178f), new Vector2(254, 164));
                 Graphic icon;

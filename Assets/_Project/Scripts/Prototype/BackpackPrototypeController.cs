@@ -18,8 +18,8 @@ namespace BackpackAutoBattle.Prototype
         public const float CellPitch = 54f;
         public const float ItemCellSize = 48f;
 
-        private static readonly Color GridColorA = new(0.16f, 0.19f, 0.24f, 1f);
-        private static readonly Color GridColorB = new(0.19f, 0.22f, 0.28f, 1f);
+        private static readonly Color GridColorA = PrototypePixelSkin.Hex(0x4c392b);
+        private static readonly Color GridColorB = PrototypePixelSkin.Hex(0x564131);
         private static readonly Color ValidPreviewColor = new(0.20f, 0.72f, 0.39f, 0.95f);
         private static readonly Color InvalidPreviewColor = new(0.88f, 0.25f, 0.28f, 0.95f);
 
@@ -439,26 +439,28 @@ namespace BackpackAutoBattle.Prototype
             _shopScreenRoot = (RectTransform)shopScreen.transform;
             Stretch(_shopScreenRoot);
 
-            Image background = CreateImage(_shopScreenRoot, "Background", new Color(0.055f, 0.07f, 0.10f, 1f));
+            Image background = CreateImage(_shopScreenRoot, "Background", PrototypePixelSkin.Hex(0x131e26));
             Stretch(background.rectTransform);
+            BuildPreparationHeader();
 
             Text instructions = CreateText(
                 _shopScreenRoot,
                 "Instructions",
                 "드래그: 구매/배치/판매  |  가방 우클릭/R: 회전  |  가방/보관함 Shift+우클릭: 합성 잠금",
-                16,
+                12,
                 FontStyle.Normal,
                 TextAnchor.MiddleCenter);
             instructions.color = new Color(0.67f, 0.73f, 0.82f, 1f);
-            SetRect(instructions.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -45f), new Vector2(980f, 30f));
+            SetRect(instructions.rectTransform, new Vector2(0.5f, 0f), new Vector2(150f, 19f), new Vector2(940f, 24f));
 
             BuildShop(_shopScreenRoot);
 
-            const float boardX = 140f;
-            const float boardY = 94f;
+            const float boardX = 75f;
+            const float boardY = 80f;
             Image boardFrame = CreateImage(_shopScreenRoot, "Board Frame", new Color(0.08f, 0.10f, 0.14f, 1f));
             SetRect(boardFrame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(boardX, boardY), new Vector2(BoardSize + 28f, BoardSize + 28f));
             boardFrame.raycastTarget = false;
+            PrototypePixelSkin.Apply(boardFrame, PrototypePixelSkin.Surface.Leather);
 
             var gridObject = new GameObject("Backpack Grid", typeof(RectTransform));
             gridObject.transform.SetParent(_shopScreenRoot, false);
@@ -481,6 +483,7 @@ namespace BackpackAutoBattle.Prototype
                         -BoardSize / 2f + CellPitch / 2f + x * CellPitch,
                         BoardSize / 2f - CellPitch / 2f - y * CellPitch);
                     cell.raycastTarget = false;
+                    PrototypePixelSkin.Apply(cell, PrototypePixelSkin.Surface.Cell, preserveTint: true);
                     _gridCells[x, y] = cell;
                 }
             }
@@ -507,7 +510,8 @@ namespace BackpackAutoBattle.Prototype
         private void BuildShop(Transform canvasTransform)
         {
             Image shopPanel = CreateImage(canvasTransform, "Prototype Shop", new Color(0.08f, 0.10f, 0.14f, 1f));
-            SetRect(shopPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-405f, 12f), new Vector2(310f, 510f));
+            SetRect(shopPanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-440f, -24f), new Vector2(324f, 548f));
+            PrototypePixelSkin.Apply(shopPanel, PrototypePixelSkin.Surface.Wood);
             _sellArea = shopPanel.rectTransform;
             _shopInputGroup = shopPanel.gameObject.AddComponent<CanvasGroup>();
 
@@ -519,12 +523,12 @@ namespace BackpackAutoBattle.Prototype
             _goldText.color = new Color(1f, 0.80f, 0.24f, 1f);
             SetRect(_goldText.rectTransform, new Vector2(1f, 1f), new Vector2(-70f, -28f), new Vector2(120f, 38f));
 
-            _roundText = CreateText(shopPanel.transform, "Round", string.Empty, 16, FontStyle.Bold, TextAnchor.MiddleCenter);
-            SetRect(_roundText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -62f), new Vector2(278f, 26f));
+            _roundText = CreateText(_shopScreenRoot, "Round", string.Empty, 18, FontStyle.Bold, TextAnchor.MiddleCenter);
+            SetRect(_roundText.rectTransform, new Vector2(.5f, 1f), new Vector2(75f, -36f), new Vector2(278f, 30f));
 
             _rarityOddsText = CreateText(shopPanel.transform, "Rarity Odds", string.Empty, 11, FontStyle.Normal, TextAnchor.MiddleCenter);
             _rarityOddsText.color = new Color(0.66f, 0.73f, 0.82f, 1f);
-            SetRect(_rarityOddsText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -86f), new Vector2(290f, 22f));
+            SetRect(_rarityOddsText.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, -66f), new Vector2(290f, 22f));
 
             for (int index = 0; index < _shopSlotCount; index++)
             {
@@ -533,8 +537,8 @@ namespace BackpackAutoBattle.Prototype
                 SetRect(
                     (RectTransform)slotObject.transform,
                     new Vector2(0.5f, 1f),
-                    new Vector2(0f, -128f - index * 70f),
-                    new Vector2(278f, 62f));
+                    new Vector2(0f, -128f - index * 88f),
+                    new Vector2(284f, 78f));
                 PrototypeShopSlotView slotView = slotObject.AddComponent<PrototypeShopSlotView>();
                 slotView.Initialize(this, index);
                 _shopSlots.Add(slotView);
@@ -545,6 +549,9 @@ namespace BackpackAutoBattle.Prototype
             _rerollText = CreateText(rerollButton.transform, "Label", string.Empty, 15, FontStyle.Bold, TextAnchor.MiddleCenter);
             _rerollText.raycastTarget = false;
             Stretch(_rerollText.rectTransform);
+            PrototypePixelSkin.Apply(rerollButton);
+            if (!_enableDebugRoundAdvance)
+                SetRect(rerollButton.image.rectTransform, new Vector2(.5f, 0), new Vector2(0, 54), new Vector2(284, 42));
 
             Button nextRoundButton = CreateButton(shopPanel.transform, "Next Round Button", new Vector2(71f, 54f), new Vector2(136f, 40f), new Color(0.32f, 0.52f, 0.30f, 1f));
             _debugNextRoundButton = nextRoundButton;
@@ -553,6 +560,7 @@ namespace BackpackAutoBattle.Prototype
             _nextRoundText = CreateText(nextRoundButton.transform, "Label", string.Empty, 14, FontStyle.Bold, TextAnchor.MiddleCenter);
             _nextRoundText.raycastTarget = false;
             Stretch(_nextRoundText.rectTransform);
+            PrototypePixelSkin.Apply(nextRoundButton);
 
             Text shopHint = CreateText(shopPanel.transform, "Shop Hint", "상점 상품 우클릭: 잠금 / 해제", 12, FontStyle.Normal, TextAnchor.MiddleCenter);
             shopHint.color = new Color(0.56f, 0.63f, 0.73f, 1f);
@@ -570,12 +578,13 @@ namespace BackpackAutoBattle.Prototype
         private void BuildStorage(Transform canvasTransform)
         {
             Image storagePanel = CreateImage(canvasTransform, "Freeform Storage", new Color(0.08f, 0.10f, 0.14f, 1f));
-            SetRect(storagePanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(75f, -192f), new Vector2(610f, 208f));
+            SetRect(storagePanel.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(75f, -203f), new Vector2(610f, 208f));
+            PrototypePixelSkin.Apply(storagePanel, PrototypePixelSkin.Surface.Panel);
             _storageRoot = storagePanel.rectTransform;
             _storageInputGroup = storagePanel.gameObject.AddComponent<CanvasGroup>();
 
-            Text storageLabel = CreateText(storagePanel.transform, "Storage Label", "자유 보관함 · 개수 제한 없음", 13, FontStyle.Bold, TextAnchor.UpperLeft);
-            storageLabel.color = new Color(0.58f, 0.66f, 0.77f, 1f);
+            Text storageLabel = CreateText(storagePanel.transform, "Storage Label", "자유 보관함", 13, FontStyle.Bold, TextAnchor.UpperLeft);
+            storageLabel.color = PrototypePixelSkin.Muted;
             storageLabel.raycastTarget = false;
             SetRect(storageLabel.rectTransform, new Vector2(0f, 1f), new Vector2(10f, -18f), new Vector2(580f, 20f));
             storageLabel.rectTransform.pivot = new Vector2(0f, 0.5f);
@@ -990,7 +999,16 @@ namespace BackpackAutoBattle.Prototype
             if (_rarityOddsText != null)
             {
                 RoundShopRarityWeights weights = _shopRarityTable?.GetWeights(_run.Round) ?? new RoundShopRarityWeights();
-                _rarityOddsText.text = $"일 {weights.Common:0}% · 고 {weights.Uncommon:0}% · 희 {weights.Rare:0}% · 영 {weights.Epic:0}%";
+                _rarityOddsText.text = $"{FormatOdds(ItemRarity.Common, weights.Common)} · "
+                    + $"{FormatOdds(ItemRarity.Uncommon, weights.Uncommon)} · "
+                    + $"{FormatOdds(ItemRarity.Rare, weights.Rare)} · "
+                    + FormatOdds(ItemRarity.Epic, weights.Epic);
+            }
+
+            static string FormatOdds(ItemRarity rarity, float percent)
+            {
+                string color = ColorUtility.ToHtmlStringRGB(rarity.GetDisplayColor());
+                return $"<color=#{color}>{rarity.GetDisplayName()}</color> {percent:0}%";
             }
         }
 

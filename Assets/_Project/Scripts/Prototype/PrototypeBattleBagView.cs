@@ -10,26 +10,28 @@ namespace BackpackAutoBattle.Prototype
     {
         internal const float CenterY = 171f;
         private readonly RectTransform _root;
+        private readonly bool _pixelSurface;
         private readonly Dictionary<string, PrototypeBattleItemView> _items = new();
         private PrototypePlacementOverlay _placementOverlay;
         public RectTransform Root => _root;
 
-        public PrototypeBattleBagView(Transform parent, string name)
+        public PrototypeBattleBagView(Transform parent, string name, bool pixelSurface = false)
         {
+            _pixelSurface = pixelSurface;
             var obj = new GameObject(name, typeof(RectTransform));
             obj.transform.SetParent(parent, false);
             _root = (RectTransform)obj.transform;
             BackpackPrototypeController.SetRect(_root, Vector2.one * .5f, new Vector2(0f, CenterY), Vector2.zero);
         }
 
-        public void Build(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
+        public void Build(CombatLoadoutSnapshot loadout, CombatSide side,
             PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, bool animateCooldown = true)
         {
             Clear();
             float pitch = Mathf.Min(50f, 228f / Mathf.Max(loadout.Width, loadout.Height));
             Vector2 boardSize = new(loadout.Width * pitch, loadout.Height * pitch);
             _root.sizeDelta = boardSize;
-            BuildContents(loadout, side, inspect, tooltip, content, pitch, boardSize, animateCooldown);
+            BuildContents(loadout, side, tooltip, content, pitch, boardSize, animateCooldown);
         }
 
         public void Clear()
@@ -43,7 +45,7 @@ namespace BackpackAutoBattle.Prototype
             _placementOverlay = null;
         }
 
-        private void BuildContents(CombatLoadoutSnapshot loadout, CombatSide side, Action<CombatItemSnapshot> inspect,
+        private void BuildContents(CombatLoadoutSnapshot loadout, CombatSide side,
             PrototypeItemTooltip tooltip, Func<CombatItemSnapshot, ItemTooltipContent> content, float pitch, Vector2 boardSize, bool animateCooldown)
         {
             for (int y = 0; y < loadout.Height; y++)
@@ -55,6 +57,11 @@ namespace BackpackAutoBattle.Prototype
                     Image cell = cellObject.GetComponent<Image>();
                     cell.color = (x + y) % 2 == 0 ? new Color(0.16f, 0.20f, 0.27f) : new Color(0.20f, 0.25f, 0.32f);
                     cell.raycastTarget = false;
+                    if (_pixelSurface)
+                    {
+                        cell.color = PrototypePixelSkin.Hex((x + y) % 2 == 0 ? 0x4c392bu : 0x564131u);
+                        PrototypePixelSkin.Apply(cell, PrototypePixelSkin.Surface.Cell, preserveTint: true);
+                    }
                     BackpackPrototypeController.SetRect(cell.rectTransform, new Vector2(0.5f, 0.5f),
                         new Vector2(-boardSize.x / 2f + (x + 0.5f) * pitch, boardSize.y / 2f - (y + 0.5f) * pitch), Vector2.one * (pitch - 6f));
                 }
@@ -69,7 +76,7 @@ namespace BackpackAutoBattle.Prototype
                 rect.anchoredPosition = new Vector2(-boardSize.x / 2f + item.Origin.x * pitch + 3f,
                     boardSize.y / 2f - item.Origin.y * pitch - 3f);
                 PrototypeBattleItemView view = obj.GetComponent<PrototypeBattleItemView>();
-                view.Initialize(item, side, pitch, inspect, tooltip, () => content(item),
+                view.Initialize(item, side, pitch, tooltip, () => content(item),
                     () => _placementOverlay.Show(view, loadout, item), () => _placementOverlay?.Hide(view), animateCooldown);
                 _items.Add(item.InstanceId, view);
             }

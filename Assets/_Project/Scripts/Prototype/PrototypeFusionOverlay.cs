@@ -70,28 +70,52 @@ namespace BackpackAutoBattle.Prototype
             Vector2 delta = to - from;
             Vector2 normal = new Vector2(-delta.y, delta.x).normalized;
             if (normal.y < 0f || (Mathf.Approximately(normal.y, 0f) && normal.x < 0f)) normal = -normal;
-            float bend = Mathf.Clamp((delta.magnitude - 90f) * .055f, 0f, 22f);
+            float bend = Mathf.Min(delta.magnitude * .26f, Mathf.Clamp(delta.magnitude * .16f, 12f, 38f));
             return Vector2.Lerp(from, to, t) + normal * (4 * t * (1 - t) * bend);
         }
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
-            // Draw glows first so crossing lines retain a crisp readable core.
-            foreach (var link in _links)
-                if (link.Ready) Stroke(vh, link, 6f, new Color(1f, .76f, .08f, .15f * link.Opacity), 3f);
             foreach (var link in _links)
             {
-                Color tint = link.Ready ? new Color(1f, .87f, .22f, link.Opacity) : new Color(.73f, .76f, .8f, .72f * link.Opacity);
-                float widthScale = link.Ready ? 1f : .7f;
-                Stroke(vh, link, (link.Ready ? 2.3f : 1.05f) * widthScale, tint, 1.2f * widthScale);
+                SmoothCord(vh, link);
             }
+        }
+
+        private static void SmoothCord(VertexHelper vh, Link link)
+        {
+            float length = Vector2.Distance(link.From, link.To);
+            if (length < 1 || link.Opacity <= 0) return;
+            Color tint = PrototypePixelSkin.Hex(link.Ready ? 0xe8c46au : 0xd4d3c1u);
+            tint.a = link.Opacity * (link.Ready ? 1 : .8f);
+            Color shadow = PrototypePixelSkin.Hex(0x30271d); shadow.a = tint.a;
+            Color highlight = PrototypePixelSkin.Hex(link.Ready ? 0xffeab2u : 0xf5efe0u); highlight.a = tint.a;
+            // Connected ribbon geometry follows the curve without pixel snapping or gaps.
+            shadow.a *= .35f;
+            Stroke(vh, link, link.Ready ? 2.2f : 1.3f, shadow, .8f);
+            Stroke(vh, link, link.Ready ? 1.4f : .75f, tint, .85f);
+            shadow.a = tint.a;
+            Vector2 Snap(Vector2 p) => new(Mathf.Round(p.x / 2) * 2, Mathf.Round(p.y / 2) * 2);
+            void Dot(Vector2 p, float size, Color c) => PrototypeFantasyTrim.Quad(vh, new Rect(p - Vector2.one * size * .5f, Vector2.one * size), c);
+            void Rune(Vector2 center, int radius)
+            {
+                center = Snap(center);
+                for (int row = -radius; row <= radius; row++)
+                {
+                    int width = radius - Mathf.Abs(row);
+                    for (int col = -width; col <= width; col++)
+                        Dot(center + new Vector2(col * 2, row * 2), 2,
+                            Mathf.Abs(col) == width ? shadow : row > 0 ? highlight : tint);
+                }
+            }
+            Rune(CurvePoint(link.From, link.To, .5f), link.Ready ? 4 : 3);
         }
 
         private static void Stroke(VertexHelper vh, Link link, float radius, Color tint, float feather)
         {
             float length = Vector2.Distance(link.From, link.To);
             if (length < .01f || tint.a <= 0f) return;
-            int segments = Mathf.Clamp(Mathf.CeilToInt(length / 18f), 2, 40);
+            int segments = Mathf.Clamp(Mathf.CeilToInt(length / 6f), 8, 160);
             Color transparent = tint; transparent.a = 0f;
             int start = vh.currentVertCount;
             for (int i = 0; i <= segments; i++)

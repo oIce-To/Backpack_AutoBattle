@@ -28,11 +28,13 @@ namespace BackpackAutoBattle.Prototype
             var backdrop = SelectionUi.Image(canvas, "Gear Dismantle Screen", new Color(0, 0, 0, .72f));
             _root = backdrop.rectTransform; BackpackPrototypeController.Stretch(_root); backdrop.raycastTarget = true;
             var panel = SelectionUi.Image(_root, "Gear Dismantle Panel", new Color(.10f, .13f, .19f));
+            PrototypeGuildStyle.Apply(panel);
             SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(680, 630));
             SelectionUi.Label(panel.transform, "Dismantle Title", "분해할 장비를 선택해 주세요", 25, new Vector2(0, 270), new Vector2(620, 42));
             _count = SelectionUi.Label(panel.transform, "Dismantle Selection Count", "", 16, new Vector2(0, 230), new Vector2(620, 26));
 
             var viewport = SelectionUi.Image(panel.transform, "Dismantle Inventory Viewport", new Color(.065f, .08f, .115f));
+            PrototypeGuildStyle.Apply(viewport, PrototypeGuildStyle.Surface.Iron);
             SelectionUi.Place(viewport.rectTransform, new Vector2(-7, 43), new Vector2(622, 330));
             _scroll = ScrollArea(viewport, "Dismantle Inventory", out _content);
             var track = SelectionUi.Image(panel.transform, "Dismantle Scrollbar", new Color(.06f, .07f, .10f));
@@ -50,10 +52,10 @@ namespace BackpackAutoBattle.Prototype
             _shards = RewardRow("Dismantle Shard Reward", EconomyIconKind.OriginShard).amount;
             _error = SelectionUi.Label(panel.transform, "Dismantle Error", "", 14, new Vector2(0, -245), new Vector2(620, 20));
             _error.color = new Color(1, .45f, .4f);
-            SelectionUi.Button(panel.transform, "Cancel Gear Dismantle", "취소", new Vector2(-140, -278), new Vector2(236, 44), close);
-            _confirm = SelectionUi.Button(panel.transform, "Confirm Gear Dismantle", "분해", new Vector2(140, -278), new Vector2(236, 44),
+            SelectionUi.GuildButton(panel.transform, "Cancel Gear Dismantle", "취소", new Vector2(-140, -278), new Vector2(236, 44), close);
+            _confirm = SelectionUi.GuildButton(panel.transform, "Confirm Gear Dismantle", "분해", new Vector2(140, -278), new Vector2(236, 44),
                 () => { if (_confirm.interactable) _controller.TryDismantleUniqueGear(_selected.ToArray()); });
-            _confirm.image.color = new Color(.72f, .28f, .27f);
+            _confirm.GetComponentInChildren<Text>().color = new Color(1, .72f, .62f);
             _confirm.gameObject.AddComponent<CanvasGroup>();
             Hide();
         }
@@ -96,7 +98,7 @@ namespace BackpackAutoBattle.Prototype
             {
                 var item = items[i]; var definition = _controller.FindGearDefinition(item.GearId);
                 bool eligible = PlayerProgress.CanDismantleGear(item);
-                var tile = SelectionUi.Button(_content, "Dismantle Candidate " + item.InstanceId, "", Vector2.zero,
+                var tile = SelectionUi.GuildButton(_content, "Dismantle Candidate " + item.InstanceId, "", Vector2.zero,
                     Vector2.one * 108, () => Toggle(item.InstanceId));
                 BackpackPrototypeController.SetRect((RectTransform)tile.transform, new Vector2(.5f, 1),
                     new Vector2((i % 5 - 2) * 121, -61 - i / 5 * 118), Vector2.one * 108);
@@ -135,7 +137,7 @@ namespace BackpackAutoBattle.Prototype
         private void RefreshSelection()
         {
             foreach (var item in _items)
-                item.Value.tile.image.color = _selected.Contains(item.Key) ? new Color(.56f, .43f, .20f) : SelectionUi.Idle;
+                PrototypeGuildStyle.Apply(item.Value.tile, _selected.Contains(item.Key));
             _count.text = $"선택 {_selected.Count}개";
             _shards.text = $"기원의 파편 {CompactNumber.Exact(_totalShards)}";
             PlaceReward((RectTransform)_shards.transform.parent, 0);

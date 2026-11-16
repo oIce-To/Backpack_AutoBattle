@@ -10,11 +10,9 @@ using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Prototype
 {
-    public sealed class PrototypeBattleItemView : MonoBehaviour, IPointerClickHandler,
-        IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+    public sealed class PrototypeBattleItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
     {
         private readonly List<(RectTransform rect, float bottom)> _colorFills = new();
-        private Action<CombatItemSnapshot> _inspect;
         private PrototypeItemTooltip _tooltip;
         private Func<ItemTooltipContent> _tooltipContent;
         private Text _label;
@@ -31,12 +29,11 @@ namespace BackpackAutoBattle.Prototype
         public float CycleProgress { get; private set; }
 
         public void Initialize(CombatItemSnapshot item, CombatSide side, float pitch,
-            Action<CombatItemSnapshot> inspect, PrototypeItemTooltip tooltip, Func<ItemTooltipContent> tooltipContent,
+            PrototypeItemTooltip tooltip, Func<ItemTooltipContent> tooltipContent,
             Action showPlacement = null, Action hidePlacement = null, bool animateCooldown = true)
         {
             Snapshot = item;
             Side = side;
-            _inspect = inspect;
             _tooltip = tooltip;
             _tooltipContent = tooltipContent;
             _showPlacement = showPlacement;
@@ -145,11 +142,6 @@ namespace BackpackAutoBattle.Prototype
             yield return new WaitForSecondsRealtime(0.18f);
             _label.color = Color.white;
             _pulse = null;
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left) _inspect?.Invoke(Snapshot);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

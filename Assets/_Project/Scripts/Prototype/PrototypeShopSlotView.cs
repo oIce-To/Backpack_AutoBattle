@@ -38,7 +38,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _controller = controller;
             gameObject.name = $"Shop Slot {slotIndex + 1}";
-            gameObject.AddComponent<Image>().color = new Color(0.13f, 0.16f, 0.21f, 1f);
+            PrototypePixelSkin.Apply(gameObject.AddComponent<Image>(), PrototypePixelSkin.Surface.ShopSlot);
 
             var badgeObject = new GameObject("Rarity Badge", typeof(RectTransform), typeof(Image));
             badgeObject.transform.SetParent(transform, false);
@@ -47,8 +47,8 @@ namespace BackpackAutoBattle.Prototype
             badgeRect.anchorMin = new Vector2(0f, 0f);
             badgeRect.anchorMax = new Vector2(0f, 1f);
             badgeRect.pivot = new Vector2(0f, 0.5f);
-            badgeRect.anchoredPosition = Vector2.zero;
-            badgeRect.sizeDelta = new Vector2(6f, 0f);
+            badgeRect.anchoredPosition = new Vector2(8f, 0f);
+            badgeRect.sizeDelta = new Vector2(4f, -20f);
             _rarityBadge.raycastTarget = false;
 
             var shapeObject = new GameObject("Shape", typeof(RectTransform));

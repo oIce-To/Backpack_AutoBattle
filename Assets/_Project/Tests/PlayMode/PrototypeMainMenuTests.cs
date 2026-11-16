@@ -54,6 +54,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Find("Main Quit Button").GetComponent<Button>().interactable, Is.True);
             Assert.That(Find("Main Inventory Button").GetComponent<Image>().sprite?.name, Is.EqualTo("HomeBackpackIcon"));
             Assert.That(Find("Main Mail Button").GetComponent<Image>().sprite?.name, Is.EqualTo("HomeMailboxIcon"));
+            var hall = Find("Guild Hall Illustration").GetComponent<Image>();
+            Assert.That(hall.raycastTarget, Is.False);
+            Assert.That(hall.sprite, Is.Not.Null);
+            Assert.That(hall.sprite.texture.name, Is.EqualTo("GuildHallIllustrated"));
+            Assert.That(hall.sprite.texture.filterMode, Is.EqualTo(FilterMode.Point));
             var hits = new List<RaycastResult>(); EventSystem.current.RaycastAll(Pointer(Find("Main Inventory Button")), hits);
             Assert.That(hits.First().gameObject, Is.SameAs(Find("Main Inventory Button").gameObject));
             hits.Clear();

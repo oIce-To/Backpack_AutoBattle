@@ -13,7 +13,7 @@ namespace BackpackAutoBattle.Prototype
         public Text Title { get; }
         public bool IsOpen => _root.gameObject.activeInHierarchy;
 
-        public PrototypeMenuPopup(Transform parent, string name, string title, Vector2 size, Action close, CloseStyle closeStyle = CloseStyle.Text)
+        public PrototypeMenuPopup(Transform parent, string name, string title, Vector2 size, Action close, CloseStyle closeStyle = CloseStyle.Text, bool pixelSurface = false)
         {
             var backdrop = SelectionUi.Image(parent, name, new Color(0f, 0f, 0f, .72f));
             _root = backdrop.rectTransform;
@@ -28,6 +28,7 @@ namespace BackpackAutoBattle.Prototype
             Panel = panel.rectTransform;
             SelectionUi.Place(Panel, Vector2.zero, size);
             panel.raycastTarget = true;
+            if (pixelSurface) PrototypePixelSkin.Apply(panel, PrototypePixelSkin.Surface.Panel);
             // Consume panel background clicks before they reach the backdrop.
             panel.gameObject.AddComponent<EventTrigger>();
             Title = SelectionUi.Label(Panel, name + " Title", title, 27, new Vector2(0, size.y / 2 - 39), new Vector2(size.x - 115, 42));
@@ -38,6 +39,7 @@ namespace BackpackAutoBattle.Prototype
                 var button = SelectionUi.Button(Panel, name + " Close", "닫기", new Vector2(size.x / 2 - 53, size.y / 2 - 34),
                     new Vector2(76, 34), close);
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
+                if (pixelSurface) PrototypePixelSkin.Apply(button);
             }
             Hide();
         }

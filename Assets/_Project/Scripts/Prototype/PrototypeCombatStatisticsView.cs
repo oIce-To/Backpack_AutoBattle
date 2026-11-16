@@ -23,6 +23,7 @@ namespace BackpackAutoBattle.Prototype
             Root = Box(canvas, "Combat Statistics Screen", new Color(.015f, .025f, .04f, .94f));
             BackpackPrototypeController.Stretch(Root);
             var panel = Box(Root, "Combat Statistics Panel", new Color(.08f, .11f, .17f));
+            PrototypePixelSkin.Apply(panel.GetComponent<Image>(), PrototypePixelSkin.Surface.Panel);
             Place(panel, Vector2.zero, new Vector2(940, 580));
             Label(panel, "Statistics Title", "전투 통계", 28, new Vector2(0, 246), new Vector2(850, 40));
             _subtitle = Label(panel, "Statistics Subtitle", "", 16, new Vector2(0, 207), new Vector2(850, 28));
@@ -80,6 +81,8 @@ namespace BackpackAutoBattle.Prototype
             ClearRows(); _scroll.StopMovement(); _content.anchoredPosition = Vector2.zero;
             _player.interactable = _side != CombatSide.Player; _enemy.interactable = _side != CombatSide.Enemy;
             _attack.interactable = _mode != StatisticsChartMode.Attack; _defense.interactable = _mode != StatisticsChartMode.Defense;
+            foreach (var tab in new[] { _player, _enemy, _attack, _defense })
+                tab.GetComponent<PrototypePixelButtonFeedback>().SetSelected(!tab.interactable);
             _subtitle.text = $"{(_side == CombatSide.Player ? _snapshot.PlayerName : _snapshot.EnemyName)} · 전투 시간 {_snapshot.Seconds:0.0}초";
             var rows = CombatStatisticsChart.Sort(_snapshot, _side, _mode);
             double maximum = rows.Length > 0 ? CombatStatisticsChart.Total(rows[0], _mode) : 0;
@@ -159,6 +162,7 @@ namespace BackpackAutoBattle.Prototype
         {
             var rect = Box(parent, name, new Color(.23f, .46f, .68f)); Place(rect, position, size);
             var button = rect.gameObject.AddComponent<Button>(); button.onClick.AddListener(click);
+            PrototypePixelSkin.Apply(button);
             Label(rect, name + " Label", value, 18, Vector2.zero, size); return button;
         }
     }

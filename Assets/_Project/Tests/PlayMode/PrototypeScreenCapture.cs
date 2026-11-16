@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Tests.Prototype
 {
@@ -25,6 +26,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             RenderMode oldMode = canvas.renderMode;
             Camera oldCamera = canvas.worldCamera;
             float oldDistance = canvas.planeDistance;
+            float oldScale = canvas.scaleFactor;
             RenderTexture oldTarget = RenderTexture.active;
             try
             {
@@ -32,6 +34,10 @@ namespace BackpackAutoBattle.Tests.Prototype
                 canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 canvas.worldCamera = camera;
                 canvas.planeDistance = 1f;
+                // Batch Game views can be much smaller than this render target. Generate
+                // legacy Text glyphs at the capture scale instead of magnifying their atlas.
+                canvas.scaleFactor = 1f;
+                foreach (Text label in canvas.GetComponentsInChildren<Text>()) label.SetAllDirty();
                 Canvas.ForceUpdateCanvases();
                 camera.Render();
                 RenderTexture.active = target;
@@ -45,6 +51,8 @@ namespace BackpackAutoBattle.Tests.Prototype
                 canvas.renderMode = oldMode;
                 canvas.worldCamera = oldCamera;
                 canvas.planeDistance = oldDistance;
+                canvas.scaleFactor = oldScale;
+                foreach (Text label in canvas.GetComponentsInChildren<Text>()) label.SetAllDirty();
                 Canvas.ForceUpdateCanvases();
                 camera.targetTexture = null;
                 target.Release();

@@ -30,6 +30,7 @@ namespace BackpackAutoBattle.Prototype
             var backdrop = SelectionUi.Image(parent, "Promotion Material Picker", new Color(0, 0, 0, .72f));
             _root = backdrop.rectTransform; BackpackPrototypeController.Stretch(_root); backdrop.raycastTarget = true;
             var panel = SelectionUi.Image(_root, "Promotion Material Panel", new Color(.10f, .13f, .19f));
+            PrototypeGuildStyle.Apply(panel);
             SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(680, 630));
             SelectionUi.Label(panel.transform, "Promotion Material Title", "승급 재료로 사용할 아이템을 선택해 주세요", 23,
                 new Vector2(0, 270), new Vector2(630, 40));
@@ -40,7 +41,7 @@ namespace BackpackAutoBattle.Prototype
             for (int i = 0; i < _materialSlots.Length; i++)
             {
                 int index = i;
-                _materialSlots[i] = SelectionUi.Button(panel.transform, "Promotion Selected Material " + i, "+",
+                _materialSlots[i] = SelectionUi.GuildButton(panel.transform, "Promotion Selected Material " + i, "+",
                     new Vector2(79 + i * 132, 166), Vector2.one * 100, () =>
                     {
                         if (index < _selected.Count) ToggleMaterial(_selected[index]);
@@ -49,6 +50,7 @@ namespace BackpackAutoBattle.Prototype
             _count = SelectionUi.Label(panel.transform, "Promotion Material Count", "", 15, new Vector2(144, 99), new Vector2(264, 24));
 
             var viewport = SelectionUi.Image(panel.transform, "Promotion Inventory Viewport", new Color(.065f, .08f, .115f));
+            PrototypeGuildStyle.Apply(viewport, PrototypeGuildStyle.Surface.Iron);
             SelectionUi.Place(viewport.rectTransform, new Vector2(-7, -67), new Vector2(622, 306));
             viewport.raycastTarget = true; viewport.gameObject.AddComponent<RectMask2D>();
             var content = new GameObject("Promotion Inventory", typeof(RectTransform));
@@ -69,13 +71,13 @@ namespace BackpackAutoBattle.Prototype
 
             _error = SelectionUi.Label(panel.transform, "Promotion Error", "", 14, new Vector2(0, -237), new Vector2(620, 25));
             _error.color = new Color(1, .45f, .4f);
-            SelectionUi.Button(panel.transform, "Cancel Promotion Materials", "취소", new Vector2(-140, -278), new Vector2(236, 44), close);
-            _confirm = SelectionUi.Button(panel.transform, "Confirm Promotion Materials", "승급", new Vector2(140, -278),
+            SelectionUi.GuildButton(panel.transform, "Cancel Promotion Materials", "취소", new Vector2(-140, -278), new Vector2(236, 44), close);
+            _confirm = SelectionUi.GuildButton(panel.transform, "Confirm Promotion Materials", "승급", new Vector2(140, -278),
                 new Vector2(236, 44), () =>
                 {
                     if (_selected.Count == 2) _controller.TryPromoteUniqueGear(_centerId, _selected.ToArray());
                 });
-            _confirm.image.color = new Color(.60f, .43f, .78f);
+            PrototypeGuildStyle.Apply(_confirm, true);
             _confirm.gameObject.AddComponent<CanvasGroup>();
             Hide();
         }
@@ -94,7 +96,7 @@ namespace BackpackAutoBattle.Prototype
                 var item = items[i];
                 var definition = _controller.FindGearDefinition(item.GearId);
                 bool eligible = _eligible.Contains(item.InstanceId) && definition != null;
-                var tile = SelectionUi.Button(_content, "Promotion Candidate " + item.InstanceId, "", Vector2.zero,
+                var tile = SelectionUi.GuildButton(_content, "Promotion Candidate " + item.InstanceId, "", Vector2.zero,
                     Vector2.one * 108, () => ToggleMaterial(item.InstanceId));
                 BackpackPrototypeController.SetRect((RectTransform)tile.transform, new Vector2(.5f, 1),
                     new Vector2((i % 5 - 2) * 121, -61 - i / 5 * 118), Vector2.one * 108);
@@ -132,7 +134,7 @@ namespace BackpackAutoBattle.Prototype
         private void RefreshSelection()
         {
             foreach (var pair in _tiles)
-                pair.Value.image.color = _selected.Contains(pair.Key) ? new Color(.56f, .43f, .20f) : SelectionUi.Idle;
+                PrototypeGuildStyle.Apply(pair.Value, _selected.Contains(pair.Key));
             for (int i = 0; i < _materialSlots.Length; i++)
             {
                 var item = i < _selected.Count ? _controller.Progress.UniqueGear.FirstOrDefault(gear => gear.InstanceId == _selected[i]) : null;

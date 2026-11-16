@@ -50,6 +50,9 @@ namespace BackpackAutoBattle.Tests.Prototype
                 controller.TickCombat(2.1f); yield return null; Canvas.ForceUpdateCanvases();
                 Assert.That(reactions.Count(r => r.Kind == CombatReactionKind.ReflectDamage), Is.EqualTo(2));
                 Assert.That(reactions.Any(r => r.HealthRestored > 0), Is.True);
+                Assert.That(controller.GetComponentsInChildren<PrototypeDamageNumber>()
+                    .Any(p => p.Text.StartsWith("+") && p.color == new Color(.38f, 1f, .52f)), Is.True,
+                    "Actual lifesteal recovery must emit a green positive amount.");
                 foreach (var kind in new[] { StatusEffectKind.Thorns, StatusEffectKind.Lifesteal })
                 {
                     var icon = controller.GetComponentsInChildren<PrototypeStatusIcon>().Single(i => i.Side == CombatSide.Player && i.Kind == kind);
@@ -86,7 +89,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator ReactionGlyphs_AreGraySpikedBallRedOpenFangsAndBlackBlindness_WithTransparentBackgrounds()
+        public IEnumerator ReactionGlyphs_AreGraySpikedBallRedOpenFangsAndLavenderBlindness_WithDarkFrames()
         {
             yield return PrototypeCombatFixture.LoadWithTrainingKit(); yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); controller.BattleController.AutoTick = false;
@@ -100,7 +103,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 {
                     StatusEffectKind.Thorns => new Color(.68f, .70f, .73f),
                     StatusEffectKind.Lifesteal => new Color(.94f, .17f, .23f),
-                    _ => Color.black
+                    _ => new Color(.85f, .77f, 1f)
                 }));
                 Assert.That(icon.GetComponent<Image>().color.a, Is.Zero);
                 Mesh mesh = glyph.canvasRenderer.GetMesh();

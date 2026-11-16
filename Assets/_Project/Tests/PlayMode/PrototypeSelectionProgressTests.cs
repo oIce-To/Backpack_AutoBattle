@@ -816,6 +816,11 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.IsStageUnlocked("origin_mine_01"), Is.True);
             Assert.That(_controller.IsStageUnlocked("origin_mine_02"), Is.False);
             _controller.ShowStageSelection();
+            Assert.That(Find("Stage Background Illustration").GetComponent<Image>().sprite.name, Is.EqualTo("DungeonSelection"));
+            Click("Mine Stage Category"); yield return null;
+            Assert.That(Find("Stage Background Illustration").GetComponent<Image>().sprite.name, Is.EqualTo("OriginMineSelection"));
+            Click("Normal Stage Category"); yield return null;
+            Assert.That(Find("Stage Background Illustration").GetComponent<Image>().sprite.name, Is.EqualTo("DungeonSelection"));
             Click("Mine Stage Category"); yield return null;
             var categoryHits = new List<RaycastResult>();
             EventSystem.current.RaycastAll(Pointer(Find("Main Tab Home")), categoryHits);
@@ -989,7 +994,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             var wallet = Find("Main Experience Wallet");
             Assert.That(((RectTransform)wallet).anchoredPosition.y, Is.GreaterThan(300));
             Assert.That(((RectTransform)wallet).anchoredPosition.x, Is.LessThan(0));
-            Assert.That(wallet.GetComponent<PrototypeRoundedPanel>().color.a, Is.GreaterThan(0).And.LessThan(1));
+            Assert.That(wallet.GetComponent<Image>().sprite.name, Is.EqualTo("Guild Iron"));
             Assert.That(wallet.gameObject.activeInHierarchy, Is.True);
             Assert.That(Find("Main Experience Icon").GetComponent<PrototypeExperienceIcon>(), Is.Not.Null);
             Assert.That(_controller.ActiveMainTab, Is.EqualTo(MainMenuTab.Home));
@@ -1036,7 +1041,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             {
                 string id = $"stage_{i:00}"; var choice = Find("Stage Choice " + id);
                 Assert.That(choice.GetComponent<Button>().interactable, Is.False);
-                Assert.That(choice.GetComponent<CanvasGroup>().alpha, Is.LessThan(.5f));
+                Assert.That(choice.GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f), "Locked panels must remain opaque over the illustration.");
+                Assert.That(choice.GetComponent<Image>().sprite.name, Is.EqualTo("Guild Iron"));
                 var color = choice.GetComponent<Image>().color;
                 Assert.That(color.r, Is.EqualTo(color.g)); Assert.That(color.g, Is.EqualTo(color.b));
                 var pointer = Pointer(choice); pointer.button = PointerEventData.InputButton.Left;
@@ -1064,8 +1070,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(confirm.sizeDelta, Is.EqualTo(cancel.sizeDelta));
             Assert.That(confirm.anchoredPosition.y, Is.EqualTo(cancel.anchoredPosition.y));
             Assert.That(details.anchoredPosition.y + details.rect.yMin, Is.LessThan(confirm.anchoredPosition.y - confirm.rect.height / 2));
-            Color selectionColor = confirm.GetComponent<Image>().color;
-            Assert.That(selectionColor.g, Is.GreaterThan(selectionColor.r)); Assert.That(selectionColor.g, Is.GreaterThan(.7f));
+            Assert.That(confirm.GetComponent<Image>().sprite.name, Is.EqualTo("Guild Selected"));
             var viewport = (RectTransform)Find("Character Carousel Viewport");
             Assert.That(viewport.GetComponent<RectMask2D>(), Is.Not.Null);
             Image center = Find("Character Preview Illustration").GetComponent<Image>();

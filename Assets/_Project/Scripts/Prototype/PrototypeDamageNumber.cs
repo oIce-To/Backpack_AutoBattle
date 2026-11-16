@@ -48,7 +48,8 @@ namespace BackpackAutoBattle.Prototype
             float left = -Measure(text) * scale / 2;
             foreach (char symbol in text)
             {
-                int index = Alphabet.IndexOf(symbol);
+                // Reuse the existing shaded minus glyph for both strokes of the plus.
+                int index = Alphabet.IndexOf(symbol == '+' ? '-' : symbol);
                 float advance = Advance(symbol) * scale;
                 if (index >= 0)
                 {
@@ -67,6 +68,20 @@ namespace BackpackAutoBattle.Prototype
                     mesh.AddVert(new Vector3(right, bottom), color, new Vector2(u1, v0));
                     mesh.AddTriangle(start, start + 1, start + 2);
                     mesh.AddTriangle(start, start + 2, start + 3);
+                    if (symbol == '+')
+                    {
+                        Vector2 center = new(left + advance / 2, y);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            UIVertex vertex = default;
+                            mesh.PopulateUIVertex(ref vertex, start + i);
+                            Vector2 offset = (Vector2)vertex.position - center;
+                            vertex.position = center + new Vector2(-offset.y, offset.x);
+                            mesh.AddVert(vertex);
+                        }
+                        mesh.AddTriangle(start + 4, start + 5, start + 6);
+                        mesh.AddTriangle(start + 4, start + 6, start + 7);
+                    }
                 }
                 left += advance;
             }
@@ -82,7 +97,7 @@ namespace BackpackAutoBattle.Prototype
         private static float Advance(char symbol) => symbol switch
         {
             '.' or 'I' => 10,
-            '-' => 14,
+            '-' or '+' => 14,
             'C' or 'R' => 22,
             _ => 20
         };

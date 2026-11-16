@@ -207,7 +207,8 @@ namespace BackpackAutoBattle.Prototype
 
         private void RenderEncounterPreview()
         {
-            _preparationPanel.Render(_enemyConfigurationError);
+            _preparationPanel.Render(_enemyConfigurationError, _characterData);
+            _preparationStage.text = _run.StageName ?? "";
             _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null);
         }
 

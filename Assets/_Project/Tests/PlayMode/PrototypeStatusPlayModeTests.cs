@@ -123,7 +123,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator StatusAreas_UseOuterScreenColumnsWithoutCaptionsOrVisibleBackgrounds()
+        public IEnumerator StatusAreas_UseSingleOuterFramesWithBorderlessIconsAndTransparentViewport()
         {
             yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
@@ -151,7 +151,10 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(areaBounds.yMin, Is.GreaterThan(Bounds(Rect(controller, "Battle Log Panel")).yMax));
                 Assert.That(areaBounds.yMax, Is.LessThan(Bounds(Rect(controller, "Battle Result")).yMin));
                 Assert.That(area.GetComponentsInChildren<Text>(true).All(text => text.name == "Status Stacks"), Is.True);
-                Assert.That(area.GetComponentsInChildren<Image>(true).All(image => image.color.a == 0f), Is.True);
+                Assert.That(area.Find(side + " Status Viewport").GetComponent<Image>().color.a, Is.Zero);
+                Assert.That(area.GetComponent<Image>().sprite, Is.Not.Null);
+                Assert.That(area.GetComponent<Image>().color.a, Is.EqualTo(1f));
+                Assert.That(area.GetComponentsInChildren<PrototypeStatusIcon>(true).All(icon => icon.GetComponent<Image>().color.a == 0f), Is.True);
                 foreach (ScrollRect scroll in area.GetComponentsInChildren<ScrollRect>(true))
                 {
                     Assert.That(scroll.horizontal, Is.False);

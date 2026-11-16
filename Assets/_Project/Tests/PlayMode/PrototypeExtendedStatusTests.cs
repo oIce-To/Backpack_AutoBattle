@@ -39,7 +39,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 {
                     StatusEffectKind.Precision => new Color(1f, 0.52f, 0.18f),
                     StatusEffectKind.Agility => new Color(0.36f, 0.88f, 0.48f),
-                    StatusEffectKind.Blindness => Color.black,
+                    StatusEffectKind.Blindness => new Color(.85f, .77f, 1f),
                     _ => Color.white
                 };
                 Assert.That(glyph.color, Is.EqualTo(expectedColor)); Assert.That(glyph.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(0));
@@ -99,7 +99,9 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Rect rowBounds = Bounds(row), art = Bounds(Find(side + " Character Illustration"));
                 if (side == "Player") Assert.That(rowBounds.xMax, Is.LessThan(art.xMin));
                 else Assert.That(rowBounds.xMin, Is.GreaterThan(art.xMax));
-                Assert.That(rowBounds.center.y, Is.EqualTo(art.center.y).Within(0.1f));
+                Rect bag = Bounds(Find(side + " Battle Backpack"));
+                Assert.That(rowBounds.center.x, Is.EqualTo(bag.center.x).Within(.1f));
+                Assert.That(rowBounds.yMax, Is.LessThan(bag.yMin));
                 // The batch runner's Game view may be 4:3; verify the readout stays visible
                 // beside its character there too. Reference 16:9 spacing is captured below.
                 Assert.That(rowBounds.xMin, Is.GreaterThan(canvasBounds.xMin));

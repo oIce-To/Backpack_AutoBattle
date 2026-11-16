@@ -31,6 +31,14 @@ namespace BackpackAutoBattle.Prototype
             var button = image.gameObject.AddComponent<Button>(); button.onClick.AddListener(() => action());
             Label(image.transform, name + " Label", text, 19, Vector2.zero, size - new Vector2(12, 0)); return button;
         }
+        internal static Button GuildButton(Transform parent, string name, string text, Vector2 position, Vector2 size, Action action)
+        {
+            var button = Button(parent, name, text, position, size, action);
+            // Inactive popup buttons have not received Awake yet, so wire the image explicitly.
+            button.targetGraphic = button.GetComponent<Image>();
+            PrototypeGuildStyle.Apply(button);
+            return button;
+        }
     }
 
     internal sealed class SelectionFrame
@@ -38,6 +46,7 @@ namespace BackpackAutoBattle.Prototype
         public RectTransform Root { get; }
         public RectTransform Panel { get; }
         public RectTransform Content { get; }
+        public Image Illustration { get; }
         private readonly ScrollRect _scroll;
         public SelectionFrame(Transform canvas, string prefix, string title, Action close)
         {
@@ -45,6 +54,10 @@ namespace BackpackAutoBattle.Prototype
             background.raycastTarget = true; Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
             var panel = SelectionUi.Image(Root, prefix + " Selection Panel", new Color(.07f, .075f, .085f));
             Panel = panel.rectTransform; SelectionUi.Place(Panel, Vector2.zero, new Vector2(1100, 610));
+            Illustration = PrototypeGuildHall.Add(Panel, "UI/DungeonSelection", .64f, "Stage Background");
+            var info = SelectionUi.Image(Panel, "Stage Information Panel", Color.white);
+            SelectionUi.Place(info.rectTransform, new Vector2(195, 17), new Vector2(620, 396));
+            PrototypeGuildStyle.Apply(info, PrototypeGuildStyle.Surface.Iron);
             var label = SelectionUi.Label(Panel, prefix + " Selection Title", title, 32, new Vector2(0, 253), new Vector2(950, 56));
             label.color = new Color(.95f, .88f, .72f);
             var viewport = SelectionUi.Image(Panel, prefix + " Choices Viewport", Color.clear);
@@ -55,7 +68,7 @@ namespace BackpackAutoBattle.Prototype
             Content.anchorMin = new Vector2(0, 1); Content.anchorMax = Vector2.one; Content.pivot = new Vector2(.5f, 1);
             _scroll = viewport.gameObject.AddComponent<ScrollRect>(); _scroll.content = Content; _scroll.viewport = viewport.rectTransform;
             _scroll.horizontal = false; _scroll.vertical = true; _scroll.scrollSensitivity = 35; _scroll.movementType = ScrollRect.MovementType.Clamped;
-            SelectionUi.Button(Panel, prefix + " Selection Back Button", "뒤로", new Vector2(-365, -253), new Vector2(260, 46), close);
+            SelectionUi.GuildButton(Panel, prefix + " Selection Back Button", "뒤로", new Vector2(-365, -253), new Vector2(260, 46), close);
             Hide();
         }
         public void Prepare(int count)
@@ -67,7 +80,7 @@ namespace BackpackAutoBattle.Prototype
         }
         public Button Option(string name, string label, int index, Action action)
         {
-            var button = SelectionUi.Button(Content, name, label, Vector2.zero, new Vector2(280, 70), action);
+            var button = SelectionUi.GuildButton(Content, name, label, Vector2.zero, new Vector2(280, 70), action);
             BackpackPrototypeController.SetRect((RectTransform)button.transform, new Vector2(.5f, 1), new Vector2(0, -36 - index * 80), new Vector2(280, 70));
             return button;
         }
@@ -104,15 +117,16 @@ namespace BackpackAutoBattle.Prototype
             _details.fontStyle = FontStyle.Normal; _details.lineSpacing = 1.2f;
             _record = SelectionUi.Label(_frame.Panel, "Stage Preview Progress", "", 22, new Vector2(195, -138), new Vector2(580, 78));
             _record.color = new Color(.95f, .88f, .72f);
-            _confirm = SelectionUi.Button(_frame.Panel, "Stage Confirm Button", "스테이지 입장", new Vector2(240, -247), new Vector2(300, 64),
+            _confirm = SelectionUi.GuildButton(_frame.Panel, "Stage Confirm Button", "스테이지 입장", new Vector2(240, -247), new Vector2(300, 64),
                 () => { if (_confirm.interactable && IsUnlocked(_selected) && !IsEntryOpen) previewEntry(_selected); });
-            _normalMode = SelectionUi.Button(_frame.Panel, "Normal Stage Category", "일반 스테이지", new Vector2(-440, 211), new Vector2(155, 30), () => SwitchCategory(false));
-            _mineMode = SelectionUi.Button(_frame.Panel, "Mine Stage Category", "기원의 광산", new Vector2(-270, 211), new Vector2(155, 30), () => SwitchCategory(true));
+            _normalMode = SelectionUi.GuildButton(_frame.Panel, "Normal Stage Category", "일반 스테이지", new Vector2(-440, 211), new Vector2(155, 36), () => SwitchCategory(false));
+            _mineMode = SelectionUi.GuildButton(_frame.Panel, "Mine Stage Category", "기원의 광산", new Vector2(-270, 211), new Vector2(155, 36), () => SwitchCategory(true));
+            _normalMode.GetComponentInChildren<Text>().fontSize = _mineMode.GetComponentInChildren<Text>().fontSize = 17;
             var viewport = (RectTransform)_frame.Content.parent;
             SelectionUi.Place(viewport, new Vector2(-365, -15), new Vector2(300, 385));
-            _sweep = SelectionUi.Button(_frame.Panel, "Sweep Mine Stage", "소탕", new Vector2(-28, -247), new Vector2(192, 64),
+            _sweep = SelectionUi.GuildButton(_frame.Panel, "Sweep Mine Stage", "소탕", new Vector2(-28, -247), new Vector2(192, 64),
                 () => { if (_sweep.interactable) sweep(_selected); });
-            _sweep.GetComponent<Image>().color = new Color(.20f, .40f, .39f);
+            PrototypeGuildStyle.Apply(_confirm, true);
             _sweep.gameObject.AddComponent<CanvasGroup>();
             SelectionUi.Place(_sweep.GetComponentInChildren<Text>().rectTransform, new Vector2(0, 14), new Vector2(180, 26));
             var ticketIcon = new GameObject("Sweep Ticket Icon", typeof(RectTransform), typeof(PrototypeEconomyIcon));
@@ -159,6 +173,7 @@ namespace BackpackAutoBattle.Prototype
             _entry = new PrototypeMenuPopup(canvas, "Stage Entry Popup", "", new Vector2(704, 518),
                 CloseEntry, PrototypeMenuPopup.CloseStyle.None);
             RectTransform entryPanel = _entry.Panel;
+            PrototypeGuildStyle.Apply(entryPanel.GetComponent<Image>());
             _entry.Title.resizeTextForBestFit = true;
             _entry.Title.resizeTextMinSize = 18;
             _entry.Title.resizeTextMaxSize = 27;
@@ -172,6 +187,7 @@ namespace BackpackAutoBattle.Prototype
             for (int i = 0; i < _entrySlots.Length; i++)
             {
                 var slot = SelectionUi.Image(entryPanel, "Stage Entry Slot " + (UniqueGearSlot)i, SelectionUi.Idle).rectTransform;
+                PrototypeGuildStyle.Apply(slot.GetComponent<Image>(), PrototypeGuildStyle.Surface.Iron);
                 SelectionUi.Place(slot, new Vector2(28 + i * 114, 1), Vector2.one * 92);
                 _entrySlots[i] = slot;
                 SelectionUi.Label(slot, "Stage Entry Slot Label", slotLabels[i], 13, new Vector2(0, -61), new Vector2(108, 22));
@@ -181,13 +197,13 @@ namespace BackpackAutoBattle.Prototype
             }
             _entryError = SelectionUi.Label(entryPanel, "Stage Entry Error", "", 15, new Vector2(0, -151), new Vector2(634, 46));
             _entryError.color = _error.color;
-            SelectionUi.Button(entryPanel, "Stage Entry Back Button", "뒤로 가기", new Vector2(-131, -211), new Vector2(232, 48), CloseEntry);
-            var entryButton = SelectionUi.Button(entryPanel, "Stage Entry Start Button", "스테이지 입장",
+            SelectionUi.GuildButton(entryPanel, "Stage Entry Back Button", "뒤로 가기", new Vector2(-131, -211), new Vector2(232, 48), CloseEntry);
+            var entryButton = SelectionUi.GuildButton(entryPanel, "Stage Entry Start Button", "스테이지 입장",
                 new Vector2(131, -211), new Vector2(232, 48), () =>
                 {
                     if (IsEntryOpen && _pendingStage != null) enter(_pendingStage);
                 });
-            entryButton.GetComponent<Image>().color = SelectionUi.Selected;
+            PrototypeGuildStyle.Apply(entryButton, true);
         }
 
         internal bool IsEntryOpen => _entry.IsOpen;
@@ -232,8 +248,9 @@ namespace BackpackAutoBattle.Prototype
             IReadOnlyList<StageData> stages = _showMines ? _mineStages : _normalStages;
             _progress = progress; _stageOrder = stages.Select(s => s.StageId).ToArray();
             _error.text = "";
-            _normalMode.GetComponent<Image>().color = _showMines ? SelectionUi.Idle : SelectionUi.Selected;
-            _mineMode.GetComponent<Image>().color = _showMines ? SelectionUi.Selected : SelectionUi.Idle;
+            PrototypeGuildHall.SetIllustration(_frame.Illustration, _showMines ? "UI/OriginMineSelection" : "UI/DungeonSelection");
+            PrototypeGuildStyle.Apply(_normalMode, !_showMines);
+            PrototypeGuildStyle.Apply(_mineMode, _showMines);
             _choices.Clear(); _frame.Prepare(stages.Count);
             for (int i = 0; i < stages.Count; i++)
             {
@@ -243,7 +260,7 @@ namespace BackpackAutoBattle.Prototype
                 _choices[stage].interactable = unlocked;
                 if (!unlocked)
                 {
-                    _choices[stage].gameObject.AddComponent<CanvasGroup>().alpha = .4f;
+                    _choices[stage].gameObject.AddComponent<CanvasGroup>().alpha = 1f;
                     var colors = _choices[stage].colors; colors.disabledColor = Color.white; _choices[stage].colors = colors;
                 }
             }
@@ -275,14 +292,24 @@ namespace BackpackAutoBattle.Prototype
             RefreshTickets();
             _record.text = record.Cleared ? $"클리어\n최고 도달 {record.HighestRound} / {stage.RoundCount}라운드"
                 : record.HighestRound > 0 ? $"미클리어\n최고 도달 {record.HighestRound} / {stage.RoundCount}라운드" : "도전 기록 없음";
-            foreach (var choice in _choices) choice.Value.GetComponent<Image>().color = !IsUnlocked(choice.Key)
-                ? new Color(.24f, .24f, .24f) : choice.Key == stage ? SelectionUi.Selected : SelectionUi.Idle;
+            foreach (var choice in _choices)
+            {
+                PrototypeGuildStyle.Apply(choice.Value, choice.Key == stage);
+                if (!IsUnlocked(choice.Key))
+                {
+                    PrototypeGuildStyle.Apply(choice.Value.image, PrototypeGuildStyle.Surface.Iron);
+                    choice.Value.GetComponentInChildren<Text>().color = new Color(.58f, .60f, .58f);
+                    var colors = choice.Value.colors; colors.disabledColor = Color.white; choice.Value.colors = colors;
+                }
+            }
         }
         public void RefreshTickets()
         {
             _sweep.interactable = _selected != null && _selected.IsOriginMine && _progress != null
                 && _progress.GetStage(_selected.StageId).Cleared && _progress.MineTickets > 0;
-            _sweep.GetComponent<CanvasGroup>().alpha = _sweep.interactable ? 1 : .35f;
+            _sweep.GetComponent<CanvasGroup>().alpha = 1f;
+            foreach (var label in _sweep.GetComponentsInChildren<Text>())
+                label.color = _sweep.interactable ? PrototypeGuildStyle.Cream : new Color(.64f, .65f, .60f);
         }
         public void RefreshProgress(PlayerProgress progress)
         {

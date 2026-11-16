@@ -131,19 +131,26 @@ namespace BackpackAutoBattle.Prototype
             background.raycastTarget = true; Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
             var panel = SelectionUi.Image(Root, "Character Selection Panel", new Color(.07f, .075f, .085f));
             SelectionUi.Place(panel.rectTransform, Vector2.zero, new Vector2(1100, 610));
+            PrototypeGuildHall.Add(panel.rectTransform, darkness: .74f, prefix: "Character Background");
             var title = SelectionUi.Label(panel.transform, "Character Selection Title", "캐릭터 선택", 30,
                 new Vector2(0, 258), new Vector2(950, 48)); title.color = new Color(.95f, .88f, .72f);
             var viewport = SelectionUi.Image(panel.transform, "Character Carousel Viewport", Color.clear);
-            SelectionUi.Place(viewport.rectTransform, new Vector2(-195, 10), new Vector2(660, 440));
-            viewport.raycastTarget = true; viewport.gameObject.AddComponent<RectMask2D>();
+            SelectionUi.Place(viewport.rectTransform, new Vector2(-195, 10), new Vector2(692, 440));
+            PrototypeGuildStyle.Apply(viewport, PrototypeGuildStyle.Surface.Iron);
+            viewport.raycastTarget = true;
+            var portraitMask = viewport.gameObject.AddComponent<RectMask2D>();
+            portraitMask.padding = new Vector4(14f, 0f, 14f, 0f);
             var detail = SelectionUi.Image(panel.transform, "Character Details Panel", new Color(.10f, .12f, .16f));
             SelectionUi.Place(detail.rectTransform, new Vector2(340, -30), new Vector2(340, 510));
+            PrototypeGuildStyle.Apply(detail);
             _name = SelectionUi.Label(panel.transform, "Character Preview Name", "", 31, new Vector2(340, 154), new Vector2(300, 50));
             _level = SelectionUi.Label(panel.transform, "Character Preview Level", "", 19, new Vector2(340, 111), new Vector2(300, 28));
             _stats = SelectionUi.Label(panel.transform, "Character Preview Stats", "", 19, new Vector2(340, 78), new Vector2(320, 33));
+            _name.color = _level.color = _stats.color = PrototypeGuildStyle.Cream;
             for (int i = 0; i < _gearSlots.Length; i++)
             {
                 var slot = SelectionUi.Image(panel.transform, "Character Gear " + (UniqueGearSlot)i, SelectionUi.Idle);
+                PrototypeGuildStyle.Apply(slot, PrototypeGuildStyle.Surface.Iron);
                 float x = 220 + i * 80;
                 SelectionUi.Place(slot.rectTransform, new Vector2(x, 17), Vector2.one * 72f);
                 SelectionUi.Label(panel.transform, "Slot Type", PrototypeEquipmentScreen.SlotLabel((UniqueGearSlot)i), 11,
@@ -151,6 +158,7 @@ namespace BackpackAutoBattle.Prototype
                 _gearSlots[i] = slot.rectTransform;
             }
             var passiveSlot = SelectionUi.Image(detail.transform, "Character Passive Skill", SelectionUi.Idle);
+            PrototypeGuildStyle.Apply(passiveSlot, PrototypeGuildStyle.Surface.Iron);
             passiveSlot.raycastTarget = true;
             SelectionUi.Place(passiveSlot.rectTransform, new Vector2(120, 47), Vector2.one * 72);
             _passive = passiveSlot.gameObject.AddComponent<PrototypePassiveIcon>();
@@ -158,10 +166,10 @@ namespace BackpackAutoBattle.Prototype
             passiveTooltip.name = "Character Passive Tooltip";
             _passive.Configure(passiveTooltip);
             SelectionUi.Label(detail.transform, "Character Passive Caption", "패시브", 11, new Vector2(120, -6), new Vector2(72, 15));
-            var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(PrototypeRoundedPanel), typeof(Button));
+            var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(Image), typeof(Button));
             upgrade.transform.SetParent(panel.transform, false);
             SelectionUi.Place((RectTransform)upgrade.transform, new Vector2(340, -100), new Vector2(300, 104));
-            var face = upgrade.GetComponent<PrototypeRoundedPanel>(); face.color = new Color(.23f, .42f, .30f);
+            var face = upgrade.GetComponent<Image>();
             _levelUp = upgrade.GetComponent<Button>(); _levelUp.targetGraphic = face;
             _levelUp.navigation = new Navigation { mode = Navigation.Mode.None };
             _levelUp.onClick.AddListener(() => { if (_levelUp.interactable && !Carousel.IsAnimating) levelUp(Carousel.PreviewedCharacter); });
@@ -171,13 +179,14 @@ namespace BackpackAutoBattle.Prototype
             costIcon.transform.SetParent(upgrade.transform, false); _costIcon = costIcon.GetComponent<PrototypeExperienceIcon>();
             _levelCost = SelectionUi.Label(upgrade.transform, "Character Level Up Cost", "", 23, new Vector2(19, -22), new Vector2(150, 32));
             _levelCost.resizeTextForBestFit = true; _levelCost.resizeTextMinSize = 14; _levelCost.resizeTextMaxSize = 23;
+            PrototypeGuildStyle.Apply(_levelUp, true);
+            _levelCost.color = PrototypeGuildStyle.Ink;
             _error = SelectionUi.Label(panel.transform, "Character Growth Error", "", 14, new Vector2(340, -194), new Vector2(300, 42));
             _error.color = new Color(1, .45f, .4f);
-            _confirm = SelectionUi.Button(panel.transform, "Character Confirm Button", "선택", new Vector2(340, -253), new Vector2(300, 46),
+            _confirm = SelectionUi.GuildButton(panel.transform, "Character Confirm Button", "선택", new Vector2(340, -253), new Vector2(300, 46),
                 () => { if (!Carousel.IsAnimating && Carousel.PreviewedCharacter != null) confirm(Carousel.PreviewedCharacter); });
-            _confirm.GetComponent<Image>().color = new Color(.57f, .78f, .59f);
-            _confirm.GetComponentInChildren<Text>().color = new Color(.08f, .16f, .10f);
-            SelectionUi.Button(panel.transform, "Character Selection Back Button", "취소", new Vector2(-340, -253), new Vector2(300, 46), close);
+            PrototypeGuildStyle.Apply(_confirm, true);
+            SelectionUi.GuildButton(panel.transform, "Character Selection Back Button", "취소", new Vector2(-340, -253), new Vector2(300, 46), close);
             Carousel = Root.gameObject.AddComponent<PrototypeCharacterCarousel>(); Carousel.Configure(viewport.rectTransform, RenderDetails);
             Hide();
         }
@@ -215,6 +224,7 @@ namespace BackpackAutoBattle.Prototype
             SelectionUi.Place(_costIcon.rectTransform, new Vector2(-(costWidth + 10) / 2, -22), new Vector2(28, 28));
             SelectionUi.Place(_levelCost.rectTransform, new Vector2(19, -22), new Vector2(costWidth, 32));
             _levelUp.interactable = canGrow && !moving && (_progress?.SharedExperience ?? 0) >= cost;
+            _levelUpTitle.color = _levelCost.color = _levelUp.interactable ? PrototypeGuildStyle.Ink : PrototypeGuildStyle.Cream;
         }
         public void Hide() => Root.gameObject.SetActive(false);
     }

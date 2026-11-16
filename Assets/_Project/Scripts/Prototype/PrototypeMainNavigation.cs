@@ -27,19 +27,19 @@ namespace BackpackAutoBattle.Prototype
             BackpackPrototypeController.Stretch(Root);
             var tabs = new GameObject("Main Tabs", typeof(RectTransform)); tabs.transform.SetParent(Root, false);
             SelectionUi.Place((RectTransform)tabs.transform, new Vector2(0, -329), new Vector2(1100, 38));
-            var wallet = new GameObject("Main Experience Wallet", typeof(RectTransform), typeof(PrototypeRoundedPanel));
+            var wallet = new GameObject("Main Experience Wallet", typeof(RectTransform), typeof(Image));
             wallet.transform.SetParent(Root, false); _wallet = (RectTransform)wallet.transform;
-            var walletFace = wallet.GetComponent<PrototypeRoundedPanel>();
-            walletFace.color = new Color(.16f, .19f, .24f, .55f); walletFace.DrawBorder = false; walletFace.raycastTarget = true;
+            var walletFace = wallet.GetComponent<Image>();
+            PrototypeGuildStyle.Apply(walletFace, PrototypeGuildStyle.Surface.Iron); walletFace.raycastTarget = true;
             var icon = new GameObject("Main Experience Icon", typeof(RectTransform), typeof(PrototypeExperienceIcon));
             icon.transform.SetParent(_wallet, false); _experienceIcon = icon.GetComponent<PrototypeExperienceIcon>();
             _experienceIcon.raycastTarget = false;
             _experience = SelectionUi.Label(_wallet, "Main Experience Amount", "0", 22, Vector2.zero, new Vector2(120, 32));
             _experience.alignment = TextAnchor.MiddleRight;
-            var shardWallet = new GameObject("Main Origin Shard Wallet", typeof(RectTransform), typeof(PrototypeRoundedPanel));
+            var shardWallet = new GameObject("Main Origin Shard Wallet", typeof(RectTransform), typeof(Image));
             shardWallet.transform.SetParent(Root, false); _shardWallet = (RectTransform)shardWallet.transform;
-            var shardFace = shardWallet.GetComponent<PrototypeRoundedPanel>();
-            shardFace.color = new Color(.16f, .19f, .24f, .55f); shardFace.DrawBorder = false; shardFace.raycastTarget = true;
+            var shardFace = shardWallet.GetComponent<Image>();
+            PrototypeGuildStyle.Apply(shardFace, PrototypeGuildStyle.Surface.Iron); shardFace.raycastTarget = true;
             AddEconomyIcon(_shardWallet, "Origin Shard Icon", EconomyIconKind.OriginShard, new Vector2(-49, 0), new Vector2(31, 31));
             _shards = SelectionUi.Label(_shardWallet, "Main Origin Shard Amount", "0", 22, new Vector2(18, 0), new Vector2(80, 32));
             _shards.alignment = TextAnchor.MiddleRight;
@@ -59,6 +59,7 @@ namespace BackpackAutoBattle.Prototype
                 Button button = SelectionUi.Button(tabs.transform, "Main Tab " + tab, names[(int)tab],
                     new Vector2((i - 2) * 204, 0), new Vector2(192, 38), () => select(tab));
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
+                PrototypeGuildStyle.Apply(button);
                 _tabs.Add(tab, button);
             }
             Hide();
@@ -67,7 +68,7 @@ namespace BackpackAutoBattle.Prototype
         {
             Root.gameObject.SetActive(true); Root.SetAsLastSibling();
             SetExperience(experience);
-            foreach (var tab in _tabs) tab.Value.GetComponent<Image>().color = tab.Key == selected ? SelectionUi.Selected : SelectionUi.Idle;
+            foreach (var tab in _tabs) PrototypeGuildStyle.Apply(tab.Value, tab.Key == selected);
         }
         public void SetExperience(long experience)
         {
