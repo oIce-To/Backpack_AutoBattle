@@ -116,18 +116,19 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Find("Tutorial Name Error").GetComponent<Text>().text, Is.Not.Empty);
             field.text = "";
             Assert.That(field.isFocused, Is.True);
-            var textKeyboard = InputSystem.AddDevice<Keyboard>();
-            try
-            {
-                textKeyboard.OnIMECompositionChanged(new IMECompositionString("모"));
-                Assert.That(EventSystem.current.currentInputModule.input.compositionString, Is.EqualTo("모"));
-                Assert.That(field.text, Is.Empty);
-                Assert.That(field.textComponent.text, Does.Contain("모"));
-                foreach (char c in "모험가42") InputSystem.QueueTextEvent(textKeyboard, c);
-                InputSystem.Update();
-                Assert.That(field.text, Is.EqualTo("모험가42"));
-            }
-            finally { InputSystem.RemoveDevice(textKeyboard); }
+#if !ENABLE_LEGACY_INPUT_MANAGER || !ENABLE_INPUT_SYSTEM
+            Assert.Fail("Native uGUI text input and Input System gameplay require Active Input Handling = Both.");
+#endif
+            Assert.That(field.GetType(), Is.EqualTo(typeof(InputField)), "Use the native uGUI IME path, not a second text-event consumer.");
+            Assert.That(Input.imeCompositionMode, Is.EqualTo(IMECompositionMode.On));
+            Assert.That(EventSystem.current.currentInputModule.inputOverride, Is.Null);
+            // Exercise committed text/editing through the same uGUI handler as native events.
+            // This verifies editing and persistence, not the OS's physical Hangul toggle.
+            foreach (char c in "모험가42") field.ProcessEvent(new Event { type = EventType.KeyDown, character = c });
+            Assert.That(field.text, Is.EqualTo("모험가42"));
+            field.ProcessEvent(Event.KeyboardEvent("backspace"));
+            Assert.That(field.text, Is.EqualTo("모험가4"));
+            field.ProcessEvent(new Event { type = EventType.KeyDown, character = '2' });
             Capture("TutorialUserName.png");
             confirm.onClick.Invoke();
             Assert.That(_controller.IsMainMenu, Is.True);

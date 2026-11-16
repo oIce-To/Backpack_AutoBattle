@@ -190,7 +190,7 @@ namespace BackpackAutoBattle.Prototype
             var value = SelectionUi.Label(field.transform, "Tutorial Name Value", "", 23, Vector2.zero, new Vector2(300, 34));
             value.alignment = TextAnchor.MiddleLeft;
             value.supportRichText = false;
-            _tutorialNameInput = field.gameObject.AddComponent<PrototypeImeTextField>();
+            _tutorialNameInput = field.gameObject.AddComponent<InputField>();
             _tutorialNameInput.textComponent = value;
             _tutorialNameInput.targetGraphic = field;
             _tutorialNameInput.lineType = InputField.LineType.SingleLine;
