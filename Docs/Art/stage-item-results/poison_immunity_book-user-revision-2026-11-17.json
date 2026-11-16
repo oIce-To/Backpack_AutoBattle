@@ -1,0 +1,14 @@
+{
+  "id": "poison_immunity_book",
+  "name": "만독불침의 서",
+  "shape": "##/##",
+  "baseline": "Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-17-v2.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign the western metal-clasp spell tome as an EAST ASIAN WUXIA SECRET MARTIAL-ARTS MANUAL (비급). Traditional stitched/thread-bound paper booklet with visible ivory thread stitches along left binding, dark jade-green cloth/paper cover, stacked cream paper edges, narrow vertical ivory title slip with a few dark abstract brushlike pixel marks (no legible words required), small vermilion square seal. Keep subtle poison theme with restrained green snake/leaf emblem near lower cover. Remove heavy bronze corner guards, gemstone clasp and bulky western book fittings. Slight3/4 view, square2x2 item footprint. Match original coarse block pixels, dark outlines, few shading colors. Transparent background.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/##",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-59a0b2d3-0982-4b78-85d7-02b3fa4125de.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

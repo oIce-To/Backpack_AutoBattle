@@ -44,17 +44,25 @@ namespace BackpackAutoBattle.Combat
         {
             CombatStatusDefinition definition = GetStatusDefinition(kind);
             if (kind == StatusEffectKind.Freeze)
-                return StatusWeights(side, kind).Sum(origin => origin.Weight * definition.PercentPerStack * StatusEffectMultiplier(origin.Side, kind));
+                return StatusWeights(side, kind).Sum(origin => origin.Weight * definition.PercentPerStack * StatusEffectMultiplier(origin.Side, kind))
+                    * (HasStageItem(side, StageItemEffect.SnowBloom) ? .5d : 1d);
             return definition.PercentAt(GetStatusStacks(side, kind)) * StatusEffectMultiplier(side, kind);
         }
 
         public void ApplyStatus(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source = null, string sourceItemId = null)
+            => ApplyStatusAndCount(side, kind, stacks, source, sourceItemId);
+
+        private long ApplyStatusAndCount(CombatSide side, StatusEffectKind kind, long stacks, CombatSide? source, string sourceItemId)
         {
             if (stacks < 0) throw new ArgumentOutOfRangeException(nameof(stacks));
             if (!Enum.IsDefined(typeof(CombatSide), side)) throw new ArgumentOutOfRangeException(nameof(side));
             if (!_statusDefinitions.ContainsKey(kind)) throw new ArgumentOutOfRangeException(nameof(kind));
             if (source.HasValue && !Enum.IsDefined(typeof(CombatSide), source.Value)) throw new ArgumentOutOfRangeException(nameof(source));
-            if (Result != CombatResult.Running || stacks == 0 || kind == StatusEffectKind.Enrage) return;
+            if (Result != CombatResult.Running || stacks == 0 || kind == StatusEffectKind.Enrage
+                || (side == CombatSide.Enemy && EnemyResistsStatus(kind))) return 0;
+            CombatSide origin = source ?? (GetStatusDefinition(kind).IsDebuff ? TargetSide(side, StatusTarget.Opponent) : side);
+            stacks = ScaleStageStatusStacks(side, origin, sourceItemId, kind, stacks);
+            if (stacks == 0) return 0;
             StatusEffectKind? opposite = GetStatusDefinition(kind).Opposite;
             long cancelled = opposite.HasValue ? Math.Min(stacks, GetStatusStacks(side, opposite.Value)) : 0;
             long total = checked(GetStatusStacks(side, kind) + (stacks - cancelled));
@@ -64,7 +72,6 @@ namespace BackpackAutoBattle.Combat
                 RemoveStatusOrigins(side, opposite.Value, cancelled);
             }
             _statusStacks[(side, kind)] = total;
-            CombatSide origin = source ?? (GetStatusDefinition(kind).IsDebuff ? TargetSide(side, StatusTarget.Opponent) : side);
             AddStatusOrigin(side, kind, origin, sourceItemId, stacks - cancelled);
             if (GetStatusDefinition(kind).AffectedStat == StatusStat.PeriodicDamage)
                 AddPeriodicStacks(side, kind, origin, stacks);
@@ -74,6 +81,7 @@ namespace BackpackAutoBattle.Combat
                 case StatusStat.Accuracy:
                 case StatusStat.CriticalChance: RefreshWeaponStatusModifiers(side); break;
             }
+            return stacks;
         }
 
         private void RefreshWeaponStatusModifiers(CombatSide side)

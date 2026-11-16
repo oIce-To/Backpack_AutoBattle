@@ -1,0 +1,14 @@
+{
+  "id": "excalibur",
+  "name": "엑스칼리버",
+  "shape": "#/#/#/#",
+  "baseline": "Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-17-v2.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep straight silver sword, blue gems, blue-white grip and coarse pixels. Add a clearly visible GOLDEN STRIPE inlaid along CENTER of sword blade, starting immediately above guard and extending nearly to sword tip (about90% blade length). Gold stripe narrow, crisp-edged, visibly distinct from silver steel, not diffuse glow. Make guard and hilt a little more splendid for legendary Excalibur: elegant layered gold scroll/angular wing details within existing overall guard width, tiny blue gem accents and gold grip bands. Preserve sword proportions. Entire visible art must fit within centered vertical strip width one-quarter image height, to occupy1x4 cells. Request768x2304; all art x110..650 and y35..2265; transparent margins. Do not extend guard outside that strip.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#/#/#",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-f4827281-5828-48a5-9dad-d9d48f8ecad8.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

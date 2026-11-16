@@ -201,7 +201,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator DefeatAndDraw_ReturnToShopApplyPendingPlansWithoutIncome()
+        public IEnumerator DefeatAndDraw_ReturnToShopApplyPendingPlansAndGrantIncome()
         {
             BuyStone(Rect("Grid Cell 1,2")); yield return null;
             int gold = _controller.Gold;
@@ -214,7 +214,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller.TickFusionPresentation(5f);
             yield return null;
             Assert.That(Stored().Count(item => item.StoredItem.ItemData.ItemId == "steel_sword"), Is.EqualTo(1));
-            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(gold));
+            Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(gold + 5));
             Assert.That(_controller.ReturnToPreparation(), Is.False);
 
             yield return Setup();

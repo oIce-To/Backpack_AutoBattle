@@ -1,0 +1,14 @@
+{
+  "id": "war_hero_halberd",
+  "name": "전쟁영웅의 미늘창",
+  "shape": "#./##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v3.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v3.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v4.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep current entire silhouette, head position, short top spear, long leather shaft, silver blade and pixel styling. Add only a LITTLE epic-tier decoration: a small deep-blue gemstone in a narrow gold collar at the axe-to-shaft joint, one restrained gold etched line on the flat of the axe blade, and matching slim gold accents on existing shaft bands. Elegant and modest, not lavish, no wings or extra spikes. No enlarging head. 2x4 footprint #./##/#./#. Right-half blade stays strictly within second row (25%-49% height), lower half right side empty. Keep canvas aspect1:2.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #./##/#./#.",
+  "source": "C:/Users/user/.codex/generated_images/01a1b087-8df0-72e2-be20-0c50ee16ec90/exec-85e6f70c-f727-4251-a08d-bf43cb1584b1.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
+  m_Name: Encounter_DemonWeaponMaster
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyEncounterData
+  _encounterId: DemonWeaponMaster
+  _enemy: {fileID: 11400000, guid: 9514c142dc25434fa3f4959a8e0887e0, type: 2}
+  _maximumHealth: 195
+  _attack: 10
+  _items:
+  - _slotId: weapon
+    _item: {fileID: 11400000, guid: f134e409d6e1414dbf65a21c36542d6b, type: 2}
+    _origin: {x: 1, y: 0}
+    _rotation: 0
+  - _slotId: axe
+    _item: {fileID: 11400000, guid: e59abcdfc61e4cd280de440770d27d21, type: 2}
+    _origin: {x: 3, y: 0}
+    _rotation: 0
+  - _slotId: spear
+    _item: {fileID: 11400000, guid: 95b400c25ead47e5bc56d828aa529925, type: 2}
+    _origin: {x: 5, y: 0}
+    _rotation: 0
+  - _slotId: dagger
+    _item: {fileID: 11400000, guid: 192a3b53b40b46c4b81c157e3622b67e, type: 2}
+    _origin: {x: 0, y: 3}
+    _rotation: 0

@@ -6,11 +6,12 @@ namespace BackpackAutoBattle.Shop
     /// <summary>A single shelf entry. Two entries can offer the same ItemData independently.</summary>
     public sealed class ShopOffer
     {
-        public ShopOffer(ItemData itemData, bool isOnSale)
+        public ShopOffer(ItemData itemData, bool isOnSale, ItemData rarityShiftSource = null)
         {
             ItemData = itemData != null ? itemData : throw new ArgumentNullException(nameof(itemData));
             OriginalPrice = itemData.PurchasePrice;
             IsOnSale = isOnSale;
+            RarityShiftSource = rarityShiftSource;
             PurchasePrice = isOnSale ? ShopPriceRules.HalfRoundedUp(OriginalPrice) : OriginalPrice;
         }
 
@@ -18,6 +19,8 @@ namespace BackpackAutoBattle.Shop
         public int OriginalPrice { get; }
         public int PurchasePrice { get; }
         public bool IsOnSale { get; }
+        public ItemData RarityShiftSource { get; }
+        public bool RarityShifted => RarityShiftSource != null;
         public bool IsPurchased { get; private set; }
         public bool IsLocked { get; private set; }
 

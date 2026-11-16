@@ -1,0 +1,14 @@
+{
+  "id": "dragonslayer",
+  "name": "용살자",
+  "shape": "#./##/##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v3.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v3.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v4.png",
+  "prompt": "Use case: precise-object-edit. Input image is edit target. Single game inventory pixel-art sprite. Keep the exact current dragon-themed design, colors and pixel art; change ONLY relative size and positions of the spear assembly and side axe assembly to match the inventory. Canvas MUST remain897x1752, same as input. Intended visible sprite rectangle x75..775, y0..1750 consists of TWO columns, FIVE rows, square cells350px. Occupied cells: #./##/##/#./#.. Vertical shaft center stays aroundx270. TOP SPEAR ASSEMBLY (silver spear plus its little gold horns/ruby socket) must be significantly SMALLER: about55% of its current height, all contained in x130..395,y35..330, entirely in TOP LEFT cell. Silver spear must end at abouty265 with small gold mounting below to y330. It currently takes too much vertical space; shorten it. SIDE AXE ASSEMBLY including dragon head, engraved dark steel crescent and complete pointed lower tip must be LARGER, about125% current size, and moved UP: full head from y375 to y1025, rightmost edgex750. This should fill both RIGHT-side cells of row2(y350..700) and row3(y700..1050) generously. Retain complete sweeping crescent and tips: do NOT clip, flatten or cut tip. Gold dragon attachment connects left shaft to this blade. Lower rows4 and5 are only long leather-wrapped shaft in left column. Top-right and bottom-right two cells fully transparent. Think one cell high spear, two cells high side-axe, continuous long shaft. Preserve decorative details, materials, no additions. Do not merely reproduce input geometry. Exact complete object and transparent margin. Preserve exact coarse square-pixel style, dark stepped outline, no blur, no grid, no label. Real alpha transparency.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-e9160e1c-da92-4b0e-9b21-3f1ecf59b1ed.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

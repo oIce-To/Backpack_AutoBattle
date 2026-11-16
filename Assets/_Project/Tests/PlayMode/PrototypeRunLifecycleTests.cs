@@ -34,7 +34,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             var hearts = Find("Run Lives").GetComponent<PrototypeLifeHearts>();
             Assert.That(hearts.Capacity, Is.EqualTo(3));
             Assert.That(hearts.Lives, Is.EqualTo(3));
-            Assert.That(Find("Next Round Button").gameObject.activeInHierarchy, Is.True);
+            Assert.That(_controller.GetComponentsInChildren<Button>(true).Any(button => button.name == "Next Round Button"), Is.False);
             Assert.That(_controller.ItemCatalog.Any(i => i.ItemId == "healing_potion"), Is.True);
             Capture("RunLivesPreparation.png");
             Assert.That(_controller.AdvanceRound(), Is.True); Assert.That(_controller.Lives, Is.EqualTo(3));
@@ -55,7 +55,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             _controller.BattleController.HideStatistics();
             _controller.TickCombat(200); Assert.That(_controller.Lives, Is.EqualTo(2));
             Assert.That(_controller.ReturnToPreparation(), Is.True);
-            Assert.That(_controller.CurrentRound, Is.EqualTo(round)); Assert.That(_controller.Gold, Is.EqualTo(gold));
+            Assert.That(_controller.CurrentRound, Is.EqualTo(round)); Assert.That(_controller.Gold, Is.EqualTo(gold + 5));
             Assert.That(_controller.TryStartBattle(), Is.True);
             Assert.That(_controller.ActiveCombat.EnrageStacks, Is.Zero);
             Assert.That(_controller.ActiveCombat.ElapsedSeconds, Is.Zero);
@@ -75,7 +75,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Assert.That(_controller.Lives, Is.EqualTo(3 - i));
                 _controller.TickCombat(200); // The completed battle must not spend another life.
                 Assert.That(_controller.Lives, Is.EqualTo(3 - i));
-                Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(gold));
+                Assert.That(_controller.CurrentRound, Is.EqualTo(1)); Assert.That(_controller.Gold, Is.EqualTo(gold + (i - 1) * 5));
                 Assert.That(slot.Offer, Is.SameAs(offer)); Assert.That(offer.IsLocked, Is.True);
                 if (i < 3)
                 {
@@ -165,7 +165,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
             Assert.That(ended, Is.EqualTo(1)); Assert.That(result, Is.SameAs(_controller.RunResult));
             Assert.That(result.Victories, Is.EqualTo(12)); Assert.That(result.Defeats, Is.Zero);
-            Assert.That(result.Gold, Is.EqualTo(75)); Assert.That(result.Outcome, Is.EqualTo(PrototypeRunOutcome.Cleared));
+            Assert.That(result.Gold, Is.EqualTo(103)); Assert.That(result.Outcome, Is.EqualTo(PrototypeRunOutcome.Cleared));
             Assert.That(Text("Run Result Summary"), Does.Contain("완료 라운드  12 / 12").And.Contain("승리 12").And.Not.Contain("골드"));
             Assert.That(_controller.AdvanceRound(), Is.False); Assert.That(_controller.ReturnToPreparation(), Is.False);
             Capture("ClearedRunResult.png");

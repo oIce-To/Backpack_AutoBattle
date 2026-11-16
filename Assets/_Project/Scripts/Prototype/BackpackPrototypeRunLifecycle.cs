@@ -84,7 +84,7 @@ namespace BackpackAutoBattle.Prototype
             ShowMainMenu();
         }
 
-        private PrototypeRunState CreateRunState() => new(_startingGold, _stageData?.StageId,
+        private PrototypeRunState CreateRunState() => new(_startingGold + RoundIncome(1), _stageData?.StageId,
             GetCharacterStats(_characterData),
             _characterData != null ? _characterData.DisplayName : "플레이어", Mathf.Max(1, _startingLives), _stageData?.DisplayName,
             _stageData?.ClearExperience ?? 0, _stageData?.ClearOriginShards ?? 0,
@@ -127,6 +127,7 @@ namespace BackpackAutoBattle.Prototype
             _itemTooltip.HideAll(); _fusionHoverOwner = null;
             FinishDrag();
             _pendingFusions = Array.Empty<FusionPlan>(); _fusionLocks.Clear(); _fusionOverlay?.Clear();
+            DisposePiggyBankPresentation();
             _fusionAnimation?.Dispose(); _fusionAnimation = null;
             _battleController.EndBattle();
             _battleController.ResetPlayback();

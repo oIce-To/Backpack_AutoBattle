@@ -220,7 +220,7 @@ namespace BackpackAutoBattle.Prototype
             }
             else
             {
-                DamagePopups(reaction.Target).Show(reaction.Amount, PrototypeStatusGlyph.ColorFor(reaction.Status));
+                DamagePopups(reaction.Target).Show(reaction.Amount, PrototypeStatusGlyph.ColorFor(reaction.Status), reaction.Critical);
                 string owner = reaction.Owner == CombatSide.Player ? _combat.Player.DisplayName : _combat.Enemy.DisplayName;
                 AppendLog($"{reaction.Time:0.0}s {owner} · 가시 → {target} {reaction.Amount:0.##} 피해"
                     + (reaction.Damage.ArmorAbsorbed > 0 ? $" (방어도 {reaction.Damage.ArmorAbsorbed:0.##} 흡수 · 체력 {reaction.Damage.HealthDamage:0.##})" : ""));
@@ -249,7 +249,7 @@ namespace BackpackAutoBattle.Prototype
             _title.gameObject.SetActive(false); _continueButton.interactable = false;
         }
 
-        public void ShowResult(PrototypePhase phase)
+        public void ShowResult(PrototypePhase phase, int? income = null)
         {
             SetPlaybackState(false, 1f, false);
             _statisticsButton.gameObject.SetActive(true);
@@ -265,8 +265,7 @@ namespace BackpackAutoBattle.Prototype
             _continueButton.interactable = phase is not (PrototypePhase.Completed or PrototypePhase.GameOver);
             _continueText.text = phase switch
             {
-                PrototypePhase.Victory => $"상점으로 · +{_income}G",
-                PrototypePhase.Defeat or PrototypePhase.Draw => "상점으로 돌아가기",
+                PrototypePhase.Victory or PrototypePhase.Defeat or PrototypePhase.Draw => $"상점으로 · +{income ?? _income}G",
                 PrototypePhase.GameOver => "라이프 소진",
                 _ => "모든 라운드 완료"
             };
@@ -290,7 +289,8 @@ namespace BackpackAutoBattle.Prototype
         private ItemTooltipContent TooltipContent(CombatItemSnapshot item, CombatSide side)
         {
             foreach (CombatItem runtime in _combat.GetItems(side))
-                if (runtime.InstanceId == item.InstanceId) return ItemTooltipContent.FromCombat(item, runtime);
+                if (runtime.InstanceId == item.InstanceId) return ItemTooltipContent.FromCombat(item, runtime,
+                    _combat.ArmorGainMultiplier(side), _combat.HealingMultiplier(side));
             return ItemTooltipContent.FromCombat(item, null);
         }
 

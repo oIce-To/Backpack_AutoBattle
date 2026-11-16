@@ -187,6 +187,7 @@ namespace BackpackAutoBattle.Prototype
                 _context.gameObject.SetActive(false);
                 _statsRoot.gameObject.SetActive(false);
                 _divider.gameObject.SetActive(false);
+                _description.gameObject.SetActive(true);
                 _description.text = status.Description;
                 Place(_description.rectTransform, Padding, -80f, 264f, 56f);
                 float statusHeight = Mathf.Max(28f, _description.GetPreferredValues(status.Description, 264f, Mathf.Infinity).y);
@@ -206,7 +207,6 @@ namespace BackpackAutoBattle.Prototype
             _name.text = item.DisplayName;
             Place(_name.rectTransform, Padding, -26f, 245f, 36f);
             _rarity.gameObject.SetActive(true);
-            _divider.gameObject.SetActive(item.HasWeaponStats);
             _rarity.text = item.Rarity.GetDisplayName() + rankSuffix;
             _rarity.color = _border.color = item.Rarity.GetDisplayColor();
             _context.text = "전투 중 실제 스탯";
@@ -240,14 +240,22 @@ namespace BackpackAutoBattle.Prototype
             _values[3].text = $"{item.CriticalChancePercent:0.#}%";
             _values[4].text = $"{item.CriticalDamagePercent:0.#}%";
             float descriptionTop = item.HasWeaponStats ? 211f - (item.IsRuntime || showWeaponType ? 0f : 18f) : showWeaponType ? 76f : 62f;
-            float dividerTop = descriptionTop;
-            _description.text = item.GetDescriptionText() + notes;
+            string description = (item.GetDescriptionText() + notes).Trim();
+            _description.text = description;
+            bool hasDescription = description.Length > 0;
+            _description.gameObject.SetActive(hasDescription);
+            _divider.gameObject.SetActive(item.HasWeaponStats && hasDescription);
+            if (!hasDescription)
+            {
+                RectTransform.sizeDelta = new Vector2(Width, descriptionTop + footerHeight);
+                return;
+            }
             float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - footerHeight - Padding * 2f);
             Place(_description.rectTransform, Padding, -descriptionTop - available / 2f, Width - Padding * 2f, available);
             float height = Mathf.Clamp(_description.GetPreferredValues(_description.text, Width - Padding * 2f, Mathf.Infinity).y,
                 32f, available);
             Place(_description.rectTransform, Padding, -descriptionTop - height / 2f, Width - Padding * 2f, height);
-            Place(_divider.rectTransform, Padding, -dividerTop + 12f, Width - Padding * 2f, 1f);
+            Place(_divider.rectTransform, Padding, -descriptionTop + 12f, Width - Padding * 2f, 1f);
             RectTransform.sizeDelta = new Vector2(Width, descriptionTop + height + Padding + footerHeight);
         }
 

@@ -117,16 +117,25 @@ namespace BackpackAutoBattle.Combat
             {
                 if (Result != CombatResult.Running) break;
                 double damage = contribution.Stacks * contribution.DamagePerStack * StatusEffectMultiplier(contribution.Source, state.Kind);
+                if (state.Kind == StatusEffectKind.Poison)
+                {
+                    CombatItem protector = Array.Find(_stageItems[state.Target], item =>
+                        item.Snapshot.StageEffect is StageItemEffect.PoisonBook or StageItemEffect.NeedleStorm);
+                    damage = ApplyStageDamageReduction(state.Target, damage, protector, .5d);
+                }
                 bool critical = state.Kind == StatusEffectKind.Burn && RollBurnCritical(contribution.Source, state.Target);
                 if (critical) damage *= 2d * (1d + OwnerStats(contribution.Source).CriticalDamageBonusPercent / 100d);
+                double finalDamage = damage * GetIncomingDamageMultiplier(state.Target);
                 // Keep the original one-damage-event-per-source-side rule; provenance must not change combat outcomes.
                 DamageResolution resolution = DealDamage(contribution.Source, state.Target, damage, CombatDamageKind.StatusEffect,
                     null, StatusWeights(state.Target, state.Kind, contribution.Source), state.Kind, events);
                 UpdateCombatResult();
                 StatusTicked?.Invoke(new PeriodicStatusTickEvent(ElapsedSeconds, contribution.Source, state.Target,
-                    state.Kind, contribution.Stacks, damage * GetIncomingDamageMultiplier(state.Target), resolution, critical));
+                    state.Kind, contribution.Stacks, finalDamage, resolution, critical));
             }
-            RemoveStatusStacks(state.Target, state.Kind, GetStatusDefinition(state.Kind).StacksLostPerTick);
+            if (state.Kind != StatusEffectKind.Burn || !(HasStageItem(Opponent(state.Target), StageItemEffect.DragonsBreath)
+                || HasStageItem(Opponent(state.Target), StageItemEffect.PrimalFlame)))
+                RemoveStatusStacks(state.Target, state.Kind, GetStatusDefinition(state.Kind).StacksLostPerTick);
         }
     }
 }

@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_TrueShot
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: true_shot
+  _displayName: "정사필중"
+  _effectDescription: "이 무기와 {diamond}의 원거리 무기가 명중할 때마다 40% 확률로 집중을 1 얻습니다.\n해당 무기는 자신의 집중 중첩마다 치명타 확률이 1%p 증가하며, 100%를 초과한 치명타 확률 1%p당 치명타 피해가 2%p 증가합니다."
+  _category: 0
+  _rarity: 4
+  _tags: 2
+  _stageEffect: 32
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 1.5
+    _effects:
+    - _kind: 0
+      _trigger: 0
+  _battleStartStatuses:
+  - _kind: 3
+    _target: 0
+    _stacks: 15
+  _placementEffects:
+  - _cells:
+    - {x: 1, y: 1}
+    - {x: 2, y: 1}
+    - {x: 1, y: 2}
+    - {x: 2, y: 2}
+    _targetFilter:
+      _filterByCategory: 1
+      _category: 0
+      _requiredTags: 2
+    _attackDamageBonus: 0
+    _triggersGearEffect: 1
+  _excludeFromShop: 1
+  _purchasePrice: 14
+  _weaponStats:
+    _attackDamage: 11
+    _cooldownSeconds: 1.5
+    _accuracyPercent: 80
+    _criticalChancePercent: 20
+    _criticalDamagePercent: 200
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1.1
+  _inventorySprite: {fileID: 21300000, guid: b3daea6b07514df5b324a8df39153330, type: 3}
+  _displayColor: {r: 0.72, g: 0.54, b: 0.21, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}

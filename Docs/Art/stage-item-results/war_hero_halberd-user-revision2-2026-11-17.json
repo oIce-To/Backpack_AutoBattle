@@ -1,0 +1,14 @@
+{
+  "id": "war_hero_halberd",
+  "name": "전쟁영웅의 미늘창",
+  "shape": "#./##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v4.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v4.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v5.png",
+  "prompt": "Use case: precise-object-edit. Input image is edit target. Single game inventory pixel-art sprite. Strict LOCAL MOVE ONLY. The gold ring/ornament with small BLUE GEM currently at shaft y730..810, just BELOW the side-axe joint, must be MOVED UP to directly beneath the TOP SPEAR BLADE. Place that same gold/blue-gem ornament centered at x260,y480, immediately underneath the spear point's neck (silver spear ends abouty440). Replace original ornament location y730..810 with plain continuous silver shaft matching adjacent shaft. Move, do not duplicate: exactly ONE blue-gem gold collar remains, now under spear. Preserve same ornament design/size. EVERYTHING ELSE unchanged: canvas887x1774, exact weapon silhouette, axe head position and shape, gold curve line on axe blade, leather grip, other existing metal bands, colors, square pixel clusters, transparent background. No redesign or re-centering. Preserve exact coarse square-pixel style, dark stepped outline, no blur, no grid, no label. Real alpha transparency.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-5c9b0c14-16f4-4c1c-8e00-43cad39dc9bd.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec65e5478f446869185103371cf821a, type: 3}
+  m_Name: Recipe_Windsurfer
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.FusionRecipeData
+  _centerItem: {fileID: 11400000, guid: 42918ed055a9520ea2133cc8889622c6, type: 2}
+  _ingredients:
+  - _item: {fileID: 11400000, guid: cf3737c3742457998717d330bff6988a, type: 2}
+    _quantity: 2
+  _resultItem: {fileID: 11400000, guid: b773f2f292ca5193a4108400f6d8e8ee, type: 2}

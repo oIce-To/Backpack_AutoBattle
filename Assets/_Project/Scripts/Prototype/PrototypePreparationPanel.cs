@@ -1,3 +1,4 @@
+using System;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Items;
 using UnityEngine;
@@ -7,18 +8,13 @@ namespace BackpackAutoBattle.Prototype
 {
     public sealed class PrototypePreparationPanel
     {
-        private readonly Text _error, _enemyName, _health;
+        private readonly Text _error;
         private readonly Button _startButton, _infoButton;
-        private readonly PrototypeMenuPopup _enemyPopup;
-        private readonly PrototypeBattleBagView _bag;
-        private readonly Image _portrait;
         private readonly Image _playerPortrait;
         private readonly Text _playerName;
-        private readonly PrototypeItemTooltip _tooltip;
 
-        internal PrototypePreparationPanel(BackpackPrototypeController controller, Transform shop, Transform canvas, PrototypeItemTooltip tooltip)
+        internal PrototypePreparationPanel(BackpackPrototypeController controller, Transform shop)
         {
-            _tooltip = tooltip;
             var characterFrame = SelectionUi.Image(shop, "Preparation Character Frame", Color.clear);
             SelectionUi.Place(characterFrame.rectTransform, new Vector2(500, 80), new Vector2(194, 340));
             characterFrame.raycastTarget = false;
@@ -37,8 +33,32 @@ namespace BackpackAutoBattle.Prototype
             PrototypePixelSkin.Apply(_startButton, primary: true);
             _error = SelectionUi.Label(shop, "Enemy Configuration Error", "", 13, new Vector2(500f, -151f), new Vector2(214f, 48f));
             _error.color = new Color(1f, .55f, .48f);
+        }
 
-            _enemyPopup = new PrototypeMenuPopup(canvas, "Enemy Preview Popup", "적 정보", new Vector2(652, 454), controller.CloseEnemyPreview, pixelSurface: true);
+        internal void Render(string error, CharacterData character)
+        {
+            _error.text = string.IsNullOrEmpty(error) ? "" : "적 설정 오류\n" + error.Split('\n')[0];
+            _playerName.text = character != null ? character.DisplayName : "플레이어";
+            _playerPortrait.sprite = character != null ? character.Portrait : null;
+            _playerPortrait.enabled = _playerPortrait.sprite != null;
+        }
+
+        public void SetInputEnabled(bool enabled) => _startButton.interactable = _infoButton.interactable = enabled;
+    }
+
+    internal sealed class PrototypeEnemyPreview
+    {
+        private readonly Text _enemyName, _health;
+        private readonly PrototypeMenuPopup _enemyPopup;
+        private readonly PrototypeBattleBagView _bag;
+        private readonly Image _portrait;
+        private readonly PrototypeItemTooltip _tooltip;
+
+        public PrototypeEnemyPreview(Transform canvas, PrototypeItemTooltip tooltip, Action close)
+        {
+            _tooltip = tooltip;
+            _enemyPopup = new PrototypeMenuPopup(canvas, "Enemy Preview Popup", "적 정보", new Vector2(652, 454),
+                close, PrototypeMenuPopup.CloseStyle.Pixel, pixelSurface: true);
             RectTransform panel = _enemyPopup.Panel;
             _enemyName = SelectionUi.Label(panel, "Enemy Preview Name", "", 22, new Vector2(-149, 117), new Vector2(242, 35));
             _portrait = SelectionUi.Image(panel, "Enemy Preview Illustration", Color.white);
@@ -59,10 +79,11 @@ namespace BackpackAutoBattle.Prototype
             bagTitle.color = PrototypePixelSkin.Muted;
         }
 
-        internal bool IsEnemyPreviewOpen => _enemyPopup.IsOpen;
+        public bool IsOpen => _enemyPopup.IsOpen;
 
-        internal void ShowEnemy(CombatantSnapshot enemy)
+        public void Show(CombatantSnapshot enemy)
         {
+            _tooltip.HideAll();
             _enemyName.text = enemy.DisplayName;
             _portrait.sprite = enemy.Illustration;
             _portrait.enabled = _portrait.sprite != null;
@@ -72,20 +93,11 @@ namespace BackpackAutoBattle.Prototype
             _enemyPopup.Show();
         }
 
-        internal void HideEnemy()
+        public void Hide()
         {
+            _tooltip.HideAll();
             _enemyPopup.Hide();
             _bag.Clear();
         }
-
-        internal void Render(string error, CharacterData character)
-        {
-            _error.text = string.IsNullOrEmpty(error) ? "" : "적 설정 오류\n" + error.Split('\n')[0];
-            _playerName.text = character != null ? character.DisplayName : "플레이어";
-            _playerPortrait.sprite = character != null ? character.Portrait : null;
-            _playerPortrait.enabled = _playerPortrait.sprite != null;
-        }
-
-        public void SetInputEnabled(bool enabled) => _startButton.interactable = _infoButton.interactable = enabled;
     }
 }

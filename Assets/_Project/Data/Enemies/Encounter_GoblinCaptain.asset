@@ -36,23 +36,3 @@ MonoBehaviour:
       _criticalDamagePercent:
         _enabled: 0
         _value: 0
-  - _slotId: shield
-    _item: {fileID: 11400000, guid: ef94bfebc7f1d2543a4ca69da58cdc7a, type: 2}
-    _origin: {x: 3, y: 1}
-    _rotation: 0
-    _stats:
-      _attackDamage:
-        _enabled: 0
-        _value: 0
-      _cooldownSeconds:
-        _enabled: 0
-        _value: 0
-      _accuracyPercent:
-        _enabled: 0
-        _value: 0
-      _criticalChancePercent:
-        _enabled: 0
-        _value: 0
-      _criticalDamagePercent:
-        _enabled: 0
-        _value: 0

@@ -129,7 +129,8 @@ namespace BackpackAutoBattle.Prototype
                 Vector2 position = (1 - flight) * (1 - flight) * center + 2 * (1 - flight) * flight * control
                     + flight * flight * visual.Job.Destination;
                 visual.Result.anchoredPosition = position;
-                visual.Result.localScale = Vector3.one * Mathf.LerpUnclamped(.6f, 1f, overshoot);
+                float storedScale = visual.Job.StoredView != null ? visual.Job.StoredView.transform.localScale.x : 1f;
+                visual.Result.localScale = Vector3.one * (Mathf.LerpUnclamped(.6f, 1f, overshoot) * Mathf.Lerp(1f, storedScale, flight));
                 visual.ResultGroup.alpha = time >= .42f && !arriving ? 1f : 0f;
                 float pulse = time < .42f ? .10f * gather : time < .72f ? .7f * (1 - Mathf.InverseLerp(.42f, .72f, time))
                     : arriving ? .48f * (1 - Mathf.InverseLerp(1.15f, JobDuration, time)) : .08f;

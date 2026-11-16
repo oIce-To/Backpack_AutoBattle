@@ -1,0 +1,14 @@
+{
+  "id": "battle_axe",
+  "name": "전투 도끼",
+  "shape": "##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-17-v2.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-17-v4.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Restore the COMPLETE ORIGINAL axe blade silhouette in this first reference: its elegant convex silver cutting edge and long tapered lower point, exactly the same design. UNIFORMLY SCALE THE WHOLE HEAD DOWN to about 65% of original head size, and mount it near the very top of the existing long left-column haft. DO NOT flatten, amputate, clip or truncate the lower blade tip. A small intact axe head is desired, not a huge cropped head. Head and collar fully within upper 32% of canvas; below upper third only left-column haft. Keep brown haft and leather wrap design. 2 columns x3 rows, ##/#./#. Request 1024x1536. Entire head including lower sharp tip above y495, all right half below y512 fully transparent. Ample clearance.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/#./#. Critical: whole axe head including collar spans x200..720 and y60..490. The blade must visibly reach into TOP RIGHT inventory cell (x512..720), while remaining wholly above y500. Shaft centerx270. Do not make a tiny hatchet or keep whole head inside left half. Intact original curved blade with long sharp bottom tip.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-8fa14f22-f6b7-4278-b8ef-cbb64bbaa454.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -17,6 +17,7 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private ItemCategory _category;
         [SerializeField] private ItemRarity _rarity;
         [SerializeField] private ItemTags _tags;
+        [SerializeField] private StageItemEffect _stageEffect;
 
         [Header("Activation (all item categories)")]
         [SerializeField] private ItemActivationData _activation = new();
@@ -69,6 +70,7 @@ namespace BackpackAutoBattle.Items
                 (float)(stats.CriticalDamagePercent * (1d + (owner?.CriticalDamageBonusPercent ?? 0d) / 100d)));
         }
         public ItemTags Tags => _tags;
+        public StageItemEffect StageEffect => _stageEffect;
         public ItemActivationData Activation => _activation;
         public IReadOnlyList<StatusApplication> BattleStartStatuses => _battleStartStatuses;
         public IReadOnlyList<ItemPlacementEffect> PlacementEffects => _placementEffects;

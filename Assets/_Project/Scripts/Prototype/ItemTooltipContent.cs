@@ -19,7 +19,6 @@ namespace BackpackAutoBattle.Prototype
         public string DisplayName { get; private set; }
         public string WeaponType { get; private set; }
         public ItemRarity Rarity { get; private set; }
-        public string Description { get; private set; }
         public string EffectDescription { get; private set; }
         public IReadOnlyList<string> PlacementDescriptions { get; private set; } = System.Array.Empty<string>();
         public bool HasWeaponStats { get; private set; }
@@ -35,8 +34,7 @@ namespace BackpackAutoBattle.Prototype
         {
             var paragraphs = new List<string>(PlacementDescriptions);
             if (!string.IsNullOrWhiteSpace(EffectDescription)) paragraphs.Add(EffectDescription);
-            if (!string.IsNullOrWhiteSpace(Description)) paragraphs.Add(Description);
-            return paragraphs.Count == 0 ? "추가 설명 없음" : string.Join("\n\n", paragraphs);
+            return string.Join("\n\n", paragraphs);
         }
 
         public ItemStatChange GetStatChange(WeaponStatIcon stat)
@@ -61,7 +59,8 @@ namespace BackpackAutoBattle.Prototype
             => FromCombat(new CombatItemSnapshot("tooltip", item, Vector2Int.zero, Inventory.ItemRotation.None,
                 item.OccupiedCells, ownerStats: owner ?? CharacterStatsSnapshot.Default, rarity: rarity, gearEffect: gearEffect), null);
 
-        public static ItemTooltipContent FromCombat(CombatItemSnapshot item, CombatItem runtime)
+        public static ItemTooltipContent FromCombat(CombatItemSnapshot item, CombatItem runtime,
+            double? armorGainMultiplier = null, double? healingMultiplier = null)
         {
             var result = new ItemTooltipContent
             {
@@ -69,17 +68,28 @@ namespace BackpackAutoBattle.Prototype
                 WeaponType = item.Category == ItemCategory.Weapon ? WeaponTypeLabel(item.Tags) : null,
                 Rarity = item.Rarity,
                 _category = item.Category,
-                Description = item.Description,
-                EffectDescription = item.EffectDescription,
+                EffectDescription = item.EffectDescription?.Replace("{diamond}", PlacementIconTag),
                 HasWeaponStats = item.Activation.HasEffect(ItemEffectKind.Attack),
                 HasCycle = item.Activation.HasCycle,
                 IsRuntime = runtime != null
             };
             result.SetStats(item.BaseWeaponStats, (runtime as CombatWeapon)?.Stats);
             result.SetActivation(item.Activation, runtime?.Activation, (float)(runtime?.Cycle.IntervalSeconds ?? item.Activation.CooldownSeconds),
-                (float)item.OwnerStats.ArmorGainMultiplier);
+                (float)(armorGainMultiplier ?? item.OwnerStats.ArmorGainMultiplier));
             string period = result.ColorNumber($"{result.CooldownSeconds:0.0#}", result.CooldownSeconds,
                 item.Activation.CooldownSeconds, lowerIsBetter: true);
+            result.EffectDescription = result.EffectDescription?.Replace("{period}", period);
+            double armorAtStart = item.StageEffect.StartingArmorRatio() * item.OwnerStats.MaximumHealth
+                * (armorGainMultiplier ?? item.OwnerStats.ArmorGainMultiplier);
+            if (armorAtStart > 0d) result.AppendEffect($"전투 시작 시 방어도를 {armorAtStart:0.#} 얻습니다.");
+            if (item.StageEffect == StageItemEffect.Potion)
+            {
+                double baseHealing = item.OwnerStats.MaximumHealth * StageItemEffectRules.PotionHealRatio;
+                float baseline = (float)(baseHealing * item.OwnerStats.HealingMultiplier);
+                float actual = (float)(baseHealing * (healingMultiplier ?? item.OwnerStats.HealingMultiplier));
+                string amount = result.ColorNumber($"{actual:0.#}", actual, baseline);
+                result.AppendEffect($"체력이 최대 체력의 {StageItemEffectRules.PotionHealthThreshold:0%} 미만으로 떨어지면 전투당 한 번 체력을 {amount} 회복합니다.");
+            }
             string gearDescription = item.GearEffect.Describe(item.OwnerStats, period, PlacementIconTag);
             if (!string.IsNullOrWhiteSpace(gearDescription)) result.AppendEffect(gearDescription);
             result.SetBattleStart(item.BattleStartStatuses);
@@ -154,7 +164,7 @@ namespace BackpackAutoBattle.Prototype
             {
                 ItemCategory.Weapon => "무기", ItemCategory.Armor => "방어구", ItemCategory.Accessory => "장신구",
                 ItemCategory.Consumable => "소모품", ItemCategory.Material => "재료", ItemCategory.Pet => "펫", ItemCategory.Bag => "가방",
-                _ => "공격 아이템"
+                ItemCategory.Other => "기타 아이템", _ => "공격 아이템"
             };
             tags.Add(category);
             return string.Join(" ", tags);

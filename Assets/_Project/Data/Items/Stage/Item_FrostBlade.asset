@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_FrostBlade
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: frost_blade
+  _displayName: "서리 칼날"
+  _category: 0
+  _rarity: 2
+  _tags: 1
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 1.8
+    _effects:
+    - _kind: 0
+      _trigger: 0
+    - _kind: 2
+      _trigger: 1
+      _status:
+        _kind: 1
+        _target: 1
+        _stacks: 1
+  _excludeFromShop: 1
+  _purchasePrice: 10
+  _weaponStats:
+    _attackDamage: 9
+    _cooldownSeconds: 1.8
+    _accuracyPercent: 90
+    _criticalChancePercent: 15
+    _criticalDamagePercent: 200
+  _attackScaling:
+    _stat: 1
+    _coefficient: 0.9
+  _inventorySprite: {fileID: 21300000, guid: 7bca62c65134405f988e36d2e265ef2b, type: 3}
+  _displayColor: {r: 0.35, g: 0.49, b: 0.77, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}

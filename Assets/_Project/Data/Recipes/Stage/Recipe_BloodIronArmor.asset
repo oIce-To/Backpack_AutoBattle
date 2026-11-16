@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec65e5478f446869185103371cf821a, type: 3}
+  m_Name: Recipe_BloodIronArmor
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.FusionRecipeData
+  _centerItem: {fileID: 11400000, guid: 7dd33fdc46ee5076be3d1bd9bd164713, type: 2}
+  _ingredients:
+  - _item: {fileID: 11400000, guid: 781cfa256dc45d5281167c242eebc549, type: 2}
+    _quantity: 1
+  _resultItem: {fileID: 11400000, guid: 1c06eec004b75627828aa9bc49bab02b, type: 2}

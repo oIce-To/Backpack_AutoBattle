@@ -120,7 +120,7 @@ namespace BackpackAutoBattle.Prototype
             if (attack.Kind == ItemEffectKind.Attack && attack.Hit) _playHit?.Invoke();
         }
 
-        public void ShowResult(PrototypePhase phase) => _screen.ShowResult(phase);
+        public void ShowResult(PrototypePhase phase, int income) => _screen.ShowResult(phase, income);
         public bool ShowStatistics()
         {
             if (Simulation == null || Simulation.Result == CombatResult.Running) return false;

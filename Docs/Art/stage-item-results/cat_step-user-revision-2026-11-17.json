@@ -1,0 +1,14 @@
+{
+  "id": "cat_step",
+  "name": "고양이 걸음",
+  "shape": "#/#",
+  "baseline": "Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-17-v2.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. COLOR-ONLY EDIT. Keep the exact boot shape, folded cuff, purple cross laces, buckle, sole, orientation, all existing pixel clusters and dimensions. Darken leather and purple laces only very slightly, about 12% lower brightness, toward richer dark brown/black. Keep highlights readable and silver buckle readable. Do not redesign, redraw silhouette, add details or change pixel scale. Same1:2 canvas and transparency.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-c8167117-4c62-4c26-a07f-fe00b8cc7e3f.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

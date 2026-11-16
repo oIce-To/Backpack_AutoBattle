@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_Enemy_demon_legion_commander
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: enemy_demon_legion_commander
+  _displayName: "군단장의 대검"
+  _category: 0
+  _tags: 1
+  _excludeFromShop: 1
+  _purchasePrice: 0
+  _effectDescription: "전투당 한 번, 쓰러지기 직전에 체력을 30% 회복합니다. 이후 공격력이 50%, 공격 속도가 30% 증가합니다."
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2
+    _effects:
+    - _kind: 0
+  _weaponStats:
+    _attackDamage: 33
+    _cooldownSeconds: 2
+    _accuracyPercent: 100
+    _criticalChancePercent: 0
+    _criticalDamagePercent: 200
+  _inventorySprite: {fileID: 21300000, guid: 471b2c1f320e4938aa3973b576e8fc4b, type: 3}
+  _displayColor: {r: 0.53, g: 0.37, b: 0.27, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}

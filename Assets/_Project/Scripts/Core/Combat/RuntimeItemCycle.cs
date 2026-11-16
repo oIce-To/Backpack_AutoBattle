@@ -24,6 +24,13 @@ namespace BackpackAutoBattle.Combat
         internal void SetSpeedRate(double rate) => ChangeTiming(_baseInterval, Math.Clamp(rate, 0.05d, 20d));
         internal void CompleteActivation(double time)
         { _startedAt = time; NextActivationAt = time + IntervalSeconds; }
+        internal void Charge(double fraction)
+        {
+            double now = _time();
+            double progress = Math.Clamp(ProgressAt(now) + fraction, 0d, 1d);
+            _startedAt = now - progress * IntervalSeconds;
+            NextActivationAt = now + (1d - progress) * IntervalSeconds;
+        }
         private void ChangeTiming(double interval, double rate)
         {
             if (interval == _baseInterval && rate == _speedRate) return;

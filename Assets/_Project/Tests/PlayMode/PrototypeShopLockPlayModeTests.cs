@@ -21,6 +21,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            PrototypeCombatFixture.UseLegacyShop(controller);
             ItemData potion = Item(controller, "healing_potion");
             ItemData sword = Item(controller, "training_blade");
             Set(controller, "_itemCatalog", new[] { potion });
@@ -68,6 +69,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            PrototypeCombatFixture.UseLegacyShop(controller);
             Set(controller, "_itemCatalog", new[] { Item(controller, "healing_potion") });
             Set(controller, "_saleChance", 1f);
             controller.RefreshShopForTesting();
@@ -106,6 +108,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            PrototypeCombatFixture.UseLegacyShop(controller);
             PrototypeShopSlotView[] slots = Slots(controller);
             slots[0].Bind(new ShopOffer(Item(controller, "healing_potion"), false));
             var run = (PrototypeRunState)Get(controller, "_run");
@@ -150,6 +153,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            PrototypeCombatFixture.UseLegacyShop(controller);
             PrototypeShopSlotView[] slots = Slots(controller);
             slots[0].Bind(new ShopOffer(Item(controller, "healing_potion"), false));
             RightClick(slots[0]);
@@ -176,6 +180,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return SceneManager.LoadSceneAsync("Prototype_Backpack", LoadSceneMode.Single);
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
+            PrototypeCombatFixture.UseLegacyShop(controller);
             controller.BattleController.AutoTick = false;
             PrototypeShopSlotView[] slots = Slots(controller);
             foreach (PrototypeShopSlotView slot in slots) RightClick(slot);

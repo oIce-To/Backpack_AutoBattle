@@ -25,6 +25,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
         internal static void UseTrainingKit(BackpackPrototypeController controller, CharacterStatsSnapshot stats)
         {
+            UseLegacyShop(controller);
             var type = typeof(BackpackPrototypeController);
             var views = (Dictionary<string, BackpackItemView>)type.GetField("_itemViews", PrivateInstance).GetValue(controller);
             foreach (var view in views.Values)
@@ -43,6 +44,24 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(PlaceItem(controller, "wooden_shield", "starter_wooden_shield", new Vector2Int(1, 0)), Is.True);
             Assert.That(PlaceItem(controller, "swift_charm", "starter_swift_charm", new Vector2Int(3, 3)), Is.True);
             type.GetMethod("RefreshCombatInterface", PrivateInstance).Invoke(controller, null);
+        }
+
+        internal static void UseLegacyShop(BackpackPrototypeController controller)
+        {
+#if UNITY_EDITOR
+            const string items = "Assets/_Project/Data/Items/";
+            string[] names = { "Whetstone", "TrainingBlade", "WoodenShield", "SwiftCharm", "IronDagger", "HealingPotion",
+                "ThrowingAxes", "FireStaff", "PoisonVial", "PrecisionCharm", "FocusCharm", "BlindingDust", "AgilityCharm",
+                "ThornArmor", "VampiricCharm" };
+            var catalog = names.Select(name => UnityEditor.AssetDatabase.LoadAssetAtPath<ItemData>(items + "Item_" + name + ".asset")).ToArray();
+            var recipe = UnityEditor.AssetDatabase.LoadAssetAtPath<FusionRecipeData>("Assets/_Project/Data/Recipes/Recipe_SteelSword.asset");
+            var type = typeof(BackpackPrototypeController);
+            type.GetField("_itemCatalog", PrivateInstance).SetValue(controller, catalog);
+            type.GetField("_fusionRecipes", PrivateInstance).SetValue(controller, new[] { recipe });
+            controller.RefreshShopForTesting();
+#else
+            Assert.Ignore("The legacy training kit is available in the Unity Editor.");
+#endif
         }
 
         internal static bool PlaceItem(BackpackPrototypeController controller, string itemId, string instanceId, Vector2Int origin)

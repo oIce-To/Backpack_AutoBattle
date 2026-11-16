@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_BattleAxe
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: battle_axe
+  _displayName: "전투 도끼"
+  _effectDescription: "공격할 때마다 전투 중 이 무기의 공격 속도가 5%씩 증가합니다."
+  _category: 0
+  _rarity: 2
+  _tags: 1
+  _stageEffect: 14
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2.5
+    _effects:
+    - _kind: 0
+      _trigger: 0
+  _excludeFromShop: 0
+  _purchasePrice: 6
+  _weaponStats:
+    _attackDamage: 10
+    _cooldownSeconds: 2.5
+    _accuracyPercent: 80
+    _criticalChancePercent: 10
+    _criticalDamagePercent: 225
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1
+  _inventorySprite: {fileID: 21300000, guid: 71bd26d9a1574d22955ac1206bee0bb8, type: 3}
+  _displayColor: {r: 0.35, g: 0.49, b: 0.77, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}

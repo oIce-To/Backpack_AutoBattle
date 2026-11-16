@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e02443d97056af459af28a14702389d, type: 3}
+  m_Name: EnemyType_ApostleOfDeath
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyData
+  _enemyId: apostle_of_death
+  _displayName: "죽음의 사도"
+  _illustration: {fileID: 21300000, guid: 758aabb4549840319b9c9cd850f6cfed, type: 3}
+  _illustrationFacesLeft: 0
+  _trait: 1
+  _portraitCrop:
+    serializedVersion: 2
+    x: 0.3125
+    y: 0.65833333
+    width: 0.45
+    height: 0.3

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Enemies;
+using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Prototype;
 using BackpackAutoBattle.Stages;
 using NUnit.Framework;
@@ -70,17 +71,17 @@ namespace BackpackAutoBattle.Tests.Prototype
             yield return null;
             var controller = Object.FindFirstObjectByType<BackpackPrototypeController>();
             controller.BattleController.AutoTick = false;
-            for (int index = 0; index < 4; index++) Assert.That(controller.AdvanceRound(), Is.True);
-            Assert.That(controller.CurrentRound, Is.EqualTo(5));
-            Assert.That(controller.PreparedEnemy.MaximumHealth, Is.EqualTo(50d));
-            Assert.That(controller.PreparedEnemy.Loadout.Items.Count, Is.EqualTo(2));
+            for (int index = 0; index < 3; index++) Assert.That(controller.AdvanceRound(), Is.True);
+            Assert.That(controller.CurrentRound, Is.EqualTo(4));
+            Assert.That(controller.PreparedEnemy.MaximumHealth, Is.EqualTo(45d));
+            Assert.That(controller.PreparedEnemy.Loadout.Items.Single().DisplayName, Is.EqualTo("대도의 단검"));
             Assert.That(controller.TryStartBattle(), Is.True);
             foreach (string side in new[] { "Player", "Enemy" })
                 Assert.That(controller.GetComponentsInChildren<Transform>().Single(transform => transform.name == side + " Battle Backpack")
                     .GetComponentsInChildren<Transform>().Count(transform => transform.name.StartsWith("Battle Grid Cell ")), Is.EqualTo(36));
             controller.TickCombat(2f);
-            Assert.That(controller.ActiveCombat.EnemyArmor, Is.EqualTo(2.5d));
-            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound5GuardBattle.png");
+            Assert.That(controller.ActiveCombat.EnemyArmor, Is.Zero);
+            PrototypeScreenCapture.CaptureIfRequested(controller.GetComponentInChildren<Canvas>(), "StageRound4ThiefBattle.png");
         }
 
         [UnityTest]
@@ -93,8 +94,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             Set(stage, "_stageId", "stage_08_playtest");
             Set(stage, "_displayName", "8스테이지 · 검증");
             var encounter = previous.CurrentEnemyEncounter;
+            string weaponSlotId = encounter.Items.Single(item => item.Item.Activation.HasEffect(ItemEffectKind.Attack)).SlotId;
             Set(stage, "_rounds", Enumerable.Range(0, 12).Select(index => new StageRoundData(encounter,
-                new EnemyEncounterOverrides(180 + index * 10, new EnemyItemOverride("club", new(attackDamage: 25 + index))), index == 11)).ToList());
+                new EnemyEncounterOverrides(180 + index * 10, new EnemyItemOverride(weaponSlotId, new(attackDamage: 25 + index))), index == 11)).ToList());
             var catalog = previous.ItemCatalog.ToArray();
             var rarity = previous.ShopRarityTable;
             var statuses = Get(previous, "_statusEffects");

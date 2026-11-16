@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_BloodIronArmor
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: blood_iron_armor
+  _displayName: "최후의 철혈갑주"
+  _effectDescription: "가시 피해가 치명타로 적용될 수 있습니다. 자신의 가시 중첩마다 가시의 치명타 확률이 1%p, 치명타 피해가 2% 증가합니다.\n가시 치명타가 입힌 피해량의 25%만큼 회복합니다."
+  _category: 1
+  _rarity: 4
+  _tags: 0
+  _stageEffect: 40
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 3
+    _effects:
+    - _kind: 1
+      _trigger: 0
+      _amount: 0
+      _amountScaling:
+        _stat: 2
+        _coefficient: 0.1
+    - _kind: 2
+      _trigger: 0
+      _status:
+        _kind: 8
+        _target: 0
+        _stacks: 2
+  _excludeFromShop: 1
+  _purchasePrice: 18
+  _inventorySprite: {fileID: 21300000, guid: c0f35b2a7b624142b9ee2a07d3be6be4, type: 3}
+  _displayColor: {r: 0.72, g: 0.54, b: 0.21, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 0, y: 2}
+  - {x: 1, y: 2}

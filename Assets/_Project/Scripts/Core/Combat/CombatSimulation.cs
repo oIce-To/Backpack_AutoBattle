@@ -23,6 +23,11 @@ namespace BackpackAutoBattle.Combat
         public ItemActivationData Activation { get; }
         public RuntimeItemCycle Cycle { get; }
         public RuntimeItemCycle FixedCycle { get; }
+        public bool IsSpent => StageSpent;
+        internal bool StageSpent { get; set; }
+        internal int StageAttackCount { get; set; }
+        internal double StageSpeedBonus { get; set; }
+        internal double StageCriticalBonus { get; set; }
     }
 
     /// <summary>Attack-specific stats on top of the same clock used by armor, pets and other items.</summary>
@@ -84,7 +89,8 @@ namespace BackpackAutoBattle.Combat
 
         // This battle rule applies once to every incoming damage kind, before armor and health.
         public double GetIncomingDamageMultiplier(CombatSide target)
-            => target == CombatSide.Player ? 1d + EnrageDamageIncreasePercent / 100d : 1d;
+            => target == CombatSide.Player ? 1d + EnrageDamageIncreasePercent / 100d
+                : ElapsedSeconds < _enemyInvulnerableUntil ? 0d : 1d;
         private readonly Random _random;
         private readonly double _maximumDuration;
         private readonly Dictionary<(CombatSide side, string source), (float percent, ItemTargetFilter filter)> _speedModifiers = new();
@@ -113,10 +119,14 @@ namespace BackpackAutoBattle.Combat
             _random = random ?? new Random();
             _maximumDuration = maximumDuration;
             InitializeStatistics();
+            InitializeStageItems(CombatSide.Player, player.Loadout);
+            InitializeStageItems(CombatSide.Enemy, enemy.Loadout);
             InitializeUniqueGear(CombatSide.Player, player.Loadout);
             InitializeUniqueGear(CombatSide.Enemy, enemy.Loadout);
             InitializeStatuses(statusEffects);
+            ApplyStageBattleStart();
             InitializeCharacterPassives();
+            InitializeEnemyTrait();
         }
 
         public CombatantSnapshot Player { get; }
@@ -164,7 +174,8 @@ namespace BackpackAutoBattle.Combat
             double statusRate = 1d + StatusSpeedPercent(side) / 100d;
             foreach (CombatItem item in GetItems(side))
             {
-                double rate = statusRate;
+                double rate = statusRate + item.StageSpeedBonus / 100d;
+                if (side == CombatSide.Enemy && item is CombatWeapon) rate += EnemyWeaponSpeedBonus();
                 foreach (var modifier in _speedModifiers)
                     if (modifier.Key.side == side && modifier.Value.filter.Matches(item.Snapshot.Category, item.Snapshot.Tags))
                         rate += modifier.Value.percent / 100d;
@@ -191,6 +202,7 @@ namespace BackpackAutoBattle.Combat
                     Consider(item, CombatSide.Enemy);
                 void Consider(CombatItem item, CombatSide owner)
                 {
+                    if (item.StageSpent) return;
                     RuntimeItemCycle cycle = item.Activation.HasCycle ? item.Cycle : null;
                     if (item.FixedCycle != null && (cycle == null || item.FixedCycle.NextActivationAt < cycle.NextActivationAt))
                         cycle = item.FixedCycle;
@@ -232,20 +244,30 @@ namespace BackpackAutoBattle.Combat
         }
 
         private IReadOnlyList<CombatItem> CreateItems(CombatLoadoutSnapshot loadout)
-            => Array.AsReadOnly(loadout.Items.Where(item => item.Activation.HasCycle || item.GearEffect.Kind != UniqueGearEffectKind.None).Select(item =>
+            => Array.AsReadOnly(loadout.Items.Where(item => item.Activation.HasCycle || item.GearEffect.Kind != UniqueGearEffectKind.None
+                || item.StageEffect != StageItemEffect.None).Select(item =>
                 item.Activation.HasCycle && item.Activation.HasEffect(ItemEffectKind.Attack) ? new CombatWeapon(item, () => ElapsedSeconds)
                     : new CombatItem(item, () => ElapsedSeconds)).ToArray());
 
         private void ResolveAttack(CombatWeapon weapon, CombatSide side, ICollection<CombatItemEvent> events)
         {
-            CombatSide target = side == CombatSide.Player ? CombatSide.Enemy : CombatSide.Player;
-            AttackResolution attack = AttackResolver.Resolve(weapon.Stats.AccuracyPercent, GetEvasionPercent(target),
-                weapon.Stats.CriticalChancePercent, _random);
+            CombatSide target = Opponent(side);
+            bool guaranteed = weapon.Snapshot.StageEffect == StageItemEffect.Bola;
+            if (guaranteed) weapon.StageSpent = true;
+            AttackResolution attack = guaranteed
+                ? new AttackResolution(AttackOutcome.Hit, _random.NextDouble() * 100d < weapon.Stats.CriticalChancePercent)
+                : AttackResolver.Resolve(weapon.Stats.AccuracyPercent, GetEvasionPercent(target), weapon.Stats.CriticalChancePercent, _random);
             bool hit = attack.Hit, critical = attack.Critical;
             double damage = hit ? weapon.Stats.AttackDamage * (critical ? weapon.Stats.CriticalDamagePercent / 100d : 1d) : 0d;
-            DamageResolution result = hit ? DealDamage(side, target, damage, CombatDamageKind.AttackItem, weapon.InstanceId)
+            bool weaponOrPet = weapon.Snapshot.Category is ItemCategory.Weapon or ItemCategory.Pet;
+            var shield = hit && weaponOrPet ? StrongestShield(target) : default;
+            double armorFactor = ArmorDamageFactor(weapon);
+            double reduced = ApplyStageDamageReduction(target, damage, shield.item, shield.rate, armorFactor);
+            double displayedDamage = reduced * GetIncomingDamageMultiplier(target);
+            DamageResolution result = hit ? DealDamage(side, target, reduced, CombatDamageKind.AttackItem, weapon.InstanceId,
+                events: events, armorDamageFactor: armorFactor)
                 : DamageResolver.Resolve(0, target == CombatSide.Player ? PlayerArmor : EnemyArmor, target == CombatSide.Player ? PlayerHealth : EnemyHealth);
-            damage *= GetIncomingDamageMultiplier(target);
+            damage = displayedDamage;
             var itemEvent = new CombatItemEvent(ElapsedSeconds, side, weapon, ItemEffectKind.Attack, hit, critical,
                 damage, result.ArmorAbsorbed, result.HealthDamage, targetSide: target, attackOutcome: attack.Outcome);
             RecordItemEvent(events, itemEvent);
@@ -254,6 +276,7 @@ namespace BackpackAutoBattle.Combat
             {
                 _avoidanceCounts[target] = checked(GetAvoidanceCount(target) + 1);
                 AttackAvoided?.Invoke(itemEvent);
+                ResolveStageAvoidance(target);
             }
             // Bind to this item's resolved hit, not an independent timer or another weapon's attack.
             // A blocked hit still qualifies; a miss, evade, status tick or dead target does not.
@@ -262,14 +285,18 @@ namespace BackpackAutoBattle.Combat
                     if (effect.Trigger == ItemEffectTrigger.OnHit) ResolveNonAttackEffect(weapon, side, effect, events);
             if (hit)
             {
+                if (side == CombatSide.Enemy) RecordEnemyWeaponHit(weapon);
                 if (weapon.Snapshot.Category == ItemCategory.Weapon && (weapon.Snapshot.Tags & ItemTags.Melee) != 0)
                     foreach (CombatItem source in GetItems(side))
                         if (source.Snapshot.GearEffect.Kind == UniqueGearEffectKind.MeleeHitArmor)
                             GainArmor(source, side, (side == CombatSide.Player ? Player : Enemy).Stats.Attack * source.Snapshot.GearEffect.Amount, events);
                 ResolveDamageReactions(new CombatDamageEvent(side, target, CombatDamageKind.AttackItem, damage, result, weapon.InstanceId), events);
                 ResolveGearDamageReceived(side, target, result, events);
+                if (weaponOrPet) ResolveStageAttackReceived(target, result, events);
+                if (CurrentHealth(side) > 0d) ResolveStageHit(weapon, side, result, critical, events);
             }
             ResolveGearAfterAttack(weapon, side, target, events);
+            if (CurrentHealth(side) > 0d && CurrentHealth(target) > 0d) ResolveStageAttackAttempt(weapon, side, events);
             UpdateCombatResult(side);
         }
 
@@ -287,6 +314,8 @@ namespace BackpackAutoBattle.Combat
                 ApplyItemStatus(item, side, target, status.Kind, status.Stacks, events);
             }
             else if (effect.Kind == ItemEffectKind.UniqueGear) ResolveGearActivation(item, side, events);
+            else if (effect.Kind == ItemEffectKind.StageItem) ResolveStageActivation(item, side, events);
+            else if (effect.Kind == ItemEffectKind.EnemySkill && side == CombatSide.Enemy) ResolveEnemySkill(item, events);
         }
 
         private void GainArmor(CombatItem source, CombatSide side, double amount, ICollection<CombatItemEvent> events)
@@ -296,7 +325,10 @@ namespace BackpackAutoBattle.Combat
             RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, side, source, ItemEffectKind.GainArmor, armorGained: amount));
         }
 
-        private double ApplyArmorBonus(CombatSide side, double amount) => amount * OwnerStats(side).ArmorGainMultiplier;
+        public double ArmorGainMultiplier(CombatSide side)
+            => Math.Max(0d, OwnerStats(side).ArmorGainMultiplier + StageArmorGainBonus(side) - PrimalFlamePenalty(side));
+
+        private double ApplyArmorBonus(CombatSide side, double amount) => amount * ArmorGainMultiplier(side);
 
         private void AddArmor(CombatSide side, string sourceId, double amount)
         {
@@ -321,16 +353,20 @@ namespace BackpackAutoBattle.Combat
         }
 
         private DamageResolution DealDamage(CombatSide source, CombatSide target, double damage, CombatDamageKind kind, string itemId,
-            IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null, ICollection<CombatItemEvent> events = null)
+            IReadOnlyList<CreditWeight> credits = null, StatusEffectKind? cause = null, ICollection<CombatItemEvent> events = null,
+            double armorDamageFactor = 1d)
         {
             damage *= GetIncomingDamageMultiplier(target);
+            double previousHealth = CurrentHealth(target);
             DamageResolution result = DamageResolver.Resolve(damage, target == CombatSide.Player ? PlayerArmor : EnemyArmor,
-                target == CombatSide.Player ? PlayerHealth : EnemyHealth);
+                previousHealth, armorDamageFactor);
             if (target == CombatSide.Player) { PlayerArmor = result.ArmorRemaining; PlayerHealth = result.HealthRemaining; }
             else { EnemyArmor = result.ArmorRemaining; EnemyHealth = result.HealthRemaining; }
             CreditDamage(source, itemId, kind, result, credits, cause);
             CreditAbsorption(target, result.ArmorAbsorbed);
             DamageApplied?.Invoke(new CombatDamageEvent(source, target, kind, damage, result, itemId));
+            if (target == CombatSide.Enemy && damage > 0d) ResolveEnemyDamage(result, events);
+            ResolveStageHealthThreshold(target, previousHealth, events);
             if (kind != CombatDamageKind.AttackItem) ResolveGearDamageReceived(source, target, result, events);
             return result;
         }

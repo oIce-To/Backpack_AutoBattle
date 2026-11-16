@@ -1,0 +1,14 @@
+{
+  "id": "dragonslayer",
+  "name": "용살자",
+  "shape": "#./##/##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v2.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v3.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Restore and KEEP the entire ORIGINAL ornate dragon axe head: gold dragon with red eye, dark engraved steel winglike blade with FULL graceful tapered crescent lower tip and sharp upper hook. UNIFORMLY SCALE the complete side blade assembly including gold dragon to 75% of original, rather than shortening/cutting its tip. Mount the smaller complete head at same general upper-mid position. Keep long shaft, spear top, ruby ornaments. 2 columns x5 rows #./##/##/#./#. Request800x2000. Right half artwork only from y430 to y1150; top-right and bottom two right cells fully transparent. All curves/tips intact, entire head fits with air around it. Do not create a flat chopped bottom edge.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #./##/##/#./#.",
+  "source": "C:/Users/user/.codex/generated_images/01a1b087-8df0-72e2-be20-0c50ee16ec90/exec-868093fa-b15c-4ed7-81b6-59e8441bc13b.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

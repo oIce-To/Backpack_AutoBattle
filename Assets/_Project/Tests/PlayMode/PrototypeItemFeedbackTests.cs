@@ -184,7 +184,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(TooltipText(tooltip, "Accuracy Value").text, Is.EqualTo("90%"));
             Assert.That(TooltipText(tooltip, "Critical Chance Value").text, Is.EqualTo("10%"));
             Assert.That(TooltipText(tooltip, "Critical Damage Value").text, Is.EqualTo("200%"));
-            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>().text, Is.EqualTo(swordData.Description));
+            var emptyDescription = tooltip.GetComponentInChildren<TextMeshProUGUI>(true);
+            Assert.That(emptyDescription.text, Is.Empty);
+            Assert.That(emptyDescription.gameObject.activeSelf, Is.False);
+            Assert.That(tooltip.transform.Find("Divider").gameObject.activeSelf, Is.False);
             Assert.That(tooltip.GetComponentsInChildren<PrototypeStatIcon>(), Has.Length.EqualTo(5));
             Assert.That(TooltipText(tooltip, "Attack Caption").text, Is.EqualTo("공격력"));
             Assert.That(TooltipText(tooltip, "Critical Damage Caption").text, Is.EqualTo("치명타 피해"));
@@ -255,7 +258,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             var pointer = new PointerEventData(Object.FindFirstObjectByType<EventSystem>()) { position = ScreenPoint(club.transform) };
             club.OnPointerEnter(pointer);
             Assert.That(tooltip.IsVisible, Is.True);
-            Assert.That(TooltipText(tooltip, "Tooltip Name").text, Is.EqualTo("고블린 몽둥이"));
+            Assert.That(tooltip.GetComponentInChildren<TextMeshProUGUI>(true).text, Is.Empty);
+            Assert.That(TooltipText(tooltip, "Tooltip Name").text, Is.EqualTo("고블린 곤봉"));
             Assert.That(TooltipText(tooltip, "Tooltip Context").text, Is.EqualTo("전투 중 실제 스탯"));
             Assert.That(TooltipText(tooltip, "Accuracy Value").text, Is.EqualTo("100%"));
             controller.TickCombat(1f);

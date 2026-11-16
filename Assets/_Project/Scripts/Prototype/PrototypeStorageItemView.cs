@@ -34,7 +34,11 @@ namespace BackpackAutoBattle.Prototype
             RefreshShape();
         }
 
-        public void RefreshShape() => PrototypeItemShapeVisual.Rebuild(_rectTransform, StoredItem.ItemData, StoredItem.Rotation);
+        public void RefreshShape()
+        {
+            PrototypeItemShapeVisual.Rebuild(_rectTransform, StoredItem.ItemData, StoredItem.Rotation);
+            _rectTransform.localScale = Vector3.one * _controller.StorageItemScale(_rectTransform.sizeDelta);
+        }
 
         public void SetPosition(Vector2 position)
         {

@@ -1,0 +1,14 @@
+{
+  "id": "whetstone",
+  "name": "숫돌",
+  "shape": "#",
+  "baseline": "Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-17-v2.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-17-v3.png",
+  "prompt": "Use case: background-extraction. Keep this exact rough gray whetstone with all existing grain texture, scratches, stepped outlines, shape, orientation and colors. Change ONLY transparency outside the stone: REMOVE ALL faint speckled gray background, all gray haze, glow, shadow and stray background pixels. Completely transparent alpha outside precise stone silhouette, including upper-left large empty area. Preserve actual matte grain on the stone itself exactly. Do not smooth texture. No backdrop, no halo. Single transparent PNG same square canvas, exact same object position and size. This is a precise background cleanup, not a redesign.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-3c77ed2f-5b15-4bb6-a7a1-a124367f5129.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -8,7 +8,6 @@ using BackpackAutoBattle.Shop;
 using BackpackAutoBattle.Stages;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
 
 namespace BackpackAutoBattle.Prototype
@@ -28,12 +27,12 @@ namespace BackpackAutoBattle.Prototype
         private PrototypeRunState _run;
         private PrototypeBattleController _battleController;
         private PrototypePreparationPanel _preparationPanel;
+        private PrototypeEnemyPreview _enemyPreview;
         private PrototypeItemTooltip _itemTooltip;
         private RectTransform _shopScreenRoot;
         private CanvasGroup _shopInputGroup;
         private CanvasGroup _gridInputGroup;
         private CanvasGroup _storageInputGroup;
-        private Button _debugNextRoundButton;
         private CombatantSnapshot _preparedEnemy;
         private string _enemyConfigurationError;
 
@@ -47,16 +46,16 @@ namespace BackpackAutoBattle.Prototype
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
-        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
-        public bool IsEnemyPreviewOpen => _preparationPanel?.IsEnemyPreviewOpen == true;
+        public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsShopReturnPresenting
+            && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
+        public bool IsEnemyPreviewOpen => _enemyPreview?.IsOpen == true;
 
         public bool TryOpenEnemyPreview()
         {
             if (!CanEditLoadout || _draggingItem != null || _preparedEnemy == null) return false;
-            _itemTooltip.HideAll();
             _fusionHoverOwner = null;
             ClearPlacementOverlay();
-            _preparationPanel.ShowEnemy(_preparedEnemy);
+            _enemyPreview.Show(_preparedEnemy);
             RefreshCombatInterface();
             return true;
         }
@@ -64,9 +63,8 @@ namespace BackpackAutoBattle.Prototype
         public void CloseEnemyPreview()
         {
             if (!IsEnemyPreviewOpen) return;
-            _itemTooltip.HideAll();
-            _preparationPanel.HideEnemy();
-            RefreshCombatInterface();
+            _enemyPreview.Hide();
+            if (!IsMainMenu) RefreshCombatInterface();
         }
         public CharacterStatsSnapshot StageEntryStats => _run.PlayerStats;
 
@@ -103,7 +101,7 @@ namespace BackpackAutoBattle.Prototype
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
             // Use exactly the same resolved snapshot shown in preparation, never the source ItemData values.
-            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, _roundIncome, statusEffects: _statusEffects);
+            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, RoundIncome(_run.Round + 1), statusEffects: _statusEffects);
             _selectedItem = null;
             _sellPreview.gameObject.SetActive(false);
             RefreshCombatInterface();
@@ -115,10 +113,12 @@ namespace BackpackAutoBattle.Prototype
         public bool ReturnToPreparation()
         {
             if (IsSettingsOpen || !_run.TryReturnToPreparation()) return false;
+            int income = RoundIncome(_run.Round);
             _battleController.EndBattle();
-            BeginFusionPresentation();
+            FinishBattleShopEntry(income);
+            UpdateEconomyText();
             RefreshCombatInterface();
-            SetStatus($"남은 라이프 {_run.Lives}. 가방을 재배치하고 재도전하세요. 라운드와 골드는 유지됩니다.");
+            SetStatus($"남은 라이프 {_run.Lives}. 같은 라운드에 재도전합니다. 라운드 수입 +{income} G");
             return true;
         }
 
@@ -146,7 +146,8 @@ namespace BackpackAutoBattle.Prototype
                 : result == CombatResult.Victory ? PrototypeSound.RoundClear : PrototypeSound.RoundFail);
             if (_run.IsFinished) TrySettleRunReward();
             else RecordProgress();
-            _battleController.ShowResult(Phase);
+            int returnIncome = RoundIncome(Phase == PrototypePhase.Victory ? _run.Round + 1 : _run.Round);
+            _battleController.ShowResult(Phase, returnIncome);
             UpdateEconomyText();
             if (_run.IsFinished)
             {
@@ -169,7 +170,7 @@ namespace BackpackAutoBattle.Prototype
             _lifeHearts.gameObject.SetActive(!IsMainMenu);
             _lifeHearts.SetLives(_run.Lives, _run.StartingLives);
             _stageSettingsButton.gameObject.SetActive(!IsMainMenu);
-            _stageSettingsButton.interactable = Phase != PrototypePhase.Fusion && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
+            _stageSettingsButton.interactable = !IsShopReturnPresenting && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
             _stageAbandonButton.interactable = CanEditLoadout;
             if (!IsMainMenu && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen)
             {
@@ -179,8 +180,6 @@ namespace BackpackAutoBattle.Prototype
             SetInputEnabled(_shopInputGroup, CanEditLoadout);
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
-            if (_debugNextRoundButton != null)
-                _debugNextRoundButton.interactable = CanEditLoadout && _preparedEnemy != null && _run.Round < StageRoundCount;
             if (showShop) RenderEncounterPreview();
         }
 
@@ -190,7 +189,6 @@ namespace BackpackAutoBattle.Prototype
             if (!CanEditLoadout || _draggingItem != null) return false;
             bool valid = TryResolveEnemy(_run.Round, out _preparedEnemy, out _enemyConfigurationError);
             RenderEncounterPreview();
-            if (_debugNextRoundButton != null) _debugNextRoundButton.interactable = valid && _run.Round < StageRoundCount;
             return valid;
         }
 

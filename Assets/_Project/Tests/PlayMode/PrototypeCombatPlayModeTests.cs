@@ -178,7 +178,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(battleViews.Count(view => view.Side == CombatSide.Player), Is.EqualTo(4));
             Assert.That(battleViews.Count(view => view.Side == CombatSide.Enemy), Is.EqualTo(1));
             Assert.That(battleViews.Where(view => view.Side == CombatSide.Enemy).Single().Snapshot.DisplayName,
-                Is.EqualTo("고블린 몽둥이"));
+                Is.EqualTo("고블린 곤봉"));
             Assert.That(controller.CanEditLoadout, Is.False);
             Assert.That(controller.TryStartBattle(), Is.False);
             Assert.That(controller.TryRerollShop(), Is.False);
@@ -233,7 +233,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
-        public IEnumerator Defeat_ReturnsToPreparationWithoutIncomeOrRoundChange()
+        public IEnumerator Defeat_ReturnsToPreparationWithIncomeAndSameRound()
         {
             yield return PrototypeCombatFixture.LoadWithTrainingKit();
             yield return null;
@@ -252,7 +252,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.ReturnToPreparation(), Is.True);
             Assert.That(controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(controller.CurrentRound, Is.EqualTo(1));
-            Assert.That(controller.Gold, Is.EqualTo(goldBefore));
+            Assert.That(controller.Gold, Is.EqualTo(goldBefore + 5));
             Assert.That(controller.TryStartBattle(), Is.True);
             Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(50d));
         }
@@ -284,7 +284,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             Assert.That(controller.Phase, Is.EqualTo(PrototypePhase.Completed));
             Assert.That(controller.CurrentRound, Is.EqualTo(12));
-            Assert.That(controller.Gold, Is.EqualTo(20 + 11 * 5));
+            Assert.That(controller.Gold, Is.EqualTo(103));
             Assert.That(controller.AdvanceRound(), Is.False);
             Assert.That(controller.TryStartBattle(), Is.False);
             Assert.That(Find(controller, "Combat Action Button").GetComponent<Button>().interactable, Is.False);

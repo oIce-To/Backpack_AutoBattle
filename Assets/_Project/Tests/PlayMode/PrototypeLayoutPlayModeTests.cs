@@ -65,6 +65,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             BackpackItemView proxy = Object.FindObjectsByType<BackpackItemView>(FindObjectsSortMode.None)
                 .Single(view => view.InstanceId == "starter_swift_charm");
             Assert.That(proxy.Rotation, Is.EqualTo(ItemRotation.Clockwise90));
+            var proxyCell = proxy.GetComponentsInChildren<Image>().First(image => image.name.StartsWith("Cell "));
+            Assert.That(proxyCell.color, Is.EqualTo(proxy.Data.DisplayColor));
             pointer.position = Screen(Rect(controller, "Grid Cell 3,3"));
             stored.OnDrag(pointer);
             stored.OnEndDrag(pointer);

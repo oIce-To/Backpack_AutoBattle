@@ -51,7 +51,7 @@ namespace BackpackAutoBattle.Tests.Combat
             Assert.That(content.PlacementDescriptions.Count, Is.EqualTo(2));
             Assert.That(content.PlacementDescriptions.All(text => text.StartsWith(ItemTooltipContent.PlacementIconTag)), Is.True);
             Assert.That(content.PlacementDescriptions[1], Does.Contain("원거리 무기의 공격력을 2 감소"));
-            Assert.That(content.GetDescriptionText(), Is.EqualTo(string.Join("\n\n", content.PlacementDescriptions) + "\n\n추가 효과\n\n일반 설명"));
+            Assert.That(content.GetDescriptionText(), Is.EqualTo(string.Join("\n\n", content.PlacementDescriptions) + "\n\n추가 효과"));
             var snapshot = Snap("future_item", data, Vector2Int.zero);
             Assert.That(ItemTooltipContent.FromCombat(snapshot, null).GetDescriptionText(), Is.EqualTo(content.GetDescriptionText()));
         }

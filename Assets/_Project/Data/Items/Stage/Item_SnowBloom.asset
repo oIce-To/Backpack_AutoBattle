@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_SnowBloom
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: snow_bloom
+  _displayName: "설화만개"
+  _effectDescription: "자신에게 적용되는 빙결 효과가 50% 감소합니다.\n명중 시 빙결 2중첩을 부여합니다. 치명타이면 3중첩을 부여합니다.\n적의 빙결 중첩마다 이 무기의 공격력이 1%, 치명타 확률이 0.5%p 증가합니다.\n이 무기로 실제 입힌 피해의 30%만큼 체력을 회복합니다."
+  _category: 0
+  _rarity: 4
+  _tags: 1
+  _stageEffect: 44
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 1.5
+    _effects:
+    - _kind: 0
+  _weaponStats:
+    _attackDamage: 12
+    _cooldownSeconds: 1.5
+    _accuracyPercent: 90
+    _criticalChancePercent: 15
+    _criticalDamagePercent: 225
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1.2
+  _excludeFromShop: 1
+  _purchasePrice: 16
+  _inventorySprite: {fileID: 21300000, guid: 6860a6b6e8144f01b1145ebcbb5d792d, type: 3}
+  _displayColor: {r: 0.48, g: 0.58, b: 0.78, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}

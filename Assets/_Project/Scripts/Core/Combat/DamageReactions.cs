@@ -31,11 +31,12 @@ namespace BackpackAutoBattle.Combat
         public double Amount { get; }
         public double HealthRestored { get; }
         public DamageResolution Damage { get; }
+        public bool Critical { get; }
         public CombatReactionEvent(double time, CombatSide owner, CombatSide target, StatusEffectKind status,
-            CombatReactionKind kind, string itemId, double amount, double restored = 0, DamageResolution damage = default)
+            CombatReactionKind kind, string itemId, double amount, double restored = 0, DamageResolution damage = default, bool critical = false)
         {
             Time = time; Owner = owner; Target = target; Status = status; Kind = kind;
-            TriggeringItemId = itemId; Amount = amount; HealthRestored = restored; Damage = damage;
+            TriggeringItemId = itemId; Amount = amount; HealthRestored = restored; Damage = damage; Critical = critical;
         }
     }
 
@@ -72,11 +73,15 @@ namespace BackpackAutoBattle.Combat
                 }
                 else
                 {
+                    bool critical = RollThornsCritical(owner, out double multiplier);
+                    if (critical) amount *= multiplier;
+                    double finalDamage = amount * GetIncomingDamageMultiplier(attack.Source);
                     // A defender killed by this attack still retaliates. Do not resolve victory here.
                     DamageResolution damage = DealDamage(owner, attack.Source, amount, CombatDamageKind.Other,
                         null, StatusWeights(owner, rule.Status), StatusEffectKind.Thorns, events);
                     ReactionTriggered?.Invoke(new CombatReactionEvent(ElapsedSeconds, owner, attack.Source, rule.Status,
-                        rule.Effect, attack.SourceItemId, amount * GetIncomingDamageMultiplier(attack.Source), damage: damage));
+                        rule.Effect, attack.SourceItemId, finalDamage, damage: damage, critical: critical));
+                    if (critical) HealThornsCritical(owner, damage, events);
                 }
             }
         }

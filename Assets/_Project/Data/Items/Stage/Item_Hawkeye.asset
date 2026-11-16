@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_Hawkeye
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: hawkeye
+  _displayName: "호크아이"
+  _effectDescription: "{diamond}의 아이템은 자신의 집중 중첩마다 치명타 확률이 1%p 증가합니다."
+  _category: 7
+  _rarity: 3
+  _tags: 0
+  _stageEffect: 31
+  _placementEffects:
+  - _cells:
+    - {x: -1, y: 0}
+    - {x: 2, y: 0}
+    _targetFilter:
+      _filterByCategory: 0
+      _category: 0
+      _requiredTags: 0
+    _attackDamageBonus: 0
+    _triggersGearEffect: 1
+  _excludeFromShop: 0
+  _purchasePrice: 7
+  _inventorySprite: {fileID: 21300000, guid: 3a7384023cf04939b544d0036470b782, type: 3}
+  _displayColor: {r: 0.57, g: 0.38, b: 0.72, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}

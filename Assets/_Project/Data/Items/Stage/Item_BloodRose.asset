@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_BloodRose
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: blood_rose
+  _displayName: "혈장미"
+  _effectDescription: "전투 시작 시 적의 가시와 흡혈을 각각 5중첩 제거하고 자신에게 가시와 흡혈을 각각 5중첩 부여합니다."
+  _category: 7
+  _rarity: 3
+  _tags: 0
+  _stageEffect: 36
+  _excludeFromShop: 0
+  _purchasePrice: 7
+  _inventorySprite: {fileID: 21300000, guid: f3bc4ca7b4874fe7a9bb339c9bbdf9ca, type: 3}
+  _displayColor: {r: 0.57, g: 0.38, b: 0.72, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}

@@ -1,0 +1,366 @@
+[
+  {
+    "id": "blind_mushroom",
+    "name": "눈먼 독버섯",
+    "source": "Assets/_Project/Art/Items/Stage/blind-mushroom/blind-mushroom-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/blind-mushroom/blind-mushroom-approved.png",
+    "sha256": "3b205e834caef19a745fc88bcbe681640778a83135cd0ed79cfaa6d327e266a0"
+  },
+  {
+    "id": "blood_iron_armor",
+    "name": "최후의 철혈갑주",
+    "source": "Assets/_Project/Art/Items/Stage/blood-iron-armor/blood-iron-armor-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/blood-iron-armor/blood-iron-armor-approved.png",
+    "sha256": "039e4eef418468f019f0a0ab854e586be3b87db0c7af9e4f6dc372bc3126b7bd"
+  },
+  {
+    "id": "blood_rose",
+    "name": "혈장미",
+    "source": "Assets/_Project/Art/Items/Stage/blood-rose/blood-rose-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/blood-rose/blood-rose-approved.png",
+    "sha256": "99cefe5922828029ba211f0cd8a8d78696aa651fceb9e93a41184ab047856a05"
+  },
+  {
+    "id": "bola",
+    "name": "볼라",
+    "source": "Assets/_Project/Art/Items/Stage/bola/bola-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/bola/bola-approved.png",
+    "sha256": "d98e0c3a14e551f6402c256ac8015767ae024f5ec7e5f83f8d2f407a89f7e8ff"
+  },
+  {
+    "id": "burning_cloak",
+    "name": "타오르는 망토",
+    "source": "Assets/_Project/Art/Items/Stage/burning-cloak/burning-cloak-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/burning-cloak/burning-cloak-approved.png",
+    "sha256": "5e83498c9123e1abc13b7884f0be51911fa6fb946b553c975fbeec4798f0b3dc"
+  },
+  {
+    "id": "cursed_clover",
+    "name": "저주받은 네잎클로버",
+    "source": "Assets/_Project/Art/Items/Stage/cursed-clover/cursed-clover-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/cursed-clover/cursed-clover-approved.png",
+    "sha256": "50422c4dfba19b451b8d3932b38929e5a8249f7d921138b1a6c88e05cd62128c"
+  },
+  {
+    "id": "deception_cloak",
+    "name": "눈속임 망토",
+    "source": "Assets/_Project/Art/Items/Stage/deception-cloak/deception-cloak-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/deception-cloak/deception-cloak-approved.png",
+    "sha256": "ef63be59e7fe407582d60a257d1533c633728d033bfd4561f251c4c914f384d1"
+  },
+  {
+    "id": "dragons_breath",
+    "name": "용의 숨결",
+    "source": "Assets/_Project/Art/Items/Stage/dragons-breath/dragons-breath-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/dragons-breath/dragons-breath-approved.png",
+    "sha256": "6530de251c584a28e19763e4d2307dc9af8589a8fac3754e08c58d7aa832778f"
+  },
+  {
+    "id": "ember_bow",
+    "name": "적염의 활",
+    "source": "Assets/_Project/Art/Items/Stage/ember-bow/ember-bow-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/ember-bow/ember-bow-approved.png",
+    "sha256": "69009664bc7d7e77aea11b45e7ec42d401ccdc3fa77d19174809c6afcfdd5c2e"
+  },
+  {
+    "id": "four_leaf_clover",
+    "name": "네잎클로버",
+    "source": "Assets/_Project/Art/Items/Stage/four-leaf-clover/four-leaf-clover-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/four-leaf-clover/four-leaf-clover-approved.png",
+    "sha256": "9d5034d43fe521158116e352b334744374155e56c7019c61d116289aee1e0082"
+  },
+  {
+    "id": "genesis_armor",
+    "name": "창세의 수호갑옷",
+    "source": "Assets/_Project/Art/Items/Stage/genesis-armor/genesis-armor-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/genesis-armor/genesis-armor-approved.png",
+    "sha256": "ce31f2d1433f480899cea8c86abad3f068b39aa2ef8839a319c61603891dbe53"
+  },
+  {
+    "id": "glacial_heart",
+    "name": "빙하의 심장",
+    "source": "Assets/_Project/Art/Items/Stage/glacial-heart/glacial-heart-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/glacial-heart/glacial-heart-approved.png",
+    "sha256": "4a162d5ffcfff36401ba9d625e1cdd6967eb4bf68231be1b63bc5c8456bea6b0"
+  },
+  {
+    "id": "great_sword",
+    "name": "그레이트 소드",
+    "source": "Assets/_Project/Art/Items/Stage/great-sword/great-sword-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/great-sword/great-sword-approved.png",
+    "sha256": "5ea8607269f4f88f3ca632c9bd623eb0b534d9d5a2c4b0d087f26def4108f7c1"
+  },
+  {
+    "id": "hawkeye",
+    "name": "호크아이",
+    "source": "Assets/_Project/Art/Items/Stage/hawkeye/hawkeye-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/hawkeye/hawkeye-approved.png",
+    "sha256": "a7ff3b5650433157dd9301e142b597592a745fc83c3bcc7bdb03a3817aee58ac"
+  },
+  {
+    "id": "healing_potion",
+    "name": "회복 물약",
+    "source": "Assets/_Project/Art/Items/Stage/healing-potion/healing-potion-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/healing-potion/healing-potion-approved.png",
+    "sha256": "f2dc4e040f3da323c60ab3d2814f515e2b97f6d6f824f9d766dbdf767a4c5de0"
+  },
+  {
+    "id": "ice_crystal",
+    "name": "얼음 수정",
+    "source": "Assets/_Project/Art/Items/Stage/ice-crystal/ice-crystal-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/ice-crystal/ice-crystal-approved.png",
+    "sha256": "a66f87cd86694792a3f97d0851db342cdab8f33e0d23d3327a154a01adac2097"
+  },
+  {
+    "id": "iron_dagger",
+    "name": "철 단검",
+    "source": "Assets/_Project/Art/Items/Stage/iron-dagger/iron-dagger-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/iron-dagger/iron-dagger-approved.png",
+    "sha256": "bfbef4185639ef548c6f9bf7b72508f9432dad0c05f3ddef983ac8a00b817b7f"
+  },
+  {
+    "id": "iron_maiden",
+    "name": "아이언 메이든",
+    "source": "Assets/_Project/Art/Items/Stage/iron-maiden/iron-maiden-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/iron-maiden/iron-maiden-approved.png",
+    "sha256": "b28b45202b0b05d9f2699c5f1e84dc50cda63d5fbc3bc147dc0ee0110b40a149"
+  },
+  {
+    "id": "iron_thorn_helmet",
+    "name": "무쇠가시 투구",
+    "source": "Assets/_Project/Art/Items/Stage/iron-thorn-helmet/iron-thorn-helmet-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/iron-thorn-helmet/iron-thorn-helmet-approved.png",
+    "sha256": "0eea10aa9a0f231878046a392ca4b10d52da8f41009483be85f837eea6129347"
+  },
+  {
+    "id": "iron_thorns",
+    "name": "철가시",
+    "source": "Assets/_Project/Art/Items/Stage/iron-thorns/iron-thorns-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/iron-thorns/iron-thorns-approved.png",
+    "sha256": "ddc84b21ee0ac1194617ee1a079a5b63b901739a85fb3af9e187487e96f2d356"
+  },
+  {
+    "id": "leather_armor",
+    "name": "가죽 갑옷",
+    "source": "Assets/_Project/Art/Items/Stage/leather-armor/leather-armor-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/leather-armor/leather-armor-approved.png",
+    "sha256": "cb8d719652272fd297189ba0873f334f1eb55fbf0097e003bcff6f243028dc06"
+  },
+  {
+    "id": "leather_boots",
+    "name": "가죽 장화",
+    "source": "Assets/_Project/Art/Items/Stage/leather-boots/leather-boots-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/leather-boots/leather-boots-approved.png",
+    "sha256": "763df70973e977bc37202d8864f8d317a249f3aa1118b8b4a951b89742dc9515"
+  },
+  {
+    "id": "leather_gloves",
+    "name": "가죽 장갑",
+    "source": "Assets/_Project/Art/Items/Stage/leather-gloves/leather-gloves-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/leather-gloves/leather-gloves-approved.png",
+    "sha256": "1dab9d1583e655cd8a364d03e989994a206fb99f455f50dbc15089baa12ad41b"
+  },
+  {
+    "id": "lunar_eclipse",
+    "name": "월식",
+    "source": "Assets/_Project/Art/Items/Stage/lunar-eclipse/lunar-eclipse-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/lunar-eclipse/lunar-eclipse-approved.png",
+    "sha256": "600ad1dd07f875850f8b287279150f242d3630527792d246263010fa035ebdc3"
+  },
+  {
+    "id": "mithril",
+    "name": "미스릴",
+    "source": "Assets/_Project/Art/Items/Stage/mithril/mithril-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/mithril/mithril-approved.png",
+    "sha256": "46b23fec9a321b0b9a9bc59916260b622bf9e41d39fca51339b0aa5f10a177d0"
+  },
+  {
+    "id": "mithril_armor",
+    "name": "미스릴 갑옷",
+    "source": "Assets/_Project/Art/Items/Stage/mithril-armor/mithril-armor-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/mithril-armor/mithril-armor-approved.png",
+    "sha256": "bbc9653f6e7aedac428ca054c9f57754c2ccfcf4586865c5b9aad8740ffaae68"
+  },
+  {
+    "id": "mithril_shield",
+    "name": "미스릴 방패",
+    "source": "Assets/_Project/Art/Items/Stage/mithril-shield/mithril-shield-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/mithril-shield/mithril-shield-approved.png",
+    "sha256": "bb8f308a72ef1e0383a15bc713dddd06d07485ef4174d0dce2ab2583597f0c66"
+  },
+  {
+    "id": "moonflower",
+    "name": "달맞이꽃",
+    "source": "Assets/_Project/Art/Items/Stage/moonflower/moonflower-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/moonflower/moonflower-approved.png",
+    "sha256": "73ac365c27680b782c600a6da9c28ee101e0d1332a49d51c18737fff278b96df"
+  },
+  {
+    "id": "night_veil",
+    "name": "밤의 장막",
+    "source": "Assets/_Project/Art/Items/Stage/night-veil/night-veil-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/night-veil/night-veil-approved.png",
+    "sha256": "aeed16ed3983ced9e94761e8efd846debaa46260fed3d685cccea9604d2ba373"
+  },
+  {
+    "id": "pegasus_feather",
+    "name": "페가수스의 깃털",
+    "source": "Assets/_Project/Art/Items/Stage/pegasus-feather/pegasus-feather-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/pegasus-feather/pegasus-feather-approved.png",
+    "sha256": "77b5e90b0581f7174d7626d44267cd09472081e88123c32eee8d59756c28a267"
+  },
+  {
+    "id": "piggy_bank",
+    "name": "저금통",
+    "source": "Assets/_Project/Art/Items/Stage/piggy-bank/piggy-bank-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/piggy-bank/piggy-bank-approved.png",
+    "sha256": "5b7053836bda2108e13ef4de6f358654f8b2db2094eb80f94740b490e5f1df36"
+  },
+  {
+    "id": "platinum_card",
+    "name": "플래티넘 카드",
+    "source": "Assets/_Project/Art/Items/Stage/platinum-card/platinum-card-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/platinum-card/platinum-card-approved.png",
+    "sha256": "a5bfa9aeace22f909575daa5a4a6d966a8b398b7b296f3e9f3f4457bcf3563ea"
+  },
+  {
+    "id": "platinum_clover",
+    "name": "플래티넘 클로버",
+    "source": "Assets/_Project/Art/Items/Stage/platinum-clover/platinum-clover-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/platinum-clover/platinum-clover-approved.png",
+    "sha256": "14e54bb36975feed76750a8c546a3028eb89469f86642273072bd784c49f53e3"
+  },
+  {
+    "id": "poison_bottle",
+    "name": "독병",
+    "source": "Assets/_Project/Art/Items/Stage/poison-bottle/poison-bottle-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/poison-bottle/poison-bottle-approved.png",
+    "sha256": "f40a077d0e0a315614e16dc5ef9b78f1a78f178fd2d64f75cfb597b58b36d55c"
+  },
+  {
+    "id": "poison_quiver",
+    "name": "맹독 화살통",
+    "source": "Assets/_Project/Art/Items/Stage/poison-quiver/poison-quiver-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/poison-quiver/poison-quiver-approved.png",
+    "sha256": "5c75efabd3acff2d9d503a03917b5bddfab9383e3219aa92a968cbf2f9ea8177"
+  },
+  {
+    "id": "primal_flame",
+    "name": "태초의 불꽃",
+    "source": "Assets/_Project/Art/Items/Stage/primal-flame/primal-flame-2026-11-17-v2.png",
+    "output": "Assets/_Project/Art/Items/Stage/primal-flame/primal-flame-approved.png",
+    "sha256": "dc36b0a2b5218b21a27f79047bee7dd83d20618b95c5661c1255779fc5b53ece"
+  },
+  {
+    "id": "quiver",
+    "name": "화살통",
+    "source": "Assets/_Project/Art/Items/Stage/quiver/quiver-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/quiver/quiver-approved.png",
+    "sha256": "c0dcca9b4d8775dd759dd03ac952697e719e18afe36fe2bf7ce6bcf9bc9581ae"
+  },
+  {
+    "id": "razor_thorn",
+    "name": "서슬퍼런 가시",
+    "source": "Assets/_Project/Art/Items/Stage/razor-thorn/razor-thorn-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/razor-thorn/razor-thorn-approved.png",
+    "sha256": "4a02155bdb141843e100f8c05663216abe04a23c7a4f98710f30ba19ad8b8648"
+  },
+  {
+    "id": "snow_bloom",
+    "name": "설화만개",
+    "source": "Assets/_Project/Art/Items/Stage/snow-bloom/snow-bloom-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/snow-bloom/snow-bloom-approved.png",
+    "sha256": "fa7df269861c4703f57f82076c59259a64f92b25991655916ac81fc9c1609b0c"
+  },
+  {
+    "id": "spear",
+    "name": "창",
+    "source": "Assets/_Project/Art/Items/Stage/spear/spear-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/spear/spear-approved.png",
+    "sha256": "23b51211eb04b6a40acd105da037448b1f67ca70cfbd35c95a6bf4bcb3beb33d"
+  },
+  {
+    "id": "steel_sword",
+    "name": "강철 검",
+    "source": "Assets/_Project/Art/Items/Stage/steel-sword/steel-sword-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/steel-sword/steel-sword-approved.png",
+    "sha256": "be4bc827c67fe64e939dbac725becb265028a8a35ecf64008642dc54014c29be"
+  },
+  {
+    "id": "torch",
+    "name": "횃불",
+    "source": "Assets/_Project/Art/Items/Stage/torch/torch-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/torch/torch-approved.png",
+    "sha256": "85ab3d6227334207e68a0a3b2815765898d76194efc0f4abcf23650f5e363f7f"
+  },
+  {
+    "id": "true_shot",
+    "name": "정사필중",
+    "source": "Assets/_Project/Art/Items/Stage/true-shot/true-shot-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/true-shot/true-shot-approved.png",
+    "sha256": "4e86cfd17a97ac6bb882e420f0b93abb94e2ca888c37ec2e17a158073bcda94b"
+  },
+  {
+    "id": "vampire_bug",
+    "name": "흡혈충",
+    "source": "Assets/_Project/Art/Items/Stage/vampire-bug/vampire-bug-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/vampire-bug/vampire-bug-approved.png",
+    "sha256": "48657b2e9f509fb7bc54b67b070e0367b1ce0b9904efac2c77ea787a2a6b5780"
+  },
+  {
+    "id": "vampire_knife",
+    "name": "뱀파이어 나이프",
+    "source": "Assets/_Project/Art/Items/Stage/vampire-knife/vampire-knife-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/vampire-knife/vampire-knife-approved.png",
+    "sha256": "73268c57a49ee26b0746a24186b2aae11576d80fb5309fa441175302f7aa5ebb"
+  },
+  {
+    "id": "venom_bug",
+    "name": "맹독충",
+    "source": "Assets/_Project/Art/Items/Stage/venom-bug/venom-bug-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/venom-bug/venom-bug-approved.png",
+    "sha256": "35c2a683613ba85f517ff807a39681c329cf840d7dd25935d40d0c4ac360bccc"
+  },
+  {
+    "id": "windsurfer",
+    "name": "윈드서퍼",
+    "source": "Assets/_Project/Art/Items/Stage/windsurfer/windsurfer-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/windsurfer/windsurfer-approved.png",
+    "sha256": "4ec3969802f366c532da753413ea9484c85a0d597c82c6f8eccc6fad3d69a4b6"
+  },
+  {
+    "id": "winged_boots",
+    "name": "전령신의 날개신발",
+    "source": "Assets/_Project/Art/Items/Stage/winged-boots/winged-boots-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/winged-boots/winged-boots-approved.png",
+    "sha256": "8bfe2d5827d36872852a4b0a694bda45860fdada1aaab4c17e0a5ae06caa4686"
+  },
+  {
+    "id": "wooden_bow",
+    "name": "나무 활",
+    "source": "Assets/_Project/Art/Items/Stage/wooden-bow/wooden-bow-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-bow/wooden-bow-approved.png",
+    "sha256": "77b59e49eee1f379fc53710ff05d4f5a3158d98c5df1c8af49ba59bc2f129318"
+  },
+  {
+    "id": "wooden_shield",
+    "name": "나무 방패",
+    "source": "Assets/_Project/Art/Items/Stage/wooden-shield/wooden-shield-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-shield/wooden-shield-approved.png",
+    "sha256": "4d5a61a42fe2a6b41df9a5c7bceb7e2c6e5cc8cc8c2bf9579ac1564e346241dd"
+  },
+  {
+    "id": "wooden_sword",
+    "name": "목검",
+    "source": "Assets/_Project/Art/Items/Stage/wooden-sword/wooden-sword-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-sword/wooden-sword-approved.png",
+    "sha256": "a82ddcfe9b5f0ccadee026ef3c81b0e5058f54548ee9a5181c70501503dfd2ad"
+  },
+  {
+    "id": "worn_helmet",
+    "name": "허름한 투구",
+    "source": "Assets/_Project/Art/Items/Stage/worn-helmet/worn-helmet-2026-11-16-v1.png",
+    "output": "Assets/_Project/Art/Items/Stage/worn-helmet/worn-helmet-approved.png",
+    "sha256": "0285255dc1bd1156ca5116f26b79d6a00a36d0d53eff5670fa84b02b47f31f34"
+  }
+]

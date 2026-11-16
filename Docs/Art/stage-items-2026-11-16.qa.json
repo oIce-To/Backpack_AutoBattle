@@ -1,0 +1,1679 @@
+[
+  {
+    "id": "battle_axe",
+    "size": [
+      1024,
+      1536
+    ],
+    "sprite_rect_top_left": [
+      36,
+      108,
+      952,
+      1428
+    ],
+    "alpha": [
+      0,
+      254
+    ],
+    "solid_bbox": [
+      213,
+      121,
+      681,
+      1486
+    ],
+    "empty": [
+      {
+        "cell": [
+          1,
+          1
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          1,
+          2
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      }
+    ]
+  },
+  {
+    "id": "blind_mushroom",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      45,
+      76,
+      842,
+      1734
+    ],
+    "empty": []
+  },
+  {
+    "id": "blood_iron_armor",
+    "size": [
+      1024,
+      1536
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "alpha": [
+      0,
+      254
+    ],
+    "solid_bbox": [
+      19,
+      24,
+      1005,
+      1526
+    ],
+    "empty": []
+  },
+  {
+    "id": "blood_rose",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      44,
+      65,
+      843,
+      1739
+    ],
+    "empty": []
+  },
+  {
+    "id": "bola",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      42,
+      63,
+      1213,
+      1231
+    ],
+    "empty": []
+  },
+  {
+    "id": "burning_cloak",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      48,
+      75,
+      1191,
+      1210
+    ],
+    "empty": []
+  },
+  {
+    "id": "cat_step",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      76,
+      103,
+      842,
+      1719
+    ],
+    "empty": []
+  },
+  {
+    "id": "cursed_clover",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      156,
+      103,
+      1111,
+      1203
+    ],
+    "empty": []
+  },
+  {
+    "id": "deception_cloak",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      158,
+      34,
+      1069,
+      1222
+    ],
+    "empty": []
+  },
+  {
+    "id": "dragons_breath",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      148,
+      41,
+      734,
+      1742
+    ],
+    "empty": []
+  },
+  {
+    "id": "dragonslayer",
+    "size": [
+      1007,
+      1562
+    ],
+    "sprite_rect_top_left": [
+      228,
+      90,
+      588,
+      1470
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      234,
+      101,
+      767,
+      1549
+    ],
+    "empty": [
+      {
+        "cell": [
+          1,
+          0
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          1,
+          3
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          1,
+          4
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      }
+    ]
+  },
+  {
+    "id": "eclipse",
+    "size": [
+      1536,
+      1024
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1536,
+      1024
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      174,
+      73,
+      1304,
+      962
+    ],
+    "empty": [
+      {
+        "cell": [
+          0,
+          0
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          2,
+          1
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      }
+    ]
+  },
+  {
+    "id": "ember_bow",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      110,
+      21,
+      629,
+      2151
+    ],
+    "empty": []
+  },
+  {
+    "id": "excalibur",
+    "size": [
+      836,
+      1881
+    ],
+    "sprite_rect_top_left": [
+      178,
+      0,
+      480,
+      1881
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      181,
+      24,
+      655,
+      1857
+    ],
+    "empty": []
+  },
+  {
+    "id": "four_leaf_clover",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      166,
+      109,
+      1089,
+      1195
+    ],
+    "empty": []
+  },
+  {
+    "id": "frost_blade",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      68,
+      24,
+      657,
+      2148
+    ],
+    "empty": []
+  },
+  {
+    "id": "genesis_armor",
+    "size": [
+      1024,
+      1536
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "alpha": [
+      0,
+      254
+    ],
+    "solid_bbox": [
+      2,
+      107,
+      1022,
+      1500
+    ],
+    "empty": []
+  },
+  {
+    "id": "glacial_heart",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      65,
+      104,
+      1189,
+      1196
+    ],
+    "empty": []
+  },
+  {
+    "id": "great_sword",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      91,
+      0,
+      543,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      101,
+      25,
+      623,
+      2153
+    ],
+    "empty": []
+  },
+  {
+    "id": "hawkeye",
+    "size": [
+      1774,
+      887
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1774,
+      887
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      25,
+      142,
+      1749,
+      791
+    ],
+    "empty": []
+  },
+  {
+    "id": "healing_potion",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      243,
+      104,
+      986,
+      1186
+    ],
+    "empty": []
+  },
+  {
+    "id": "hunters_bow",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      152,
+      45,
+      700,
+      2151
+    ],
+    "empty": []
+  },
+  {
+    "id": "ice_crystal",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      52,
+      64,
+      835,
+      1743
+    ],
+    "empty": []
+  },
+  {
+    "id": "iron_dagger",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      168,
+      79,
+      718,
+      1728
+    ],
+    "empty": []
+  },
+  {
+    "id": "iron_maiden",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      35,
+      98,
+      1220,
+      1223
+    ],
+    "empty": []
+  },
+  {
+    "id": "iron_thorn_helmet",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      48,
+      41,
+      1205,
+      1226
+    ],
+    "empty": []
+  },
+  {
+    "id": "iron_thorns",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      82,
+      89,
+      1172,
+      1190
+    ],
+    "empty": []
+  },
+  {
+    "id": "leather_armor",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      142,
+      71,
+      1112,
+      1232
+    ],
+    "empty": []
+  },
+  {
+    "id": "leather_boots",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      36,
+      124,
+      849,
+      1743
+    ],
+    "empty": []
+  },
+  {
+    "id": "leather_gloves",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      75,
+      97,
+      1178,
+      1201
+    ],
+    "empty": []
+  },
+  {
+    "id": "lunar_eclipse",
+    "size": [
+      1024,
+      1536
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "alpha": [
+      0,
+      254
+    ],
+    "solid_bbox": [
+      235,
+      13,
+      790,
+      1523
+    ],
+    "empty": []
+  },
+  {
+    "id": "mithril",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      108,
+      270,
+      1153,
+      1049
+    ],
+    "empty": []
+  },
+  {
+    "id": "mithril_armor",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      14,
+      56,
+      1240,
+      1208
+    ],
+    "empty": []
+  },
+  {
+    "id": "mithril_shield",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      47,
+      49,
+      840,
+      1741
+    ],
+    "empty": []
+  },
+  {
+    "id": "moonflower",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      30,
+      108,
+      858,
+      1702
+    ],
+    "empty": []
+  },
+  {
+    "id": "needle_storm",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      34,
+      55,
+      1220,
+      1203
+    ],
+    "empty": [
+      {
+        "cell": [
+          0,
+          0
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          2,
+          0
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          0,
+          2
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          2,
+          2
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      }
+    ]
+  },
+  {
+    "id": "night_veil",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      96,
+      36,
+      1158,
+      1238
+    ],
+    "empty": []
+  },
+  {
+    "id": "pegasus_feather",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      87,
+      48,
+      859,
+      1738
+    ],
+    "empty": []
+  },
+  {
+    "id": "permafrost",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      134,
+      70,
+      1122,
+      1188
+    ],
+    "empty": []
+  },
+  {
+    "id": "piggy_bank",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      117,
+      132,
+      1153,
+      1195
+    ],
+    "empty": []
+  },
+  {
+    "id": "platinum_card",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      79,
+      281,
+      1174,
+      1088
+    ],
+    "empty": []
+  },
+  {
+    "id": "platinum_clover",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      170,
+      114,
+      1085,
+      1183
+    ],
+    "empty": []
+  },
+  {
+    "id": "poison_bottle",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      236,
+      74,
+      990,
+      1223
+    ],
+    "empty": []
+  },
+  {
+    "id": "poison_immunity_book",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      142,
+      128,
+      1149,
+      1197
+    ],
+    "empty": []
+  },
+  {
+    "id": "poison_quiver",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      192,
+      29,
+      695,
+      1744
+    ],
+    "empty": []
+  },
+  {
+    "id": "primal_flame",
+    "size": [
+      836,
+      1881
+    ],
+    "sprite_rect_top_left": [
+      177,
+      0,
+      470,
+      1880
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      197,
+      37,
+      627,
+      1833
+    ],
+    "empty": []
+  },
+  {
+    "id": "quiver",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      159,
+      37,
+      728,
+      1749
+    ],
+    "empty": []
+  },
+  {
+    "id": "razor_thorn",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      93,
+      77,
+      1180,
+      1208
+    ],
+    "empty": []
+  },
+  {
+    "id": "snow_bloom",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      79,
+      29,
+      645,
+      2143
+    ],
+    "empty": []
+  },
+  {
+    "id": "solar_radiance",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      83,
+      34,
+      1172,
+      1243
+    ],
+    "empty": []
+  },
+  {
+    "id": "spear",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      217,
+      30,
+      506,
+      2142
+    ],
+    "empty": []
+  },
+  {
+    "id": "steel_sword",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      90,
+      28,
+      634,
+      2154
+    ],
+    "empty": []
+  },
+  {
+    "id": "torch",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      170,
+      30,
+      683,
+      1759
+    ],
+    "empty": []
+  },
+  {
+    "id": "true_shot",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      110,
+      0,
+      543,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      146,
+      32,
+      614,
+      2141
+    ],
+    "empty": []
+  },
+  {
+    "id": "vampire_bug",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      82,
+      65,
+      805,
+      1754
+    ],
+    "empty": []
+  },
+  {
+    "id": "vampire_knife",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      65,
+      27,
+      822,
+      1752
+    ],
+    "empty": []
+  },
+  {
+    "id": "venom_bug",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      108,
+      76,
+      1145,
+      1209
+    ],
+    "empty": []
+  },
+  {
+    "id": "war_hero_halberd",
+    "size": [
+      953,
+      1651
+    ],
+    "sprite_rect_top_left": [
+      70,
+      0,
+      820,
+      1640
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      197,
+      189,
+      714,
+      1638
+    ],
+    "empty": [
+      {
+        "cell": [
+          1,
+          0
+        ],
+        "max_alpha": 2,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          1,
+          2
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      },
+      {
+        "cell": [
+          1,
+          3
+        ],
+        "max_alpha": 1,
+        "solid_pixels": 0
+      }
+    ]
+  },
+  {
+    "id": "whetstone",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      62,
+      232,
+      1198,
+      1145
+    ],
+    "empty": []
+  },
+  {
+    "id": "windsurfer",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      35,
+      121,
+      1220,
+      1197
+    ],
+    "empty": []
+  },
+  {
+    "id": "winged_boots",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      26,
+      74,
+      1226,
+      1205
+    ],
+    "empty": []
+  },
+  {
+    "id": "wooden_bow",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      105,
+      82,
+      646,
+      2117
+    ],
+    "empty": []
+  },
+  {
+    "id": "wooden_shield",
+    "size": [
+      887,
+      1774
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      53,
+      50,
+      834,
+      1752
+    ],
+    "empty": []
+  },
+  {
+    "id": "wooden_sword",
+    "size": [
+      724,
+      2172
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      102,
+      25,
+      622,
+      2156
+    ],
+    "empty": []
+  },
+  {
+    "id": "worn_helmet",
+    "size": [
+      1254,
+      1254
+    ],
+    "sprite_rect_top_left": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "alpha": [
+      0,
+      255
+    ],
+    "solid_bbox": [
+      135,
+      112,
+      1119,
+      1165
+    ],
+    "empty": []
+  }
+]

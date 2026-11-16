@@ -1,0 +1,14 @@
+{
+  "id": "dragonslayer",
+  "name": "용살자",
+  "shape": "#./##/##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v4.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v6.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v7.png",
+  "prompt": "Use case: precise-object-edit. Keep this exact pixel-art dragon polearm. The TOP SPEAR size is now CORRECT, so lock it completely. Also lock long shaft, handle, gold decorations, colors and dark outline. One tiny footprint correction: reduce the whole SIDE AXE HEAD assembly uniformly by just8%, keeping its UPPER tip anchored at its current height (~y393). Preserve its entire complete curved lower sharp tip, engraved blade pattern and gold dragon design, never clip/cut/flatten. The lower tip should rise ~50pixels; right-side blade must end above y970 (currently around1010). Keep entire side head connected to shaft at left. Keep canvas1007x1562, exact same position of all other elements. Need the side axe fully in two inventory rows while current larger spear occupies top row. Full transparent background, coarse square pixels, no grid/text, no global scaling/recentering. This is a very subtle8% side head reduction only, all spear details unchanged.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-b657c67d-08a8-45fe-9dac-ab45e97aeb6b.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

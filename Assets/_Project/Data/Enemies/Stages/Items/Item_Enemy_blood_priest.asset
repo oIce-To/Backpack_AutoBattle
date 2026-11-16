@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_Enemy_blood_priest
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: enemy_blood_priest
+  _displayName: "피의 홀"
+  _category: 0
+  _tags: 4
+  _excludeFromShop: 1
+  _purchasePrice: 0
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2
+    _effects:
+    - _kind: 0
+  _battleStartStatuses:
+  - _kind: 9
+    _target: 0
+    _stacks: 12
+  _weaponStats:
+    _attackDamage: 20
+    _cooldownSeconds: 2
+    _accuracyPercent: 100
+    _criticalChancePercent: 0
+    _criticalDamagePercent: 200
+  _displayColor: {r: 0.53, g: 0.37, b: 0.27, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}

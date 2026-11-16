@@ -86,6 +86,7 @@ namespace BackpackAutoBattle.Prototype
         public PrototypeRunResult Result { get; private set; }
         public bool IsFinished => Result != null;
         public int Gold { get; internal set; }
+        public int FreeShopRerolls { get; internal set; }
         public int Round { get; internal set; } = 1;
         public int PurchasedItemSequence { get; internal set; }
         public long PlagueStacks { get; private set; }
@@ -95,6 +96,7 @@ namespace BackpackAutoBattle.Prototype
         {
             if (Phase != PrototypePhase.Preparation || IsFinished || Lives == 0) return false;
             LastBattleResult = null; LastLifeLoss = 0;
+            FreeShopRerolls = 0;
             Phase = PrototypePhase.Battle;
             return true;
         }

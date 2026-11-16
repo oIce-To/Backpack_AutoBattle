@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_PrimalFlame
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: primal_flame
+  _displayName: "태초의 불꽃"
+  _effectDescription: "적의 화상 중첩이 피해를 준 뒤에도 감소하지 않습니다.\n명중 시 화상 2중첩을 부여합니다. 치명타이면 3중첩을 부여합니다.\n적의 화상 중첩마다 적의 치유 효율과 방어도 획득량이 각각 1% 감소합니다."
+  _category: 0
+  _rarity: 4
+  _tags: 2
+  _stageEffect: 35
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 1.5
+    _effects:
+    - _kind: 0
+      _trigger: 0
+  _excludeFromShop: 1
+  _purchasePrice: 16
+  _weaponStats:
+    _attackDamage: 10
+    _cooldownSeconds: 1.5
+    _accuracyPercent: 70
+    _criticalChancePercent: 15
+    _criticalDamagePercent: 200
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1
+  _inventorySprite: {fileID: 21300000, guid: 73dea6eede534bb48469604ee2647efb, type: 3}
+  _displayColor: {r: 0.72, g: 0.54, b: 0.21, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}

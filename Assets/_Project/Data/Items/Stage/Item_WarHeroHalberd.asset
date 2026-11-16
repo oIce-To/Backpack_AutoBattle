@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_WarHeroHalberd
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: war_hero_halberd
+  _displayName: "전쟁영웅의 미늘창"
+  _effectDescription: "방어도에 1.5배의 피해를 입힙니다.\n공격할 때마다 전투 중 이 무기의 공격 속도가 7%씩 증가합니다."
+  _category: 0
+  _rarity: 3
+  _tags: 1
+  _stageEffect: 15
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2
+    _effects:
+    - _kind: 0
+      _trigger: 0
+  _excludeFromShop: 1
+  _purchasePrice: 10
+  _weaponStats:
+    _attackDamage: 10
+    _cooldownSeconds: 2
+    _accuracyPercent: 90
+    _criticalChancePercent: 10
+    _criticalDamagePercent: 200
+  _attackScaling:
+    _stat: 1
+    _coefficient: 1
+  _inventorySprite: {fileID: 21300000, guid: bd3b7c06fca447338b8a2c9999b1b2fb, type: 3}
+  _displayColor: {r: 0.57, g: 0.38, b: 0.72, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}

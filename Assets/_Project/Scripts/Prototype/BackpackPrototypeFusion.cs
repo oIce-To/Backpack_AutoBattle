@@ -93,7 +93,8 @@ namespace BackpackAutoBattle.Prototype
         private Vector2 FindFusionStoragePosition(ItemData result, ItemRotation rotation)
         {
             var cells = result.CreateShape().GetCells(rotation);
-            Vector2 half = new Vector2(cells.Max(cell => cell.x) + 1, cells.Max(cell => cell.y) + 1) * CellPitch * .5f;
+            Vector2 size = new Vector2(cells.Max(cell => cell.x) + 1, cells.Max(cell => cell.y) + 1) * CellPitch;
+            Vector2 half = size * (StorageItemScale(size) * .5f);
             Rect rect = _storageRoot.rect;
             float left = ClampStorageAxis(rect.xMin + half.x + 8f, rect.xMin + half.x + 8f, rect.xMax - half.x - 8f);
             float right = ClampStorageAxis(rect.xMax - half.x - 8f, rect.xMin + half.x + 8f, rect.xMax - half.x - 8f);
@@ -111,8 +112,8 @@ namespace BackpackAutoBattle.Prototype
                     float overlap = 0f;
                     foreach (var view in _storageViews.Values)
                     {
-                        Vector2 size = ((RectTransform)view.transform).rect.size;
-                        Rect other = new(view.StoredItem.StoragePosition - size * .5f, size);
+                        Vector2 storedSize = ((RectTransform)view.transform).rect.size * view.transform.localScale.x;
+                        Rect other = new(view.StoredItem.StoragePosition - storedSize * .5f, storedSize);
                         overlap += Mathf.Max(0, Mathf.Min(candidate.xMax, other.xMax) - Mathf.Max(candidate.xMin, other.xMin))
                             * Mathf.Max(0, Mathf.Min(candidate.yMax, other.yMax) - Mathf.Max(candidate.yMin, other.yMin));
                     }
@@ -137,7 +138,19 @@ namespace BackpackAutoBattle.Prototype
             if (_shopScreenRoot != null && _battleController != null) RefreshCombatInterface();
         }
 
-        private void OnDisable() => CompleteFusionPresentation();
+        private void OnDisable()
+        {
+            if (_piggyBankPresentation == null)
+            {
+                CompleteFusionPresentation();
+                return;
+            }
+
+            DisposePiggyBankPresentation();
+            BeginFusionPresentation();
+            if (IsFusionPresenting) CompleteFusionPresentation();
+            else RefreshCombatInterface();
+        }
 
         private void LateUpdate() => RefreshFusionVisuals();
 

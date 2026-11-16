@@ -138,15 +138,20 @@ namespace BackpackAutoBattle.Combat
                     double sacrifice = maximum * UniqueGearEffect.HealthSacrificeRatio;
                     if (side == CombatSide.Player) PlayerHealth -= sacrifice;
                     else EnemyHealth -= sacrifice;
+                    ResolveStageHealthThreshold(side, health, events);
                     GainArmor(item, side, maximum * gear.Amount, events);
                     break;
             }
         }
 
         private void StealBuffs(CombatItem item, CombatSide side, ICollection<CombatItemEvent> events)
+            => StealBuffs(item, side, UniqueGearEffect.BuffStealCount, events);
+
+        private int StealBuffs(CombatItem item, CombatSide side, int count, ICollection<CombatItemEvent> events)
         {
             CombatSide target = TargetSide(side, StatusTarget.Opponent);
-            for (int i = 0; i < UniqueGearEffect.BuffStealCount; i++)
+            int stolen = 0;
+            for (; stolen < count; stolen++)
             {
                 var available = _statusDefinitions.Values.Where(definition => !definition.IsDebuff && definition.Kind != StatusEffectKind.Plague
                     && GetStatusStacks(target, definition.Kind) > 0).ToArray();
@@ -155,6 +160,7 @@ namespace BackpackAutoBattle.Combat
                 RemoveStatus(target, kind, 1);
                 ApplyItemStatus(item, side, side, kind, 1, events);
             }
+            return stolen;
         }
 
         private bool RollBurnCritical(CombatSide source, CombatSide target)
@@ -165,12 +171,12 @@ namespace BackpackAutoBattle.Combat
             return chance > 0d && _random.NextDouble() < chance;
         }
 
-        private double HealingMultiplier(CombatSide side)
+        public double HealingMultiplier(CombatSide side)
         {
             CombatSide opponent = TargetSide(side, StatusTarget.Opponent);
             double reduction = GetItems(opponent).Where(item => item.Snapshot.GearEffect.Kind == UniqueGearEffectKind.ExecutionersSpikedBall)
                 .Sum(item => (double)item.Snapshot.GearEffect.Amount) * GetStatusStacks(opponent, StatusEffectKind.Thorns);
-            return Math.Max(0d, OwnerStats(side).HealingMultiplier - reduction);
+            return Math.Max(0d, OwnerStats(side).HealingMultiplier - reduction - StageHealingPenalty(side));
         }
 
         private double RestoreHealth(CombatSide side, double amount)
@@ -180,6 +186,7 @@ namespace BackpackAutoBattle.Combat
             double maximum = side == CombatSide.Player ? PlayerMaxHealth : EnemyMaxHealth;
             double restored = Math.Min(amount, maximum - health);
             if (side == CombatSide.Player) PlayerHealth += restored; else EnemyHealth += restored;
+            if (restored > 0d && side == CombatSide.Enemy) RefreshEnemyHealthDependentSpeed();
             return restored;
         }
 
@@ -209,12 +216,14 @@ namespace BackpackAutoBattle.Combat
                     ApplyItemStatus(item, target, target, StatusEffectKind.Thorns, 1, events);
         }
 
-        private void ApplyItemStatus(CombatItem item, CombatSide owner, CombatSide target, StatusEffectKind kind,
+        private long ApplyItemStatus(CombatItem item, CombatSide owner, CombatSide target, StatusEffectKind kind,
             long stacks, ICollection<CombatItemEvent> events)
         {
-            ApplyStatus(target, kind, stacks, owner, item.InstanceId);
+            stacks = ApplyStatusAndCount(target, kind, stacks, owner, item.InstanceId);
+            if (stacks == 0) return 0;
             RecordItemEvent(events, new CombatItemEvent(ElapsedSeconds, owner, item, ItemEffectKind.ApplyStatus,
                 statusKind: kind, statusStacks: stacks, targetSide: target));
+            return stacks;
         }
 
         private bool RollGearChance(int chancePercent) => _random.NextDouble() * 100d < chancePercent;

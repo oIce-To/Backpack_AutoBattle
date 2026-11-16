@@ -1,0 +1,871 @@
+fileFormatVersion: 2
+guid: e0ef503f71a122342a21ec0abc0ee9c9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7022547384254246038
+    second: war-hero-halberd-2026-11-17-v2_0
+  - first:
+      213: 3089797115557547353
+    second: war-hero-halberd-2026-11-17-v2_1
+  - first:
+      213: 1396300004227177101
+    second: war-hero-halberd-2026-11-17-v2_2
+  - first:
+      213: -3564457051904475594
+    second: war-hero-halberd-2026-11-17-v2_3
+  - first:
+      213: -2832074358776080975
+    second: war-hero-halberd-2026-11-17-v2_4
+  - first:
+      213: 2652675729007663358
+    second: war-hero-halberd-2026-11-17-v2_5
+  - first:
+      213: 4759395114133402941
+    second: war-hero-halberd-2026-11-17-v2_6
+  - first:
+      213: -950375231141245516
+    second: war-hero-halberd-2026-11-17-v2_7
+  - first:
+      213: 4607837805159127169
+    second: war-hero-halberd-2026-11-17-v2_8
+  - first:
+      213: 5323021785493418524
+    second: war-hero-halberd-2026-11-17-v2_9
+  - first:
+      213: -4245667373201488692
+    second: war-hero-halberd-2026-11-17-v2_10
+  - first:
+      213: 6242991762938496703
+    second: war-hero-halberd-2026-11-17-v2_11
+  - first:
+      213: -4124336078276977800
+    second: war-hero-halberd-2026-11-17-v2_12
+  - first:
+      213: 6464515467850985385
+    second: war-hero-halberd-2026-11-17-v2_13
+  - first:
+      213: 2775136383629844342
+    second: war-hero-halberd-2026-11-17-v2_14
+  - first:
+      213: 3396468954316850923
+    second: war-hero-halberd-2026-11-17-v2_15
+  - first:
+      213: 8981165666247951110
+    second: war-hero-halberd-2026-11-17-v2_16
+  - first:
+      213: 5143127178925899248
+    second: war-hero-halberd-2026-11-17-v2_17
+  - first:
+      213: -6215425040631107737
+    second: war-hero-halberd-2026-11-17-v2_18
+  - first:
+      213: 3178746594959923922
+    second: war-hero-halberd-2026-11-17-v2_19
+  - first:
+      213: -2476024079998173056
+    second: war-hero-halberd-2026-11-17-v2_20
+  - first:
+      213: -3677250594767563207
+    second: war-hero-halberd-2026-11-17-v2_21
+  - first:
+      213: 4588774785899507895
+    second: war-hero-halberd-2026-11-17-v2_22
+  - first:
+      213: 2654624725674979787
+    second: war-hero-halberd-2026-11-17-v2_23
+  - first:
+      213: -3049391397801604218
+    second: war-hero-halberd-2026-11-17-v2_24
+  - first:
+      213: 3771049633947227072
+    second: war-hero-halberd-2026-11-17-v2_25
+  - first:
+      213: -508991905460501964
+    second: war-hero-halberd-2026-11-17-v2_26
+  - first:
+      213: 7677160226642235644
+    second: war-hero-halberd-2026-11-17-v2_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 868
+        height: 1763
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a635d2f6c56ea8e90800000000000000
+      internalID: -7022547384254246038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_1
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 1636
+        width: 54
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95d85dc2b1a21ea20800000000000000
+      internalID: 3089797115557547353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1555
+        width: 10
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8a56d7b477a06310800000000000000
+      internalID: 1396300004227177101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1155
+        width: 23
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63ef8145231888ec0800000000000000
+      internalID: -3564457051904475594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_4
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 1160
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b5d8ab206372b8d0800000000000000
+      internalID: -2832074358776080975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_5
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 1058
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef85dc3658230d420800000000000000
+      internalID: 2652675729007663358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_6
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 1036
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d35b6a3d3a4cc0240800000000000000
+      internalID: 4759395114133402941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_7
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 985
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bd0f7833c69fc2f0800000000000000
+      internalID: -950375231141245516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_8
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 956
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1881027021452ff30800000000000000
+      internalID: 4607837805159127169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 865
+        width: 5
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1230008c1c2fd940800000000000000
+      internalID: 5323021785493418524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 886
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc40cd1c40c5415c0800000000000000
+      internalID: -4245667373201488692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_11
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 878
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb683ad7eef83a650800000000000000
+      internalID: 6242991762938496703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_12
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 821
+        width: 19
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87b19ff303a63c6c0800000000000000
+      internalID: -4124336078276977800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_13
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 616
+        width: 13
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9afa64a419296b950800000000000000
+      internalID: 6464515467850985385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_14
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 613
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67fd48d66d3438620800000000000000
+      internalID: 2775136383629844342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_15
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 606
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6c2b8c48ea22f20800000000000000
+      internalID: 3396468954316850923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_16
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 584
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 603c4a5d69283ac70800000000000000
+      internalID: 8981165666247951110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_17
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 595
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fdf8867bee006740800000000000000
+      internalID: 5143127178925899248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_18
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 489
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f6d153bdf5eb9a0800000000000000
+      internalID: -6215425040631107737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_19
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 450
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2da9197bf2d2d1c20800000000000000
+      internalID: 3178746594959923922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_20
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 418
+        width: 20
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0804560c73563add0800000000000000
+      internalID: -2476024079998173056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_21
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 436
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93619c42118c7fcc0800000000000000
+      internalID: -3677250594767563207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_22
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 404
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b03fcbfa5a9eaf30800000000000000
+      internalID: 4588774785899507895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_23
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 382
+        width: 9
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc173d98f1f17d420800000000000000
+      internalID: 2654624725674979787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_24
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 344
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68b47e81ea26ea5d0800000000000000
+      internalID: -3049391397801604218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_25
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 291
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c39ac589a5755430800000000000000
+      internalID: 3771049633947227072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_26
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 100
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4324a790f82bfe8f0800000000000000
+      internalID: -508991905460501964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: war-hero-halberd-2026-11-17-v2_27
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 47
+        width: 13
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf094c00d80ca8a60800000000000000
+      internalID: 7677160226642235644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      war-hero-halberd-2026-11-17-v2_0: -7022547384254246038
+      war-hero-halberd-2026-11-17-v2_1: 3089797115557547353
+      war-hero-halberd-2026-11-17-v2_10: -4245667373201488692
+      war-hero-halberd-2026-11-17-v2_11: 6242991762938496703
+      war-hero-halberd-2026-11-17-v2_12: -4124336078276977800
+      war-hero-halberd-2026-11-17-v2_13: 6464515467850985385
+      war-hero-halberd-2026-11-17-v2_14: 2775136383629844342
+      war-hero-halberd-2026-11-17-v2_15: 3396468954316850923
+      war-hero-halberd-2026-11-17-v2_16: 8981165666247951110
+      war-hero-halberd-2026-11-17-v2_17: 5143127178925899248
+      war-hero-halberd-2026-11-17-v2_18: -6215425040631107737
+      war-hero-halberd-2026-11-17-v2_19: 3178746594959923922
+      war-hero-halberd-2026-11-17-v2_2: 1396300004227177101
+      war-hero-halberd-2026-11-17-v2_20: -2476024079998173056
+      war-hero-halberd-2026-11-17-v2_21: -3677250594767563207
+      war-hero-halberd-2026-11-17-v2_22: 4588774785899507895
+      war-hero-halberd-2026-11-17-v2_23: 2654624725674979787
+      war-hero-halberd-2026-11-17-v2_24: -3049391397801604218
+      war-hero-halberd-2026-11-17-v2_25: 3771049633947227072
+      war-hero-halberd-2026-11-17-v2_26: -508991905460501964
+      war-hero-halberd-2026-11-17-v2_27: 7677160226642235644
+      war-hero-halberd-2026-11-17-v2_3: -3564457051904475594
+      war-hero-halberd-2026-11-17-v2_4: -2832074358776080975
+      war-hero-halberd-2026-11-17-v2_5: 2652675729007663358
+      war-hero-halberd-2026-11-17-v2_6: 4759395114133402941
+      war-hero-halberd-2026-11-17-v2_7: -950375231141245516
+      war-hero-halberd-2026-11-17-v2_8: 4607837805159127169
+      war-hero-halberd-2026-11-17-v2_9: 5323021785493418524
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

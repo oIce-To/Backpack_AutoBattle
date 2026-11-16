@@ -1,0 +1,146 @@
+[
+  {
+    "id": "battle_axe",
+    "name": "전투 도끼",
+    "shape": "##/#./#.",
+    "baseline": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-17-v4.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Restore the COMPLETE ORIGINAL axe blade silhouette in this first reference: its elegant convex silver cutting edge and long tapered lower point, exactly the same design. UNIFORMLY SCALE THE WHOLE HEAD DOWN to about 65% of original head size, and mount it near the very top of the existing long left-column haft. DO NOT flatten, amputate, clip or truncate the lower blade tip. A small intact axe head is desired, not a huge cropped head. Head and collar fully within upper 32% of canvas; below upper third only left-column haft. Keep brown haft and leather wrap design. 2 columns x3 rows, ##/#./#. Request 1024x1536. Entire head including lower sharp tip above y495, all right half below y512 fully transparent. Ample clearance.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/#./#. Critical: whole axe head including collar spans x200..720 and y60..490. The blade must visibly reach into TOP RIGHT inventory cell (x512..720), while remaining wholly above y500. Shaft centerx270. Do not make a tiny hatchet or keep whole head inside left half. Intact original curved blade with long sharp bottom tip."
+  },
+  {
+    "id": "dragonslayer",
+    "name": "용살자",
+    "shape": "#./##/##/#./#.",
+    "baseline": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v3.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Restore and KEEP the entire ORIGINAL ornate dragon axe head: gold dragon with red eye, dark engraved steel winglike blade with FULL graceful tapered crescent lower tip and sharp upper hook. UNIFORMLY SCALE the complete side blade assembly including gold dragon to 75% of original, rather than shortening/cutting its tip. Mount the smaller complete head at same general upper-mid position. Keep long shaft, spear top, ruby ornaments. 2 columns x5 rows #./##/##/#./#. Request800x2000. Right half artwork only from y430 to y1150; top-right and bottom two right cells fully transparent. All curves/tips intact, entire head fits with air around it. Do not create a flat chopped bottom edge.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #./##/##/#./#."
+  },
+  {
+    "id": "war_hero_halberd",
+    "name": "전쟁영웅의 미늘창",
+    "shape": "#./##/#./#.",
+    "baseline": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v3.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v3.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v4.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep current entire silhouette, head position, short top spear, long leather shaft, silver blade and pixel styling. Add only a LITTLE epic-tier decoration: a small deep-blue gemstone in a narrow gold collar at the axe-to-shaft joint, one restrained gold etched line on the flat of the axe blade, and matching slim gold accents on existing shaft bands. Elegant and modest, not lavish, no wings or extra spikes. No enlarging head. 2x4 footprint #./##/#./#. Right-half blade stays strictly within second row (25%-49% height), lower half right side empty. Keep canvas aspect1:2.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #./##/#./#."
+  },
+  {
+    "id": "cat_step",
+    "name": "고양이 걸음",
+    "shape": "#/#",
+    "baseline": "Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. COLOR-ONLY EDIT. Keep the exact boot shape, folded cuff, purple cross laces, buckle, sole, orientation, all existing pixel clusters and dimensions. Darken leather and purple laces only very slightly, about 12% lower brightness, toward richer dark brown/black. Keep highlights readable and silver buckle readable. Do not redesign, redraw silhouette, add details or change pixel scale. Same1:2 canvas and transparency.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#"
+  },
+  {
+    "id": "eclipse",
+    "name": "일식",
+    "shape": ".##/##.",
+    "baseline": "Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-17-v2.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-17-v2.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-17-v3.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. STRICT COLOR-ONLY EDIT. User loves this exact design. Do not alter any shape, composition, blade silhouette, handles, gold guards, central ruby or dark purple inner blade faces. Recolor ONLY the two OUTERMOST curved cutting rims that are currently yellow/orange/gold to vivid BLOOD SCARLET RED. Use bright scarlet red highlights, rich red midtone, crimson shadow; not orange, not pink. All gold fittings near handle stay gold. Preserve exact .##/##. silhouette and full1536x1024 canvas positions. Transparent alpha, no new effects.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: .##/##."
+  },
+  {
+    "id": "excalibur",
+    "name": "엑스칼리버",
+    "shape": "#/#/#/#",
+    "baseline": "Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep straight silver sword, blue gems, blue-white grip and coarse pixels. Add a clearly visible GOLDEN STRIPE inlaid along CENTER of sword blade, starting immediately above guard and extending nearly to sword tip (about90% blade length). Gold stripe narrow, crisp-edged, visibly distinct from silver steel, not diffuse glow. Make guard and hilt a little more splendid for legendary Excalibur: elegant layered gold scroll/angular wing details within existing overall guard width, tiny blue gem accents and gold grip bands. Preserve sword proportions. Entire visible art must fit within centered vertical strip width one-quarter image height, to occupy1x4 cells. Request768x2304; all art x110..650 and y35..2265; transparent margins. Do not extend guard outside that strip.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#/#/#"
+  },
+  {
+    "id": "frost_blade",
+    "name": "서리 칼날",
+    "shape": "#/#/#",
+    "baseline": "Assets/_Project/Art/Items/Stage/frost-blade/frost-blade-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/frost-blade/frost-blade-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/frost-blade/frost-blade-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep original sword design, all existing frost and ice encrustation around blade base and guard, silver blade, blue grip, cyan jewel. Add a NARROW SKY-BLUE INLAID STRIPE down blade CENTER starting immediately ABOVE guard and ending at about HALFWAY up blade. Stripe is a crisp straight saturated sky-blue band with darker cyan side edge, visibly distinct from the irregular pale white frost already present. Do not remove ice texture. Keep entire silhouette and1:3 canvas positions.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#/#"
+  },
+  {
+    "id": "hunters_bow",
+    "name": "사냥꾼의 활",
+    "shape": "#/#/#",
+    "baseline": "Assets/_Project/Art/Items/Stage/hunters-bow/hunters-bow-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/hunters-bow/hunters-bow-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/hunters-bow/hunters-bow-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Keep the exact wooden bow, green grip wrap, silver end caps, string, orientation, palette and chunky pixels. Remove the single white feather charm from CENTER GRIP. Instead attach TWO small white feather charms, one tied to UPPER bow end and one tied to LOWER bow end. Each is attached with a short brown cord at its respective silver end cap; both contained inside canvas with clear outlines, not cropped. Exactly two feathers total; no feather at center. Maintain narrow1x3 inventory silhouette and transparent background.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #/#/#"
+  },
+  {
+    "id": "needle_storm",
+    "name": "만천화우",
+    "shape": ".#./###/.#.",
+    "baseline": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign as EAST ASIAN WUXIA POISON HIDDEN WEAPONS bursting outward from one central point in FOUR cardinal directions. Replace bulky mechanical launcher with a small central dark jade/bronze hub surrounded by a dynamic fan of slender steel poison needles and leaf-shaped throwing darts, tips pointing OUTWARD (up,down,left,right). Emerald poisonous tips and a few short vivid green motion streaks. Four small fans, about3 darts per direction, complete sharp silhouettes. Asian martial-arts concealed weapons, not syringe needles or futuristic guns. Coarse square pixels, dark outline, same steel/emerald palette. Crucial3x3 PLUS footprint .#./###/.#.: occupy central cross only, all four corner cells fully transparent. Up/down fans within middle third of width; left/right fans within middle third height. No diagonal darts entering corners. Square canvas.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: .#./###/.#."
+  },
+  {
+    "id": "permafrost",
+    "name": "만년설",
+    "shape": "#",
+    "baseline": "Assets/_Project/Art/Items/Stage/permafrost/permafrost-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/permafrost/permafrost-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/permafrost/permafrost-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign into ONE SINGLE exquisite noble delicate six-branched SNOWFLAKE ICE CRYSTAL. Take the small snowflake symbol in the center of this reference and enlarge it to fill nearly the square item frame, with more finely articulated symmetrical fernlike branches and faceted icy center. Remove entire surrounding snow mound and ice block. Just ONE snowflake crystal, white/silver with pale sky-blue facets and restrained dark blue-purple stepped outline. Elegant delicate high-tier snowflake, clear branching negative spaces. Still visibly COARSE PIXEL ART with deliberate square clusters matching original set, not smooth vector or realistic rendering.1x1 square canvas with margin, transparent background.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: #"
+  },
+  {
+    "id": "poison_immunity_book",
+    "name": "만독불침의 서",
+    "shape": "##/##",
+    "baseline": "Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign the western metal-clasp spell tome as an EAST ASIAN WUXIA SECRET MARTIAL-ARTS MANUAL (비급). Traditional stitched/thread-bound paper booklet with visible ivory thread stitches along left binding, dark jade-green cloth/paper cover, stacked cream paper edges, narrow vertical ivory title slip with a few dark abstract brushlike pixel marks (no legible words required), small vermilion square seal. Keep subtle poison theme with restrained green snake/leaf emblem near lower cover. Remove heavy bronze corner guards, gemstone clasp and bulky western book fittings. Slight3/4 view, square2x2 item footprint. Match original coarse block pixels, dark outlines, few shading colors. Transparent background.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/##"
+  },
+  {
+    "id": "solar_radiance",
+    "name": "태양의 광휘",
+    "shape": "##/##",
+    "baseline": "Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-16-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/burning-cloak/burning-cloak-2026-11-16-v1.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign this as a powerful SUNFIRE SHIELD. Image1 shield is target, image2 BURNING CLOAK is PRIMARY COLOR/FLAME reference. Strong rich crimson/dark burgundy shield body, blazing orange-to-yellow flame-shaped armor panels and radiant golden sun core. Prioritize cloak's vivid RED bulk, orange edging, bright YELLOW flame tips, dark wine shadows instead of old white/silver face. A readable sturdy shield silhouette with flowing flame-shaped rim and sunburst motif; energetic solar-fire defensive artifact forged from wood shield+burning cloaks. Keep chunky pixel-art outlines and broad stepped shading.2x2 square footprint, all flames contained within margin, actual transparent background. No smoky haze or external bloom.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/##"
+  },
+  {
+    "id": "whetstone",
+    "name": "숫돌",
+    "shape": "#",
+    "baseline": "Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-17-v2.png"
+    ],
+    "output": "Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-17-v3.png",
+    "prompt": "Use case: background-extraction. Keep this exact rough gray whetstone with all existing grain texture, scratches, stepped outlines, shape, orientation and colors. Change ONLY transparency outside the stone: REMOVE ALL faint speckled gray background, all gray haze, glow, shadow and stray background pixels. Completely transparent alpha outside precise stone silhouette, including upper-left large empty area. Preserve actual matte grain on the stone itself exactly. Do not smooth texture. No backdrop, no halo. Single transparent PNG same square canvas, exact same object position and size. This is a precise background cleanup, not a redesign."
+  }
+]

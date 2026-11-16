@@ -1,0 +1,15 @@
+{
+  "id": "war_hero_halberd",
+  "name": "전쟁영웅의 미늘창",
+  "shape": "#./##/#./#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v5.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v5.png",
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v4.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v6.png",
+  "prompt": "Use case: precise-object-edit. Image1 CURRENT target. Image2 shows ORIGINAL SILVER SHAFT TOP/COLLAR to restore. Three strictly local edits only: (1) Enlarge the top silver spear blade modestly, about15% taller and15% wider, keeping its bottom neck aty440 so tip moves up to abouty180 (currentlyy218). Keep pointed design, centeredx260 and fully within TOP LEFT cell x0..440,y0..440. (2) Remove gold BLUE-GEM collar from below spear aty450..530. RESTORE original top-of-shaft design seen in Image2: the short dark neck under spear and distinct horizontal SILVER END-CAP/COLLAR band across shaft aty455..485, same silver shading and stepped silhouette as Image2. Restore the continuous plain steel shaft beneath it. (3) Move that exact same gold blue-gem ornament to VERY BOTTOM OF LEATHER HANDLE, immediately ABOVE the silver bottom butt-cap, centeredx260,y1630; it can replace the existing plain gold lower band. Exactly ONE blue-gem gold collar, located at bottom handle only. Keep separate bottom silver cap visible beneath ornament, do not overlap or erase it. Everything else unchanged: axe outline, gold line on axe, blade position, long leather grip, remaining silver bands, dark outline and pixel scale. Same887x1774 canvas, #./##/#./#. Right-half axe artwork stays strictly second row. No added ornaments. Preserve coarse square-pixel styling, exact design except specified local changes, dark stepped outlines, color palette and material shading. No text/grid/glow/new decoration. Actual transparent alpha background.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-b0f8ca6d-d552-4019-a20f-7171ff1e338c.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -20,7 +20,7 @@ namespace BackpackAutoBattle.Editor
         public static void CreatePrototypeScene()
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            ItemData[] itemCatalog = PrototypeItemDataBuilder.CreateOrUpdateItems();
+            ItemData[] itemCatalog = LoadStageAssets<ItemData>("Items").Where(item => !item.ExcludeFromShop).ToArray();
             ShopRarityTableData rarityTable = PrototypeShopRarityTableBuilder.CreateOrLoad();
 
             var prototypeObject = new GameObject("Backpack Prototype");
@@ -37,7 +37,7 @@ namespace BackpackAutoBattle.Editor
         public static void RefreshPrototypeContent()
         {
             Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            ItemData[] itemCatalog = PrototypeItemDataBuilder.CreateOrUpdateItems();
+            ItemData[] itemCatalog = LoadStageAssets<ItemData>("Items").Where(item => !item.ExcludeFromShop).ToArray();
             ShopRarityTableData rarityTable = PrototypeShopRarityTableBuilder.CreateOrLoad();
             BackpackPrototypeController controller = UnityEngine.Object.FindFirstObjectByType<BackpackPrototypeController>();
 
@@ -59,7 +59,7 @@ namespace BackpackAutoBattle.Editor
             ItemData[] itemCatalog,
             ShopRarityTableData rarityTable)
         {
-            if (itemCatalog == null || itemCatalog.Any(itemData => itemData == null))
+            if (itemCatalog == null || itemCatalog.Length == 0 || itemCatalog.Any(itemData => itemData == null))
             {
                 throw new InvalidOperationException("The prototype ItemData catalog contains a missing asset reference.");
             }
@@ -96,11 +96,10 @@ namespace BackpackAutoBattle.Editor
                 serializedController.FindProperty("_characterData").objectReferenceValue = character;
             }
             SerializedProperty recipes = serializedController.FindProperty("_fusionRecipes");
-            if (recipes.arraySize == 0)
-            {
-                var recipe = AssetDatabase.LoadAssetAtPath<FusionRecipeData>("Assets/_Project/Data/Recipes/Recipe_SteelSword.asset");
-                if (recipe != null) { recipes.arraySize = 1; recipes.GetArrayElementAtIndex(0).objectReferenceValue = recipe; }
-            }
+            var stageRecipes = LoadStageAssets<FusionRecipeData>("Recipes");
+            recipes.arraySize = stageRecipes.Length;
+            for (int index = 0; index < stageRecipes.Length; index++)
+                recipes.GetArrayElementAtIndex(index).objectReferenceValue = stageRecipes[index];
             if (serializedController.FindProperty("_stageData").objectReferenceValue == null)
                 serializedController.FindProperty("_stageData").objectReferenceValue = stage;
             StatusEffectData[] statuses = PrototypeStatusDataBuilder.CreateOrLoad();
@@ -112,6 +111,11 @@ namespace BackpackAutoBattle.Editor
             serializedController.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(controller);
         }
+
+        private static T[] LoadStageAssets<T>(string folder) where T : UnityEngine.Object
+            => AssetDatabase.FindAssets($"t:{typeof(T).Name}", new[] { $"Assets/_Project/Data/{folder}/Stage" })
+                .Select(AssetDatabase.GUIDToAssetPath).OrderBy(path => path, StringComparer.Ordinal)
+                .Select(AssetDatabase.LoadAssetAtPath<T>).ToArray();
 
         private static void AddSceneToBuildSettings()
         {

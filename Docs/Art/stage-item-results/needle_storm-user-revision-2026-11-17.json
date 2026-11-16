@@ -1,0 +1,14 @@
+{
+  "id": "needle_storm",
+  "name": "만천화우",
+  "shape": ".#./###/.#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-17-v2.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign as EAST ASIAN WUXIA POISON HIDDEN WEAPONS bursting outward from one central point in FOUR cardinal directions. Replace bulky mechanical launcher with a small central dark jade/bronze hub surrounded by a dynamic fan of slender steel poison needles and leaf-shaped throwing darts, tips pointing OUTWARD (up,down,left,right). Emerald poisonous tips and a few short vivid green motion streaks. Four small fans, about3 darts per direction, complete sharp silhouettes. Asian martial-arts concealed weapons, not syringe needles or futuristic guns. Coarse square pixels, dark outline, same steel/emerald palette. Crucial3x3 PLUS footprint .#./###/.#.: occupy central cross only, all four corner cells fully transparent. Up/down fans within middle third of width; left/right fans within middle third height. No diagonal darts entering corners. Square canvas.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: .#./###/.#.",
+  "source": "C:/Users/user/.codex/generated_images/01a1b087-8df0-72e2-be20-0c50ee16ec90/exec-4906f08e-4bca-4af9-b397-b1836a887668.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

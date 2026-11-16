@@ -1,0 +1,295 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad86875f50194b7459145ff310e652f9, type: 3}
+  m_Name: Stage_06
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Stages.StageData
+  _stageId: stage_06
+  _clearExperience: 3200
+  _clearOriginShards: 317
+  _displayName: "6스테이지 · 죽음의 성채"
+  _rounds:
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 90
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 15
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 105
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 18
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 120
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 18
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: 68d5fff41d8348cab518dd7df0b9bb91, type: 2}
+    _isBoss: 1
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 135
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 21
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 150
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 21
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 165
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 24
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 180
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 24
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: a9299d98ed954e28937f2b80c3f04c5f, type: 2}
+    _isBoss: 1
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 195
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 14
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 210
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 27
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 225
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 30
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: f52e7511529a4c05aa78d93c6739dcfc, type: 2}
+    _isBoss: 0
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 240
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 30
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0
+  - _encounter: {fileID: 11400000, guid: a4b6042bfb37411c8b27837185afcc7e, type: 2}
+    _isBoss: 1
+    _overrides:
+      _overrideMaximumHealth: 1
+      _maximumHealth: 255
+      _items:
+      - _slotId: weapon
+        _stats:
+          _attackDamage:
+            _enabled: 1
+            _value: 33
+          _cooldownSeconds:
+            _enabled: 0
+            _value: 0
+          _accuracyPercent:
+            _enabled: 0
+            _value: 0
+          _criticalChancePercent:
+            _enabled: 0
+            _value: 0
+          _criticalDamagePercent:
+            _enabled: 0
+            _value: 0

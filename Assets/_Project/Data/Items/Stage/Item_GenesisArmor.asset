@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_GenesisArmor
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: genesis_armor
+  _displayName: "창세의 수호갑옷"
+  _effectDescription: "자신의 방어도 획득량이 30% 증가합니다.\n무기나 펫으로부터 받는 피해가 30% 감소합니다.\n자신에게 부여되는 디버프 중첩이 50% 감소합니다."
+  _category: 1
+  _rarity: 4
+  _tags: 0
+  _stageEffect: 29
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 3
+    _effects:
+    - _kind: 1
+      _trigger: 0
+      _amount: 0
+      _amountScaling:
+        _stat: 2
+        _coefficient: 0.2
+  _excludeFromShop: 1
+  _purchasePrice: 20
+  _inventorySprite: {fileID: 21300000, guid: 9698bf87524541858bc055d63ce7790e, type: 3}
+  _displayColor: {r: 0.72, g: 0.54, b: 0.21, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 0, y: 2}
+  - {x: 1, y: 2}

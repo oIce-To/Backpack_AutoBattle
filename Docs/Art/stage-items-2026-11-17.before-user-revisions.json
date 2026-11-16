@@ -1,0 +1,2515 @@
+[
+  {
+    "id": "battle_axe",
+    "name": "전투 도끼",
+    "rarity": "2",
+    "effect": "공격할 때마다 전투 중 이 무기의 공격 속도가 5%씩 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_BattleAxe.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/#./#.",
+    "design": "Battle axe: vertical brown haft in LEFT column, broad steel single axe head extending RIGHT only in TOP row. Iron collar, leather grip at bottom. Shape ##/#./#. No head protrusions in other right cells.",
+    "output": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. FIRST image is edit target, remaining images style reference. Preserve target's exact design, palette, visible chunky pixel scale and material shading. Change ONLY geometry to fit inventory footprint. Actual transparent alpha PNG. No text, no drawn grid, no new decoration. Output 1024x1536. Shaft unchanged in LEFT half. Shorten and raise axe blade so EVERY blade pixel is above y=485 (top row ends y512). Entire region x>=512 AND y>=512 MUST be completely empty transparent. Axe head can be broad horizontally but shallow vertically. Keep head connected to shaft. No glow or aura.\nInventory footprint top-to-bottom: ##/#./#.. # occupied, . empty. Keep complete silhouette, preserve dark stepped outlines.",
+    "previousOutput": "Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/battle-axe/battle-axe-2026-11-16-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "spriteRectTopLeft": [
+      20,
+      60,
+      984,
+      1476
+    ],
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "status": "review-draft",
+    "spriteGuid": "da2a8f0cb7284d90bb30cd2fab392a11"
+  },
+  {
+    "id": "blind_mushroom",
+    "name": "눈먼 독버섯",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_BlindMushroom.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One poisonous mushroom, elongated ivory stalk with lavender shadows and dark violet cap dotted with pale lime spots, a small pale spore puff hugging cap. Ominous but charming, no face, vertical.",
+    "output": "Assets/_Project/Art/Items/Stage/blind-mushroom/blind-mushroom-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 눈먼 독버섯. Rarity: uncommon. Design: One poisonous mushroom, elongated ivory stalk with lavender shadows and dark violet cap dotted with pale lime spots, a small pale spore puff hugging cap. Ominous but charming, no face, vertical.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "511511df4b2644a4845df1802e03c72d"
+  },
+  {
+    "id": "blood_iron_armor",
+    "name": "최후의 철혈갑주",
+    "rarity": "4",
+    "effect": "가시 피해가 치명타로 적용될 수 있습니다. 자신의 가시 중첩마다 가시의 치명타 확률이 1%p, 치명타 피해가 2% 증가합니다.\\n가시 치명타가 입힌 피해량의 25%만큼 회복합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_BloodIronArmor.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/##/##",
+    "design": "Legendary heavy thorn plate cuirass with long articulated armored skirt: charcoal iron plates, blood-red edges, rose-red central jewel and numerous substantial polished spikes. Shoulders wide, torso in upper two rows, armored skirt in bottom row. Empty wearable armor without person or helmet.",
+    "output": "Assets/_Project/Art/Items/Stage/blood-iron-armor/blood-iron-armor-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 최후의 철혈갑주. Rarity: legendary. Design: Legendary heavy thorn plate cuirass with long articulated armored skirt: charcoal iron plates, blood-red edges, rose-red central jewel and numerous substantial polished spikes. Shoulders wide, torso in upper two rows, armored skirt in bottom row. Empty wearable armor without person or helmet.\nEXACT footprint: 2 columns by 3 rows, 6 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]. Canvas aspect ratio 2:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "status": "review-draft",
+    "spriteGuid": "566f5c916f8f44daab7cd4c9aa040ac2"
+  },
+  {
+    "id": "blood_rose",
+    "name": "혈장미",
+    "rarity": "3",
+    "effect": "전투 시작 시 적의 가시와 흡혈을 각각 5중첩 제거하고 자신에게 가시와 흡혈을 각각 5중첩 부여합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_BloodRose.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One upright deep crimson rose, open red bloom above a long dark green thorny stem with two pointed leaves. Dark red highlights suggest vampiric magic without gore.",
+    "output": "Assets/_Project/Art/Items/Stage/blood-rose/blood-rose-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 혈장미. Rarity: epic. Design: One upright deep crimson rose, open red bloom above a long dark green thorny stem with two pointed leaves. Dark red highlights suggest vampiric magic without gore.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "9764bc331e8e448eba4f33df656c5497"
+  },
+  {
+    "id": "bola",
+    "name": "볼라",
+    "rarity": "2",
+    "effect": "전투당 한 번 공격하며 무조건 명중합니다. 방어도에 3배의 피해를 입히고, 적의 민첩을 15중첩 제거합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Bola.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Medieval bola weapon: three substantial rounded gray stone weights bound in brown leather, attached to three cords meeting at central knot, laid out triangularly to fill square silhouette. Ropes visibly connect all weights.",
+    "output": "Assets/_Project/Art/Items/Stage/bola/bola-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 볼라. Rarity: rare. Design: Medieval bola weapon: three substantial rounded gray stone weights bound in brown leather, attached to three cords meeting at central knot, laid out triangularly to fill square silhouette. Ropes visibly connect all weights.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "354984fcc35a4cb9a8063a24d5941230"
+  },
+  {
+    "id": "burning_cloak",
+    "name": "타오르는 망토",
+    "rarity": "2",
+    "effect": "무기나 펫으로부터 피해를 받을 때마다 30% 확률로 적에게 화상을 1 부여합니다.\\n{period}초마다 자신의 빙결을 3중첩 제거합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_BurningCloak.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Empty scarlet and burnt-orange cloak, brass collar clasp, broad flowing folds, lower hem ending in small orange and gold flame tongues. Front three-quarter garment view, no wearer.",
+    "output": "Assets/_Project/Art/Items/Stage/burning-cloak/burning-cloak-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 타오르는 망토. Rarity: rare. Design: Empty scarlet and burnt-orange cloak, brass collar clasp, broad flowing folds, lower hem ending in small orange and gold flame tongues. Front three-quarter garment view, no wearer.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "07706b608c9444de87b03b3ecfc8f23a"
+  },
+  {
+    "id": "cat_step",
+    "name": "고양이 걸음",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_CatStep.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One tall rogue leather boot, supple very dark brown leather, soft turned-down cuff, muted plum laces, small discreet buckle, light narrow sole. No cat or face.",
+    "output": "Assets/_Project/Art/Items/Stage/cat-step/cat-step-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 고양이 걸음. Rarity: rare. Design: One tall rogue leather boot, supple very dark brown leather, soft turned-down cuff, muted plum laces, small discreet buckle, light narrow sole. No cat or face.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "4346b16e74d8484faddfd279d791e3cd"
+  },
+  {
+    "id": "cursed_clover",
+    "name": "저주받은 네잎클로버",
+    "rarity": "2",
+    "effect": "상점의 새 상품마다 15% 확률로 등급이 한 단계 하락합니다. 네잎클로버류 효과는 하나만 적용됩니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_CursedClover.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Exactly four heart-shaped leaves on one short curved stem, wilted deep purple foliage with sickly lime veins and dark chipped edges. Clearly recognizable four-leaf clover.",
+    "output": "Assets/_Project/Art/Items/Stage/cursed-clover/cursed-clover-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 저주받은 네잎클로버. Rarity: rare. Design: Exactly four heart-shaped leaves on one short curved stem, wilted deep purple foliage with sickly lime veins and dark chipped edges. Clearly recognizable four-leaf clover.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "9af51ee1489e4fff94f7e60bf0f7ab26"
+  },
+  {
+    "id": "deception_cloak",
+    "name": "눈속임 망토",
+    "rarity": "2",
+    "effect": "{period}초마다 적의 민첩 1중첩을 실명 1중첩으로 전환합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_DeceptionCloak.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Empty hooded dusky purple cloak with teal inner lining and small silver clasp, asymmetrical sweeping folds, mysterious muted colors. No person, no face.",
+    "output": "Assets/_Project/Art/Items/Stage/deception-cloak/deception-cloak-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 눈속임 망토. Rarity: rare. Design: Empty hooded dusky purple cloak with teal inner lining and small silver clasp, asymmetrical sweeping folds, mysterious muted colors. No person, no face.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "20ea4cd2df8842c1a594d15d9ea45cd1"
+  },
+  {
+    "id": "dragons_breath",
+    "name": "용의 숨결",
+    "rarity": "3",
+    "effect": "적의 화상 중첩이 피해를 준 뒤에도 감소하지 않습니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_DragonsBreath.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "A slim upright dark bronze dragon-head-stopper vial holding bright orange-red magical flame. Dragon-shaped cap and warm glass body; contained fire. One portable magical object, not a dragon character.",
+    "output": "Assets/_Project/Art/Items/Stage/dragons-breath/dragons-breath-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 용의 숨결. Rarity: epic. Design: A slim upright dark bronze dragon-head-stopper vial holding bright orange-red magical flame. Dragon-shaped cap and warm glass body; contained fire. One portable magical object, not a dragon character.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "119fb6eb1e034015b05087c7235e7abc"
+  },
+  {
+    "id": "dragonslayer",
+    "name": "용살자",
+    "rarity": "4",
+    "effect": "방어도에 2배의 피해를 입히며, 공격할 때마다 전투 중 공격 속도가 10%씩 증가합니다.\\n적의 방어도에 피해를 입힐 때마다 이 무기의 치명타 확률이 5%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Dragonslayer.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "w": 2,
+    "h": 5,
+    "shape": "#./##/##/#./#.",
+    "design": "Legendary massive dragon-slaying halberd. Tall shaft strictly in LEFT column across FIVE rows, top left spear tip. Enormous angular silver-blue axe blade occupies RIGHT column ONLY rows 2 and 3, with restrained dragon-scale silhouette and gold fittings. Heavy bottom leather grip in left. Exact shape #./##/##/#./#. Empty top-right and bottom two right cells.",
+    "output": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. FIRST image is edit target, remaining images style reference. Preserve target's exact design, palette, visible chunky pixel scale and material shading. Change ONLY geometry to fit inventory footprint. Actual transparent alpha PNG. No text, no drawn grid, no new decoration. Output 800x2000. Five rows400 and two columns400. Keep exact design. Shorten lower tip of axe blade so ALL pixels in RIGHT half x>=400 occur ONLY within y=420..1180. In particular blade must end ABOVE y1200. Top-right and bottom-right two cells stay empty. Shaft and grip remain left column across full height.\nInventory footprint top-to-bottom: #./##/##/#./#.. # occupied, . empty. Keep complete silhouette, preserve dark stepped outlines.",
+    "previousOutput": "Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/dragonslayer/dragonslayer-2026-11-16-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "spriteRectTopLeft": [
+      0,
+      1,
+      700,
+      1750
+    ],
+    "canvasSize": [
+      897,
+      1752
+    ],
+    "status": "review-draft",
+    "spriteGuid": "acb3da9261a847c5964cf60cb110e70b"
+  },
+  {
+    "id": "eclipse",
+    "name": "일식",
+    "rarity": "4",
+    "effect": "{diamond}의 근접 무기가 명중하거나 적의 공격이 빗나가거나 회피할 때 이 무기의 사용 주기가 30% 충전됩니다.\\n명중 시 흡혈을 1 얻습니다. 치명타이면 2를 얻습니다.\\n자신의 흡혈 중첩마다 이 무기의 공격력이 3%, 치명타 확률이 1%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Eclipse.asset",
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 3,
+    "h": 2,
+    "shape": ".##/##.",
+    "design": "Legendary double-ended dagger shaped like an eclipsed dark sun split into two offset crescent blade halves. Short diagonal central grip from lower-left toward upper-right; dark plum/black crescent blades with sharp warm golden-orange cutting rims, blood-red central grip jewel. Upper blade occupies center and RIGHT of TOP row; lower blade occupies LEFT and center of BOTTOM row. Exact staggered 4-cell shape .##/##. Upper-left and lower-right cells completely empty. Compact double dagger, no sword length.",
+    "output": "Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. FIRST image is edit target, remaining images style reference. Preserve target's exact design, palette, visible chunky pixel scale and material shading. Change ONLY geometry to fit inventory footprint. Actual transparent alpha PNG. No text, no drawn grid, no new decoration. Output1536x1024. Keep exact split-eclipsed-sun double dagger design and diagonal arrangement. Tiny tip at upper-right blade currently touches bottom-right cell. Move/shorten that tip a little so ALL pixels with x>=1024 stay y<490. Upper-left cell x<512,y<512 remains fully empty. Bottom blade stays lower-left and center. No glow haze or shadows.\nInventory footprint top-to-bottom: .##/##.. # occupied, . empty. Keep complete silhouette, preserve dark stepped outlines.",
+    "previousOutput": "Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/eclipse/eclipse-2026-11-16-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1536,
+      1024
+    ],
+    "canvasSize": [
+      1536,
+      1024
+    ],
+    "status": "review-draft",
+    "spriteGuid": "7f9b6a9d6e774fd497073d8d9ca702e2"
+  },
+  {
+    "id": "ember_bow",
+    "name": "적염의 활",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_EmberBow.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Upright red-brown wooden recurved bow, black grip, orange flame motifs along limbs, small contained bright yellow-orange flames at tips, straight visible bowstring. Single narrow column, no arrow.",
+    "output": "Assets/_Project/Art/Items/Stage/ember-bow/ember-bow-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 적염의 활. Rarity: rare. Design: Upright red-brown wooden recurved bow, black grip, orange flame motifs along limbs, small contained bright yellow-orange flames at tips, straight visible bowstring. Single narrow column, no arrow.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "a971312bef264a4cac6a28e6c6f8693d"
+  },
+  {
+    "id": "excalibur",
+    "name": "엑스칼리버",
+    "rarity": "4",
+    "effect": "공격할 때마다 자신의 무작위 디버프 하나를 3중첩 제거합니다.\\n공격할 때마다 전투 중 이 무기의 공격력과 치명타 피해가 각각 5%씩, 치명타 확률은 1%p씩 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Excalibur.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "design": "Legendary upright elegant silver-blue longsword with pale golden crossguard, white/blue wrapped grip, small royal blue jewel and restrained luminous gold sun emblem at blade base. Long sharp blade, short hilt, complete tip and pommel. Four-cell tall narrow silhouette.",
+    "output": "Assets/_Project/Art/Items/Stage/excalibur/excalibur-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 엑스칼리버. Rarity: legendary. Design: Legendary upright elegant silver-blue longsword with pale golden crossguard, white/blue wrapped grip, small royal blue jewel and restrained luminous gold sun emblem at blade base. Long sharp blade, short hilt, complete tip and pommel. Four-cell tall narrow silhouette.\nEXACT footprint: 1 columns by 4 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2],[0,3]]. Canvas aspect ratio 1:4; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      91,
+      0,
+      543,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "cd82b86f582d4a6ea359135154d07485"
+  },
+  {
+    "id": "four_leaf_clover",
+    "name": "네잎클로버",
+    "rarity": "1",
+    "effect": "상점의 새 상품마다 10% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다. 네잎클로버류 효과는 하나만 적용됩니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_FourLeafClover.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "A fresh green FOUR-leaf clover with exactly four rounded heart-shaped leaves, bright green highlights, short curved stem. Simple readable luck charm.",
+    "output": "Assets/_Project/Art/Items/Stage/four-leaf-clover/four-leaf-clover-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 네잎클로버. Rarity: uncommon. Design: A fresh green FOUR-leaf clover with exactly four rounded heart-shaped leaves, bright green highlights, short curved stem. Simple readable luck charm.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "37f4d820ff1a4ee296d2043988f3b9e0"
+  },
+  {
+    "id": "frost_blade",
+    "name": "서리 칼날",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_FrostBlade.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Upright steel longsword with sharp pale sky-blue icy blade and frost creeping from small ice crystal set into silver crossguard. Navy wrapped grip, short hilt. Three-cell tall.",
+    "output": "Assets/_Project/Art/Items/Stage/frost-blade/frost-blade-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 서리 칼날. Rarity: rare. Design: Upright steel longsword with sharp pale sky-blue icy blade and frost creeping from small ice crystal set into silver crossguard. Navy wrapped grip, short hilt. Three-cell tall.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "7836b068c96140a18538e126d3136650"
+  },
+  {
+    "id": "genesis_armor",
+    "name": "창세의 수호갑옷",
+    "rarity": "4",
+    "effect": "자신의 방어도 획득량이 30% 증가합니다.\\n무기나 펫으로부터 받는 피해가 30% 감소합니다.\\n자신에게 부여되는 디버프 중첩이 50% 감소합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_GenesisArmor.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/##/##",
+    "design": "Legendary guardian plate armor, empty breastplate with broad pauldrons and long articulated fauld covering thighs. Radiant pearl mithril, restrained gold trim, large pale blue central protective jewel, strong symmetrical silhouette. Full 2x3 shape. No helmet, no wearer, no detached shield.",
+    "output": "Assets/_Project/Art/Items/Stage/genesis-armor/genesis-armor-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 창세의 수호갑옷. Rarity: legendary. Design: Legendary guardian plate armor, empty breastplate with broad pauldrons and long articulated fauld covering thighs. Radiant pearl mithril, restrained gold trim, large pale blue central protective jewel, strong symmetrical silhouette. Full 2x3 shape. No helmet, no wearer, no detached shield.\nEXACT footprint: 2 columns by 3 rows, 6 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]. Canvas aspect ratio 2:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1bac3cf9cd4747e3a7c2356b7f99bd1b"
+  },
+  {
+    "id": "glacial_heart",
+    "name": "빙하의 심장",
+    "rarity": "3",
+    "effect": "{period}초마다 자신의 화상을 3중첩 제거합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_GlacialHeart.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Heavy blue-gray armor breastplate with a large faceted sky-blue ICE CRYSTAL embedded in center of chest. Frost borders around crystal, pale steel shoulder plates, blue leather joins. Compact 2x2 empty cuirass.",
+    "output": "Assets/_Project/Art/Items/Stage/glacial-heart/glacial-heart-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 빙하의 심장. Rarity: epic. Design: Heavy blue-gray armor breastplate with a large faceted sky-blue ICE CRYSTAL embedded in center of chest. Frost borders around crystal, pale steel shoulder plates, blue leather joins. Compact 2x2 empty cuirass.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1641a81c61e74db990276d2d579e14fd"
+  },
+  {
+    "id": "great_sword",
+    "name": "그레이트 소드",
+    "rarity": "3",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_GreatSword.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "design": "Massive straight upright two-handed greatsword, broad dark steel blade with pale silver edge and central fuller, sturdy simple crossguard, long enough double-hand leather grip but blade dominant. Full narrow four-cell height.",
+    "output": "Assets/_Project/Art/Items/Stage/great-sword/great-sword-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 그레이트 소드. Rarity: epic. Design: Massive straight upright two-handed greatsword, broad dark steel blade with pale silver edge and central fuller, sturdy simple crossguard, long enough double-hand leather grip but blade dominant. Full narrow four-cell height.\nEXACT footprint: 1 columns by 4 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2],[0,3]]. Canvas aspect ratio 1:4; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      91,
+      0,
+      543,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "3ed41876db9042329db505b5ec2e65a6"
+  },
+  {
+    "id": "hawkeye",
+    "name": "호크아이",
+    "rarity": "3",
+    "effect": "{diamond}의 아이템은 자신의 집중 중첩마다 치명타 확률이 1%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Hawkeye.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "w": 2,
+    "h": 1,
+    "shape": "##",
+    "design": "A sleek horizontal fantasy optical sight: short dark steel and brass telescope, cyan glass lens at each end, centered adjustment knob and simple mounting foot. Medieval craft, no modern electronics. Two cells wide one high.",
+    "output": "Assets/_Project/Art/Items/Stage/hawkeye/hawkeye-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 호크아이. Rarity: epic. Design: A sleek horizontal fantasy optical sight: short dark steel and brass telescope, cyan glass lens at each end, centered adjustment knob and simple mounting foot. Medieval craft, no modern electronics. Two cells wide one high.\nEXACT footprint: 2 columns by 1 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##. Coordinates with origin top-left: [[0,0],[1,0]]. Canvas aspect ratio 2:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1774,
+      887
+    ],
+    "canvasSize": [
+      1774,
+      887
+    ],
+    "status": "review-draft",
+    "spriteGuid": "c91e5f1d467644908fb850800a97f2a8"
+  },
+  {
+    "id": "healing_potion",
+    "name": "회복 물약",
+    "rarity": "0",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_HealingPotion.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Small round clear glass potion bottle filled with vivid cherry-red healing liquid, short narrow neck with cork, simple beige tied band and clean white glass highlights. No text.",
+    "output": "Assets/_Project/Art/Items/Stage/healing-potion/healing-potion-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 회복 물약. Rarity: common. Design: Small round clear glass potion bottle filled with vivid cherry-red healing liquid, short narrow neck with cork, simple beige tied band and clean white glass highlights. No text.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "4e2103d742ea401695fb5d04448233bd"
+  },
+  {
+    "id": "hunters_bow",
+    "name": "사냥꾼의 활",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_HuntersBow.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Upright refined walnut hunting bow with green leather grip, silver limb caps and small cream feather tied near grip, visible straight bowstring. One narrow three-cell tall silhouette.",
+    "output": "Assets/_Project/Art/Items/Stage/hunters-bow/hunters-bow-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 사냥꾼의 활. Rarity: rare. Design: Upright refined walnut hunting bow with green leather grip, silver limb caps and small cream feather tied near grip, visible straight bowstring. One narrow three-cell tall silhouette.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "f8f48e592f5a487eba6ebd0a3b9ef0b9"
+  },
+  {
+    "id": "ice_crystal",
+    "name": "얼음 수정",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_IceCrystal.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One tall faceted sky-blue ice crystal cluster: dominant pointed vertical prism with two short smaller fused crystals at base, white angular reflections and deep cyan facets. No rock landscape.",
+    "output": "Assets/_Project/Art/Items/Stage/ice-crystal/ice-crystal-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 얼음 수정. Rarity: uncommon. Design: One tall faceted sky-blue ice crystal cluster: dominant pointed vertical prism with two short smaller fused crystals at base, white angular reflections and deep cyan facets. No rock landscape.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "9bfe10b270d64f738b63ca153168baa7"
+  },
+  {
+    "id": "iron_dagger",
+    "name": "철 단검",
+    "rarity": "1",
+    "effect": "적의 공격이 빗나가거나 회피할 때마다 이 무기의 사용 주기가 즉시 30% 충전됩니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_IronDagger.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One upright iron dagger with sharp modest triangular silver blade, short practical brown leather grip and tiny iron crossguard, compact pommel. Blade about two-thirds total height. No jewels.",
+    "output": "Assets/_Project/Art/Items/Stage/iron-dagger/iron-dagger-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 철 단검. Rarity: uncommon. Design: One upright iron dagger with sharp modest triangular silver blade, short practical brown leather grip and tiny iron crossguard, compact pommel. Blade about two-thirds total height. No jewels.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "c6cbed9d99614eb386c8288713b72ee8"
+  },
+  {
+    "id": "iron_maiden",
+    "name": "아이언 메이든",
+    "rarity": "3",
+    "effect": "가시 피해가 치명타로 적용될 수 있습니다. 자신의 가시 중첩마다 가시의 치명타 확률이 0.5%p, 치명타 피해가 1% 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_IronMaiden.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Empty heavy dark iron thorn armor, wide angular pauldrons, layered steel chest plates, multiple sharp silver spikes on shoulders and outer ribs, dark crimson leather beneath. Compact square cuirass, not a torture coffin.",
+    "output": "Assets/_Project/Art/Items/Stage/iron-maiden/iron-maiden-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 아이언 메이든. Rarity: epic. Design: Empty heavy dark iron thorn armor, wide angular pauldrons, layered steel chest plates, multiple sharp silver spikes on shoulders and outer ribs, dark crimson leather beneath. Compact square cuirass, not a torture coffin.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "fe2969bb04064ceea3fe0658efbb2bea"
+  },
+  {
+    "id": "iron_thorn_helmet",
+    "name": "무쇠가시 투구",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_IronThornHelmet.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Worn closed dark iron medieval helmet upgraded with multiple long silver spikes on crown and sides. Narrow black visor slit, broad simple gray highlight planes. Square icon.",
+    "output": "Assets/_Project/Art/Items/Stage/iron-thorn-helmet/iron-thorn-helmet-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 무쇠가시 투구. Rarity: rare. Design: Worn closed dark iron medieval helmet upgraded with multiple long silver spikes on crown and sides. Narrow black visor slit, broad simple gray highlight planes. Square icon.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "a63e226f8b684606b42551c751dfb5ee"
+  },
+  {
+    "id": "iron_thorns",
+    "name": "철가시",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_IronThorns.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "A compact iron caltrop cluster with four sharp conical steel spikes from central forged knot, dark steel with crisp pale edges. Square silhouette, no background.",
+    "output": "Assets/_Project/Art/Items/Stage/iron-thorns/iron-thorns-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 철가시. Rarity: uncommon. Design: A compact iron caltrop cluster with four sharp conical steel spikes from central forged knot, dark steel with crisp pale edges. Square silhouette, no background.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "490b91c4bd624e8399163a3ac91835f7"
+  },
+  {
+    "id": "leather_armor",
+    "name": "가죽 갑옷",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_LeatherArmor.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Plain brown leather armor vest, sturdy shoulder straps, broad stitched panels and small belt buckle, warm chestnut highlights, dark brown edges. Empty garment, no wearer. Square torso.",
+    "output": "Assets/_Project/Art/Items/Stage/leather-armor/leather-armor-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 가죽 갑옷. Rarity: uncommon. Design: Plain brown leather armor vest, sturdy shoulder straps, broad stitched panels and small belt buckle, warm chestnut highlights, dark brown edges. Empty garment, no wearer. Square torso.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "2db74587effd4a9b86b06c763269c2ae"
+  },
+  {
+    "id": "leather_boots",
+    "name": "가죽 장화",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_LeatherBoots.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One upright sturdy brown leather boot with folded cuff, two plain straps and small brass buckles, thick dark sole, side three-quarter view. Tall narrow silhouette.",
+    "output": "Assets/_Project/Art/Items/Stage/leather-boots/leather-boots-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 가죽 장화. Rarity: uncommon. Design: One upright sturdy brown leather boot with folded cuff, two plain straps and small brass buckles, thick dark sole, side three-quarter view. Tall narrow silhouette.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "c977ac9dac2d48f6952ccbadf1047b0e"
+  },
+  {
+    "id": "leather_gloves",
+    "name": "가죽 장갑",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_LeatherGloves.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "A pair of brown leather gloves overlapping compactly, fingers and thumb clearly readable, simple seams and short cuffs. Square inventory icon.",
+    "output": "Assets/_Project/Art/Items/Stage/leather-gloves/leather-gloves-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 가죽 장갑. Rarity: uncommon. Design: A pair of brown leather gloves overlapping compactly, fingers and thumb clearly readable, simple seams and short cuffs. Square inventory icon.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "dda294939c684363a71724e1c468f9d0"
+  },
+  {
+    "id": "lunar_eclipse",
+    "name": "월식",
+    "rarity": "4",
+    "effect": "공격할 때마다 자신의 무작위 디버프 하나를 최대 2중첩까지 적에게 옮기고, 적의 무작위 버프를 최대 2중첩 강탈합니다.\\n실제로 옮기거나 강탈한 중첩마다 전투 중 공격 속도가 1%씩 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_LunarEclipse.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "w": 2,
+    "h": 3,
+    "shape": "##/##/##",
+    "design": "Elegant powerful broad greatsword with PALE BUTTER-YELLOW evening-primrose-colored blade, moon-silver edges, swept crescent silver guard, deep indigo grip with small moonstone. Upright broad blade taking both columns, refined floral curve but sharp tip. Full 2x3 rectangle. Not a literal flower or flat moon.",
+    "output": "Assets/_Project/Art/Items/Stage/lunar-eclipse/lunar-eclipse-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 월식. Rarity: legendary. Design: Elegant powerful broad greatsword with PALE BUTTER-YELLOW evening-primrose-colored blade, moon-silver edges, swept crescent silver guard, deep indigo grip with small moonstone. Upright broad blade taking both columns, refined floral curve but sharp tip. Full 2x3 rectangle. Not a literal flower or flat moon.\nEXACT footprint: 2 columns by 3 rows, 6 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1],[0,2],[1,2]]. Canvas aspect ratio 2:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "canvasSize": [
+      1024,
+      1536
+    ],
+    "status": "review-draft",
+    "spriteGuid": "b295bd37885744ceb886f89c6a998cf6"
+  },
+  {
+    "id": "mithril",
+    "name": "미스릴",
+    "rarity": "3",
+    "effect": "모든 근접 무기의 공격 속도가 10% 증가합니다.\\n자신의 방어도 획득량이 10% 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Mithril.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "One small precious mithril ingot, silver-blue metal with clean planar bevels and sharp pale cyan highlights, slight three-quarter view. No text or stamped letters.",
+    "output": "Assets/_Project/Art/Items/Stage/mithril/mithril-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 미스릴. Rarity: epic. Design: One small precious mithril ingot, silver-blue metal with clean planar bevels and sharp pale cyan highlights, slight three-quarter view. No text or stamped letters.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "dadae8b2e663497494f26aaa918828d4"
+  },
+  {
+    "id": "mithril_armor",
+    "name": "미스릴 갑옷",
+    "rarity": "3",
+    "effect": "자신의 방어도 획득량이 10% 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_MithrilArmor.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Empty elegant light silver-blue mithril plate cuirass with symmetrical curved chest plates and pauldrons, cyan highlights, dark blue leather joins, fine restrained silver edging. Square silhouette.",
+    "output": "Assets/_Project/Art/Items/Stage/mithril-armor/mithril-armor-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 미스릴 갑옷. Rarity: epic. Design: Empty elegant light silver-blue mithril plate cuirass with symmetrical curved chest plates and pauldrons, cyan highlights, dark blue leather joins, fine restrained silver edging. Square silhouette.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "4387eda29be141cfb3d5bf840400c352"
+  },
+  {
+    "id": "mithril_shield",
+    "name": "미스릴 방패",
+    "rarity": "3",
+    "effect": "자신의 방어도 획득량이 10% 증가합니다.\\n무기나 펫으로부터 받는 피해가 20% 감소합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_MithrilShield.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Tall narrow mithril kite shield, bright silver-blue plate with a raised central diamond ridge, cyan faceted highlight, dark blue edge and small central pale gem. Two-cell height.",
+    "output": "Assets/_Project/Art/Items/Stage/mithril-shield/mithril-shield-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 미스릴 방패. Rarity: epic. Design: Tall narrow mithril kite shield, bright silver-blue plate with a raised central diamond ridge, cyan faceted highlight, dark blue edge and small central pale gem. Two-cell height.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "24fd3b89957d47e4bd3b9ee9415d0fb8"
+  },
+  {
+    "id": "moonflower",
+    "name": "달맞이꽃",
+    "rarity": "2",
+    "effect": "{period}초마다 자신에게 부여된 무작위 디버프 하나를 2중첩 제거합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Moonflower.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One upright evening primrose: single prominent four-petaled pale butter-yellow flower with gold center, green stem and two slender leaves. Palette must correspond to Lunar Eclipse sword's pale yellow blade.",
+    "output": "Assets/_Project/Art/Items/Stage/moonflower/moonflower-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 달맞이꽃. Rarity: rare. Design: One upright evening primrose: single prominent four-petaled pale butter-yellow flower with gold center, green stem and two slender leaves. Palette must correspond to Lunar Eclipse sword's pale yellow blade.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "422209645eec4c0d8f5e5608d6bf9adc"
+  },
+  {
+    "id": "needle_storm",
+    "name": "만천화우",
+    "rarity": "4",
+    "effect": "자신이 받는 중독 피해가 50% 감소합니다.\\n적의 중독 중첩마다 이 무기의 치명타 확률이 0.5%p, 치명타 피해가 1% 증가합니다.\\n이 무기의 명중 시 중독을 2, {diamond}의 원거리 무기 명중 시 중독을 1 부여합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_NeedleStorm.asset",
+    "cells": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "w": 3,
+    "h": 3,
+    "shape": ".#./###/.#.",
+    "design": "Legendary poison NEEDLE launcher, compact central dark jade and bronze mechanical hub with four narrow symmetrical arms pointing straight UP DOWN LEFT RIGHT. Each arm contains a bundle of parallel slender silver needles with emerald poisoned tips. Strict plus sign silhouette .#./###/.#. All FOUR CORNER cells entirely transparent, no diagonal limbs, no scattered needles outside arms. Clearly fantasy ranged weapon, not religious cross.",
+    "output": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 만천화우. Rarity: legendary. Design: Legendary poison NEEDLE launcher, compact central dark jade and bronze mechanical hub with four narrow symmetrical arms pointing straight UP DOWN LEFT RIGHT. Each arm contains a bundle of parallel slender silver needles with emerald poisoned tips. Strict plus sign silhouette .#./###/.#. All FOUR CORNER cells entirely transparent, no diagonal limbs, no scattered needles outside arms. Clearly fantasy ranged weapon, not religious cross.\nEXACT footprint: 3 columns by 3 rows, 5 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): .#./###/.#.. Coordinates with origin top-left: [[1,0],[0,1],[1,1],[2,1],[1,2]]. Canvas aspect ratio 3:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "ccfe5bc41fd840cab51f6fc0b335e174"
+  },
+  {
+    "id": "night_veil",
+    "name": "밤의 장막",
+    "rarity": "3",
+    "effect": "{period}초마다 자신에게 민첩을 1 부여하고, 적의 민첩을 1 제거하며 실명을 1 부여합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_NightVeil.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Empty luxurious hooded midnight indigo cloak, near-black outside, deep violet inner folds, silver crescent-shaped clasp and subtly jagged hem. Strong broad square garment, no person.",
+    "output": "Assets/_Project/Art/Items/Stage/night-veil/night-veil-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 밤의 장막. Rarity: epic. Design: Empty luxurious hooded midnight indigo cloak, near-black outside, deep violet inner folds, silver crescent-shaped clasp and subtly jagged hem. Strong broad square garment, no person.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "ebaae6ab97bc4a88bb80a7813c34a42f"
+  },
+  {
+    "id": "pegasus_feather",
+    "name": "페가수스의 깃털",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PegasusFeather.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Single elegant upright pure white feather with pale ice-blue shadow facets and bright ivory shaft, gently curved plume with large clean layered barbs. No wings or bird.",
+    "output": "Assets/_Project/Art/Items/Stage/pegasus-feather/pegasus-feather-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 페가수스의 깃털. Rarity: rare. Design: Single elegant upright pure white feather with pale ice-blue shadow facets and bright ivory shaft, gently curved plume with large clean layered barbs. No wings or bird.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "e532ec6b7823433a9aa3b849d858ac27"
+  },
+  {
+    "id": "permafrost",
+    "name": "만년설",
+    "rarity": "3",
+    "effect": "{diamond}의 아이템이 부여하는 빙결 중첩량이 50% 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Permafrost.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Compact mound-like eternal snow crystal: squat faceted pale blue ice chunk capped with brilliant white snow, small six-point snowflake inset near front. Square single-cell magical item.",
+    "output": "Assets/_Project/Art/Items/Stage/permafrost/permafrost-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 만년설. Rarity: epic. Design: Compact mound-like eternal snow crystal: squat faceted pale blue ice chunk capped with brilliant white snow, small six-point snowflake inset near front. Square single-cell magical item.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "67c6c2cd95bc4d8397ae71db7715ddd0"
+  },
+  {
+    "id": "piggy_bank",
+    "name": "저금통",
+    "rarity": "0",
+    "effect": "전투 후 상점에 들어올 때마다 1G를 추가로 얻습니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PiggyBank.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Cute simple terracotta pink ceramic piggy bank, round squat body, little snout, tiny ears, four stubby feet, curled tail and clear coin slot on top. A single gold coin partly inserted in slot. Square compact shape.",
+    "output": "Assets/_Project/Art/Items/Stage/piggy-bank/piggy-bank-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 저금통. Rarity: common. Design: Cute simple terracotta pink ceramic piggy bank, round squat body, little snout, tiny ears, four stubby feet, curled tail and clear coin slot on top. A single gold coin partly inserted in slot. Square compact shape.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "47aabfd587804096a64505e77de063e7"
+  },
+  {
+    "id": "platinum_card",
+    "name": "플래티넘 카드",
+    "rarity": "2",
+    "effect": "전투 후 상점에 들어올 때마다 무료 새로고침 1회를 얻습니다.\\n상점 할인 확률이 5%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PlatinumCard.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "A single platinum merchant card, silver-white rectangular metal plate with blue-gray beveled border and small engraved diamond crest, slight three-quarter tilt, horizontal card centered in a square icon. No numbers, letters, modern credit logos or text.",
+    "output": "Assets/_Project/Art/Items/Stage/platinum-card/platinum-card-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 플래티넘 카드. Rarity: rare. Design: A single platinum merchant card, silver-white rectangular metal plate with blue-gray beveled border and small engraved diamond crest, slight three-quarter tilt, horizontal card centered in a square icon. No numbers, letters, modern credit logos or text.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "79a11a40ce7845338218cbded931b7f3"
+  },
+  {
+    "id": "platinum_clover",
+    "name": "플래티넘 클로버",
+    "rarity": "3",
+    "effect": "상점의 새 상품마다 25% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다.\\n전투 후 상점에 들어올 때마다 무료 새로고침 2회를 얻고 상점 할인 확률이 10%p 증가합니다. 플래티넘 카드의 효과와 중복되지 않습니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PlatinumClover.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Exactly FOUR heart-shaped platinum metallic clover leaves around a small emerald center, short silver stem, cool silver and pale cyan highlights. Same readable four-leaf silhouette as green clover but luxurious metal.",
+    "output": "Assets/_Project/Art/Items/Stage/platinum-clover/platinum-clover-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 플래티넘 클로버. Rarity: epic. Design: Exactly FOUR heart-shaped platinum metallic clover leaves around a small emerald center, short silver stem, cool silver and pale cyan highlights. Same readable four-leaf silhouette as green clover but luxurious metal.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "2a309cdf31b74704bb9966f0f60e78a9"
+  },
+  {
+    "id": "poison_bottle",
+    "name": "독병",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PoisonBottle.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "Small squat glass bottle of emerald-green poison, dark cork and purple tied cord, tiny ivory skull emblem on bottle front, angular green liquid and white glass highlights. One square icon.",
+    "output": "Assets/_Project/Art/Items/Stage/poison-bottle/poison-bottle-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 독병. Rarity: uncommon. Design: Small squat glass bottle of emerald-green poison, dark cork and purple tied cord, tiny ivory skull emblem on bottle front, angular green liquid and white glass highlights. One square icon.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1acd920d28574812a7868de397ca8a1e"
+  },
+  {
+    "id": "poison_immunity_book",
+    "name": "만독불침의 서",
+    "rarity": "3",
+    "effect": "자신이 받는 중독 피해가 50% 감소합니다. 만독불침의 서와 만천화우의 중독 감소 효과는 하나만 적용됩니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PoisonImmunityBook.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "A thick closed dark green grimoire with bronze corner guards, cream page block, a bold coiled emerald serpent emblem on cover and small metal clasp. Three-quarter view filling square. No readable text.",
+    "output": "Assets/_Project/Art/Items/Stage/poison-immunity-book/poison-immunity-book-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 만독불침의 서. Rarity: epic. Design: A thick closed dark green grimoire with bronze corner guards, cream page block, a bold coiled emerald serpent emblem on cover and small metal clasp. Three-quarter view filling square. No readable text.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "3e792fa2ff084ae6b2fd15ed473293e9"
+  },
+  {
+    "id": "poison_quiver",
+    "name": "맹독 화살통",
+    "rarity": "2",
+    "effect": "{diamond}의 원거리 무기의 공격 속도가 15%, 명중률이 20%p 증가합니다.\\n해당 무기가 명중할 때마다 50% 확률로 적에게 중독을 1 부여합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PoisonQuiver.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Upright dark green leather quiver containing a few arrows, pale feathers and clearly green poison-coated arrowhead detail at rim, bronze band and vial-shaped clasp. Narrow two-cell tall, all arrows contained in same column.",
+    "output": "Assets/_Project/Art/Items/Stage/poison-quiver/poison-quiver-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 맹독 화살통. Rarity: rare. Design: Upright dark green leather quiver containing a few arrows, pale feathers and clearly green poison-coated arrowhead detail at rim, bronze band and vial-shaped clasp. Narrow two-cell tall, all arrows contained in same column.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "adf38788788f434ca1b24a858a47a6bc"
+  },
+  {
+    "id": "primal_flame",
+    "name": "태초의 불꽃",
+    "rarity": "4",
+    "effect": "적의 화상 중첩이 피해를 준 뒤에도 감소하지 않습니다.\\n명중 시 화상 2중첩을 부여합니다. 치명타이면 3중첩을 부여합니다.\\n적의 화상 중첩마다 적의 치유 효율과 방어도 획득량이 각각 1% 감소합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_PrimalFlame.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "design": "Legendary upright bow with limbs shaped as sculpted blackened dragon horns wrapped in vivid orange-red primordial flame, golden molten cutting accents, dark central grip and taut gold bowstring. Recognizable bow, contained flames only along limbs. One narrow four-cell column.",
+    "output": "Assets/_Project/Art/Items/Stage/primal-flame/primal-flame-2026-11-17-v2.png",
+    "prompt": "Use case: precise-object-edit. FIRST image is edit target, remaining images style reference. Preserve target's exact design, palette, visible chunky pixel scale and material shading. Change ONLY geometry to fit inventory footprint. Actual transparent alpha PNG. No text, no drawn grid, no new decoration. Output 768x2304 canvas. Keep this exact fiery black and gold bow design, flame colors, coarse pixel style. Make bow slimmer horizontally with ALL artwork, flames, outline and string within x=120..648 (centered width528). Keep full height y=40..2264. The intended Unity sprite rectangle is x=96,y=0,width576,height2304, a 1:4 footprint. Leftmost96px and rightmost96px MUST be fully transparent with no glow. Preserve complete undistorted bow, make its curve less wide and flames contained. Do not crop or amputate edges.\nInventory footprint top-to-bottom: #/#/#/#. # occupied, . empty. Keep complete silhouette, preserve dark stepped outlines.",
+    "previousOutput": "Assets/_Project/Art/Items/Stage/primal-flame/primal-flame-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/primal-flame/primal-flame-2026-11-16-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "spriteRectTopLeft": [
+      177,
+      0,
+      470,
+      1880
+    ],
+    "canvasSize": [
+      836,
+      1881
+    ],
+    "status": "review-draft",
+    "spriteGuid": "75b09e319a9c47cfbfd1a3d0c85f1dba"
+  },
+  {
+    "id": "quiver",
+    "name": "화살통",
+    "rarity": "1",
+    "effect": "{diamond}의 원거리 무기의 공격 속도가 15%, 명중률이 10%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Quiver.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Upright tan brown leather quiver with brass rim, simple strap and three visible feathered arrows protruding upward. Cream feathers, wooden shafts. Narrow two-cell tall.",
+    "output": "Assets/_Project/Art/Items/Stage/quiver/quiver-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 화살통. Rarity: uncommon. Design: Upright tan brown leather quiver with brass rim, simple strap and three visible feathered arrows protruding upward. Cream feathers, wooden shafts. Narrow two-cell tall.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "9f51844973fe421e94d5e02281bb240e"
+  },
+  {
+    "id": "razor_thorn",
+    "name": "서슬퍼런 가시",
+    "rarity": "2",
+    "effect": "적의 치유 효율을 20% 감소시킵니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_RazorThorn.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "One compact cluster of especially sharp blue-steel barbed spikes, longer sharper edges than plain caltrops, polished icy silver cutting surfaces and dark metal center. Single square item.",
+    "output": "Assets/_Project/Art/Items/Stage/razor-thorn/razor-thorn-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 서슬퍼런 가시. Rarity: rare. Design: One compact cluster of especially sharp blue-steel barbed spikes, longer sharper edges than plain caltrops, polished icy silver cutting surfaces and dark metal center. Single square item.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "81b31fe527a64ae4a6b23e860c91595d"
+  },
+  {
+    "id": "snow_bloom",
+    "name": "설화만개",
+    "rarity": "4",
+    "effect": "자신에게 적용되는 빙결 효과가 50% 감소합니다.\\n명중 시 빙결 2중첩을 부여합니다. 치명타이면 3중첩을 부여합니다.\\n적의 빙결 중첩마다 이 무기의 공격력이 1%, 치명타 확률이 0.5%p 증가합니다.\\n이 무기로 실제 입힌 피해의 30%만큼 체력을 회복합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_SnowBloom.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Elegant narrow upright rapier with entire long pointed blade made from faceted SKY-BLUE ICE, crisp white cutting edges, small snowflake-like icy guard and short dark blue grip with silver pommel. Refined sharp sword, no flowers surrounding.",
+    "output": "Assets/_Project/Art/Items/Stage/snow-bloom/snow-bloom-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 설화만개. Rarity: legendary. Design: Elegant narrow upright rapier with entire long pointed blade made from faceted SKY-BLUE ICE, crisp white cutting edges, small snowflake-like icy guard and short dark blue grip with silver pommel. Refined sharp sword, no flowers surrounding.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "597fa1925b194679bc41504796042b07"
+  },
+  {
+    "id": "solar_radiance",
+    "name": "태양의 광휘",
+    "rarity": "3",
+    "effect": "무기나 펫으로부터 피해를 받을 때마다 50% 확률로 적에게 화상을 1 부여합니다.\\n무기나 펫으로부터 받는 피해가 15% 감소합니다.\\n{period}초마다 자신의 빙결을 2중첩 제거합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_SolarRadiance.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "Ornate broad golden shield with bold vivid orange-red FLAME emblem on face, strong gold rim and ivory highlights, near-round heater silhouette filling square. Not a separate flame or sun character.",
+    "output": "Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 태양의 광휘. Rarity: epic. Design: Ornate broad golden shield with bold vivid orange-red FLAME emblem on face, strong gold rim and ivory highlights, near-round heater silhouette filling square. Not a separate flame or sun character.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1bb5b2b1bfc9472bb5e01d2468d65096"
+  },
+  {
+    "id": "spear",
+    "name": "창",
+    "rarity": "1",
+    "effect": "이 무기는 방어도에 1.5배의 피해를 입힙니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Spear.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Plain upright medieval spear, pointed steel leaf-shaped spearhead above long warm wooden shaft, small metal socket and short dark binding. Simple practical weapon, all within one three-cell column.",
+    "output": "Assets/_Project/Art/Items/Stage/spear/spear-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 창. Rarity: uncommon. Design: Plain upright medieval spear, pointed steel leaf-shaped spearhead above long warm wooden shaft, small metal socket and short dark binding. Simple practical weapon, all within one three-cell column.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "49f089e37294442086f18bb5f2ccefcc"
+  },
+  {
+    "id": "steel_sword",
+    "name": "강철 검",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_SteelSword.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Plain upright straight steel sword, sharp double-edged silver blade with darker central plane, simple iron crossguard and short brown wrapped grip. Practical uncommon weapon with no jewel, distinguish from royal knight sword.",
+    "output": "Assets/_Project/Art/Items/Stage/steel-sword/steel-sword-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 강철 검. Rarity: uncommon. Design: Plain upright straight steel sword, sharp double-edged silver blade with darker central plane, simple iron crossguard and short brown wrapped grip. Practical uncommon weapon with no jewel, distinguish from royal knight sword.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "f5d971c585cd456d862f344b13dcaed5"
+  },
+  {
+    "id": "torch",
+    "name": "횃불",
+    "rarity": "1",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Torch.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Upright wooden torch with dark cloth-wrapped head burning in vivid yellow-orange flames, brown shaft and short blackened metal band. Fire above handle, narrow two-cell silhouette, no loose sparks.",
+    "output": "Assets/_Project/Art/Items/Stage/torch/torch-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 횃불. Rarity: uncommon. Design: Upright wooden torch with dark cloth-wrapped head burning in vivid yellow-orange flames, brown shaft and short blackened metal band. Fire above handle, narrow two-cell silhouette, no loose sparks.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "2393b5810f4d41388401559a0f72c71f"
+  },
+  {
+    "id": "true_shot",
+    "name": "정사필중",
+    "rarity": "4",
+    "effect": "이 무기와 {diamond}의 원거리 무기가 명중할 때마다 40% 확률로 집중을 1 얻습니다.\\n해당 무기는 자신의 집중 중첩마다 치명타 확률이 1%p 증가하며, 100%를 초과한 치명타 확률 1%p당 치명타 피해가 2%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_TrueShot.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 1,
+    "h": 4,
+    "shape": "#/#/#/#",
+    "design": "Legendary precision longbow, elegant deep green and platinum limbs, tasteful gold accents, one small cyan-lensed fantasy aiming sight attached close to center grip within silhouette, taut pale string. Four-cell tall narrow column, no floating sight or arrow.",
+    "output": "Assets/_Project/Art/Items/Stage/true-shot/true-shot-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 정사필중. Rarity: legendary. Design: Legendary precision longbow, elegant deep green and platinum limbs, tasteful gold accents, one small cyan-lensed fantasy aiming sight attached close to center grip within silhouette, taut pale string. Four-cell tall narrow column, no floating sight or arrow.\nEXACT footprint: 1 columns by 4 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2],[0,3]]. Canvas aspect ratio 1:4; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      110,
+      0,
+      543,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "ca92895cbbf4450d90ece819a31b0190"
+  },
+  {
+    "id": "vampire_bug",
+    "name": "흡혈충",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_VampireBug.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "One elongated stylized bloodsucking insect, dark burgundy segmented abdomen, dark legs held close, small ivory mouthparts and two tiny red eyes. Top-down vertical form, non-gory.",
+    "output": "Assets/_Project/Art/Items/Stage/vampire-bug/vampire-bug-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 흡혈충. Rarity: rare. Design: One elongated stylized bloodsucking insect, dark burgundy segmented abdomen, dark legs held close, small ivory mouthparts and two tiny red eyes. Top-down vertical form, non-gory.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1ce4f7de86e14c8b89d1e2cd81a77c67"
+  },
+  {
+    "id": "vampire_knife",
+    "name": "뱀파이어 나이프",
+    "rarity": "3",
+    "effect": "적의 공격이 빗나가거나 회피할 때마다 이 무기의 사용 주기가 즉시 30% 충전됩니다.\\n명중할 때마다 50% 확률로 흡혈을 1 얻습니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_VampireKnife.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Upright ornate vampire dagger, sharp silver blade with dark red central channel, short burgundy grip, swept bat-wing-shaped dark silver guard and small red gem. Blade dominant, compact two-cell dagger.",
+    "output": "Assets/_Project/Art/Items/Stage/vampire-knife/vampire-knife-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 뱀파이어 나이프. Rarity: epic. Design: Upright ornate vampire dagger, sharp silver blade with dark red central channel, short burgundy grip, swept bat-wing-shaped dark silver guard and small red gem. Blade dominant, compact two-cell dagger.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "15a864656e5347e788091c28dc6e2ddb"
+  },
+  {
+    "id": "venom_bug",
+    "name": "맹독충",
+    "rarity": "2",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_VenomBug.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "One compact emerald-green venom beetle, shiny segmented shell with lime highlights, tiny purple abdomen accents and six short dark legs held close. Top-down square shape.",
+    "output": "Assets/_Project/Art/Items/Stage/venom-bug/venom-bug-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 맹독충. Rarity: rare. Design: One compact emerald-green venom beetle, shiny segmented shell with lime highlights, tiny purple abdomen accents and six short dark legs held close. Top-down square shape.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "1db883bb2f7048a7afd803fa1d9f154d"
+  },
+  {
+    "id": "war_hero_halberd",
+    "name": "전쟁영웅의 미늘창",
+    "rarity": "3",
+    "effect": "방어도에 1.5배의 피해를 입힙니다.\\n공격할 때마다 전투 중 이 무기의 공격 속도가 7%씩 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WarHeroHalberd.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "w": 2,
+    "h": 4,
+    "shape": "#./##/#./#.",
+    "design": "Upright medieval heroic halberd, shaft entirely LEFT column four cells tall, long steel spear point in top-left, sweeping steel axe blade extends RIGHT only in SECOND row, small gold collar and brown leather grip lower left. Exact #./##/#./#. All other right cells empty.",
+    "output": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v3.png",
+    "prompt": "Use case: precise-object-edit. First image is edit target. Preserve its chunky pixel-art style, steel/silver colors and leather/wood materials. CRITICAL geometry change: move the entire axe blade UP A LOT, by roughly one quarter of the total weapon height. Shrink the tall spear tip to HALF its current length. The axe blade must sit near the TOP of the weapon: its top at 28% and bottom at 45% of image height. The entire bottom HALF of this image must contain ONLY a thin long wooden shaft with leather grip in LEFT HALF, with NO metal axe blade whatsoever. The blade extends to the right from the upper quarter of the shaft. Overall silhouette tall polearm, 2 wide by4 high inventory: #./##/#./#. The first row is a SHORT spear point, second row is a COMPACT axe head, bottom TWO rows are just a very long handle. Produce canvas 896x1792, transparent background. No text, no grid, no glow, no shadows. Strong square pixels and dark stepped outline. This is NOT a request to keep original blade position: blade must move up and spear must become much shorter. Reference images2 and3 show desired coarse pixel styling.",
+    "previousOutput": "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-16-v1.png",
+    "references": [
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v2.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/KnightSword/knight-sword-2026-11-06-v1.png",
+      "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/StoneGiantCuirass/stone-giant-cuirass-approved.png"
+    ],
+    "previousOutputs": [
+      "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-16-v1.png",
+      "Assets/_Project/Art/Items/Stage/war-hero-halberd/war-hero-halberd-2026-11-17-v2.png"
+    ],
+    "spriteRectTopLeft": [
+      0,
+      0,
+      880,
+      1760
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "7200bbff352e46d184d5dbf592077c37"
+  },
+  {
+    "id": "whetstone",
+    "name": "숫돌",
+    "rarity": "0",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Whetstone.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "A simple compact gray sharpening whetstone, squat elongated rectangular stone with rounded bevels, lighter flat top and darker sides, three-quarter view. Single square icon, no stand or sword.",
+    "output": "Assets/_Project/Art/Items/Stage/whetstone/whetstone-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 숫돌. Rarity: common. Design: A simple compact gray sharpening whetstone, squat elongated rectangular stone with rounded bevels, lighter flat top and darker sides, three-quarter view. Single square icon, no stand or sword.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "e1276d28b3564d28bc8ff2282fb9be93"
+  },
+  {
+    "id": "windsurfer",
+    "name": "윈드서퍼",
+    "rarity": "3",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_Windsurfer.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "PAIR of sky-blue leather boots side by side, each with a white feather wing attached outside ankle, soft blue leather, ivory laces and silver buckles. Entire pair fits square 2x2 silhouette, no wearer.",
+    "output": "Assets/_Project/Art/Items/Stage/windsurfer/windsurfer-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 윈드서퍼. Rarity: epic. Design: PAIR of sky-blue leather boots side by side, each with a white feather wing attached outside ankle, soft blue leather, ivory laces and silver buckles. Entire pair fits square 2x2 silhouette, no wearer.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "abe83fb9250d4056ab2bf7d125d0040b"
+  },
+  {
+    "id": "winged_boots",
+    "name": "전령신의 날개신발",
+    "rarity": "4",
+    "effect": "이 아이템의 사용 주기는 적의 공격이 빗나가거나 회피할 때마다 즉시 30% 충전됩니다.\\n{diamond}의 아이템은 자신의 신속 중첩마다 치명타 확률이 1%p, 치명타 피해가 2%p 증가합니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WingedBoots.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "w": 2,
+    "h": 2,
+    "shape": "##/##",
+    "design": "PAIR of legendary messenger god winged boots, ivory and light sky-blue leather, golden ankle cuffs and large layered white feather wings on outer sides, both feet visible side by side. Square 2x2 silhouette, polished but clear pixel art.",
+    "output": "Assets/_Project/Art/Items/Stage/winged-boots/winged-boots-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 전령신의 날개신발. Rarity: legendary. Design: PAIR of legendary messenger god winged boots, ivory and light sky-blue leather, golden ankle cuffs and large layered white feather wings on outer sides, both feet visible side by side. Square 2x2 silhouette, polished but clear pixel art.\nEXACT footprint: 2 columns by 2 rows, 4 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): ##/##. Coordinates with origin top-left: [[0,0],[1,0],[0,1],[1,1]]. Canvas aspect ratio 2:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "6cda868a9ce04c77a068c903192ff81a"
+  },
+  {
+    "id": "wooden_bow",
+    "name": "나무 활",
+    "rarity": "0",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WoodenBow.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Simple upright warm brown wooden bow with modest natural curve, plain dark leather central grip and clearly visible cream bowstring. No metal ornament, no arrow. One narrow three-cell column.",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-bow/wooden-bow-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 나무 활. Rarity: common. Design: Simple upright warm brown wooden bow with modest natural curve, plain dark leather central grip and clearly visible cream bowstring. No metal ornament, no arrow. One narrow three-cell column.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "937393c0948249fabf97d0eb1cf68ce9"
+  },
+  {
+    "id": "wooden_shield",
+    "name": "나무 방패",
+    "rarity": "1",
+    "effect": "무기나 펫으로부터 받는 피해가 10% 감소합니다. 방패류의 피해 감소는 가장 높은 효과 하나만 적용됩니다.",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WoodenShield.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "w": 1,
+    "h": 2,
+    "shape": "#/#",
+    "design": "Tall narrow wooden shield of vertical brown planks with dark iron rim, small round steel central boss and a few iron rivets. Slightly pointed base, two-cell tall.",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-shield/wooden-shield-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 나무 방패. Rarity: uncommon. Design: Tall narrow wooden shield of vertical brown planks with dark iron rim, small round steel central boss and a few iron rivets. Slightly pointed base, two-cell tall.\nEXACT footprint: 1 columns by 2 rows, 2 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#. Coordinates with origin top-left: [[0,0],[0,1]]. Canvas aspect ratio 1:2; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      887,
+      1774
+    ],
+    "canvasSize": [
+      887,
+      1774
+    ],
+    "status": "review-draft",
+    "spriteGuid": "b3db0c9a253d41b29083ed9446a582d8"
+  },
+  {
+    "id": "wooden_sword",
+    "name": "목검",
+    "rarity": "0",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WoodenSword.asset",
+    "cells": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "w": 1,
+    "h": 3,
+    "shape": "#/#/#",
+    "design": "Upright simple training sword made entirely of honey-brown wood: long straight wooden blade with mildly blunt pointed end, wooden crossguard, short dark brown wrapped grip. Three-cell height, no metal or jewel.",
+    "output": "Assets/_Project/Art/Items/Stage/wooden-sword/wooden-sword-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 목검. Rarity: common. Design: Upright simple training sword made entirely of honey-brown wood: long straight wooden blade with mildly blunt pointed end, wooden crossguard, short dark brown wrapped grip. Three-cell height, no metal or jewel.\nEXACT footprint: 1 columns by 3 rows, 3 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #/#/#. Coordinates with origin top-left: [[0,0],[0,1],[0,2]]. Canvas aspect ratio 1:3; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      724,
+      2172
+    ],
+    "canvasSize": [
+      724,
+      2172
+    ],
+    "status": "review-draft",
+    "spriteGuid": "798b12be5cd2487a9ffd0216931cda6c"
+  },
+  {
+    "id": "worn_helmet",
+    "name": "허름한 투구",
+    "rarity": "0",
+    "effect": "",
+    "path": "Assets/_Project/Data/Items/Stage/Item_WornHelmet.asset",
+    "cells": [
+      [
+        0,
+        0
+      ]
+    ],
+    "w": 1,
+    "h": 1,
+    "shape": "#",
+    "design": "One shabby ordinary iron open-face helmet with small dents and scuffed gray plates, simple brow band and short cheek guards, dark interior. Compact square, no horns or plume.",
+    "output": "Assets/_Project/Art/Items/Stage/worn-helmet/worn-helmet-2026-11-16-v1.png",
+    "prompt": "Create ONE isolated fantasy RPG inventory item sprite. The supplied existing game items are STYLE references only, do not reproduce their subjects. Match their bold charcoal/dark-purple stepped outlines, clearly visible chunky square pixels, broad deliberate 3-5-tone material shading, restrained upper-left highlights, readable small-scale silhouette. Approximately 32 logical pixels per inventory cell, consistently enlarged crisp pixel clusters. No finely painted texture, no smooth vector curves, no 3D, no realistic rendering. Transparent alpha PNG, no background color, checkerboard, ground, shadow, aura, labels, text, borders, grid, cell tiles or extra items. Keep entire item within assigned footprint, small 5% margins. Occupied cells guide silhouette, not solid square tiles. Don't draw placement-effect markers. Weapons point up, garments empty, no hands or characters.\nItem: 허름한 투구. Rarity: common. Design: One shabby ordinary iron open-face helmet with small dents and scuffed gray plates, simple brow band and short cheek guards, dark interior. Compact square, no horns or plume.\nEXACT footprint: 1 columns by 1 rows, 1 occupied cells. Rows top to bottom (# occupied, . forbidden transparent): #. Coordinates with origin top-left: [[0,0]]. Canvas aspect ratio 1:1; use matching aspect, keep each cell square. Empty cells must remain transparent. For a 1:4 item, use a sufficiently tall canvas (e.g. 768x3072), not a square or short portrait.",
+    "spriteRectTopLeft": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "canvasSize": [
+      1254,
+      1254
+    ],
+    "status": "review-draft",
+    "spriteGuid": "913c4ca79d3646e68cd613dee25044d1"
+  }
+]

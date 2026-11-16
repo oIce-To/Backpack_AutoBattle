@@ -89,8 +89,11 @@ namespace BackpackAutoBattle.Prototype
 
     public sealed class PrototypeStageSelectionScreen
     {
+        private static readonly int[] BossRounds = { 4, 8, 12 };
         private readonly SelectionFrame _frame;
         private readonly Text _name, _details, _record;
+        private readonly Button[] _bossButtons = new Button[BossRounds.Length];
+        private readonly RawImage[] _bossPortraits = new RawImage[BossRounds.Length];
         private readonly Button _confirm;
         private readonly Button _normalMode, _mineMode, _sweep;
         private readonly Text _error, _entryCharacter, _entryLevel, _entryError;
@@ -109,12 +112,33 @@ namespace BackpackAutoBattle.Prototype
         private PlayerProgress _progress;
         private string[] _stageOrder = Array.Empty<string>();
         public PrototypeStageSelectionScreen(Transform canvas, Action<StageData> previewEntry, Action<StageData> enter,
-            Action close, Action<StageData> sweep)
+            Action close, Action<StageData> sweep, Action<StageRoundData> previewBoss)
         {
             _frame = new SelectionFrame(canvas, "Stage", "스테이지 선택", close);
             _name = SelectionUi.Label(_frame.Panel, "Stage Preview Name", "", 29, new Vector2(195, 158), new Vector2(580, 84));
-            _details = SelectionUi.Label(_frame.Panel, "Stage Preview Details", "", 19, new Vector2(195, 56), new Vector2(580, 138));
-            _details.fontStyle = FontStyle.Normal; _details.lineSpacing = 1.2f;
+            _details = SelectionUi.Label(_frame.Panel, "Stage Preview Details", "", 18, new Vector2(195, 114), new Vector2(580, 28));
+            _details.fontStyle = FontStyle.Normal;
+            for (int i = 0; i < BossRounds.Length; i++)
+            {
+                int round = BossRounds[i];
+                var frame = SelectionUi.Image(_frame.Panel, $"Stage Boss Round {round}", Color.white);
+                frame.raycastTarget = true;
+                SelectionUi.Place(frame.rectTransform, new Vector2(195 + (i - 1) * 139, 43), Vector2.one * 108);
+                PrototypeGuildStyle.Apply(frame, PrototypeGuildStyle.Surface.Iron);
+                var button = frame.gameObject.AddComponent<PrototypeAudioButton>();
+                button.targetGraphic = frame;
+                button.onClick.AddListener(() =>
+                {
+                    if (button.interactable) previewBoss(_selected.GetRound(round));
+                });
+                _bossButtons[i] = button;
+
+                var portrait = new GameObject("Boss Portrait", typeof(RectTransform), typeof(RawImage)).GetComponent<RawImage>();
+                portrait.transform.SetParent(frame.transform, false);
+                SelectionUi.Place(portrait.rectTransform, Vector2.zero, Vector2.one * 80);
+                portrait.raycastTarget = false;
+                _bossPortraits[i] = portrait;
+            }
             _record = SelectionUi.Label(_frame.Panel, "Stage Preview Progress", "", 22, new Vector2(195, -138), new Vector2(580, 78));
             _record.color = new Color(.95f, .88f, .72f);
             _confirm = SelectionUi.GuildButton(_frame.Panel, "Stage Confirm Button", "스테이지 입장", new Vector2(240, -247), new Vector2(300, 64),
@@ -274,11 +298,9 @@ namespace BackpackAutoBattle.Prototype
             _name.text = stage?.DisplayName ?? "스테이지가 없습니다.";
             _sweep.gameObject.SetActive(stage?.IsOriginMine == true);
             _rewardRoot.gameObject.SetActive(stage != null);
+            RenderBossPortraits(stage);
             if (stage == null) { _details.text = _record.text = ""; return; }
-            string Names(bool bosses) => string.Join(" · ", stage.Rounds.Where(r => r != null && (!bosses || r.IsBoss))
-                .Select(r => r.Encounter?.DisplayName).Where(n => !string.IsNullOrEmpty(n)).Distinct().Take(4));
-            string bossNames = Names(true);
-            _details.text = $"{stage.RoundCount}라운드\n\n주요 적  {Names(false)}\n\n보스  {(bossNames.Length == 0 ? "없음" : bossNames)}";
+            _details.text = $"총 {stage.RoundCount}라운드";
             _rewardSlots[0].gameObject.SetActive(!stage.IsOriginMine);
             _rewardSlots[2].gameObject.SetActive(stage.IsOriginMine);
             _rewardSlots[0].anchoredPosition = new Vector2(-97, 0);
@@ -301,6 +323,29 @@ namespace BackpackAutoBattle.Prototype
                     choice.Value.GetComponentInChildren<Text>().color = new Color(.58f, .60f, .58f);
                     var colors = choice.Value.colors; colors.disabledColor = Color.white; choice.Value.colors = colors;
                 }
+            }
+        }
+
+        private void RenderBossPortraits(StageData stage)
+        {
+            for (int i = 0; i < BossRounds.Length; i++)
+            {
+                int index = BossRounds[i] - 1;
+                var enemy = stage != null && index < stage.RoundCount ? stage.Rounds[index]?.Encounter?.Enemy : null;
+                Sprite sprite = enemy?.Illustration;
+                bool visible = stage != null && _confirm.interactable && sprite != null;
+                _bossButtons[i].gameObject.SetActive(visible);
+                _bossButtons[i].interactable = visible;
+                RawImage portrait = _bossPortraits[i];
+                portrait.texture = visible ? sprite.texture : null;
+                if (!visible) continue;
+                Rect crop = enemy.PortraitCrop;
+                Rect bounds = sprite.rect;
+                portrait.uvRect = new Rect(
+                    (bounds.x + crop.x * bounds.width) / sprite.texture.width,
+                    (bounds.y + crop.y * bounds.height) / sprite.texture.height,
+                    crop.width * bounds.width / sprite.texture.width,
+                    crop.height * bounds.height / sprite.texture.height);
             }
         }
         public void RefreshTickets()

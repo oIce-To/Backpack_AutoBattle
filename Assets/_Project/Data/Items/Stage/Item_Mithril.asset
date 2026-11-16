@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_Mithril
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: mithril
+  _displayName: "미스릴"
+  _effectDescription: "모든 근접 무기의 공격 속도가 10% 증가합니다.\n자신의 방어도 획득량이 10% 증가합니다."
+  _category: 7
+  _rarity: 3
+  _tags: 0
+  _stageEffect: 25
+  _excludeFromShop: 0
+  _purchasePrice: 8
+  _inventorySprite: {fileID: 21300000, guid: 31c4ca0157d7494984e0555e1eb71f85, type: 3}
+  _displayColor: {r: 0.57, g: 0.38, b: 0.72, a: 1}
+  _canRotate: 0
+  _occupiedCells:
+  - {x: 0, y: 0}

@@ -22,11 +22,14 @@ namespace BackpackAutoBattle.Prototype
         private Image _rarityBadge;
         private Text _itemText;
         private RectTransform _shapeRoot;
+        private Image _itemArtwork;
         private Text _originalPriceText;
         private Text _priceText;
         private Image _priceStrike;
         private Image _lockShade;
         private PrototypeShopLockIcon _lockIcon;
+        private Image _cloverFlash;
+        private float _cloverTime;
 
         public ShopOffer Offer { get; private set; }
         public RectTransform ShapeRect => _shapeRoot;
@@ -55,6 +58,10 @@ namespace BackpackAutoBattle.Prototype
             shapeObject.transform.SetParent(transform, false);
             _shapeRoot = (RectTransform)shapeObject.transform;
             BackpackPrototypeController.SetRect(_shapeRoot, new Vector2(0f, 0.5f), new Vector2(47f, 0f), new Vector2(58f, 58f));
+            _itemArtwork = SelectionUi.Image(_shapeRoot, "Item Artwork", Color.white);
+            _itemArtwork.preserveAspect = true;
+            BackpackPrototypeController.Stretch(_itemArtwork.rectTransform);
+            _itemArtwork.gameObject.SetActive(false);
 
             _itemText = BackpackPrototypeController.CreateText(transform, "Item Text", string.Empty, 15, FontStyle.Normal, TextAnchor.MiddleLeft);
             RectTransform textRect = _itemText.rectTransform;
@@ -92,6 +99,10 @@ namespace BackpackAutoBattle.Prototype
             _lockIcon.color = new Color(0.95f, 0.97f, 1f);
             _lockIcon.raycastTarget = false;
             BackpackPrototypeController.SetRect(_lockIcon.rectTransform, new Vector2(1f, 0.5f), new Vector2(-17f, 0f), new Vector2(22f, 26f));
+            _cloverFlash = SelectionUi.Image(transform, "Rarity Clover Flash", Color.white);
+            _cloverFlash.preserveAspect = true;
+            BackpackPrototypeController.SetRect(_cloverFlash.rectTransform, new Vector2(1f, .5f), new Vector2(-28f, 4f), new Vector2(36f, 36f));
+            _cloverFlash.gameObject.SetActive(false);
             RefreshLockVisual();
         }
 
@@ -105,6 +116,10 @@ namespace BackpackAutoBattle.Prototype
                 if (offer == null) _itemText.text = string.Empty;
                 return;
             }
+            _cloverFlash.sprite = offer.RarityShiftSource?.InventorySprite;
+            _cloverTime = _cloverFlash.sprite != null ? .55f : 0f;
+            _cloverFlash.gameObject.SetActive(_cloverTime > 0f);
+            _cloverFlash.color = Color.white;
             ItemData itemData = offer.ItemData;
             _shapeRoot.gameObject.SetActive(true);
             _rarityBadge.gameObject.SetActive(true);
@@ -129,6 +144,7 @@ namespace BackpackAutoBattle.Prototype
         public void ShowPurchased()
         {
             _controller.HideItemTooltip(this);
+            ClearCloverFlash();
             _shapeRoot.gameObject.SetActive(false);
             _rarityBadge.gameObject.SetActive(false);
             _originalPriceText.gameObject.SetActive(false);
@@ -182,7 +198,26 @@ namespace BackpackAutoBattle.Prototype
         }
         public void OnPointerMove(PointerEventData eventData) => _controller.MoveItemTooltip(this, eventData);
         public void OnPointerExit(PointerEventData eventData) => _controller.HideItemTooltip(this);
-        private void OnDisable() { if (_controller != null) _controller.HideItemTooltip(this); }
+        private void OnDisable()
+        {
+            if (_controller != null) _controller.HideItemTooltip(this);
+            if (_cloverFlash != null) ClearCloverFlash();
+        }
+
+        private void ClearCloverFlash()
+        {
+            _cloverTime = 0f;
+            _cloverFlash.sprite = null;
+            _cloverFlash.gameObject.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (_cloverTime <= 0f) return;
+            _cloverTime = Mathf.Max(0f, _cloverTime - Time.unscaledDeltaTime);
+            _cloverFlash.color = new Color(1f, 1f, 1f, Mathf.Clamp01(_cloverTime / .30f));
+            if (_cloverTime == 0f) ClearCloverFlash();
+        }
 
         private void RebuildShape(ItemData itemData)
         {
@@ -190,11 +225,16 @@ namespace BackpackAutoBattle.Prototype
             {
                 if (shapeCell != null)
                 {
+                    shapeCell.SetActive(false);
                     Destroy(shapeCell);
                 }
             }
 
             _shapeCells.Clear();
+            _itemArtwork.sprite = itemData.InventorySprite;
+            _itemArtwork.gameObject.SetActive(_itemArtwork.sprite != null);
+            if (_itemArtwork.sprite != null) return;
+
             IReadOnlyList<Vector2Int> cells = itemData.OccupiedCells;
             int width = cells.Max(cell => cell.x) + 1;
             int height = cells.Max(cell => cell.y) + 1;

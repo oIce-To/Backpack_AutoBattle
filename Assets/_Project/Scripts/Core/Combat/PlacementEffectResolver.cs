@@ -29,13 +29,20 @@ namespace BackpackAutoBattle.Combat
                     if (cell.x < 0 || cell.y < 0 || cell.x >= loadout.Width || cell.y >= loadout.Height) continue;
                     CombatItemSnapshot target = loadout.Items.FirstOrDefault(item => item.InstanceId != source.InstanceId && item.OccupiedCells.Contains(cell));
                     bool matches = target != null && (effect.TriggersGearEffect || effect.AttackDamageBonus != 0f)
-                        && target.Activation.HasEffect(ItemEffectKind.Attack)
+                        && (effect.RequiresFreezeApplication ? CanApplyFreeze(target) : target.Activation.HasEffect(ItemEffectKind.Attack))
                         && (effect.TargetFilter?.Matches(target.Category, target.Tags) ?? true);
                     result.Add(new PlacementEffectCell(cell, index, matches ? target.InstanceId : null));
                 }
             }
             return result.AsReadOnly();
         }
+
+        private static bool CanApplyFreeze(CombatItemSnapshot item)
+            => item.BattleStartStatuses.Any(status => status.Kind == StatusEffectKind.Freeze && status.Target == StatusTarget.Opponent)
+                || item.Activation.HasCycle && item.Activation.Effects.Any(effect => effect.Status?.Kind == StatusEffectKind.Freeze
+                    && effect.Kind == ItemEffectKind.ApplyStatus && effect.Status.Target == StatusTarget.Opponent)
+                || item.StageEffect == StageItemEffect.SnowBloom
+                || item.GearEffect.Kind is UniqueGearEffectKind.FrostDawnFragment or UniqueGearEffectKind.SnowflakeRabbit;
 
         public static IReadOnlyDictionary<string, float> GetAttackBonuses(CombatLoadoutSnapshot loadout)
         {

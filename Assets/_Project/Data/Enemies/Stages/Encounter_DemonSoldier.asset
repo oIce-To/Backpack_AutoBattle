@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcb12e7a68a3364f9c2425451f34d20, type: 3}
+  m_Name: Encounter_DemonSoldier
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Enemies.EnemyEncounterData
+  _encounterId: DemonSoldier
+  _enemy: {fileID: 11400000, guid: 8305116b9fdb4ecbba51daa5f3f8580b, type: 2}
+  _maximumHealth: 90
+  _attack: 10
+  _items:
+  - _slotId: weapon
+    _item: {fileID: 11400000, guid: 64ca85fd4c8043c781a965a76afb3fcb, type: 2}
+    _origin: {x: 1, y: 0}
+    _rotation: 0

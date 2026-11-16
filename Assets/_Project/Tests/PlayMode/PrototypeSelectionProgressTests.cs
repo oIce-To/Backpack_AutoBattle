@@ -91,7 +91,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             SeedClearedStages(4);
             yield return LoadMenu();
             Assert.That(_controller.AvailableCharacters.Select(c => c.CharacterId), Is.EquivalentTo(new[] { "allen", "serena" }));
-            Assert.That(_controller.AvailableStages.Count, Is.EqualTo(5));
+            Assert.That(_controller.AvailableStages.Count, Is.EqualTo(6));
             Click("Main Tab Characters"); yield return null;
             Carousel().Move(1); SettleCarousel();
             Assert.That(Text("Character Preview Name"), Is.EqualTo("세레나"));
@@ -107,14 +107,14 @@ namespace BackpackAutoBattle.Tests.Prototype
             Click("Main Tab Stages"); yield return null;
             Click("Stage Choice stage_05");
             Assert.That(Text("Stage Preview Name"), Does.Contain("5스테이지"));
-            Assert.That(Text("Stage Preview Details"), Does.Contain("12라운드").And.Contain("주요 적").And.Contain("보스"));
+            Assert.That(Text("Stage Preview Details"), Is.EqualTo("총 12라운드"));
             Capture("StageSelectionFive.png");
             Click("Stage Selection Back Button"); Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
             Capture("MainMenuSerena.png");
             _controller.ShowStageSelection(); yield return null; Click("Stage Choice stage_05"); Click("Stage Confirm Button");
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.MainMenu));
             Assert.That(_controller.CurrentStageId, Is.EqualTo("stage_01"));
-            Assert.That(Text("Stage Entry Popup Title"), Is.EqualTo("5스테이지 · 고블린 전선"));
+            Assert.That(Text("Stage Entry Popup Title"), Is.EqualTo("5스테이지 · 얼어붙은 산맥"));
             Assert.That(Text("Stage Entry Character"), Is.EqualTo("세레나"));
             Assert.That(Text("Stage Entry Level"), Is.EqualTo("Lv. 1"));
             Assert.That(Find("Stage Entry Illustration").GetComponent<Image>().sprite, Is.SameAs(_controller.SelectedCharacter.Portrait));
@@ -149,8 +149,10 @@ namespace BackpackAutoBattle.Tests.Prototype
             var portrait = Find("Player Character Illustration").GetComponent<Image>();
             Assert.That(portrait.sprite, Is.SameAs(_controller.SelectedCharacter.Portrait));
             Assert.That(portrait.rectTransform.localScale.x, Is.EqualTo(1));
-            Assert.That(_controller.Stage.GetRound(12).Encounter.Enemy.Illustration,
-                Is.SameAs(_controller.ActiveCombat.Enemy.Illustration));
+            Assert.That(_controller.ActiveCombat.Enemy.Illustration,
+                Is.SameAs(_controller.Stage.GetRound(1).Encounter.Enemy.Illustration));
+            Assert.That(_controller.ActiveCombat.Enemy.Illustration,
+                Is.Not.SameAs(_controller.Stage.GetRound(12).Encounter.Enemy.Illustration));
             var battleItem = _controller.GetComponentsInChildren<PrototypeBattleItemView>().Single(item => item.Snapshot.ItemId == bow.ItemId);
             Assert.That(battleItem.transform.Find("Label"), Is.Null);
             var fill = battleItem.transform.Find("Artwork Cycle Color").GetComponent<Image>();
@@ -1028,6 +1030,90 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
+        public IEnumerator StageBossPortraits_OpenTheSameEnemyPopupWithTheSelectedRoundLoadout()
+        {
+            yield return LoadMenu();
+            Assert.That(_controller.ShowStageSelection(), Is.True);
+            yield return null;
+            var stage = _controller.AvailableStages.First();
+            foreach (int round in new[] { 4, 8, 12 })
+            {
+                var card = (RectTransform)Find($"Stage Boss Round {round}");
+                var icon = card.Find("Boss Portrait").GetComponent<RawImage>();
+                var boss = stage.GetRound(round).CreateEnemySnapshot();
+                Assert.That(card.GetComponentsInChildren<Text>(), Is.Empty);
+                Assert.That(icon.rectTransform.anchoredPosition, Is.EqualTo(Vector2.zero));
+                Assert.That(card.rect.height - icon.rectTransform.rect.height, Is.GreaterThanOrEqualTo(24f));
+                Assert.That(icon.texture, Is.SameAs(boss.Illustration.texture));
+                Assert.That(icon.uvRect.width, Is.LessThan(1));
+                Click($"Stage Boss Round {round}");
+                Assert.That(_controller.IsEnemyPreviewOpen, Is.True);
+                Assert.That(_controller.TryOpenSettings(), Is.False);
+                Assert.That(Text("Enemy Preview Name"), Is.EqualTo(boss.DisplayName));
+                Assert.That(Text("Enemy Preview Health"), Is.EqualTo($"체력 {boss.MaximumHealth:0.#} / {boss.MaximumHealth:0.#}"));
+                var popup = Find("Enemy Preview Popup");
+                Assert.That(popup.GetComponentsInChildren<PrototypeBattleItemView>().Select(view => view.Snapshot.InstanceId),
+                    Is.EquivalentTo(boss.Loadout.Items.Select(item => item.InstanceId)));
+                Assert.That(Find("Enemy Preview Popup Close").GetComponentInChildren<PrototypeSettingsCloseGlyph>(), Is.Not.Null);
+                Click("Enemy Preview Popup Close");
+                Assert.That(_controller.IsEnemyPreviewOpen, Is.False);
+            }
+            Capture("StageBossPortraits.png");
+
+            Click("Mine Stage Category");
+            yield return null;
+            var mine = _controller.AvailableMineStages.First();
+            var mineBoss = mine.GetRound(12).CreateEnemySnapshot();
+            Assert.That(Find("Stage Boss Round 12").Find("Boss Portrait").GetComponent<RawImage>().texture,
+                Is.SameAs(mineBoss.Illustration.texture));
+            Capture("MineBossPortraits.png");
+            Click("Stage Boss Round 12");
+            Assert.That(Text("Enemy Preview Name"), Is.EqualTo(mineBoss.DisplayName));
+            Capture("MineBossPreview.png");
+            Click("Enemy Preview Popup Close");
+            Click("Stage Confirm Button");
+            Click("Stage Entry Start Button");
+            Assert.That(_controller.PreparedEnemy.DisplayName, Is.EqualTo("스켈레톤 광부"));
+            Assert.That(_controller.TryOpenEnemyPreview(), Is.True);
+            Assert.That(Find("Enemy Preview Popup Close").GetComponentInChildren<PrototypeSettingsCloseGlyph>(), Is.Not.Null);
+            Assert.That(Text("Enemy Preview Name"), Is.EqualTo("스켈레톤 광부"));
+        }
+
+        [UnityTest]
+        public IEnumerator SixthStage_AppearsAfterTheFifthClearAndUsesTheDemonPortraitInPreviewAndBattle()
+        {
+            SeedClearedStages(5);
+            yield return LoadMenu();
+            Assert.That(_controller.IsStageUnlocked("stage_06"), Is.True);
+            _controller.ShowStageSelection();
+            yield return null;
+            var viewport = Find("Stage Choices Viewport").GetComponent<ScrollRect>();
+            viewport.verticalNormalizedPosition = 0;
+            Canvas.ForceUpdateCanvases();
+            yield return null;
+            var sixth = Find("Stage Choice stage_06");
+            Assert.That(RectTransformUtility.RectangleContainsScreenPoint((RectTransform)viewport.transform, Pointer(sixth).position), Is.True);
+            Assert.That(sixth.GetComponent<Button>().interactable, Is.True);
+            Click("Stage Choice stage_06");
+            Assert.That(Text("Stage Preview Name"), Is.EqualTo("6스테이지 · 죽음의 성채"));
+            Capture("StageSixSelection.png");
+
+            Click("Stage Confirm Button");
+            Click("Stage Entry Start Button");
+            Assert.That(_controller.PreparedEnemy.DisplayName, Is.EqualTo("마족 병사"));
+            Assert.That(_controller.TryOpenEnemyPreview(), Is.True);
+            var portrait = _controller.PreparedEnemy.Illustration;
+            Assert.That(portrait, Is.Not.Null);
+            Assert.That(Find("Enemy Preview Illustration").GetComponent<Image>().sprite, Is.SameAs(portrait));
+            Capture("StageSixEnemyPreview.png");
+            _controller.CloseEnemyPreview();
+            Assert.That(_controller.TryStartBattle(), Is.True);
+            Assert.That(Find("Enemy Character Illustration").GetComponent<Image>().sprite, Is.SameAs(portrait));
+            Assert.That(_controller.ActiveCombat.EnemyWeapons.Single().DisplayName, Is.EqualTo("마족군 제식 검"));
+            Capture("StageSixBattle.png");
+        }
+
+        [UnityTest]
         public IEnumerator FreshProgress_LocksStagesAndRejectsClicksAndDirectSelection_WhileLegacyLockedSelectionFallsBack()
         {
             var legacy = new PlayerProgress(); legacy.SelectStage("stage_05"); legacy.RecordRound("stage_05", 6, 12);
@@ -1037,7 +1123,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.Progress.GetStage("stage_05").HighestRound, Is.EqualTo(6));
             _controller.ShowStageSelection(); yield return null;
             Assert.That(Find("Stage Choice stage_01").GetComponent<Button>().interactable, Is.True);
-            for (int i = 2; i <= 5; i++)
+            for (int i = 2; i <= 6; i++)
             {
                 string id = $"stage_{i:00}"; var choice = Find("Stage Choice " + id);
                 Assert.That(choice.GetComponent<Button>().interactable, Is.False);
@@ -1296,7 +1382,8 @@ namespace BackpackAutoBattle.Tests.Prototype
         {
             Assert.That(_controller.TryStartBattle(), Is.True);
             var weapon = _controller.ActiveCombat.PlayerWeapons.First(); weapon.Stats.AttackDamage = 10000; weapon.Stats.AccuracyPercent = 100;
-            _controller.TickCombat(2);
+            // Extra time allows the same guaranteed weapon to finish bosses that revive or gain brief immunity.
+            _controller.TickCombat(8);
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
         }
 

@@ -54,7 +54,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool ShowMainMenuTab(MainMenuTab tab)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen || IsEnemyPreviewOpen
                 || !Enum.IsDefined(typeof(MainMenuTab), tab)) return false;
             _mainMenu.Hide(); _characterSelection.Hide(); _stageSelection.Hide(); _equipment.Hide();
             switch (tab)
@@ -76,7 +76,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TrySelectCharacter(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen || IsEnemyPreviewOpen) return false;
             CharacterData character = AvailableCharacters.FirstOrDefault(c => c.CharacterId == id);
             if (character == null || string.IsNullOrWhiteSpace(id)) return false;
             _characterData = character; _progress.SelectCharacter(id);
@@ -84,7 +84,7 @@ namespace BackpackAutoBattle.Prototype
         }
         public bool TrySelectStage(string id)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen || IsEnemyPreviewOpen) return false;
             StageData stage = AllStages.FirstOrDefault(s => s.StageId == id);
             if (stage == null || !IsStageUnlocked(id) || stage.GetValidationErrors().Count > 0) return false;
             _stageData = stage; _progress.SelectStage(id);
@@ -132,7 +132,7 @@ namespace BackpackAutoBattle.Prototype
         private void ShowStageEntry(StageData stage)
         {
             if (!IsMainMenu || ActiveMainTab != MainMenuTab.Stages || IsSettingsOpen || _rewardPopup.IsOpen
-                || _stageSelection.IsEntryOpen || !IsStageUnlocked(stage?.StageId)) return;
+                || _stageSelection.IsEntryOpen || IsEnemyPreviewOpen || !IsStageUnlocked(stage?.StageId)) return;
             if (_characterData == null)
             {
                 _stageSelection.ShowError("출전할 캐릭터를 선택해주세요.");
@@ -142,11 +142,18 @@ namespace BackpackAutoBattle.Prototype
             _stageSelection.ShowEntry(stage, _characterData, _progress, FindGearDefinition);
         }
 
+        private void ShowStageBossPreview(StageRoundData round)
+        {
+            if (!IsMainMenu || ActiveMainTab != MainMenuTab.Stages || IsSettingsOpen || _rewardPopup.IsOpen
+                || _stageSelection.IsEntryOpen || IsEnemyPreviewOpen) return;
+            _enemyPreview.Show(round.CreateEnemySnapshot());
+        }
+
         public bool TryStartRun() => !_stageSelection.IsEntryOpen && TryEnterStage(_stageData);
 
         private bool TryEnterStage(StageData stage)
         {
-            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen) return false;
+            if (!IsMainMenu || IsSettingsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || IsEnemyPreviewOpen) return false;
             if (!IsStageUnlocked(stage?.StageId))
             {
                 ShowEconomyError("이전 스테이지를 먼저 클리어해주세요.");

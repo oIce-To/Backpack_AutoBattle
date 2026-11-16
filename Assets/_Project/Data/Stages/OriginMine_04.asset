@@ -19,13 +19,13 @@ MonoBehaviour:
   _clearOriginShards: 1000
   _clearBlueprints: 8
   _rounds:
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 66
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -42,13 +42,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 77
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -65,13 +65,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 88
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -88,13 +88,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
-    _isBoss: 0
+  - _encounter: {fileID: 11400000, guid: 0454f0cb89204e0a8d299411a540fe4c, type: 2}
+    _isBoss: 1
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 99
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -111,13 +111,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: c17a9c2655910ee43a1dba10a35d34e6, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 110
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -134,13 +134,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: c17a9c2655910ee43a1dba10a35d34e6, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 121
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -157,13 +157,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: c17a9c2655910ee43a1dba10a35d34e6, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 132
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -180,13 +180,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: c17a9c2655910ee43a1dba10a35d34e6, type: 2}
-    _isBoss: 0
+  - _encounter: {fileID: 11400000, guid: 647429a0bc1241899dc72b7be1818e82, type: 2}
+    _isBoss: 1
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 143
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -203,13 +203,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 154
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -226,13 +226,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 165
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -249,13 +249,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 2b921baf39b52db4081154142d0a171f, type: 2}
+  - _encounter: {fileID: 11400000, guid: cf531af138f04af9b5c95e52cfca6635, type: 2}
     _isBoss: 0
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 176
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1
@@ -272,13 +272,13 @@ MonoBehaviour:
           _criticalDamagePercent:
             _enabled: 0
             _value: 0
-  - _encounter: {fileID: 11400000, guid: 38d5ac4be6f04c940991d123239ab6a4, type: 2}
+  - _encounter: {fileID: 11400000, guid: b61c58ea43564a7882c0ad53e561ff35, type: 2}
     _isBoss: 1
     _overrides:
       _overrideMaximumHealth: 1
       _maximumHealth: 187
       _items:
-      - _slotId: club
+      - _slotId: weapon
         _stats:
           _attackDamage:
             _enabled: 1

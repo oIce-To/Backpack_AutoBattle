@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec65e5478f446869185103371cf821a, type: 3}
+  m_Name: Recipe_SolarRadiance
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.FusionRecipeData
+  _centerItem: {fileID: 11400000, guid: b301bf8de33f5cf9821d4b1e62c8839e, type: 2}
+  _ingredients:
+  - _item: {fileID: 11400000, guid: e5d28226ebca52f490d7e900fa4de737, type: 2}
+    _quantity: 2
+  _resultItem: {fileID: 11400000, guid: a438d4857f125884a63f2f7723a1d36a, type: 2}

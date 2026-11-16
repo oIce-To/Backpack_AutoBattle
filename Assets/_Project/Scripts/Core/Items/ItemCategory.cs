@@ -8,6 +8,7 @@ namespace BackpackAutoBattle.Items
         Consumable,
         Material,
         Pet,
-        Bag
+        Bag,
+        Other
     }
 }

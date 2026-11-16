@@ -1,0 +1,14 @@
+{
+  "id": "needle_storm",
+  "name": "만천화우",
+  "shape": ".#./###/.#.",
+  "baseline": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-17-v2.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-17-v2.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/needle-storm/needle-storm-2026-11-17-v3.png",
+  "prompt": "Use case: precise-object-edit. Input image is edit target. Single game inventory pixel-art sprite. Precise REMOVAL ONLY. Remove all detached SMALL BRIGHT GREEN DROPLETS / green motion streaks floating OUTSIDE the weapon in the upper, lower, left and right arms. Those scattered green marks between the darts and background should become fully transparent. KEEP the green poison tips ON every actual needle/dart, the central emerald jewel, jade disk, bronze parts, all steel needles and leaf blades EXACTLY unchanged. Remove only detached free-floating green splash marks. Keep identical1254x1254 canvas, exact geometry/position/colors/pixel clusters. No added elements and no reshaping. Preserve exact coarse square-pixel style, dark stepped outline, no blur, no grid, no label. Real alpha transparency.",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-20389acd-f92d-49d1-8f54-37d3d59d86c2.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

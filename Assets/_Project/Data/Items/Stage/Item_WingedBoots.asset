@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_WingedBoots
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: winged_boots
+  _displayName: "전령신의 날개신발"
+  _effectDescription: "이 아이템의 사용 주기는 적의 공격이 빗나가거나 회피할 때마다 즉시 30% 충전됩니다.\n{diamond}의 아이템은 자신의 신속 중첩마다 치명타 확률이 1%p, 치명타 피해가 2%p 증가합니다."
+  _category: 1
+  _rarity: 4
+  _tags: 0
+  _stageEffect: 33
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 3
+    _effects:
+    - _kind: 2
+      _trigger: 0
+      _status:
+        _kind: 0
+        _target: 0
+        _stacks: 2
+  _battleStartStatuses:
+  - _kind: 5
+    _target: 0
+    _stacks: 20
+  _placementEffects:
+  - _cells:
+    - {x: -1, y: 1}
+    - {x: 2, y: 1}
+    _targetFilter:
+      _filterByCategory: 0
+      _category: 0
+      _requiredTags: 0
+    _attackDamageBonus: 0
+    _triggersGearEffect: 1
+  _excludeFromShop: 1
+  _purchasePrice: 18
+  _inventorySprite: {fileID: 21300000, guid: 66badbc915914bbfa775bb0b4620c493, type: 3}
+  _displayColor: {r: 0.72, g: 0.54, b: 0.21, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}

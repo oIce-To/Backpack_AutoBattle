@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_PlatinumClover
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: platinum_clover
+  _displayName: "플래티넘 클로버"
+  _effectDescription: "상점의 새 상품마다 25% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다.\n전투 후 상점에 들어올 때마다 무료 새로고침 2회를 얻고 상점 할인 확률이 10%p 증가합니다. 플래티넘 카드의 효과와 중복되지 않습니다."
+  _category: 7
+  _rarity: 3
+  _tags: 0
+  _stageEffect: 4
+  _excludeFromShop: 1
+  _purchasePrice: 8
+  _inventorySprite: {fileID: 21300000, guid: f015927c1b7946eca5a3c9ce6a78c3a6, type: 3}
+  _displayColor: {r: 0.57, g: 0.38, b: 0.72, a: 1}
+  _canRotate: 0
+  _occupiedCells:
+  - {x: 0, y: 0}

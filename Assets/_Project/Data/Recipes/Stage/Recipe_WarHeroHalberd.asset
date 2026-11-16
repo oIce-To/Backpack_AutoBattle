@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec65e5478f446869185103371cf821a, type: 3}
+  m_Name: Recipe_WarHeroHalberd
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.FusionRecipeData
+  _centerItem: {fileID: 11400000, guid: d399e1ecfb3d5331898eb61e8100fb4d, type: 2}
+  _ingredients:
+  - _item: {fileID: 11400000, guid: 90df9f973e6258a4ab6c6f33b3a9b47a, type: 2}
+    _quantity: 1
+  _resultItem: {fileID: 11400000, guid: 2b8cd08fd80f592a8ce120836ba4ed55, type: 2}

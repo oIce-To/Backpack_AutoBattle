@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc35fa9b73a7443b61c464c2ed8688, type: 3}
+  m_Name: Item_Enemy_yeti
+  m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
+  _itemId: enemy_yeti
+  _displayName: "설인의 주먹"
+  _category: 0
+  _tags: 1
+  _excludeFromShop: 1
+  _purchasePrice: 0
+  _effectDescription: "잃은 체력에 비례해 공격력과 공격 속도가 최대 50%까지 증가합니다."
+  _activation:
+    _enabled: 1
+    _cooldownSeconds: 2
+    _effects:
+    - _kind: 0
+  _weaponStats:
+    _attackDamage: 18
+    _cooldownSeconds: 2
+    _accuracyPercent: 100
+    _criticalChancePercent: 0
+    _criticalDamagePercent: 200
+  _displayColor: {r: 0.53, g: 0.37, b: 0.27, a: 1}
+  _canRotate: 1
+  _occupiedCells:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}

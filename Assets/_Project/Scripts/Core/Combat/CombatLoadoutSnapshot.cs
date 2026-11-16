@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BackpackAutoBattle.Enemies;
 using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace BackpackAutoBattle.Combat
             OwnerStats = ownerStats;
             Rarity = rarity ?? data.Rarity;
             GearEffect = gearEffect;
+            StageEffect = data.StageEffect;
             Category = data.Category;
             Tags = data.Tags;
             Shape = data.CreateShape();
@@ -48,6 +50,7 @@ namespace BackpackAutoBattle.Combat
         public string EffectDescription { get; }
         public ItemRarity Rarity { get; }
         public UniqueGearEffect GearEffect { get; }
+        public StageItemEffect StageEffect { get; }
         public CharacterStatsSnapshot OwnerStats { get; }
         public ItemCategory Category { get; }
         public ItemTags Tags { get; }
@@ -84,7 +87,8 @@ namespace BackpackAutoBattle.Combat
         public CombatantSnapshot(string displayName, double maximumHealth, CombatLoadoutSnapshot loadout, double attack = 10,
             Sprite illustration = null, bool illustrationFacesLeft = false, double criticalDamageBonusPercent = 0,
             CharacterPassiveSnapshot passive = null, int lostLives = 0, double criticalChanceBonusPercent = 0,
-            double armorGainBonusPercent = 0, double healingBonusPercent = 0, long plagueStacks = 0)
+            double armorGainBonusPercent = 0, double healingBonusPercent = 0, long plagueStacks = 0,
+            EnemyTrait enemyTrait = EnemyTrait.None)
         {
             if (maximumHealth <= 0d || double.IsNaN(maximumHealth) || double.IsInfinity(maximumHealth))
                 throw new ArgumentOutOfRangeException(nameof(maximumHealth));
@@ -100,6 +104,7 @@ namespace BackpackAutoBattle.Combat
             if (lostLives < 0) throw new ArgumentOutOfRangeException(nameof(lostLives));
             Passive = passive ?? CharacterPassiveSnapshot.None;
             LostLives = lostLives;
+            EnemyTrait = enemyTrait;
         }
 
         public string DisplayName { get; }
@@ -111,5 +116,6 @@ namespace BackpackAutoBattle.Combat
         public CharacterPassiveSnapshot Passive { get; }
         public int LostLives { get; }
         public long PlagueStacks { get; }
+        public EnemyTrait EnemyTrait { get; }
     }
 }

@@ -121,7 +121,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void RenderCooldown(CombatItem item, double elapsed)
         {
-            CycleProgress = (float)item.Cycle.ProgressAt(elapsed);
+            CycleProgress = item.IsSpent ? 0f : (float)item.Cycle.ProgressAt(elapsed);
             if (_artFill != null) _artFill.fillAmount = CycleProgress;
             float fillHeight = _itemHeight * CycleProgress;
             foreach (var fill in _colorFills)

@@ -1,0 +1,15 @@
+{
+  "id": "solar_radiance",
+  "name": "태양의 광휘",
+  "shape": "##/##",
+  "baseline": "Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-16-v1.png",
+  "references": [
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-16-v1.png",
+    "C:/Users/user/Documents/GitHub/Backpack_AutoBattle/Assets/_Project/Art/Items/Stage/burning-cloak/burning-cloak-2026-11-16-v1.png"
+  ],
+  "output": "Assets/_Project/Art/Items/Stage/solar-radiance/solar-radiance-2026-11-17-v2.png",
+  "prompt": "Use case: precise-object-edit. Asset: single fantasy inventory pixel-art sprite. First input image is edit target (or original design to restore). Preserve current pixel-art style, coarse square clusters, dark stepped outlines, palette and proportions except explicitly requested changes. Redesign this as a powerful SUNFIRE SHIELD. Image1 shield is target, image2 BURNING CLOAK is PRIMARY COLOR/FLAME reference. Strong rich crimson/dark burgundy shield body, blazing orange-to-yellow flame-shaped armor panels and radiant golden sun core. Prioritize cloak's vivid RED bulk, orange edging, bright YELLOW flame tips, dark wine shadows instead of old white/silver face. A readable sturdy shield silhouette with flowing flame-shaped rim and sunburst motif; energetic solar-fire defensive artifact forged from wood shield+burning cloaks. Keep chunky pixel-art outlines and broad stepped shading.2x2 square footprint, all flames contained within margin, actual transparent background. No smoky haze or external bloom.\nReturn exactly ONE item. No text labels, watermark, grid or backdrop. Preserve real alpha transparency; no black background. No blurring or antialias smoothing. Full object with safe transparent margins. Inventory footprint (# occupied, . empty), top-to-bottom: ##/##",
+  "source": "C:\\Users\\user\\.codex\\generated_images\\01a1b087-8df0-72e2-be20-0c50ee16ec90\\exec-56276a52-c45b-4cae-b390-558df13652a6.png",
+  "status": "review-draft",
+  "tool": "built-in image_gen"
+}

@@ -157,9 +157,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(damage.text, Is.EqualTo("6"));
             Assert.That(damage.color.g, Is.GreaterThan(damage.color.r));
             Assert.That(battleBag.GetComponentsInChildren<PrototypePlacementDiamond>(), Is.Empty);
-            controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>().ForceMeshUpdate();
-            Assert.That(SpriteCount(controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>()), Is.Zero,
-                "A weapon tooltip must not retain the previous item's inline diamond.");
+            var description = controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>(true);
+            Assert.That(description.text, Is.Empty);
+            Assert.That(description.gameObject.activeSelf, Is.False);
             PrototypeScreenCapture.CaptureIfRequested(Object.FindFirstObjectByType<Canvas>(), "WhetstoneBattleStats.png");
             weapon.Stats.AccuracyPercent = 100f; weapon.Stats.CriticalChancePercent = 0f;
             controller.TickCombat(2f);
@@ -227,7 +227,7 @@ namespace BackpackAutoBattle.Tests.Prototype
                     new(new[] { Vector2Int.left }, 1f),
                     new(new[] { new Vector2Int(2, -1) }, -2f, new(ItemCategory.Weapon, ItemTags.Ranged))
                 });
-                Set(temporary, "_description", "원하는 문장 중간에도 " + ItemTooltipContent.PlacementIconTag + " 표시를 넣습니다.");
+                Set(temporary, "_effectDescription", "원하는 문장 중간에도 " + ItemTooltipContent.PlacementIconTag + " 표시를 넣습니다.");
                 controller.ItemTooltip.Show(controller, () => ItemTooltipContent.FromItem(temporary), Screen(controller.transform), null);
                 Canvas.ForceUpdateCanvases();
                 TextMeshProUGUI text = controller.ItemTooltip.GetComponentInChildren<TextMeshProUGUI>();
