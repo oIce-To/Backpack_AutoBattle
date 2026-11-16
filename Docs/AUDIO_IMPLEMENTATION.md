@@ -6,6 +6,7 @@
 
 | 적용 위치 / 이벤트 | 프로젝트 파일 | 원본 파일 |
 | --- | --- | --- |
+| 타이틀 화면 | TitleScene_BGM.wav | TitleScene_BGM.wav |
 | 메인 및 캐릭터·장비·스테이지 선택 | MainScene_BGM.wav | MainScene_BGM.wav |
 | 스테이지 상점·준비·합성 화면 | ShopPhase_BGM.wav | ShopPhase_BGM.wav |
 | 전투 및 전투 결과 화면 | Battle_BGM.wav | Battle_BGM.wav |

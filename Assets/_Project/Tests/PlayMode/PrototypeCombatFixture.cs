@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
+using BackpackAutoBattle.Progression;
 using BackpackAutoBattle.Prototype;
 using NUnit.Framework;
 using UnityEngine;
@@ -15,6 +16,15 @@ namespace BackpackAutoBattle.Tests.Prototype
     internal static class PrototypeCombatFixture
     {
         private const BindingFlags PrivateInstance = BindingFlags.NonPublic | BindingFlags.Instance;
+        internal static void PrepareLobbyProfile()
+        {
+            var store = new PlayerProgressStore(PlayerProgressStore.ResolveLocalPath());
+            var profile = store.Load(out _);
+            if (!store.CanWrite || profile.Onboarding != OnboardingState.TutorialRequired) return;
+            var existing = profile.Export();
+            existing.onboarding = OnboardingState.Completed;
+            Assert.That(store.TrySave(PlayerProgress.FromData(existing), out _), Is.True);
+        }
 
         internal static IEnumerator LoadWithTrainingKit()
         {

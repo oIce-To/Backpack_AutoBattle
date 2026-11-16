@@ -8,6 +8,38 @@ namespace BackpackAutoBattle.Tests.Progression
 {
     public sealed class PlayerProgressTests
     {
+        [Test]
+        public void Onboarding_ResumesNameEntryAndKeepsTheFirstName()
+        {
+            var profile = new PlayerProgress();
+            Assert.That(profile.Onboarding, Is.EqualTo(OnboardingState.TutorialRequired));
+            Assert.That(profile.TrySetInitialUserName("모험가"), Is.False);
+            Assert.That(profile.FinishTutorial(), Is.True);
+            profile = PlayerProgress.FromData(profile.Export());
+            Assert.That(profile.Onboarding, Is.EqualTo(OnboardingState.NameRequired));
+            Assert.That(profile.TrySetInitialUserName("A"), Is.False);
+            Assert.That(profile.TrySetInitialUserName("TooLongName123"), Is.False);
+            Assert.That(profile.TrySetInitialUserName("가-1"), Is.False);
+            Assert.That(profile.TrySetInitialUserName("가a1"), Is.True);
+            profile = PlayerProgress.FromData(profile.Export());
+            Assert.That(profile.Onboarding, Is.EqualTo(OnboardingState.Completed));
+            Assert.That(profile.UserName, Is.EqualTo("가a1"));
+            Assert.That(profile.TrySetInitialUserName("다른이름"), Is.False);
+        }
+
+        [Test]
+        public void LegacyProfiles_KeepPreviouslyUnlockedProgressWithoutFirstRunOnboarding()
+        {
+            var legacy = new PlayerProgress();
+            legacy.RecordRound("stage_01", 12, 12, true);
+            var data = legacy.Export();
+            data.version = 5;
+            var profile = PlayerProgress.FromData(data);
+            Assert.That(profile.Onboarding, Is.EqualTo(OnboardingState.Completed));
+            Assert.That(profile.GetStage("stage_01").Cleared, Is.True);
+            Assert.That(profile.UserName, Is.Empty);
+        }
+
         private string _directory;
         private string _path;
         [SetUp] public void Setup()

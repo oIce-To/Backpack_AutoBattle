@@ -77,10 +77,12 @@ namespace BackpackAutoBattle.Prototype
             _grid = new BackpackGrid(GridSize, GridSize);
             _shopRandom = new System.Random(System.Environment.TickCount);
             bool openMainMenu = PrototypeMainMenuEntry.ConsumeMainMenuRequest();
-            if (!openMainMenu) AcquireInitialCharacters();
+            bool openTitle = PrototypeTitleEntry.ConsumeRequest();
+            if (!openMainMenu && !openTitle) AcquireInitialCharacters();
             _run = CreateRunState();
             BuildInterface();
-            if (openMainMenu) ShowMainMenu();
+            if (openTitle) ShowTitleScreen();
+            else if (openMainMenu) OpenApplicationEntry();
             else InitializeRunContent();
         }
 
@@ -118,7 +120,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void BeginDrag(BackpackItemView itemView, PointerEventData eventData)
         {
-            if (!CanEditLoadout || _draggingItem != null)
+            if (!CanEditLoadout || _draggingItem != null || _tutorialActive)
             {
                 return;
             }
@@ -170,14 +172,14 @@ namespace BackpackAutoBattle.Prototype
                 return;
             }
 
-            if (_dragSource != DragSource.Shop && !itemView.Data.IsUniqueGear && IsPointerInside(_sellArea, eventData))
+            if (!_tutorialActive && _dragSource != DragSource.Shop && !itemView.Data.IsUniqueGear && IsPointerInside(_sellArea, eventData))
             {
                 SellDraggedItem(itemView);
                 FinishDrag();
                 return;
             }
 
-            if (IsPointerInside(_storageRoot, eventData))
+            if (!_tutorialActive && IsPointerInside(_storageRoot, eventData))
             {
                 StoreDraggedItem(itemView, eventData);
                 FinishDrag();
@@ -185,7 +187,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             bool canAfford = _dragSource != DragSource.Shop || CanPurchaseDraggedOffer();
-            bool placed = canAfford && IsPointerInside(_gridRoot, eventData) && _grid.TryPlace(
+            bool placed = canAfford && IsTutorialPlacement(itemView, _previewOrigin) && IsPointerInside(_gridRoot, eventData) && _grid.TryPlace(
                 itemView.InstanceId,
                 itemView.Shape,
                 _previewOrigin,
@@ -202,11 +204,13 @@ namespace BackpackAutoBattle.Prototype
             }
 
             FinishDrag();
+            if (_tutorialActive && placed && _itemViews.ContainsKey(itemView.InstanceId)) AdvanceTutorialAction();
         }
 
         public void BeginShopDrag(PrototypeShopSlotView slotView, PointerEventData eventData)
         {
-            if (!CanEditLoadout || !slotView.CanPurchase || _draggingItem != null)
+            if (!CanEditLoadout || !slotView.CanPurchase || _draggingItem != null
+                || (_tutorialActive && slotView.ItemData.ItemId != TutorialPurchaseId))
             {
                 return;
             }
@@ -247,7 +251,8 @@ namespace BackpackAutoBattle.Prototype
 
         public void BeginStorageDrag(PrototypeStorageItemView storageView, PointerEventData eventData)
         {
-            if (!CanEditLoadout || storageView.StoredItem == null || _draggingItem != null)
+            if (!CanEditLoadout || storageView.StoredItem == null || _draggingItem != null
+                || (_tutorialActive && (_tutorialStep != TutorialStep.PlaceSteel || storageView.StoredItem.ItemData.ItemId != "steel_sword")))
             {
                 return;
             }
@@ -287,7 +292,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void RotateItem(BackpackItemView itemView)
         {
-            if (!CanEditLoadout) return;
+            if (!CanEditLoadout || (_tutorialActive && (_tutorialStep != TutorialStep.BuyShield || _draggingItem != itemView))) return;
             if (!itemView.Data.CanRotate)
             {
                 SetStatus($"{itemView.DisplayName}은(는) 회전할 수 없는 아이템입니다.");
@@ -323,7 +328,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryRerollShop()
         {
-            if (!CanEditLoadout || _draggingItem != null)
+            if (!CanEditLoadout || _draggingItem != null || _tutorialActive)
             {
                 return false;
             }
@@ -347,14 +352,16 @@ namespace BackpackAutoBattle.Prototype
         public bool TryToggleShopLock(PrototypeShopSlotView slot)
         {
             if (!CanEditLoadout || _draggingItem != null || slot == null || !_shopSlots.Contains(slot)
-                || !slot.CanPurchase || !slot.Offer.TryToggleLock()) return false;
+                || !slot.CanPurchase || (_tutorialActive && !CanToggleTutorialShopLock(slot)) || !slot.Offer.TryToggleLock()) return false;
             slot.RefreshLockVisual();
+            if (_tutorialActive) AdvanceTutorialAction();
             return true;
         }
 
         public bool AdvanceRound()
         {
-            if (IsMainMenu || IsSettingsOpen || IsStageAbandonOpen || IsEnemyPreviewOpen || IsShopReturnPresenting || _draggingItem != null || (_run.Phase != PrototypePhase.Victory
+            if (IsMainMenu || IsSettingsOpen || IsStageAbandonOpen || IsEnemyPreviewOpen || IsShopReturnPresenting || _draggingItem != null
+                || (_tutorialActive && _run.Phase != PrototypePhase.Victory) || (_run.Phase != PrototypePhase.Victory
                 && !(_enableDebugRoundAdvance && _run.Phase == PrototypePhase.Preparation)))
             {
                 return false;
@@ -385,10 +392,11 @@ namespace BackpackAutoBattle.Prototype
             RecordProgress();
             _enemyConfigurationError = null;
             _run.Phase = PrototypePhase.Preparation;
+            if (_tutorialActive) _tutorialStep = TutorialStep.PlaceSteel;
             _battleController.EndBattle();
             _selectedItem = null;
             PopulateShop();
-            int income = RoundIncome(_run.Round);
+            int income = _tutorialActive ? 0 : RoundIncome(_run.Round);
             if (processFusions) FinishBattleShopEntry(income);
             else
             {
@@ -522,6 +530,7 @@ namespace BackpackAutoBattle.Prototype
             _mainNavigation = new PrototypeMainNavigation(canvasObject.transform, tab => ShowMainMenuTab(tab), () => TryOpenSettings());
             InitializeSettings(canvasObject.transform);
             BuildRunControls(canvasObject.transform);
+            BuildTutorialInterface(canvasObject.transform);
 
         }
 
@@ -562,7 +571,7 @@ namespace BackpackAutoBattle.Prototype
                 _shopSlots.Add(slotView);
             }
 
-            Button rerollButton = CreateButton(shopPanel.transform, "Reroll Button", new Vector2(0f, 54f), new Vector2(284f, 42f), new Color(0.20f, 0.42f, 0.66f, 1f));
+            Button rerollButton = _rerollButton = CreateButton(shopPanel.transform, "Reroll Button", new Vector2(0f, 54f), new Vector2(284f, 42f), new Color(0.20f, 0.42f, 0.66f, 1f));
             rerollButton.onClick.AddListener(() => TryRerollShop());
             _rerollText = CreateText(rerollButton.transform, "Label", string.Empty, 15, FontStyle.Bold, TextAnchor.MiddleCenter);
             _rerollText.raycastTarget = false;
@@ -650,6 +659,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void PopulateShop()
         {
+            if (_tutorialActive) { PopulateTutorialShop(); return; }
             _currentShopItems.Clear();
             List<ItemData> candidates = _itemCatalog?
                 .Where(item => item != null && !item.ExcludeFromShop && item.Rarity != ItemRarity.Legendary)
@@ -921,7 +931,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void UpdateSellPreview(PointerEventData eventData)
         {
-            bool canSell = _draggingItem != null
+            bool canSell = !_tutorialActive && _draggingItem != null
                            && !_draggingItem.Data.IsUniqueGear
                            && (_dragSource == DragSource.Backpack || _dragSource == DragSource.Storage);
             _sellPreview.gameObject.SetActive(canSell);
@@ -990,7 +1000,7 @@ namespace BackpackAutoBattle.Prototype
                 itemView.ResetTint();
                 return;
             }
-            bool valid = _dragRangeInsideGrid && _grid.CanPlace(itemView.InstanceId, itemView.Shape, origin, itemView.Rotation)
+            bool valid = _dragRangeInsideGrid && IsTutorialPlacement(itemView, origin) && _grid.CanPlace(itemView.InstanceId, itemView.Shape, origin, itemView.Rotation)
                 && (_dragSource != DragSource.Shop || CanPurchaseDraggedOffer());
             Color previewColor = valid ? ValidPreviewColor : InvalidPreviewColor;
             if (valid) itemView.ResetTint();

@@ -10,12 +10,14 @@ namespace BackpackAutoBattle.Prototype
     {
         private readonly Text _error;
         private readonly Button _startButton, _infoButton;
+        private readonly RectTransform _characterFrame;
         private readonly Image _playerPortrait;
         private readonly Text _playerName;
 
         internal PrototypePreparationPanel(BackpackPrototypeController controller, Transform shop)
         {
             var characterFrame = SelectionUi.Image(shop, "Preparation Character Frame", Color.clear);
+            _characterFrame = characterFrame.rectTransform;
             SelectionUi.Place(characterFrame.rectTransform, new Vector2(500, 80), new Vector2(194, 340));
             characterFrame.raycastTarget = false;
             _playerName = SelectionUi.Label(characterFrame.transform, "Preparation Character Name", "", 21,
@@ -43,7 +45,13 @@ namespace BackpackAutoBattle.Prototype
             _playerPortrait.enabled = _playerPortrait.sprite != null;
         }
 
-        public void SetInputEnabled(bool enabled) => _startButton.interactable = _infoButton.interactable = enabled;
+        public void SetInputEnabled(bool enabled, bool canStart = true)
+        {
+            _startButton.interactable = enabled && canStart;
+            _infoButton.interactable = enabled;
+        }
+
+        internal void RenderTutorial(bool active) => _characterFrame.gameObject.SetActive(!active);
     }
 
     internal sealed class PrototypeEnemyPreview

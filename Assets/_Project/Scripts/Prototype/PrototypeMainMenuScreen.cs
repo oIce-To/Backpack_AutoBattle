@@ -11,9 +11,9 @@ namespace BackpackAutoBattle.Prototype
     {
         public RectTransform Root { get; }
         private readonly Image _portrait;
-        private readonly Text _name, _health, _attack, _error, _level, _emptyInventory;
+        private readonly Text _profileName, _name, _health, _attack, _error, _level, _emptyInventory;
         private readonly PrototypeItemTooltip _tooltip;
-        private readonly PrototypeMenuPopup _inventory, _mail;
+        private readonly PrototypeMenuPopup _inventory, _mail, _quit;
         private readonly ScrollRect _inventoryScroll;
         private PlayerProgress _profile;
         private IReadOnlyList<UniqueGearData> _gear;
@@ -30,7 +30,11 @@ namespace BackpackAutoBattle.Prototype
             PrototypeGuildHall.Add(panel.rectTransform);
 
             var profile = MakeCard(panel.transform, "Main Profile Card", new Vector2(-347, 187), new Vector2(244, 68));
-            SelectionUi.Label(profile, "Main Profile Name", "플레이어", 25, Vector2.zero, new Vector2(204, 40)).color = PrototypeGuildStyle.Ink;
+            _profileName = SelectionUi.Label(profile, "Main Profile Name", "플레이어", 25, Vector2.zero, new Vector2(204, 40));
+            _profileName.color = PrototypeGuildStyle.Ink;
+            _profileName.resizeTextForBestFit = true;
+            _profileName.resizeTextMinSize = 14;
+            _profileName.resizeTextMaxSize = 25;
 
             var stats = MakeCard(panel.transform, "Main Character Card", new Vector2(-347, 45), new Vector2(244, 166));
             _name = SelectionUi.Label(stats, "Main Character Name", "", 27, new Vector2(-48, 43), new Vector2(112, 36));
@@ -57,7 +61,13 @@ namespace BackpackAutoBattle.Prototype
             PrototypeGuildStyle.Apply(storage);
             AddShortcut(panel.transform, "Main Inventory Button", "가방", new Vector2(415, 163), "UI/HomeBackpackIcon", ShowInventory);
             AddShortcut(panel.transform, "Main Mail Button", "우편함", new Vector2(415, 40), "UI/HomeMailboxIcon", () => _mail.Show());
-            PrototypeGuildStyle.Apply(SelectionUi.Button(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247), new Vector2(152, 42), quit));
+            SelectionUi.GuildButton(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247),
+                new Vector2(152, 42), () =>
+                {
+                    if (IsPopupOpen) return;
+                    _tooltip.HideAll();
+                    _quit.Show();
+                });
             _error = SelectionUi.Label(panel.transform, "Main Menu Error", "", 14, new Vector2(-344, -252), new Vector2(300, 62));
             _error.color = new Color(1f, .45f, .4f);
 
@@ -86,15 +96,26 @@ namespace BackpackAutoBattle.Prototype
             PrototypeGuildStyle.Apply(_mail.Panel.GetComponent<Image>());
             _mail.Title.color = PrototypeGuildStyle.Cream;
             SelectionUi.Label(_mail.Panel, "Main Mail Empty", "수령할 편지가 없습니다.", 20, new Vector2(0, -15), new Vector2(418, 55));
+
+            _quit = new PrototypeMenuPopup(canvas, "Main Quit Popup", "정말로 종료하시겠습니까?",
+                new Vector2(456, 202), ClosePopup, PrototypeMenuPopup.CloseStyle.None);
+            PrototypeGuildStyle.Apply(_quit.Panel.GetComponent<Image>(), PrototypeGuildStyle.Surface.Iron);
+            _quit.Title.color = PrototypeGuildStyle.Cream;
+            SelectionUi.GuildButton(_quit.Panel, "Main Quit Yes", "예", new Vector2(-91, -37), new Vector2(148, 46),
+                () => { if (_quit.IsOpen) quit(); });
+            var cancel = SelectionUi.GuildButton(_quit.Panel, "Main Quit No", "아니오", new Vector2(91, -37),
+                new Vector2(148, 46), ClosePopup);
+            PrototypeGuildStyle.Apply(cancel, selected: true);
             Hide();
         }
 
-        internal bool IsPopupOpen => _inventory.IsOpen || _mail.IsOpen;
+        internal bool IsPopupOpen => _inventory.IsOpen || _mail.IsOpen || _quit.IsOpen;
 
         public void Show(CharacterData character, PlayerProgress profile, CharacterStatsSnapshot stats, IReadOnlyList<UniqueGearData> gear)
         {
             _profile = profile;
             _gear = gear;
+            _profileName.text = string.IsNullOrEmpty(profile.UserName) ? "플레이어" : profile.UserName;
             _level.text = $"Lv. {profile.GetCharacterLevel(character?.CharacterId)}";
             _portrait.sprite = character?.Portrait;
             _portrait.enabled = _portrait.sprite != null;
@@ -163,6 +184,7 @@ namespace BackpackAutoBattle.Prototype
             _tooltip.HideAll();
             _inventory.Hide();
             _mail.Hide();
+            _quit.Hide();
         }
 
         public void ShowError(string error) => _error.text = (error ?? "").Split('\n')[0];

@@ -40,6 +40,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
         private IEnumerator LoadMenu()
         {
+            PrototypeCombatFixture.PrepareLobbyProfile();
             yield return SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
             float deadline = Time.realtimeSinceStartup + 10;
             do { yield return null; _controller = Object.FindFirstObjectByType<BackpackPrototypeController>(); }
@@ -840,6 +841,9 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Preparation));
             Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
             Lose();
+            Assert.That(Find("Battle Stage Illustration").GetComponent<Image>().sprite.name, Is.EqualTo("OriginMineSelection"));
+            Assert.That(Find("Battle Stage Illustration").GetComponent<Image>().raycastTarget, Is.False);
+            Capture("OriginMineBattleBackdrop.png");
             Assert.That(_controller.Progress.MineTickets, Is.EqualTo(5));
             Assert.That(_controller.Progress.OriginShards, Is.Zero);
             _controller.ReturnToPreparation();

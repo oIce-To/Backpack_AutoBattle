@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BackpackAutoBattle.Combat;
 using BackpackAutoBattle.Enemies;
 using BackpackAutoBattle.Inventory;
@@ -36,18 +37,19 @@ namespace BackpackAutoBattle.Prototype
         private CombatantSnapshot _preparedEnemy;
         private string _enemyConfigurationError;
 
-        public PrototypePhase Phase => IsMainMenu ? PrototypePhase.MainMenu : _run.Phase;
+        public PrototypePhase Phase => IsTitleScreen ? PrototypePhase.Title : IsMainMenu ? PrototypePhase.MainMenu : _run.Phase;
         public CombatSimulation ActiveCombat => _battleController?.Simulation;
         public PrototypeBattleController BattleController => _battleController;
         public StageData Stage => _stageData;
-        public int StageRoundCount => _stageData?.RoundCount ?? 0;
-        public EnemyEncounterData CurrentEnemyEncounter => _debugEnemyOverride != null ? _debugEnemyOverride
+        public int StageRoundCount => _tutorialActive ? 2 : _stageData?.RoundCount ?? 0;
+        public EnemyEncounterData CurrentEnemyEncounter => _tutorialActive ? AvailableStages.FirstOrDefault()?.GetRound(1).Encounter
+            : _debugEnemyOverride != null ? _debugEnemyOverride
             : _stageData != null && CurrentRound >= 1 && CurrentRound <= StageRoundCount ? _stageData.GetRound(CurrentRound).Encounter : null;
         public CombatantSnapshot PreparedEnemy => _preparedEnemy;
         public string EnemyConfigurationError => _enemyConfigurationError;
         public PrototypeItemTooltip ItemTooltip => _itemTooltip;
         public bool CanEditLoadout => Phase == PrototypePhase.Preparation && !IsShopReturnPresenting
-            && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
+            && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen && _tutorialNamePopup?.IsOpen != true;
         public bool IsEnemyPreviewOpen => _enemyPreview?.IsOpen == true;
 
         public bool TryOpenEnemyPreview()
@@ -86,6 +88,8 @@ namespace BackpackAutoBattle.Prototype
         public bool TryStartBattle()
         {
             if (!CanEditLoadout || _draggingItem != null) return false;
+            if (_tutorialActive && (!TutorialCanStartBattle
+                || (_run.Round == 1 && !GetReadyFusions().Any(plan => plan.Result.ItemId == "steel_sword")))) return false;
             if (_preparedEnemy == null)
             {
                 SetStatus(_enemyConfigurationError ?? "스테이지의 적 설정을 확인하세요.");
@@ -101,7 +105,9 @@ namespace BackpackAutoBattle.Prototype
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
             // Use exactly the same resolved snapshot shown in preparation, never the source ItemData values.
-            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, RoundIncome(_run.Round + 1), statusEffects: _statusEffects);
+            _battleController.BeginBattle(player, _preparedEnemy, _run.Round, RoundIncome(_run.Round + 1),
+                statusEffects: _statusEffects, random: _tutorialActive ? new System.Random(_run.Round) : null,
+                isOriginMine: _run.IsOriginMine);
             _selectedItem = null;
             _sellPreview.gameObject.SetActive(false);
             RefreshCombatInterface();
@@ -113,6 +119,13 @@ namespace BackpackAutoBattle.Prototype
         public bool ReturnToPreparation()
         {
             if (IsSettingsOpen || !_run.TryReturnToPreparation()) return false;
+            if (_tutorialActive)
+            {
+                _battleController.EndBattle();
+                _pendingFusions = Array.Empty<FusionPlan>();
+                RefreshCombatInterface();
+                return true;
+            }
             int income = RoundIncome(_run.Round);
             _battleController.EndBattle();
             FinishBattleShopEntry(income);
@@ -124,6 +137,9 @@ namespace BackpackAutoBattle.Prototype
 
         public void HandleCombatAction()
         {
+            if (_tutorialActive && (IsSettingsOpen || _tutorialNamePopup.IsOpen)) return;
+            if (_tutorialActive && Phase == PrototypePhase.Completed) { ShowTutorialName(); return; }
+            if (_tutorialActive && Phase == PrototypePhase.GameOver) { StartTutorial(); return; }
             if (Phase == PrototypePhase.Preparation) TryStartBattle();
             else if (Phase == PrototypePhase.Victory) AdvanceRound();
             else if (Phase == PrototypePhase.Defeat || Phase == PrototypePhase.Draw) ReturnToPreparation();
@@ -144,6 +160,11 @@ namespace BackpackAutoBattle.Prototype
                 ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague))) return;
             PlaySound(Phase == PrototypePhase.Completed ? PrototypeSound.StageClear
                 : result == CombatResult.Victory ? PrototypeSound.RoundClear : PrototypeSound.RoundFail);
+            if (_tutorialActive)
+            {
+                ShowTutorialBattleResult();
+                return;
+            }
             if (_run.IsFinished) TrySettleRunReward();
             else RecordProgress();
             int returnIncome = RoundIncome(Phase == PrototypePhase.Victory ? _run.Round + 1 : _run.Round);
@@ -166,12 +187,13 @@ namespace BackpackAutoBattle.Prototype
             bool showShop = Phase is PrototypePhase.Preparation or PrototypePhase.Fusion;
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);
-            _battleController.SetVisible(!IsMainMenu && !showShop);
-            _lifeHearts.gameObject.SetActive(!IsMainMenu);
+            _battleController.SetVisible(!IsMainMenu && !IsTitleScreen && !showShop);
+            _lifeHearts.gameObject.SetActive(!IsMainMenu && !IsTitleScreen);
             _lifeHearts.SetLives(_run.Lives, _run.StartingLives);
-            _stageSettingsButton.gameObject.SetActive(!IsMainMenu);
+            _stageSettingsButton.gameObject.SetActive(!IsMainMenu && !IsTitleScreen);
             _stageSettingsButton.interactable = !IsShopReturnPresenting && !IsStageAbandonOpen && !IsEnemyPreviewOpen;
             _stageAbandonButton.interactable = CanEditLoadout;
+            _stageAbandonButton.gameObject.SetActive(!_tutorialActive);
             if (!IsMainMenu && !IsSettingsOpen && !IsStageAbandonOpen && !IsEnemyPreviewOpen)
             {
                 _lifeHearts.transform.SetAsLastSibling();
@@ -181,6 +203,7 @@ namespace BackpackAutoBattle.Prototype
             SetInputEnabled(_gridInputGroup, CanEditLoadout);
             SetInputEnabled(_storageInputGroup, CanEditLoadout);
             if (showShop) RenderEncounterPreview();
+            RenderTutorialGuide();
         }
 
         /// <summary>Explicitly reload edited SO values during preparation. Does not spend gold or advance the round.</summary>
@@ -197,6 +220,14 @@ namespace BackpackAutoBattle.Prototype
             enemy = null;
             try
             {
+                if (_tutorialActive)
+                {
+                    var training = AvailableStages.First().GetRound(1).CreateEnemySnapshot();
+                    enemy = new CombatantSnapshot(training.DisplayName, round == 1 ? 12d : 18d,
+                        training.Loadout, training.Stats.Attack, training.Illustration, training.IllustrationFacesLeft);
+                    error = null;
+                    return true;
+                }
                 if (_stageData == null) throw new InvalidOperationException("Stage Data를 지정하세요.");
                 _stageData.ValidateOrThrow();
                 StageRoundData definition = _stageData.GetRound(round);
@@ -211,7 +242,8 @@ namespace BackpackAutoBattle.Prototype
         {
             _preparationPanel.Render(_enemyConfigurationError, _characterData);
             _preparationStage.text = _run.StageName ?? "";
-            _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null);
+            _preparationPanel.SetInputEnabled(CanEditLoadout && _preparedEnemy != null, !_tutorialActive || TutorialCanStartBattle);
+            _preparationPanel.RenderTutorial(_tutorialActive);
         }
 
         public void ShowItemTooltip(Component owner, ItemData item, PointerEventData pointer)

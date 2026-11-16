@@ -5,6 +5,8 @@ using BackpackAutoBattle.Stages;
 
 namespace BackpackAutoBattle.Progression
 {
+    public enum OnboardingState { TutorialRequired, NameRequired, Completed }
+
     [Serializable]
     public sealed class ProfileSaveData
     {
@@ -22,6 +24,8 @@ namespace BackpackAutoBattle.Progression
         public long nextMineTicketUtcTicks;
         public long ticketClockUtcTicks;
         public string lastRewardClaim;
+        public OnboardingState onboarding;
+        public string userName;
     }
 
     [Serializable]
@@ -51,7 +55,29 @@ namespace BackpackAutoBattle.Progression
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
     public sealed partial class PlayerProgress
     {
-        public const int SaveVersion = 5;
+        public const int SaveVersion = 6;
+        public OnboardingState Onboarding { get; private set; }
+        public string UserName { get; private set; } = "";
+
+        public bool FinishTutorial()
+        {
+            if (Onboarding != OnboardingState.TutorialRequired) return false;
+            Onboarding = OnboardingState.NameRequired;
+            return true;
+        }
+
+        public static bool IsValidUserName(string name)
+            => name != null && name.Length is >= 2 and <= 12 && name.All(c =>
+                c is >= '가' and <= '힣' or >= 'ㄱ' and <= 'ㅎ' or >= 'ㅏ' and <= 'ㅣ'
+                    or >= 'A' and <= 'Z' or >= 'a' and <= 'z' or >= '0' and <= '9');
+
+        public bool TrySetInitialUserName(string name)
+        {
+            if (Onboarding != OnboardingState.NameRequired || !IsValidUserName(name)) return false;
+            UserName = name;
+            Onboarding = OnboardingState.Completed;
+            return true;
+        }
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
         private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
         public long SharedExperience { get; private set; }
@@ -103,6 +129,7 @@ namespace BackpackAutoBattle.Progression
         public ProfileSaveData Export() => new()
         {
             version = SaveVersion, selectedCharacterId = SelectedCharacterId, selectedStageId = SelectedStageId,
+            onboarding = Onboarding, userName = UserName,
             sharedExperience = SharedExperience,
             acquiredCharacters = _acquiredCharacters.OrderBy(id => id, StringComparer.Ordinal).ToList(),
             uniqueGear = _uniqueGear.Values.Select(item => item.Export()).ToList(),
@@ -125,8 +152,13 @@ namespace BackpackAutoBattle.Progression
             if (data.version > SaveVersion) throw new NotSupportedException("This progress save uses a newer version.");
             var progress = new PlayerProgress
             {
-                SelectedCharacterId = data.selectedCharacterId ?? "", SelectedStageId = data.selectedStageId ?? ""
+                SelectedCharacterId = data.selectedCharacterId ?? "", SelectedStageId = data.selectedStageId ?? "",
+                Onboarding = data.version < 6 ? OnboardingState.Completed : data.onboarding,
+                UserName = data.version < 6 ? "" : data.userName ?? ""
             };
+            if (!Enum.IsDefined(typeof(OnboardingState), progress.Onboarding)
+                || (progress.UserName.Length != 0 && (progress.Onboarding != OnboardingState.Completed || !IsValidUserName(progress.UserName))))
+                throw new FormatException("Invalid onboarding progress.");
             if (data.version >= 2)
             {
                 if (data.sharedExperience < 0) throw new FormatException("Invalid experience balance.");

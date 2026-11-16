@@ -123,7 +123,7 @@ namespace BackpackAutoBattle.Tests.Progression
             Assert.That(profile.UniqueGear.Single().IsLocked, Is.False);
             Assert.That(profile.SharedExperience, Is.EqualTo(123)); Assert.That(profile.OriginShards, Is.EqualTo(456));
             Assert.That(profile.GetEquippedGear("allen", UniqueGearSlot.Weapon), Is.Not.Null);
-            Assert.That(profile.Export().version, Is.EqualTo(5));
+            Assert.That(profile.Export().version, Is.EqualTo(PlayerProgress.SaveVersion));
         }
     }
 }

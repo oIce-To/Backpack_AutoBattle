@@ -6,7 +6,7 @@ using BackpackAutoBattle.Progression;
 
 namespace BackpackAutoBattle.Prototype
 {
-    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed, Fusion, GameOver, MainMenu }
+    public enum PrototypePhase { Preparation, Battle, Victory, Defeat, Draw, Completed, Fusion, GameOver, MainMenu, Title }
 
     public enum PrototypeRunOutcome { Cleared, GameOver }
 

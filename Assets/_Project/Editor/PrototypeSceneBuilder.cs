@@ -15,6 +15,7 @@ namespace BackpackAutoBattle.Editor
     {
         public const string ScenePath = "Assets/Scenes/Prototype_Backpack.unity";
         public const string MainMenuScenePath = "Assets/Scenes/MainMenu.unity";
+        public const string TitleScenePath = "Assets/Scenes/Title.unity";
 
         [MenuItem("Tools/Backpack AutoBattle/Create Backpack Prototype Scene")]
         public static void CreatePrototypeScene()
@@ -121,11 +122,14 @@ namespace BackpackAutoBattle.Editor
         {
             EditorBuildSettingsScene[] existingScenes = EditorBuildSettings.scenes;
             var scenes = existingScenes
-                .Where(scene => !string.Equals(scene.path, ScenePath) && !string.Equals(scene.path, MainMenuScenePath))
+                .Where(scene => !string.Equals(scene.path, ScenePath) && !string.Equals(scene.path, MainMenuScenePath)
+                    && !string.Equals(scene.path, TitleScenePath))
                 .ToList();
             scenes.Insert(0, new EditorBuildSettingsScene(ScenePath, true));
             if (AssetDatabase.LoadAssetAtPath<SceneAsset>(MainMenuScenePath) != null)
                 scenes.Insert(0, new EditorBuildSettingsScene(MainMenuScenePath, true));
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(TitleScenePath) != null)
+                scenes.Insert(0, new EditorBuildSettingsScene(TitleScenePath, true));
             EditorBuildSettings.scenes = scenes.ToArray();
         }
     }

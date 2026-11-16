@@ -20,6 +20,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         private BackpackPrototypeController _controller;
         private IEnumerator Setup()
         {
+            PrototypeCombatFixture.PrepareLobbyProfile();
             yield return SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
             float deadline = Time.realtimeSinceStartup + 10;
             do
@@ -75,6 +76,42 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(_controller.CaptureCombatSnapshot().Items.Single().ItemId, Is.EqualTo("knight_sword"));
             Assert.That(_controller.TryReturnToMainMenu(), Is.False, "An active run cannot be discarded by the result-only action.");
             _controller.TryStartBattle(); Assert.That(_controller.ActiveCombat.Player.DisplayName, Is.EqualTo("알렌"));
+            Assert.That(Find("Battle Stage Illustration").GetComponent<Image>().sprite.name, Is.EqualTo("DungeonSelection"));
+            Assert.That(Find("Battle Stage Shade").GetComponent<Image>().color.a, Is.GreaterThanOrEqualTo(.8f));
+            Assert.That(Find("Battle Stage Backdrop").GetSiblingIndex(), Is.Zero);
+            Capture("DungeonBattleBackdrop.png");
+        }
+
+        [UnityTest]
+        public IEnumerator QuitConfirmation_CanBeCancelledAndOnlyYesCallsQuit()
+        {
+            yield return Setup();
+            Click("Main Quit Button");
+            Assert.That(Find("Main Quit Popup").gameObject.activeInHierarchy, Is.True);
+            Assert.That(Text("Main Quit Popup Title"), Is.EqualTo("정말로 종료하시겠습니까?"));
+            Assert.That(_controller.ShowStageSelection(), Is.False);
+            Capture("MainQuitConfirmation.png");
+            Click("Main Quit No");
+            Assert.That(Find("Main Quit Popup").gameObject.activeInHierarchy, Is.False);
+            Assert.That(_controller.IsMainMenu, Is.True);
+
+            var canvas = _controller.GetComponentInChildren<Canvas>();
+            var sandbox = new GameObject("Quit Callback Test", typeof(RectTransform));
+            sandbox.transform.SetParent(canvas.transform, false);
+            try
+            {
+                int quitCalls = 0;
+                var menu = new PrototypeMainMenuScreen(sandbox.transform, _controller.ItemTooltip, () => quitCalls++);
+                menu.Show(_controller.SelectedCharacter, _controller.Progress, _controller.StageEntryStats, _controller.AvailableGear);
+                Button Button(string name) => sandbox.GetComponentsInChildren<Button>(true).Single(button => button.name == name);
+                Button("Main Quit Yes").onClick.Invoke();
+                Assert.That(quitCalls, Is.Zero);
+                Button("Main Quit Button").onClick.Invoke();
+                Assert.That(quitCalls, Is.Zero);
+                Button("Main Quit Yes").onClick.Invoke();
+                Assert.That(quitCalls, Is.EqualTo(1));
+            }
+            finally { Object.Destroy(sandbox); }
         }
 
         [UnityTest]

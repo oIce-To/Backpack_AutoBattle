@@ -54,7 +54,7 @@ namespace BackpackAutoBattle.Prototype
             background.raycastTarget = true; Root = background.rectTransform; BackpackPrototypeController.Stretch(Root);
             var panel = SelectionUi.Image(Root, prefix + " Selection Panel", new Color(.07f, .075f, .085f));
             Panel = panel.rectTransform; SelectionUi.Place(Panel, Vector2.zero, new Vector2(1100, 610));
-            Illustration = PrototypeGuildHall.Add(Panel, "UI/DungeonSelection", .64f, "Stage Background");
+            Illustration = PrototypeGuildHall.Add(Panel, PrototypeGuildHall.StageResource(false), .64f, "Stage Background");
             var info = SelectionUi.Image(Panel, "Stage Information Panel", Color.white);
             SelectionUi.Place(info.rectTransform, new Vector2(195, 17), new Vector2(620, 396));
             PrototypeGuildStyle.Apply(info, PrototypeGuildStyle.Surface.Iron);
@@ -272,7 +272,7 @@ namespace BackpackAutoBattle.Prototype
             IReadOnlyList<StageData> stages = _showMines ? _mineStages : _normalStages;
             _progress = progress; _stageOrder = stages.Select(s => s.StageId).ToArray();
             _error.text = "";
-            PrototypeGuildHall.SetIllustration(_frame.Illustration, _showMines ? "UI/OriginMineSelection" : "UI/DungeonSelection");
+            PrototypeGuildHall.SetIllustration(_frame.Illustration, PrototypeGuildHall.StageResource(_showMines));
             PrototypeGuildStyle.Apply(_normalMode, !_showMines);
             PrototypeGuildStyle.Apply(_mineMode, _showMines);
             _choices.Clear(); _frame.Prepare(stages.Count);

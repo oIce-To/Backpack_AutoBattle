@@ -32,6 +32,7 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _timer;
         private readonly Text _configurationError;
         private readonly Text _logText;
+        private readonly Image _stageIllustration;
         private readonly Image _playerIllustration;
         private readonly Image _enemyIllustration;
         private readonly PrototypeIllustrationHitFeedback _playerHit, _enemyHit;
@@ -56,6 +57,7 @@ namespace BackpackAutoBattle.Prototype
             Image background = Image(parent, "Battle Screen", PrototypePixelSkin.Hex(0x131e26));
             Root = background.rectTransform;
             BackpackPrototypeController.Stretch(Root);
+            _stageIllustration = PrototypeGuildHall.Add(Root, PrototypeGuildHall.StageResource(false), .90f, "Battle Stage");
             Image statisticsImage = Image(Root, "Battle Statistics Button", new Color(.23f, .46f, .68f));
             BackpackPrototypeController.SetRect(statisticsImage.rectTransform, Vector2.one * .5f, new Vector2(0, 220), new Vector2(180, 36));
             statisticsImage.raycastTarget = true;
@@ -118,8 +120,9 @@ namespace BackpackAutoBattle.Prototype
             PrototypePixelSkin.Apply(_continueButton, primary: true);
         }
 
-        public void Begin(CombatSimulation combat, int round, int income)
+        public void Begin(CombatSimulation combat, int round, int income, bool isOriginMine)
         {
+            PrototypeGuildHall.SetIllustration(_stageIllustration, PrototypeGuildHall.StageResource(isOriginMine));
             _statisticsButton.gameObject.SetActive(false);
             _combat = combat;
             _round = round;
@@ -264,7 +267,7 @@ namespace BackpackAutoBattle.Prototype
             _title.gameObject.SetActive(false); _continueButton.interactable = false;
         }
 
-        public void ShowResult(PrototypePhase phase, int? income = null)
+        public void ShowResult(PrototypePhase phase, int? income = null, string tutorialAction = null)
         {
             _playerHit.Reset(); _enemyHit.Reset();
             SetPlaybackState(false, 1f, false);
@@ -285,6 +288,12 @@ namespace BackpackAutoBattle.Prototype
                 PrototypePhase.GameOver => "라이프 소진",
                 _ => "모든 라운드 완료"
             };
+            if (tutorialAction != null)
+            {
+                if (phase == PrototypePhase.Completed) _title.text = "튜토리얼 완료!";
+                _continueButton.interactable = true;
+                _continueText.text = tutorialAction;
+            }
         }
 
         public void SetPlaybackState(bool running, float speed, bool paused)

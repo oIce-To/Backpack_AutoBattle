@@ -6,6 +6,8 @@ namespace BackpackAutoBattle.Prototype
     // Keep the illustrated environment behind the live character and all interactive UI.
     public static class PrototypeGuildHall
     {
+        internal static string StageResource(bool isOriginMine) => isOriginMine ? "UI/OriginMineSelection" : "UI/DungeonSelection";
+
         internal static Image Add(RectTransform parent, string resource = "UI/GuildHallIllustrated", float darkness = 0f,
             string prefix = "Guild Hall")
         {

@@ -41,7 +41,7 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void BeginBattle(CombatantSnapshot player, CombatantSnapshot enemy, int round, int income, float maximumSeconds = float.PositiveInfinity,
-            StatusEffectData[] statusEffects = null, System.Random random = null)
+            StatusEffectData[] statusEffects = null, System.Random random = null, bool isOriginMine = false)
         {
             UnbindSimulation();
             _statisticsView.Hide();
@@ -51,7 +51,7 @@ namespace BackpackAutoBattle.Prototype
             Simulation.ItemActivated += ShowAttack;
             Simulation.StatusTicked += _screen.ShowStatusDamage;
             Simulation.ReactionTriggered += _screen.ShowReaction;
-            _screen.Begin(Simulation, round, income);
+            _screen.Begin(Simulation, round, income, isOriginMine);
             RefreshPlaybackControls();
         }
 
@@ -121,6 +121,8 @@ namespace BackpackAutoBattle.Prototype
         }
 
         public void ShowResult(PrototypePhase phase, int income) => _screen.ShowResult(phase, income);
+        internal void ShowTutorialResult(PrototypePhase phase, string action)
+            => _screen.ShowResult(phase, tutorialAction: action);
         public bool ShowStatistics()
         {
             if (Simulation == null || Simulation.Result == CombatResult.Running) return false;

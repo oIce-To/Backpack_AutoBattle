@@ -58,7 +58,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void OpenStageAbandon()
         {
-            if (!CanEditLoadout || _draggingItem != null) return;
+            if (!CanEditLoadout || _draggingItem != null || _tutorialActive) return;
             _itemTooltip.HideAll();
             ClearPlacementOverlay();
             EventSystem.current?.SetSelectedGameObject(null);
@@ -104,6 +104,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool RequestRunRestart()
         {
+            if (_tutorialActive) return false;
             if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
             if (!TrySettleRunReward()) return false;
             if (RestartRequested == null) return TryRestartRun();
@@ -117,6 +118,7 @@ namespace BackpackAutoBattle.Prototype
         /// Only terminal runs can be restarted; repeated clicks cannot duplicate starting content.</summary>
         public bool TryRestartRun()
         {
+            if (_tutorialActive) return false;
             if (IsMainMenu || IsSettingsOpen || !_run.IsFinished) return false;
             if (!TrySettleRunReward()) return false;
             return StartNewRun();

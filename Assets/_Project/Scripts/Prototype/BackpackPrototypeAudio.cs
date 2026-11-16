@@ -9,7 +9,8 @@ namespace BackpackAutoBattle.Prototype
     public sealed partial class BackpackPrototypeController
     {
         private readonly Dictionary<PrototypeSound, AudioClip> _soundClips = new();
-        private AudioClip _mainMusic, _shopMusic, _battleMusic;
+        private AudioClip _mainMusic, _shopMusic, _battleMusic, _titleMusic;
+        private float _musicFade = 1f;
         private bool _musicPaused;
 
         // Also provides an observable playback request for integration tests without an audio device.
@@ -18,6 +19,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void LoadAudioClips()
         {
+            _titleMusic = Resources.Load<AudioClip>("Audio/TitleScene_BGM");
             _mainMusic = Resources.Load<AudioClip>("Audio/MainScene_BGM");
             _shopMusic = Resources.Load<AudioClip>("Audio/ShopPhase_BGM");
             _battleMusic = Resources.Load<AudioClip>("Audio/Battle_BGM");
@@ -35,7 +37,7 @@ namespace BackpackAutoBattle.Prototype
         private void RefreshMusic()
         {
             if (_musicSource == null) return;
-            AudioClip next = IsMainMenu ? _mainMusic
+            AudioClip next = IsTitleScreen ? _titleMusic : IsMainMenu ? _mainMusic
                 : Phase is PrototypePhase.Preparation or PrototypePhase.Fusion ? _shopMusic : _battleMusic;
             bool pause = !IsMainMenu && Phase == PrototypePhase.Battle && _battleController.IsPlaybackSuspended;
             if (_musicSource.clip != next)

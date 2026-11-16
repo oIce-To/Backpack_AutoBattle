@@ -55,22 +55,23 @@ namespace BackpackAutoBattle.Prototype
 
         private void ApplySettings()
         {
-            _musicSource.volume = _settings.master * _settings.music / 10000f;
+            _musicSource.volume = _settings.master * _settings.music / 10000f * _musicFade;
             _effectsSource.volume = _settings.master * _settings.effects / 10000f;
             _battleController.ConfigurePlayback(_settings.battleSpeed, _settings.damageNumbers);
         }
 
         public bool TryOpenSettings()
         {
-            if (IsSettingsOpen || _equipment.IsDetailsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen
-                || IsStageAbandonOpen || IsEnemyPreviewOpen || IsShopReturnPresenting || _draggingItem != null) return false;
+            if (_titleTransition || IsSettingsOpen || _equipment.IsDetailsOpen || _rewardPopup.IsOpen || _mainMenu.IsPopupOpen || _stageSelection.IsEntryOpen
+                || IsStageAbandonOpen || IsEnemyPreviewOpen || IsShopReturnPresenting || _draggingItem != null
+                || _tutorialNamePopup?.IsOpen == true) return false;
             _itemTooltip.HideAll();
             _battleController.SetSettingsSuspended(true);
             _characterSelection.Carousel.enabled = false;
             EventSystem.current?.SetSelectedGameObject(null);
             var actual = ReadDisplay();
             _settingsScreen.Show(_settings, GetDisplaySizes(actual.size), actual.size,
-                actual.mode != FullScreenMode.Windowed, !IsMainMenu);
+                actual.mode != FullScreenMode.Windowed, !IsMainMenu && !IsTitleScreen);
             return true;
         }
 

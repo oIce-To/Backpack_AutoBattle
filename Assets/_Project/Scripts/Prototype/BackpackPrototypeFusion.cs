@@ -27,11 +27,13 @@ namespace BackpackAutoBattle.Prototype
         public bool TryToggleFusionLock(string instanceId)
         {
             if (!CanEditLoadout || _draggingItem != null || string.IsNullOrEmpty(instanceId)) return false;
+            if (_tutorialActive && !CanToggleTutorialFusionLock(instanceId)) return false;
             ItemData data = _itemViews.TryGetValue(instanceId, out var bag) ? bag.Data
                 : _storageViews.TryGetValue(instanceId, out var storage) ? storage.StoredItem.ItemData : null;
             if (data == null || !_fusionRecipes.Any(recipe => recipe != null && recipe.Contains(data))) return false;
             if (!_fusionLocks.Remove(instanceId)) _fusionLocks.Add(instanceId);
             RefreshFusionVisuals();
+            if (_tutorialActive) AdvanceTutorialAction();
             return true;
         }
 

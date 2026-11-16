@@ -174,7 +174,7 @@ namespace BackpackAutoBattle.Prototype
 
         public bool TryReturnToMainMenu()
         {
-            if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested) return false;
+            if (IsMainMenu || IsSettingsOpen || !_run.IsFinished || _restartRequested || _tutorialActive) return false;
             if (!TrySettleRunReward()) return false;
             ClearRunContent();
             ShowMainMenu();

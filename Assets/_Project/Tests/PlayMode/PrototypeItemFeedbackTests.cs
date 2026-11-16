@@ -124,35 +124,31 @@ namespace BackpackAutoBattle.Tests.Prototype
             PrototypeBattleItemView club = controller.GetComponentsInChildren<PrototypeBattleItemView>()
                 .Single(view => view.Side == CombatSide.Enemy);
             CombatWeapon weapon = controller.ActiveCombat.EnemyWeapons.Single();
-            RectTransform upper = club.transform.Find("Shape Cell 0,0/Cycle Color").GetComponent<RectTransform>();
-            RectTransform lower = club.transform.Find("Shape Cell 0,1/Cycle Color").GetComponent<RectTransform>();
-            Image muted = club.transform.Find("Shape Cell 0,0").GetComponent<Image>();
-            Assert.That(muted.color, Is.Not.EqualTo(club.Snapshot.DisplayColor));
+            Image muted = club.transform.Find("Item Artwork").GetComponent<Image>();
+            Image fill = club.transform.Find("Artwork Cycle Color").GetComponent<Image>();
+            Assert.That(fill.sprite, Is.SameAs(muted.sprite));
+            Assert.That(fill.color, Is.Not.EqualTo(muted.color));
+            Assert.That(fill.fillMethod, Is.EqualTo(Image.FillMethod.Vertical));
+            Assert.That(fill.fillOrigin, Is.EqualTo((int)Image.OriginVertical.Bottom));
             Assert.That(club.CycleProgress, Is.Zero);
-            Assert.That(upper.anchorMax.y, Is.Zero);
-            Assert.That(lower.anchorMax.y, Is.Zero);
+            Assert.That(fill.fillAmount, Is.Zero);
             Assert.That(club.GetComponentsInChildren<Transform>().Any(child => child.name == "Cooldown"), Is.False);
 
             controller.TickCombat(0.5f);
             Assert.That(club.CycleProgress, Is.EqualTo(0.25f).Within(0.001f));
-            Assert.That(lower.anchorMax.y, Is.GreaterThan(0f).And.LessThan(1f));
-            Assert.That(upper.anchorMax.y, Is.Zero);
+            Assert.That(fill.fillAmount, Is.EqualTo(0.25f).Within(0.001f));
             controller.TickCombat(0.5f);
-            Assert.That(lower.anchorMax.y, Is.EqualTo(1f));
-            Assert.That(upper.anchorMax.y, Is.Zero);
+            Assert.That(fill.fillAmount, Is.EqualTo(0.5f).Within(0.001f));
             controller.TickCombat(0.5f);
-            Assert.That(lower.anchorMax.y, Is.EqualTo(1f));
-            Assert.That(upper.anchorMax.y, Is.GreaterThan(0f).And.LessThan(1f));
+            Assert.That(fill.fillAmount, Is.EqualTo(0.75f).Within(0.001f));
             club.RenderCooldown(weapon, weapon.NextAttackAt);
-            Assert.That(upper.anchorMax.y, Is.EqualTo(1f));
-            Assert.That(lower.anchorMax.y, Is.EqualTo(1f));
+            Assert.That(fill.fillAmount, Is.EqualTo(1f));
 
             Color mutedColor = muted.color;
             controller.TickCombat(0.5f);
             Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(47.5d));
             Assert.That(club.CycleProgress, Is.Zero);
-            Assert.That(upper.anchorMax.y, Is.Zero);
-            Assert.That(lower.anchorMax.y, Is.Zero);
+            Assert.That(fill.fillAmount, Is.Zero);
             yield return new WaitForSeconds(0.2f);
             Assert.That(muted.color, Is.EqualTo(mutedColor));
             PrototypeBattleItemView passive = controller.GetComponentsInChildren<PrototypeBattleItemView>()

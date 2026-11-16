@@ -233,6 +233,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
         private IEnumerator LoadMenu()
         {
+            PrototypeCombatFixture.PrepareLobbyProfile();
             yield return SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
             float deadline = Time.realtimeSinceStartup + 10;
             do
