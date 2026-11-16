@@ -24,6 +24,8 @@ namespace BackpackAutoBattle.Prototype
         public static bool SupportsSpeed(float speed) => speed is .5f or 1f or 2f or 3f;
         public float PlaybackSpeed { get; private set; } = DefaultPlaybackSpeed;
         public bool IsPaused { get; private set; }
+        public bool IsPlaybackSuspended => IsPaused || _settingsSuspended;
+        public event Action PlaybackStateChanged;
         public RectTransform ScreenRoot => _screen.Root;
 
         public void Initialize(Transform canvas, Action<CombatResult> finished, Action continueAction, PrototypeItemTooltip tooltip,
@@ -95,7 +97,10 @@ namespace BackpackAutoBattle.Prototype
         }
 
         private void RefreshPlaybackControls()
-            => _screen.SetPlaybackState(Simulation != null && Simulation.Result == CombatResult.Running, PlaybackSpeed, IsPaused || _settingsSuspended);
+        {
+            _screen.SetPlaybackState(Simulation != null && Simulation.Result == CombatResult.Running, PlaybackSpeed, IsPlaybackSuspended);
+            PlaybackStateChanged?.Invoke();
+        }
 
         internal void ConfigurePlayback(float defaultSpeed, bool damageNumbers)
         {

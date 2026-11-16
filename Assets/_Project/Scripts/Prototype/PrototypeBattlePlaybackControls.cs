@@ -57,7 +57,7 @@ namespace BackpackAutoBattle.Prototype
 
         private Button Button(string name, float x, float width, Action action)
         {
-            var obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            var obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(PrototypeAudioButton));
             obj.transform.SetParent(_root, false);
             BackpackPrototypeController.SetRect((RectTransform)obj.transform, Vector2.one * .5f, new Vector2(x, 0), new Vector2(width, 36));
             Button button = obj.GetComponent<Button>(); button.targetGraphic = obj.GetComponent<Image>();

@@ -86,7 +86,7 @@ namespace BackpackAutoBattle.Prototype
             }
             _run.Phase = PrototypePhase.Fusion;
             _fusionOverlay?.Clear();
-            _fusionAnimation = new PrototypeFusionAnimation(_shopScreenRoot, jobs);
+            _fusionAnimation = new PrototypeFusionAnimation(_shopScreenRoot, jobs, () => PlaySound(PrototypeSound.ItemMerge));
         }
 
         // Uses continuous UI positions, not backpack cells. Existing storage items never move.

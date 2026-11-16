@@ -135,12 +135,15 @@ namespace BackpackAutoBattle.Prototype
             controllerObject.transform.SetParent(transform, false);
             _battleController = controllerObject.GetComponent<PrototypeBattleController>();
             _battleController.Initialize(canvas, OnBattleFinished, HandleCombatAction, _itemTooltip, PlayCombatHit);
+            _battleController.PlaybackStateChanged += RefreshMusic;
         }
 
         private void OnBattleFinished(CombatResult result)
         {
             if (!_run.TryCompleteBattle(result, StageRoundCount, ActiveCombat.ElapsedSeconds,
                 ActiveCombat.GetStatusStacks(CombatSide.Player, StatusEffectKind.Plague))) return;
+            PlaySound(Phase == PrototypePhase.Completed ? PrototypeSound.StageClear
+                : result == CombatResult.Victory ? PrototypeSound.RoundClear : PrototypeSound.RoundFail);
             if (_run.IsFinished) TrySettleRunReward();
             else RecordProgress();
             _battleController.ShowResult(Phase);
@@ -158,6 +161,7 @@ namespace BackpackAutoBattle.Prototype
 
         private void RefreshCombatInterface()
         {
+            RefreshMusic();
             bool showShop = Phase is PrototypePhase.Preparation or PrototypePhase.Fusion;
             if (_shopScreenRoot.gameObject.activeSelf != showShop) _itemTooltip.HideAll();
             _shopScreenRoot.gameObject.SetActive(showShop);

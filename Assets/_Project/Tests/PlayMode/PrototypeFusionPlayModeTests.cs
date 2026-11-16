@@ -36,6 +36,8 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator ReadyPair_FightsAsMaterials_ThenFusesOnceAtReturnAndSellsForThree()
         {
+            int mergeSounds = 0;
+            _controller.SoundPlayed += sound => { if (sound == PrototypeSound.ItemMerge) mergeSounds++; };
             BuyStone(Rect("Grid Cell 1,2"));
             yield return null;
             Assert.That(_controller.GetReadyFusions().Count, Is.EqualTo(1));
@@ -78,17 +80,20 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(hits.First().gameObject.name, Is.EqualTo("Fusion Presentation"));
             Assert.That(_controller.StoredItemCount, Is.EqualTo(1));
             _controller.TickFusionPresentation(.24f);
+            Assert.That(mergeSounds, Is.Zero, "Preview and gathering must not play the result sound.");
             var ghostStone = Rect("Fusion Material 0:1");
             var ghostCenter = Rect("Fusion Material 0:0");
             Assert.That(Vector2.Distance(ghostStone.anchoredPosition, ghostCenter.anchoredPosition), Is.GreaterThan(1f));
             Assert.That(ghostStone.localScale.x, Is.LessThan(1f));
             PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionGathering.png");
             _controller.TickFusionPresentation(.28f);
+            Assert.That(mergeSounds, Is.EqualTo(1), "Play once when the merged item is revealed.");
             Assert.That(Rect("Fusion Result 0").GetComponent<CanvasGroup>().alpha, Is.EqualTo(1f));
             PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionReveal.png");
             _controller.TickFusionPresentation(.35f);
             PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionFlying.png");
             _controller.TickFusionPresentation(5f);
+            Assert.That(mergeSounds, Is.EqualTo(1), "Later animation frames must not repeat the sound.");
             yield return null;
             var steel = Stored().Single(view => view.StoredItem.ItemData.ItemId == "steel_sword");
             Assert.That(steel.StoredItem.Rotation, Is.EqualTo(ItemRotation.None));
@@ -283,6 +288,8 @@ namespace BackpackAutoBattle.Tests.Prototype
         [UnityTest]
         public IEnumerator MultipleFusions_PlayWithPausedGameTime_AndAvoidExistingStorageItems()
         {
+            int mergeSounds = 0;
+            _controller.SoundPlayed += sound => { if (sound == PrototypeSound.ItemMerge) mergeSounds++; };
             BuyStone(Rect("Grid Cell 1,2"));
             var slot = Slots()[0]; slot.Bind(new ShopOffer(_controller.ItemCatalog.Single(item => item.ItemId == "training_blade"), false));
             var pointer = Pointer(slot.transform); slot.OnBeginDrag(pointer); pointer.position = Screen(Rect("Grid Cell 4,0"));
@@ -308,6 +315,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             finally { Time.timeScale = oldScale; }
             var results = Stored().Where(view => view.StoredItem.ItemData.ItemId == "steel_sword").ToArray();
             Assert.That(results.Length, Is.EqualTo(2));
+            Assert.That(mergeSounds, Is.EqualTo(2), "Each completed fusion plays once, including at zero game time scale.");
             Assert.That(existing.StoredItem.StoragePosition, Is.EqualTo(existingPosition));
             var all = Stored();
             for (int i = 0; i < all.Length; i++) for (int j = i + 1; j < all.Length; j++)

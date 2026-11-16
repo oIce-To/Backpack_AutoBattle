@@ -38,15 +38,18 @@ namespace BackpackAutoBattle.Prototype
             public PrototypeFusionGlow Glow;
             public Text Title;
             public float Delay;
+            public bool Revealed;
         }
         public const float JobDuration = 1.32f;
         private readonly RectTransform _root;
         private readonly List<Visual> _visuals = new();
         private float _elapsed;
+        private readonly Action _resultRevealed;
         public float Duration { get; }
 
-        public PrototypeFusionAnimation(Transform parent, IReadOnlyList<Job> jobs)
+        public PrototypeFusionAnimation(Transform parent, IReadOnlyList<Job> jobs, Action resultRevealed = null)
         {
+            _resultRevealed = resultRevealed;
             var obj = new GameObject("Fusion Presentation", typeof(RectTransform), typeof(Image));
             obj.transform.SetParent(parent, false);
             _root = (RectTransform)obj.transform;
@@ -104,6 +107,11 @@ namespace BackpackAutoBattle.Prototype
             foreach (var visual in _visuals)
             {
                 float time = _elapsed - visual.Delay;
+                if (!visual.Revealed && time >= .42f)
+                {
+                    visual.Revealed = true;
+                    _resultRevealed?.Invoke();
+                }
                 Vector2 center = visual.Job.Materials[0].Position;
                 float gather = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.08f, .42f, time));
                 for (int i = 0; i < visual.Materials.Length; i++)

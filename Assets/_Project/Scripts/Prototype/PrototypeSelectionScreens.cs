@@ -28,7 +28,7 @@ namespace BackpackAutoBattle.Prototype
         internal static Button Button(Transform parent, string name, string text, Vector2 position, Vector2 size, Action action)
         {
             var image = Image(parent, name, Idle); image.raycastTarget = true; Place(image.rectTransform, position, size);
-            var button = image.gameObject.AddComponent<Button>(); button.onClick.AddListener(() => action());
+            var button = image.gameObject.AddComponent<PrototypeAudioButton>(); button.onClick.AddListener(() => action());
             Label(image.transform, name + " Label", text, 19, Vector2.zero, size - new Vector2(12, 0)); return button;
         }
         internal static Button GuildButton(Transform parent, string name, string text, Vector2 position, Vector2 size, Action action)

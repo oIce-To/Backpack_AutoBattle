@@ -10,8 +10,12 @@ using UnityEngine.UI;
 
 namespace BackpackAutoBattle.Prototype
 {
-    public sealed class PrototypeBattleItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+    public sealed class PrototypeBattleItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler, IPointerClickHandler
     {
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (!eventData.dragging) PrototypeUiClickSound.Play(this);
+        }
         private readonly List<(RectTransform rect, float bottom)> _colorFills = new();
         private PrototypeItemTooltip _tooltip;
         private Func<ItemTooltipContent> _tooltipContent;

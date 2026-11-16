@@ -19,7 +19,7 @@ namespace BackpackAutoBattle.Prototype
             _root = backdrop.rectTransform;
             BackpackPrototypeController.Stretch(_root);
             backdrop.raycastTarget = true;
-            var dismiss = backdrop.gameObject.AddComponent<Button>();
+            var dismiss = backdrop.gameObject.AddComponent<PrototypeAudioButton>();
             dismiss.transition = Selectable.Transition.None;
             dismiss.navigation = new Navigation { mode = Navigation.Mode.None };
             dismiss.onClick.AddListener(() => close());

@@ -188,7 +188,7 @@ namespace BackpackAutoBattle.Prototype
             icon.preserveAspect = true;
             icon.raycastTarget = true;
             SelectionUi.Place(icon.rectTransform, center + new Vector2(0, 10), new Vector2(84, 78));
-            var button = icon.gameObject.AddComponent<Button>();
+            var button = icon.gameObject.AddComponent<PrototypeAudioButton>();
             button.targetGraphic = icon;
             button.navigation = new Navigation { mode = Navigation.Mode.None };
             button.onClick.AddListener(() => open());

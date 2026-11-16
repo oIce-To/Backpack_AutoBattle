@@ -133,6 +133,7 @@ namespace BackpackAutoBattle.Prototype
             ClearPlacementOverlay();
             RefreshDragPlacementOverlay();
             UpdateSellPreview(eventData);
+            PlaySound(PrototypeSound.ItemPick);
         }
 
         public void Drag(BackpackItemView itemView, PointerEventData eventData)
@@ -217,6 +218,7 @@ namespace BackpackAutoBattle.Prototype
             SetDragOffsetFromPointer();
             Drag(itemView, eventData);
             SetStatus($"{itemData.DisplayName}: 가방 또는 자유 보관함에 놓으면 {_draggingShopOffer.PurchasePrice} G로 구매합니다.");
+            PlaySound(PrototypeSound.ItemPick);
         }
 
         public void DragShopItem(PrototypeShopSlotView slotView, PointerEventData eventData)
@@ -256,6 +258,7 @@ namespace BackpackAutoBattle.Prototype
             storageView.SetDragging(true);
             SetDragOffsetFromPointer();
             Drag(itemView, eventData);
+            PlaySound(PrototypeSound.ItemPick);
         }
 
         public void DragStorageItem(PrototypeStorageItemView storageView, PointerEventData eventData)
@@ -329,6 +332,7 @@ namespace BackpackAutoBattle.Prototype
             PopulateShop();
             UpdateEconomyText();
             SetStatus($"상점을 새로고침했습니다. (-{_rerollCost} G)");
+            PlaySound(PrototypeSound.Reroll);
             return true;
         }
 
@@ -753,6 +757,7 @@ namespace BackpackAutoBattle.Prototype
             }
 
             SetStatus($"{displayName}을(를) 자유 보관함에 놓았습니다.");
+            PlaySound(PrototypeSound.ItemPlace);
         }
 
         private void CompleteGridPlacement(BackpackItemView itemView)
@@ -778,6 +783,7 @@ namespace BackpackAutoBattle.Prototype
             {
                 SetStatus($"{itemView.DisplayName} 배치 완료: ({_previewOrigin.x}, {_previewOrigin.y})");
             }
+            PlaySound(PrototypeSound.ItemPlace);
         }
 
         private void CancelGridPlacement(BackpackItemView itemView, bool canAfford)
@@ -816,6 +822,7 @@ namespace BackpackAutoBattle.Prototype
             _run.Gold += salePrice;
             UpdateEconomyText();
             SetStatus($"{displayName} 판매 완료 (+{salePrice} G)");
+            PlaySound(PrototypeSound.Selling);
         }
 
         private bool CommitPurchase()
@@ -829,6 +836,7 @@ namespace BackpackAutoBattle.Prototype
             _currentShopItems.Remove(_draggingShopOffer.ItemData);
             _draggingShopSlot.ShowPurchased();
             UpdateEconomyText();
+            PlaySound(PrototypeSound.Buying);
             return true;
         }
 
@@ -1065,7 +1073,7 @@ namespace BackpackAutoBattle.Prototype
 
         private static Button CreateButton(Transform parent, string name, Vector2 position, Vector2 size, Color color)
         {
-            var buttonObject = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            var buttonObject = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(PrototypeAudioButton));
             buttonObject.transform.SetParent(parent, false);
             SetRect((RectTransform)buttonObject.transform, new Vector2(0.5f, 0f), position, size);
             buttonObject.GetComponent<Image>().color = color;

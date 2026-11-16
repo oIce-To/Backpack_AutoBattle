@@ -62,7 +62,8 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(controller.ActiveCombat.PlayerHealth, Is.EqualTo(47.5d));
             foreach (var view in controller.GetComponentsInChildren<PrototypeBattleItemView>())
             {
-                Assert.That(ExecuteEvents.Execute(view.gameObject, pointer, ExecuteEvents.pointerClickHandler), Is.False);
+                // Battle items accept clicks for audio feedback, while remaining non-draggable.
+                Assert.That(ExecuteEvents.Execute(view.gameObject, pointer, ExecuteEvents.pointerClickHandler), Is.True);
                 Assert.That((object)view, Is.Not.InstanceOf<IBeginDragHandler>());
             }
             PrototypeScreenCapture.CaptureIfRequested(canvas, "Battle.png");

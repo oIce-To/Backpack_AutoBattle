@@ -58,7 +58,7 @@ namespace BackpackAutoBattle.Prototype
             Image statisticsImage = Image(Root, "Battle Statistics Button", new Color(.23f, .46f, .68f));
             BackpackPrototypeController.SetRect(statisticsImage.rectTransform, Vector2.one * .5f, new Vector2(0, 220), new Vector2(180, 36));
             statisticsImage.raycastTarget = true;
-            _statisticsButton = statisticsImage.gameObject.AddComponent<Button>();
+            _statisticsButton = statisticsImage.gameObject.AddComponent<PrototypeAudioButton>();
             _statisticsButton.onClick.AddListener(() => statisticsAction());
             var statisticsText = BackpackPrototypeController.CreateText(statisticsImage.transform, "Battle Statistics Label", "전투 통계", 18, FontStyle.Bold, TextAnchor.MiddleCenter);
             statisticsText.raycastTarget = false; BackpackPrototypeController.Stretch(statisticsText.rectTransform);
@@ -107,7 +107,7 @@ namespace BackpackAutoBattle.Prototype
             Image buttonImage = Image(Root, "Combat Action Button", new Color(0.23f, 0.46f, 0.68f));
             BackpackPrototypeController.SetRect(buttonImage.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(500f, -320f), new Vector2(190f, 50f));
             buttonImage.raycastTarget = true;
-            _continueButton = buttonImage.gameObject.AddComponent<Button>();
+            _continueButton = buttonImage.gameObject.AddComponent<PrototypeAudioButton>();
             _continueButton.onClick.AddListener(() => continueAction());
             _continueText = BackpackPrototypeController.CreateText(buttonImage.transform, "Label", string.Empty, 17, FontStyle.Bold, TextAnchor.MiddleCenter);
             _continueText.raycastTarget = false;

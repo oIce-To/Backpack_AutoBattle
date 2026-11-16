@@ -37,7 +37,7 @@ namespace BackpackAutoBattle.Prototype
                 Image image = SelectionUi.Image(viewport, name, Color.white);
                 image.preserveAspect = true; image.useSpriteMesh = false; image.raycastTarget = true;
                 var material = new Material(shader); image.material = material; _materials.Add(material);
-                var button = image.gameObject.AddComponent<Button>(); button.transition = Selectable.Transition.None;
+                var button = image.gameObject.AddComponent<PrototypeAudioButton>(); button.transition = Selectable.Transition.None;
                 button.navigation = new Navigation { mode = Navigation.Mode.None };
                 int slot = offset;
                 button.onClick.AddListener(() => SetTarget(Mathf.FloorToInt(_position) + slot));
@@ -166,7 +166,7 @@ namespace BackpackAutoBattle.Prototype
             passiveTooltip.name = "Character Passive Tooltip";
             _passive.Configure(passiveTooltip);
             SelectionUi.Label(detail.transform, "Character Passive Caption", "패시브", 11, new Vector2(120, -6), new Vector2(72, 15));
-            var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(Image), typeof(Button));
+            var upgrade = new GameObject("Character Level Up Button", typeof(RectTransform), typeof(Image), typeof(PrototypeAudioButton));
             upgrade.transform.SetParent(panel.transform, false);
             SelectionUi.Place((RectTransform)upgrade.transform, new Vector2(340, -100), new Vector2(300, 104));
             var face = upgrade.GetComponent<Image>();

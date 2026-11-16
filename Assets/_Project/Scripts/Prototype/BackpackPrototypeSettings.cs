@@ -10,9 +10,6 @@ namespace BackpackAutoBattle.Prototype
 {
     public sealed partial class BackpackPrototypeController
     {
-        [Header("Game Audio")]
-        [SerializeField] private AudioClip _backgroundMusic;
-        [SerializeField] private AudioClip _combatHitSound;
         private AudioSource _musicSource, _effectsSource;
         private PrototypeGameSettings _settings;
         private PrototypeSettingsScreen _settingsScreen;
@@ -39,9 +36,8 @@ namespace BackpackAutoBattle.Prototype
             _musicSource = CreateAudioSource("Background Music");
             _effectsSource = CreateAudioSource("Combat Effects");
             _musicSource.loop = true;
-            _musicSource.clip = _backgroundMusic;
+            LoadAudioClips();
             ApplySettings();
-            if (_backgroundMusic != null) _musicSource.Play();
             _settingsScreen = new PrototypeSettingsScreen(canvas, this);
         }
 
@@ -55,11 +51,7 @@ namespace BackpackAutoBattle.Prototype
             return source;
         }
 
-        private void PlayCombatHit()
-        {
-            if (_combatHitSound != null && _effectsSource.volume > 0)
-                _effectsSource.PlayOneShot(_combatHitSound);
-        }
+        private void PlayCombatHit() => PlaySound(PrototypeSound.SimpleHit);
 
         private void ApplySettings()
         {

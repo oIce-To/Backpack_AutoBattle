@@ -85,6 +85,7 @@ namespace BackpackAutoBattle.Prototype
             SelectionUi.Place(toggleFace.rectTransform, new Vector2(251, -13), new Vector2(88, 42));
             toggleFace.raycastTarget = true;
             _damage = toggleFace.gameObject.AddComponent<Toggle>();
+            toggleFace.gameObject.AddComponent<PrototypeUiClickSound>();
             _damage.targetGraphic = toggleFace;
             _damage.navigation = new Navigation { mode = Navigation.Mode.None };
             _damageLabel = SelectionUi.Label(toggleFace.transform, "Settings Damage State", "", 18, Vector2.zero, new Vector2(80, 38));
@@ -264,6 +265,7 @@ namespace BackpackAutoBattle.Prototype
             face.raycastTarget = true;
             SelectionUi.Place(face.rectTransform, new Vector2(113, 75), new Vector2(324, 40));
             var dropdown = face.gameObject.AddComponent<Dropdown>();
+            face.gameObject.AddComponent<PrototypeUiClickSound>();
             dropdown.targetGraphic = face;
             dropdown.navigation = new Navigation { mode = Navigation.Mode.None };
             var caption = SelectionUi.Label(face.transform, "Settings Resolution", "", 20, new Vector2(-12, 0), new Vector2(280, 36));
@@ -296,6 +298,7 @@ namespace BackpackAutoBattle.Prototype
             itemFace.rectTransform.anchoredPosition = new Vector2(0, 18);
             itemFace.rectTransform.sizeDelta = new Vector2(0, 36);
             var toggle = itemFace.gameObject.AddComponent<Toggle>();
+            itemFace.gameObject.AddComponent<PrototypeUiClickSound>();
             toggle.targetGraphic = itemFace;
             var check = SelectionUi.Image(itemFace.transform, "Selected Mark", new Color(.65f, .86f, .74f));
             SelectionUi.Place(check.rectTransform, new Vector2(-142, 0), new Vector2(7, 20));
@@ -320,7 +323,7 @@ namespace BackpackAutoBattle.Prototype
             var face = SelectionUi.Image(parent, name, new Color(.76f, .18f, .23f));
             face.raycastTarget = true;
             SelectionUi.Place(face.rectTransform, position, new Vector2(42, 42));
-            var button = face.gameObject.AddComponent<Button>();
+            var button = face.gameObject.AddComponent<PrototypeAudioButton>();
             button.targetGraphic = face;
             button.navigation = new Navigation { mode = Navigation.Mode.None };
             button.onClick.AddListener(() => close());
@@ -340,7 +343,7 @@ namespace BackpackAutoBattle.Prototype
             var face = SelectionUi.Image(parent, name, Color.clear);
             face.raycastTarget = true;
             SelectionUi.Place(face.rectTransform, position, new Vector2(42, 38));
-            var button = face.gameObject.AddComponent<Button>();
+            var button = face.gameObject.AddComponent<PrototypeAudioButton>();
             button.navigation = new Navigation { mode = Navigation.Mode.None };
             button.onClick.AddListener(() => open());
             var gear = new GameObject("Gear", typeof(RectTransform), typeof(PrototypeSettingsGear));

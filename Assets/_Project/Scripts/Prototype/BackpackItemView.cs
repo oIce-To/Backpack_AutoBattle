@@ -92,6 +92,7 @@ namespace BackpackAutoBattle.Prototype
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!eventData.dragging && _controller.CanEditLoadout) PrototypeUiClickSound.Play(this);
             if (eventData.button == PointerEventData.InputButton.Right && !eventData.dragging)
             {
                 if (BackpackPrototypeController.FusionLockModifier) _controller.TryToggleFusionLock(InstanceId);

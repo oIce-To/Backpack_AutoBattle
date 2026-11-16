@@ -139,7 +139,7 @@ namespace BackpackAutoBattle.Prototype
             var backdrop = SelectionUi.Image(_modal, "Equipment Details Backdrop", new Color(0f, 0f, 0f, .72f));
             BackpackPrototypeController.Stretch(backdrop.rectTransform);
             backdrop.raycastTarget = true;
-            var dismiss = backdrop.gameObject.AddComponent<Button>();
+            var dismiss = backdrop.gameObject.AddComponent<PrototypeAudioButton>();
             dismiss.transition = Selectable.Transition.None;
             dismiss.navigation = new Navigation { mode = Navigation.Mode.None };
             dismiss.onClick.AddListener(CloseDetails);

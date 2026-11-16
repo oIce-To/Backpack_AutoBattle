@@ -75,6 +75,7 @@ namespace BackpackAutoBattle.Prototype
         public void OnPointerEnter(PointerEventData eventData) => _controller.ShowItemTooltip(this, StoredItem.ItemData, eventData);
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!eventData.dragging && _controller.CanEditLoadout) PrototypeUiClickSound.Play(this);
             if (eventData.button == PointerEventData.InputButton.Right && !eventData.dragging
                 && BackpackPrototypeController.FusionLockModifier) _controller.TryToggleFusionLock(StoredItem.InstanceId);
         }

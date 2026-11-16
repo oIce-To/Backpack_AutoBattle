@@ -174,6 +174,7 @@ namespace BackpackAutoBattle.Tests.Prototype
         {
             yield return LoadMenu();
             Assert.That(_controller.TryStartRun(), Is.True);
+            yield return null; // Register newly enabled graphics before raycasting, even without optional captures.
             Capture("SettingsGearShop.png");
             ClickStageGear();
             Assert.That(_controller.CanEditLoadout, Is.False);
@@ -183,6 +184,7 @@ namespace BackpackAutoBattle.Tests.Prototype
 
             WinBattle();
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Victory));
+            yield return null;
             Capture("SettingsGearBattleResult.png");
             ClickStageGear();
             Assert.That(_controller.AdvanceRound(), Is.False);
@@ -194,6 +196,7 @@ namespace BackpackAutoBattle.Tests.Prototype
             WinBattle();
             Assert.That(_controller.Phase, Is.EqualTo(PrototypePhase.Completed));
             Assert.That(Find("Run Result Screen").gameObject.activeInHierarchy, Is.True);
+            yield return null;
             Capture("SettingsGearRunResult.png");
             ClickStageGear();
             Assert.That(_controller.TryReturnToMainMenu(), Is.False);

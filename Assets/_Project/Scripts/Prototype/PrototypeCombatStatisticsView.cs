@@ -161,7 +161,7 @@ namespace BackpackAutoBattle.Prototype
         private static Button Button(Transform parent, string name, string value, Vector2 position, Vector2 size, UnityEngine.Events.UnityAction click)
         {
             var rect = Box(parent, name, new Color(.23f, .46f, .68f)); Place(rect, position, size);
-            var button = rect.gameObject.AddComponent<Button>(); button.onClick.AddListener(click);
+            var button = rect.gameObject.AddComponent<PrototypeAudioButton>(); button.onClick.AddListener(click);
             PrototypePixelSkin.Apply(button);
             Label(rect, name + " Label", value, 18, Vector2.zero, size); return button;
         }
