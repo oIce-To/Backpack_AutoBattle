@@ -19,6 +19,7 @@ namespace BackpackAutoBattle.Prototype
         private RectTransform _rectTransform;
 
         public PrototypeStoredItem StoredItem { get; private set; }
+        internal Vector2 FusionAnchor { get; private set; }
 
         public void Initialize(BackpackPrototypeController controller, PrototypeStoredItem storedItem)
         {
@@ -37,6 +38,8 @@ namespace BackpackAutoBattle.Prototype
         public void RefreshShape()
         {
             PrototypeItemShapeVisual.Rebuild(_rectTransform, StoredItem.ItemData, StoredItem.Rotation);
+            FusionAnchor = PrototypeItemShapeVisual.FusionAnchorPoint(
+                _rectTransform.rect, StoredItem.ItemData.ResolveFusionAnchor(StoredItem.Rotation));
             _rectTransform.localScale = Vector3.one * _controller.StorageItemScale(_rectTransform.sizeDelta);
         }
 

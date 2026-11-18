@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: wooden_shield
   _displayName: "나무 방패"
-  _effectDescription: "무기나 펫으로부터 받는 피해가 10% 감소합니다. 방패류의 피해 감소는 가장 높은 효과 하나만 적용됩니다."
+  _effectDescription: "무기나 펫으로부터 받는 피해가 10% 감소합니다."
   _category: 1
   _rarity: 1
   _tags: 0

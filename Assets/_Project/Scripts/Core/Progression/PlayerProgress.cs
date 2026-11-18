@@ -26,6 +26,7 @@ namespace BackpackAutoBattle.Progression
         public string lastRewardClaim;
         public OnboardingState onboarding;
         public string userName;
+        public List<string> craftedStageItems;
     }
 
     [Serializable]
@@ -55,7 +56,7 @@ namespace BackpackAutoBattle.Progression
     /// <summary>Permanent progress, independent of editable content assets and the current run.</summary>
     public sealed partial class PlayerProgress
     {
-        public const int SaveVersion = 6;
+        public const int SaveVersion = 7;
         public OnboardingState Onboarding { get; private set; }
         public string UserName { get; private set; } = "";
 
@@ -80,6 +81,9 @@ namespace BackpackAutoBattle.Progression
         }
         private readonly Dictionary<string, StageProgress> _stages = new(StringComparer.Ordinal);
         private readonly Dictionary<string, int> _characterLevels = new(StringComparer.Ordinal);
+        private readonly HashSet<string> _craftedStageItems = new(StringComparer.Ordinal);
+        public bool HasCraftedStageItem(string itemId) => _craftedStageItems.Contains(itemId);
+        public bool RecordCraftedStageItem(string itemId) => _craftedStageItems.Add(ValidId(itemId));
         public long SharedExperience { get; private set; }
         public int GetCharacterLevel(string id) => _characterLevels.TryGetValue(id ?? "", out int level) ? level : 1;
         public bool TryAddExperience(long amount)
@@ -130,6 +134,7 @@ namespace BackpackAutoBattle.Progression
         {
             version = SaveVersion, selectedCharacterId = SelectedCharacterId, selectedStageId = SelectedStageId,
             onboarding = Onboarding, userName = UserName,
+            craftedStageItems = _craftedStageItems.OrderBy(id => id, StringComparer.Ordinal).ToList(),
             sharedExperience = SharedExperience,
             acquiredCharacters = _acquiredCharacters.OrderBy(id => id, StringComparer.Ordinal).ToList(),
             uniqueGear = _uniqueGear.Values.Select(item => item.Export()).ToList(),
@@ -172,6 +177,12 @@ namespace BackpackAutoBattle.Progression
             }
             if (data.version >= 3) progress.LoadUniqueGear(data);
             if (data.version >= 4) progress.LoadEconomy(data);
+            if (data.version >= 7 && data.craftedStageItems != null)
+                foreach (string itemId in data.craftedStageItems)
+                {
+                    if (string.IsNullOrWhiteSpace(itemId)) throw new FormatException("Invalid crafted stage item.");
+                    progress.RecordCraftedStageItem(itemId);
+                }
             foreach (var stage in data.stages ?? new List<StageProgressData>())
             {
                 if (stage == null || string.IsNullOrWhiteSpace(stage.stageId) || stage.highestRound < 1 || stage.highestRound > StageData.RoundsPerStage

@@ -13,6 +13,32 @@ namespace BackpackAutoBattle.Tests.Prototype
 {
     public sealed class StageItemEffectsTests
     {
+        private const string CloverNote = "네잎클로버류의 상점 상품 등급 변화 효과는 하나만 적용됩니다.";
+        private const string PlatinumNote = "플래티넘 클로버가 있으면 무료 새로고침과 할인 확률 증가 효과는 플래티넘 클로버 하나만 적용됩니다.";
+        private const string ShieldNote = "무기나 펫으로부터 받는 피해 감소 효과 중 가장 높은 효과 하나만 적용됩니다.";
+        private const string PoisonNote = "만독불침의 서와 만천화우의 중독 피해 감소 효과는 하나만 적용됩니다.";
+        private const string BurnNote = "용의 숨결과 태초의 불꽃의 화상 중첩 유지 효과는 하나만 적용됩니다.";
+
+        [TestCase("FourLeafClover", CloverNote)]
+        [TestCase("CursedClover", CloverNote)]
+        [TestCase("PlatinumClover", CloverNote + "\n\n" + PlatinumNote)]
+        [TestCase("PlatinumCard", PlatinumNote)]
+        [TestCase("WoodenShield", ShieldNote)]
+        [TestCase("MithrilShield", ShieldNote)]
+        [TestCase("SolarRadiance", ShieldNote)]
+        [TestCase("GenesisArmor", ShieldNote)]
+        [TestCase("PoisonImmunityBook", PoisonNote)]
+        [TestCase("NeedleStorm", PoisonNote)]
+        [TestCase("DragonsBreath", BurnNote)]
+        [TestCase("PrimalFlame", BurnNote)]
+        public void SharedEffects_DescribeTheirStackingRuleOnceInItsOwnParagraph(string itemName, string note)
+        {
+            var item = Unit(50, (itemName, 0, 0)).Loadout.Items.Single();
+            var content = ItemTooltipContent.FromCombat(item, null);
+            Assert.That(content.GetDescriptionText(), Does.EndWith("\n\n" + note));
+            Assert.That(content.EffectDescription, Does.Not.Contain("하나만 적용됩니다."));
+        }
+
         [Test]
         public void EveryFusionIsReachableFromShopMaterials()
         {

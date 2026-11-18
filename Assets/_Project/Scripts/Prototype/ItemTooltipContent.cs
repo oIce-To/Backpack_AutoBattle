@@ -16,6 +16,7 @@ namespace BackpackAutoBattle.Prototype
         private WeaponStats _baseStats;
         private float _baseCooldownSeconds;
         private ItemCategory _category;
+        private StageItemEffect _stageEffect;
         public string DisplayName { get; private set; }
         public string WeaponType { get; private set; }
         public ItemRarity Rarity { get; private set; }
@@ -34,6 +35,21 @@ namespace BackpackAutoBattle.Prototype
         {
             var paragraphs = new List<string>(PlacementDescriptions);
             if (!string.IsNullOrWhiteSpace(EffectDescription)) paragraphs.Add(EffectDescription);
+            string stackingNote = _stageEffect switch
+            {
+                StageItemEffect.Clover or StageItemEffect.PlatinumClover or StageItemEffect.CursedClover =>
+                    "네잎클로버류의 상점 상품 등급 변화 효과는 하나만 적용됩니다.",
+                StageItemEffect.WoodShield or StageItemEffect.MithrilShield or StageItemEffect.SolarRadiance or StageItemEffect.GenesisArmor =>
+                    "무기나 펫으로부터 받는 피해 감소 효과 중 가장 높은 효과 하나만 적용됩니다.",
+                StageItemEffect.PoisonBook or StageItemEffect.NeedleStorm =>
+                    "만독불침의 서와 만천화우의 중독 피해 감소 효과는 하나만 적용됩니다.",
+                StageItemEffect.DragonsBreath or StageItemEffect.PrimalFlame =>
+                    "용의 숨결과 태초의 불꽃의 화상 중첩 유지 효과는 하나만 적용됩니다.",
+                _ => null
+            };
+            if (stackingNote != null) paragraphs.Add(stackingNote);
+            if (_stageEffect is StageItemEffect.PlatinumCard or StageItemEffect.PlatinumClover)
+                paragraphs.Add("플래티넘 클로버가 있으면 무료 새로고침과 할인 확률 증가 효과는 플래티넘 클로버 하나만 적용됩니다.");
             return string.Join("\n\n", paragraphs);
         }
 
@@ -68,6 +84,7 @@ namespace BackpackAutoBattle.Prototype
                 WeaponType = item.Category == ItemCategory.Weapon ? WeaponTypeLabel(item.Tags) : null,
                 Rarity = item.Rarity,
                 _category = item.Category,
+                _stageEffect = item.StageEffect,
                 EffectDescription = item.EffectDescription?.Replace("{diamond}", PlacementIconTag),
                 HasWeaponStats = item.Activation.HasEffect(ItemEffectKind.Attack),
                 HasCycle = item.Activation.HasCycle,

@@ -34,6 +34,7 @@ namespace BackpackAutoBattle.Prototype
         public Vector2Int Origin { get; private set; }
 
         public RectTransform RectTransform { get; private set; }
+        internal Vector2 FusionAnchor { get; private set; }
 
         public void Initialize(
             BackpackPrototypeController controller,
@@ -133,6 +134,7 @@ namespace BackpackAutoBattle.Prototype
         {
             _cellImages.Clear();
             _cellImages.AddRange(PrototypeItemShapeVisual.Rebuild(RectTransform, Data, Rotation));
+            FusionAnchor = PrototypeItemShapeVisual.FusionAnchorPoint(RectTransform.rect, Data.ResolveFusionAnchor(Rotation));
         }
     }
 }

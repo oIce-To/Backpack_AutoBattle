@@ -14,9 +14,13 @@ namespace BackpackAutoBattle.Prototype
         private readonly Text _profileName, _name, _health, _attack, _error, _level, _emptyInventory;
         private readonly PrototypeItemTooltip _tooltip;
         private readonly PrototypeMenuPopup _inventory, _mail, _quit;
+        private readonly PrototypeItemCompendium _compendium;
         private readonly ScrollRect _inventoryScroll;
         private PlayerProgress _profile;
         private IReadOnlyList<UniqueGearData> _gear;
+        private IReadOnlyList<ItemData> _shopItems;
+        private IReadOnlyList<FusionRecipeData> _recipes;
+        private CharacterStatsSnapshot _stats;
 
         public PrototypeMainMenuScreen(Transform canvas, PrototypeItemTooltip tooltip, Action quit)
         {
@@ -57,10 +61,14 @@ namespace BackpackAutoBattle.Prototype
             _portrait.useSpriteMesh = false;
 
             var storage = SelectionUi.Image(panel.transform, "Guild Storage Board", Color.white);
-            SelectionUi.Place(storage.rectTransform, new Vector2(415, 85), new Vector2(194, 340));
+            SelectionUi.Place(storage.rectTransform, new Vector2(415, 65), new Vector2(194, 402));
             PrototypeGuildStyle.Apply(storage);
-            AddShortcut(panel.transform, "Main Inventory Button", "가방", new Vector2(415, 163), "UI/HomeBackpackIcon", ShowInventory);
-            AddShortcut(panel.transform, "Main Mail Button", "우편함", new Vector2(415, 40), "UI/HomeMailboxIcon", () => _mail.Show());
+            AddShortcut(panel.transform, "Main Inventory Button", "가방", new Vector2(415, 172),
+                Resources.Load<Sprite>("UI/HomeBackpackIcon"), ShowInventory);
+            AddShortcut(panel.transform, "Main Mail Button", "우편함", new Vector2(415, 53),
+                Resources.Load<Sprite>("UI/HomeMailboxIcon"), () => _mail.Show());
+            AddShortcut(panel.transform, "Main Compendium Button", "도감", new Vector2(415, -66),
+                Resources.Load<Sprite>("UI/HomeCompendiumIcon"), ShowCompendium);
             SelectionUi.GuildButton(panel.transform, "Main Quit Button", "게임 종료", new Vector2(415, -247),
                 new Vector2(152, 42), () =>
                 {
@@ -96,6 +104,7 @@ namespace BackpackAutoBattle.Prototype
             PrototypeGuildStyle.Apply(_mail.Panel.GetComponent<Image>());
             _mail.Title.color = PrototypeGuildStyle.Cream;
             SelectionUi.Label(_mail.Panel, "Main Mail Empty", "수령할 편지가 없습니다.", 20, new Vector2(0, -15), new Vector2(418, 55));
+            _compendium = new PrototypeItemCompendium(canvas, ClosePopup);
 
             _quit = new PrototypeMenuPopup(canvas, "Main Quit Popup", "정말로 종료하시겠습니까?",
                 new Vector2(456, 202), ClosePopup, PrototypeMenuPopup.CloseStyle.None);
@@ -109,12 +118,16 @@ namespace BackpackAutoBattle.Prototype
             Hide();
         }
 
-        internal bool IsPopupOpen => _inventory.IsOpen || _mail.IsOpen || _quit.IsOpen;
+        internal bool IsPopupOpen => _inventory.IsOpen || _mail.IsOpen || _compendium.IsOpen || _quit.IsOpen;
 
-        public void Show(CharacterData character, PlayerProgress profile, CharacterStatsSnapshot stats, IReadOnlyList<UniqueGearData> gear)
+        public void Show(CharacterData character, PlayerProgress profile, CharacterStatsSnapshot stats, IReadOnlyList<UniqueGearData> gear,
+            IReadOnlyList<ItemData> shopItems = null, IReadOnlyList<FusionRecipeData> recipes = null)
         {
             _profile = profile;
             _gear = gear;
+            _stats = stats;
+            _shopItems = shopItems ?? Array.Empty<ItemData>();
+            _recipes = recipes ?? Array.Empty<FusionRecipeData>();
             _profileName.text = string.IsNullOrEmpty(profile.UserName) ? "플레이어" : profile.UserName;
             _level.text = $"Lv. {profile.GetCharacterLevel(character?.CharacterId)}";
             _portrait.sprite = character?.Portrait;
@@ -125,6 +138,13 @@ namespace BackpackAutoBattle.Prototype
             _error.text = "";
             Root.gameObject.SetActive(true);
             Root.SetAsLastSibling();
+        }
+
+        private void ShowCompendium()
+        {
+            if (_profile == null || IsPopupOpen) return;
+            _tooltip.HideAll();
+            _compendium.Show(_profile, _stats, _shopItems, _recipes);
         }
 
         private void ShowInventory()
@@ -184,6 +204,7 @@ namespace BackpackAutoBattle.Prototype
             _tooltip.HideAll();
             _inventory.Hide();
             _mail.Hide();
+            _compendium.Hide();
             _quit.Hide();
         }
 
@@ -203,10 +224,10 @@ namespace BackpackAutoBattle.Prototype
             return face.rectTransform;
         }
 
-        private static void AddShortcut(Transform parent, string name, string caption, Vector2 center, string spritePath, Action open)
+        private static void AddShortcut(Transform parent, string name, string caption, Vector2 center, Sprite sprite, Action open)
         {
             var icon = SelectionUi.Image(parent, name, Color.white);
-            icon.sprite = Resources.Load<Sprite>(spritePath);
+            icon.sprite = sprite;
             icon.preserveAspect = true;
             icon.raycastTarget = true;
             SelectionUi.Place(icon.rectTransform, center + new Vector2(0, 10), new Vector2(84, 78));

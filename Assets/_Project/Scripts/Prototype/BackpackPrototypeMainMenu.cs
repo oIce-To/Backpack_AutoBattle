@@ -125,7 +125,7 @@ namespace BackpackAutoBattle.Prototype
         }
         private void RefreshMainMenu()
         {
-            _mainMenu.Show(_characterData, _progress, GetCharacterStats(_characterData), AvailableGear);
+            _mainMenu.Show(_characterData, _progress, GetCharacterStats(_characterData), AvailableGear, _itemCatalog, _fusionRecipes);
             if (!string.IsNullOrEmpty(_saveNotice)) _mainMenu.ShowError(_saveNotice);
         }
 

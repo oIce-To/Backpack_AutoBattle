@@ -142,6 +142,50 @@ namespace BackpackAutoBattle.Tests.Prototype
         }
 
         [UnityTest]
+        public IEnumerator FusionLinks_UseOccupiedCellAnchorAcrossShopStorageAndBag()
+        {
+            var ingredient = Object.Instantiate(Stone);
+            var recipe = Object.Instantiate(_controller.FusionRecipes.Single());
+            try
+            {
+                Set(ingredient, "_occupiedCells", new System.Collections.Generic.List<Vector2Int>
+                    { new(0, 0), new(1, 0), new(0, 1), new(0, 2) });
+                Set(ingredient, "_inventorySprite", null);
+                Set(recipe, "_ingredients", new System.Collections.Generic.List<FusionIngredient> { new(ingredient) });
+                Set(_controller, "_fusionRecipes", new[] { recipe });
+                var slot = Slots()[0];
+                slot.Bind(new ShopOffer(ingredient, false));
+
+                var hover = Pointer(Sword.transform);
+                Sword.OnPointerEnter(hover);
+                yield return new WaitForSecondsRealtime(.15f);
+                Assert.That(Overlay.HintLinkCount, Is.EqualTo(1));
+                AssertLinkEndpoint(slot.ShapeRect, slot.ShapeRect.rect.center + Vector2.left * 7f);
+
+                var drag = Pointer(slot.transform);
+                slot.OnBeginDrag(drag); drag.position = Screen(Rect("Freeform Storage")); slot.OnDrag(drag); slot.OnEndDrag(drag);
+                yield return null;
+                var stored = Stored().Single();
+                Sword.OnPointerEnter(hover);
+                yield return new WaitForSecondsRealtime(.15f);
+                Assert.That(Overlay.HintLinkCount, Is.EqualTo(1));
+                var storageRect = (RectTransform)stored.transform;
+                AssertLinkEndpoint(storageRect, storageRect.rect.center + Vector2.left * 27f);
+
+                MoveStorage(stored, Rect("Grid Cell 1,2"));
+                yield return null;
+                var itemRect = Bag().Single(view => view.Data == ingredient).RectTransform;
+                Assert.That(Overlay.ReadyLinkCount, Is.EqualTo(1));
+                AssertLinkEndpoint(itemRect, itemRect.rect.center + Vector2.left * 27f);
+            }
+            finally
+            {
+                Object.Destroy(recipe);
+                Object.Destroy(ingredient);
+            }
+        }
+
+        [UnityTest]
         public IEnumerator ShiftRightClickLock_PersistsAcrossStorageAndPreventsFusionButNotPlacementBonus()
         {
             BuyStone(Rect("Grid Cell 1,2")); yield return null;
@@ -432,6 +476,12 @@ namespace BackpackAutoBattle.Tests.Prototype
             var slot = Slots()[0]; slot.Bind(new ShopOffer(Stone, false));
             var pointer = Pointer(slot.transform);
             slot.OnBeginDrag(pointer); pointer.position = Screen(destination); slot.OnDrag(pointer); slot.OnEndDrag(pointer);
+        }
+        private void AssertLinkEndpoint(RectTransform rect, Vector2 localPoint)
+        {
+            Canvas.ForceUpdateCanvases();
+            Vector3 expected = Overlay.rectTransform.InverseTransformPoint(rect.TransformPoint(localPoint));
+            Assert.That(Overlay.canvasRenderer.GetMesh().vertices.Any(vertex => Vector3.Distance(vertex, expected) < .05f), Is.True);
         }
         private void Win()
         {

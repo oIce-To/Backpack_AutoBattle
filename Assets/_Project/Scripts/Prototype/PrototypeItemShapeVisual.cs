@@ -9,6 +9,9 @@ namespace BackpackAutoBattle.Prototype
     /// <summary>The same multi-cell silhouette is used in the bag, drag preview and freeform storage.</summary>
     public static class PrototypeItemShapeVisual
     {
+        internal static Vector2 FusionAnchorPoint(Rect bounds, Vector2 anchor) =>
+            new(bounds.xMin + bounds.width * anchor.x, bounds.yMax - bounds.height * anchor.y);
+
         public static List<Image> Rebuild(RectTransform root, ItemData item, ItemRotation rotation)
         {
             bool wasLocked = root.Find("Fusion Lock") is Transform badge && badge.gameObject.activeSelf;

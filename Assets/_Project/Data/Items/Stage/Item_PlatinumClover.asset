@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: platinum_clover
   _displayName: "플래티넘 클로버"
-  _effectDescription: "상점의 새 상품마다 25% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다.\n전투 후 상점에 들어올 때마다 무료 새로고침 2회를 얻고 상점 할인 확률이 10%p 증가합니다. 플래티넘 카드의 효과와 중복되지 않습니다."
+  _effectDescription: "상점의 새 상품마다 25% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다.\n전투 후 상점에 들어올 때마다 무료 새로고침 2회를 얻고 상점 할인 확률이 10%p 증가합니다."
   _category: 7
   _rarity: 3
   _tags: 0

@@ -31,6 +31,39 @@ namespace BackpackAutoBattle.Tests.Inventory
             Assert.That(recipe.ResultItem.BaseWeaponStats.AttackDamage, Is.GreaterThan(recipe.CenterItem.BaseWeaponStats.AttackDamage));
         }
 
+        [TestCase("BattleAxe")]
+        [TestCase("Dragonslayer")]
+        public void FusionAnchor_AuthoredWeaponUsesLeftMiddleCellAndRotatesWithIt(string itemName)
+        {
+            var item = AssetDatabase.LoadAssetAtPath<ItemData>($"Assets/_Project/Data/Items/Stage/Item_{itemName}.asset");
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.None), Is.EqualTo(new Vector2(.25f, .5f)));
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.Clockwise90), Is.EqualTo(new Vector2(.5f, .25f)));
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.Clockwise180), Is.EqualTo(new Vector2(.75f, .5f)));
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.Clockwise270), Is.EqualTo(new Vector2(.5f, .75f)));
+        }
+
+        [Test]
+        public void FusionAnchor_TiedSketchShapeStartsAtTopMiddleWhileRectangleStaysCentered()
+        {
+            var sketch = Item(new(0, 2), new(2, 1), new(0, 1), new(2, 0), new(1, 0), new(0, 0));
+            Assert.That(sketch.ResolveFusionAnchor(ItemRotation.None), Is.EqualTo(new Vector2(.5f, 1f / 6f)));
+            Assert.That(sketch.ResolveFusionAnchor(ItemRotation.Clockwise90), Is.EqualTo(new Vector2(1f - 1f / 6f, .5f)));
+            var rectangle = Item(new(0, 0), new(1, 0), new(0, 1), new(1, 1));
+            Assert.That(rectangle.ResolveFusionAnchor(ItemRotation.None), Is.EqualTo(new Vector2(.5f, .5f)));
+        }
+
+        [Test]
+        public void FusionAnchor_InspectorOverrideUsesUnrotatedBoundsAndAcceptsFractionalPositions()
+        {
+            var item = Item(new(0, 0), new(1, 0), new(0, 1));
+            using var serialized = new SerializedObject(item);
+            serialized.FindProperty("_customFusionAnchor").vector2Value = new Vector2(.25f, .125f);
+            serialized.FindProperty("_useCustomFusionAnchor").boolValue = true;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.None), Is.EqualTo(new Vector2(.25f, .125f)));
+            Assert.That(item.ResolveFusionAnchor(ItemRotation.Clockwise90), Is.EqualTo(new Vector2(.875f, .25f)));
+        }
+
         [TestCase(1, 1, true)]
         [TestCase(0, 3, true)]
         [TestCase(1, 3, false)]

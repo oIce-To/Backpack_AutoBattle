@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BackpackAutoBattle.Inventory;
 using BackpackAutoBattle.Items;
 using BackpackAutoBattle.Shop;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace BackpackAutoBattle.Prototype
 
         public ShopOffer Offer { get; private set; }
         public RectTransform ShapeRect => _shapeRoot;
+        internal Vector2 FusionAnchor { get; private set; }
         public ItemData ItemData => Offer?.ItemData;
         public bool CanPurchase => Offer != null && !Offer.IsPurchased;
         public int PurchasePrice => Offer?.PurchasePrice ?? 0;
@@ -233,13 +235,25 @@ namespace BackpackAutoBattle.Prototype
             _shapeCells.Clear();
             _itemArtwork.sprite = itemData.InventorySprite;
             _itemArtwork.gameObject.SetActive(_itemArtwork.sprite != null);
-            if (_itemArtwork.sprite != null) return;
+            Vector2 anchor = itemData.ResolveFusionAnchor(ItemRotation.None);
+            if (_itemArtwork.sprite != null)
+            {
+                Rect bounds = _shapeRoot.rect;
+                Vector2 spriteSize = _itemArtwork.sprite.rect.size;
+                float scale = Mathf.Min(bounds.width / spriteSize.x, bounds.height / spriteSize.y);
+                Vector2 artworkSize = spriteSize * scale;
+                FusionAnchor = PrototypeItemShapeVisual.FusionAnchorPoint(
+                    new Rect(bounds.center - artworkSize * .5f, artworkSize), anchor);
+                return;
+            }
 
             IReadOnlyList<Vector2Int> cells = itemData.OccupiedCells;
             int width = cells.Max(cell => cell.x) + 1;
             int height = cells.Max(cell => cell.y) + 1;
             const float cellSize = 12f;
             const float cellPitch = 14f;
+            Vector2 footprint = new Vector2(width, height) * cellPitch;
+            FusionAnchor = PrototypeItemShapeVisual.FusionAnchorPoint(new Rect(footprint * -.5f, footprint), anchor);
             Vector2 offset = new(-(width - 1) * cellPitch / 2f, (height - 1) * cellPitch / 2f);
 
             foreach (Vector2Int cell in cells)

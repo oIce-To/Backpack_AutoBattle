@@ -89,6 +89,13 @@ namespace BackpackAutoBattle.Prototype
                 _itemViews.Remove(id); _grid.Remove(id); _fusionLocks.Remove(id);
                 view.gameObject.SetActive(false); Destroy(view.gameObject);
             }
+            if (_trackProgress)
+            {
+                bool discovered = false;
+                foreach (var plan in pending)
+                    discovered |= _progress.RecordCraftedStageItem(plan.Result.ItemId);
+                if (discovered) SaveProgress();
+            }
             _run.Phase = PrototypePhase.Fusion;
             _fusionOverlay?.Clear();
             _fusionAnimation = new PrototypeFusionAnimation(_shopScreenRoot, jobs, () => PlaySound(PrototypeSound.ItemMerge));
@@ -176,12 +183,14 @@ namespace BackpackAutoBattle.Prototype
             if (!CanEditLoadout || _draggingItem != null) { _fusionOverlay.Clear(); return; }
             _fusionOverlay.transform.SetAsLastSibling();
             _fusionOverlay.Begin();
-            var nodes = new List<(Component owner, ItemData data, string id, RectTransform rect)>();
-            foreach (var view in _itemViews.Values) nodes.Add((view, view.Data, view.InstanceId, view.RectTransform));
-            foreach (var view in _storageViews.Values) nodes.Add((view, view.StoredItem.ItemData, view.StoredItem.InstanceId, (RectTransform)view.transform));
+            var nodes = new List<(Component owner, ItemData data, string id, RectTransform rect, Vector2 anchor)>();
+            foreach (var view in _itemViews.Values) nodes.Add((view, view.Data, view.InstanceId, view.RectTransform, view.FusionAnchor));
+            foreach (var view in _storageViews.Values)
+                nodes.Add((view, view.StoredItem.ItemData, view.StoredItem.InstanceId, (RectTransform)view.transform, view.FusionAnchor));
             foreach (var slot in _shopSlots.Where(slot => slot.CanPurchase && slot.gameObject.activeInHierarchy))
-                nodes.Add((slot, slot.ItemData, null, slot.ShapeRect));
-            Vector2 Point(RectTransform rect) => _fusionOverlay.rectTransform.InverseTransformPoint(rect.TransformPoint(rect.rect.center));
+                nodes.Add((slot, slot.ItemData, null, slot.ShapeRect, slot.FusionAnchor));
+            Vector2 Point(RectTransform rect, Vector2 anchor) =>
+                _fusionOverlay.rectTransform.InverseTransformPoint(rect.TransformPoint(anchor));
             var hovered = nodes.Find(node => node.owner == _fusionHoverOwner);
             var plans = GetReadyFusions();
             bool ReadyPair(string first, string second) => first != null && second != null && plans.Any(plan =>
@@ -189,20 +198,24 @@ namespace BackpackAutoBattle.Prototype
                 || (plan.Center.Id == second && plan.Materials.Skip(1).Any(item => item.Id == first)));
             if (hovered.owner != null)
             {
+                Vector2 hoveredPoint = Point(hovered.rect, hovered.anchor);
                 foreach (var node in nodes)
                     if (node.owner != hovered.owner && !ReadyPair(hovered.id, node.id)
                         && _fusionRecipes.Any(recipe => IsCenterIngredientPair(recipe, hovered.data, node.data)))
-                        _fusionOverlay.AddLink(Point(hovered.rect), Point(node.rect), false, hovered.owner.GetInstanceID(), node.owner.GetInstanceID());
+                        _fusionOverlay.AddLink(hoveredPoint, Point(node.rect, node.anchor), false,
+                            hovered.owner.GetInstanceID(), node.owner.GetInstanceID());
                 if (hovered.owner is BackpackItemView center && !IsFusionLocked(center.InstanceId))
-                    ShowIncompleteFusion(center, Point(center.RectTransform), plans);
+                    ShowIncompleteFusion(center, Point(center.RectTransform, center.RectTransform.rect.center), plans);
             }
             foreach (var plan in plans)
             {
-                Vector2 center = Point(_itemViews[plan.Center.Id].RectTransform), label = Vector2.zero;
+                var centerView = _itemViews[plan.Center.Id];
+                Vector2 center = Point(centerView.RectTransform, centerView.FusionAnchor), label = Vector2.zero;
                 foreach (var item in plan.Materials.Skip(1))
                 {
-                    Vector2 end = Point(_itemViews[item.Id].RectTransform);
-                    _fusionOverlay.AddLink(center, end, true, _itemViews[plan.Center.Id].GetInstanceID(), _itemViews[item.Id].GetInstanceID());
+                    var ingredient = _itemViews[item.Id];
+                    Vector2 end = Point(ingredient.RectTransform, ingredient.FusionAnchor);
+                    _fusionOverlay.AddLink(center, end, true, centerView.GetInstanceID(), ingredient.GetInstanceID());
                     label += PrototypeFusionOverlay.CurvePoint(center, end, .5f);
                 }
                 _fusionOverlay.AddLabel(label / (plan.Materials.Count - 1), plan.Result.DisplayName);

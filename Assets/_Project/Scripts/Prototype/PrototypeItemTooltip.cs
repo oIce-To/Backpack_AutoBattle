@@ -129,6 +129,13 @@ namespace BackpackAutoBattle.Prototype
             RectTransform.anchoredPosition = new Vector2(-RectTransform.sizeDelta.x / 2f, RectTransform.sizeDelta.y / 2f);
         }
 
+        internal void ShowEmbedded(ItemTooltipContent content, string notes)
+        {
+            _pinned = true;
+            gameObject.SetActive(true);
+            RenderItem(content, notes: notes, limitToCanvas: false);
+        }
+
         public void ShowDescription(Component owner, string title, string description, Color color, Vector2 pointer, Camera eventCamera)
             => ShowStatus(owner, () => StatusTooltipContent.FromDescription(title, description, color), pointer, eventCamera);
 
@@ -202,7 +209,7 @@ namespace BackpackAutoBattle.Prototype
             Position();
         }
 
-        private void RenderItem(ItemTooltipContent item, string rankSuffix = "", string notes = "", float footerHeight = 0f)
+        private void RenderItem(ItemTooltipContent item, string rankSuffix = "", string notes = "", float footerHeight = 0f, bool limitToCanvas = true)
         {
             _name.text = item.DisplayName;
             Place(_name.rectTransform, Padding, -26f, 245f, 36f);
@@ -250,10 +257,9 @@ namespace BackpackAutoBattle.Prototype
                 RectTransform.sizeDelta = new Vector2(Width, descriptionTop + footerHeight);
                 return;
             }
-            float available = Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - footerHeight - Padding * 2f);
-            Place(_description.rectTransform, Padding, -descriptionTop - available / 2f, Width - Padding * 2f, available);
-            float height = Mathf.Clamp(_description.GetPreferredValues(_description.text, Width - Padding * 2f, Mathf.Infinity).y,
-                32f, available);
+            float height = Mathf.Max(32f, _description.GetPreferredValues(description, Width - Padding * 2f, Mathf.Infinity).y);
+            if (limitToCanvas)
+                height = Mathf.Min(height, Mathf.Max(32f, _canvasRect.rect.height - descriptionTop - footerHeight - Padding * 2f));
             Place(_description.rectTransform, Padding, -descriptionTop - height / 2f, Width - Padding * 2f, height);
             Place(_divider.rectTransform, Padding, -descriptionTop + 12f, Width - Padding * 2f, 1f);
             RectTransform.sizeDelta = new Vector2(Width, descriptionTop + height + Padding + footerHeight);

@@ -40,6 +40,24 @@ namespace BackpackAutoBattle.Tests.Progression
             Assert.That(profile.UserName, Is.Empty);
         }
 
+        [Test]
+        public void StageItemDiscoveries_AreDeduplicatedAndSurviveTheProfileRoundTrip()
+        {
+            var store = new PlayerProgressStore(_path);
+            var legacy = new PlayerProgress().Export();
+            legacy.version = 6;
+            legacy.craftedStageItems = null;
+            var profile = PlayerProgress.FromData(legacy);
+            Assert.That(profile.HasCraftedStageItem("dragonslayer"), Is.False);
+            Assert.That(profile.RecordCraftedStageItem("dragonslayer"), Is.True);
+            Assert.That(profile.RecordCraftedStageItem("dragonslayer"), Is.False);
+            Assert.That(store.TrySave(profile, out string error), Is.True, error);
+            var reloaded = store.Load(out error);
+            Assert.That(error, Is.Null);
+            Assert.That(reloaded.HasCraftedStageItem("dragonslayer"), Is.True);
+            Assert.That(reloaded.Export().craftedStageItems, Is.EqualTo(new[] { "dragonslayer" }));
+        }
+
         private string _directory;
         private string _path;
         [SetUp] public void Setup()

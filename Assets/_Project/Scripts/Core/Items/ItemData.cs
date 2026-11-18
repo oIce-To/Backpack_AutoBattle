@@ -45,6 +45,11 @@ namespace BackpackAutoBattle.Items
         [SerializeField] private bool _canRotate = true;
         [SerializeField] private List<Vector2Int> _occupiedCells = new() { Vector2Int.zero };
 
+        [Header("Fusion Line Anchor")]
+        [SerializeField] private bool _useCustomFusionAnchor;
+        [Tooltip("Position within the unrotated item bounds. (0, 0) is top left and (1, 1) is bottom right.")]
+        [SerializeField] private Vector2 _customFusionAnchor = new(.5f, .5f);
+
         public string ItemId => _itemId;
 
         public string DisplayName => _displayName;
@@ -86,6 +91,37 @@ namespace BackpackAutoBattle.Items
         public ItemShape CreateShape()
         {
             return new ItemShape(_occupiedCells);
+        }
+
+        public Vector2 ResolveFusionAnchor(ItemRotation rotation)
+        {
+            Vector2 anchor = _useCustomFusionAnchor
+                ? new Vector2(Mathf.Clamp01(_customFusionAnchor.x), Mathf.Clamp01(_customFusionAnchor.y))
+                : ResolveAutomaticFusionAnchor();
+            for (int turn = 0; turn < (int)rotation; turn++)
+                anchor = new Vector2(1f - anchor.y, anchor.x);
+            return anchor;
+        }
+
+        private Vector2 ResolveAutomaticFusionAnchor()
+        {
+            var cells = CreateShape().BaseCells;
+            int width = cells.Max(cell => cell.x) + 1;
+            int height = cells.Max(cell => cell.y) + 1;
+            if (cells.Count == width * height) return new Vector2(.5f, .5f);
+
+            var center = new Vector2((width - 1) * .5f, (height - 1) * .5f);
+            var nearest = cells[0];
+            float nearestDistance = float.PositiveInfinity;
+            // BaseCells are sorted from top to bottom, then left to right.
+            foreach (var cell in cells)
+            {
+                float distance = ((Vector2)cell - center).sqrMagnitude;
+                if (distance >= nearestDistance) continue;
+                nearest = cell;
+                nearestDistance = distance;
+            }
+            return new Vector2((nearest.x + .5f) / width, (nearest.y + .5f) / height);
         }
 
         private void OnValidate()

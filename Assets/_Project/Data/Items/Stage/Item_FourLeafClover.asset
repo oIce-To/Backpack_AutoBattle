@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BackpackAutoBattle.Core::BackpackAutoBattle.Items.ItemData
   _itemId: four_leaf_clover
   _displayName: "네잎클로버"
-  _effectDescription: "상점의 새 상품마다 10% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다. 네잎클로버류 효과는 하나만 적용됩니다."
+  _effectDescription: "상점의 새 상품마다 10% 확률로 등급이 한 단계 상승합니다. 최대 영웅 등급까지 적용됩니다."
   _category: 7
   _rarity: 1
   _tags: 0
