@@ -49,21 +49,49 @@ namespace BackpackAutoBattle.Inventory
                     if (center.Locked || used.Contains(center.Id) || center.Data != recipe.CenterItem) continue;
                     var adjacent = new HashSet<string>(grid.GetAdjacentItemIds(center.Id));
                     var candidates = ordered.Where(item => !item.Locked && !used.Contains(item.Id) && adjacent.Contains(item.Id)).ToArray();
-                    if (recipe.Ingredients.Sum(ingredient => (long)ingredient.Quantity) > candidates.Length) continue;
-                    var required = recipe.Ingredients.GroupBy(ingredient => ingredient.Item)
-                        .ToDictionary(group => group.Key, group => group.Sum(ingredient => ingredient.Quantity));
-                    var selected = new List<FusionItem> { center };
+                    long required = CountRequiredIngredients(recipe);
+                    if (required > candidates.Length) continue;
+                    var selected = MatchIngredients(recipe, candidates);
+                    if (selected.Count != required) continue;
+                    selected.Insert(0, center);
                     // Outputs go to freeform storage, so their footprint never constrains the recipe.
-                    foreach (var candidate in candidates)
-                        if (required.TryGetValue(candidate.Data, out int remaining) && remaining > 0)
-                        { selected.Add(candidate); required[candidate.Data]--; }
-                    if (required.Values.Any(remaining => remaining != 0)) continue;
                     var plan = new FusionPlan(recipe, selected);
                     plans.Add(plan);
                     foreach (var item in selected) { used.Add(item.Id); grid.Remove(item.Id); }
                 }
             }
             return plans;
+        }
+
+        public static (FusionRecipeData Recipe, int Prepared, long Required) FindIncompleteRecipe(
+            ItemData center, IReadOnlyList<FusionItem> adjacent, IEnumerable<FusionRecipeData> recipes)
+        {
+            foreach (var recipe in recipes)
+            {
+                if (recipe == null || recipe.CenterItem != center || recipe.ValidationError != null) continue;
+                long required = CountRequiredIngredients(recipe);
+                if (required < 2) continue;
+                int matched = MatchIngredients(recipe, adjacent).Count;
+                if (matched > 0 && matched < required) return (recipe, matched + 1, required + 1);
+            }
+            return default;
+        }
+
+        private static long CountRequiredIngredients(FusionRecipeData recipe) =>
+            recipe.Ingredients.Sum(ingredient => (long)ingredient.Quantity);
+
+        private static List<FusionItem> MatchIngredients(FusionRecipeData recipe, IReadOnlyList<FusionItem> candidates)
+        {
+            var required = recipe.Ingredients.GroupBy(ingredient => ingredient.Item)
+                .ToDictionary(group => group.Key, group => group.Sum(ingredient => (long)ingredient.Quantity));
+            var selected = new List<FusionItem>();
+            foreach (var candidate in candidates)
+            {
+                if (!required.TryGetValue(candidate.Data, out long remaining) || remaining == 0) continue;
+                selected.Add(candidate);
+                required[candidate.Data] = remaining - 1;
+            }
+            return selected;
         }
     }
 }

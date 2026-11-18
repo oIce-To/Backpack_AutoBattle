@@ -46,7 +46,14 @@ namespace BackpackAutoBattle.Tests.Prototype
             Assert.That(Overlay.raycastTarget, Is.False);
             Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>().Single().text, Is.EqualTo("강철 검"));
             Canvas.ForceUpdateCanvases();
-            Assert.That(Overlay.canvasRenderer.GetMesh().vertexCount, Is.GreaterThan(100), "Continuous curves include feathered edges, rounded caps and a central diamond.");
+            var firstFrame = Overlay.canvasRenderer.GetMesh().vertices;
+            Assert.That(firstFrame, Is.Not.Empty);
+            yield return new WaitForSecondsRealtime(.12f);
+            Canvas.ForceUpdateCanvases();
+            var nextFrame = Overlay.canvasRenderer.GetMesh().vertices;
+            Assert.That(nextFrame.Length, Is.EqualTo(firstFrame.Length));
+            Assert.That(nextFrame.Where((point, index) => Vector3.Distance(point, firstFrame[index]) > .05f), Is.Not.Empty,
+                "A stationary pair should still show the traveling ripple.");
             PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionReady.png");
             int gold = _controller.Gold;
             string swordId = Sword.InstanceId;
@@ -239,12 +246,39 @@ namespace BackpackAutoBattle.Tests.Prototype
                 Set(recipe, "_ingredients", new System.Collections.Generic.List<FusionIngredient>
                     { new(Stone), new(shield) });
                 Set(_controller, "_fusionRecipes", new[] { recipe });
+                MoveBag(Bag().Single(view => view.Data == shield), Rect("Freeform Storage"));
                 BuyStone(Rect("Grid Cell 1,2")); yield return null;
+
+                var stone = Bag().Single(view => view.Data == Stone);
+                var stonePointer = Pointer(stone.transform);
+                stone.OnPointerEnter(stonePointer); _controller.RefreshFusionVisuals();
+                Assert.That(Overlay.HintLinkCount, Is.EqualTo(1), "Only the main ingredient can connect to this sub ingredient.");
+                Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>(), Is.Empty);
+                stone.OnPointerExit(stonePointer);
+
+                var swordPointer = Pointer(Sword.transform);
+                Sword.OnPointerEnter(swordPointer); _controller.RefreshFusionVisuals();
+                Assert.That(Overlay.HintLinkCount, Is.EqualTo(2), "The stored shield is a hint, but does not count toward progress.");
+                Assert.That(Overlay.ReadyLinkCount, Is.Zero);
+                var progress = Overlay.GetComponentsInChildren<UnityEngine.UI.Text>().Single();
+                Assert.That(progress.text, Is.EqualTo("강철 검\n2 / 3"));
+                Assert.That(progress.color, Is.EqualTo(Color.white));
+                Assert.That(Sword.transform.Find("Label").gameObject.activeSelf, Is.False);
+                PrototypeScreenCapture.CaptureIfRequested(_controller.GetComponentInChildren<Canvas>(), "FusionIncomplete.png");
+                Sword.OnPointerExit(swordPointer); _controller.RefreshFusionVisuals();
+                Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>(), Is.Empty);
+                Assert.That(Sword.transform.Find("Label").gameObject.activeSelf, Is.True);
+
+                MoveStorage(Stored().Single(), Rect("Grid Cell 1,0")); yield return null;
+                Sword.OnPointerEnter(swordPointer); _controller.RefreshFusionVisuals();
                 Assert.That(_controller.GetReadyFusions().Single().Materials.Count, Is.EqualTo(3));
                 Assert.That(Overlay.ReadyLinkCount, Is.EqualTo(2));
+                Assert.That(Overlay.HintLinkCount, Is.Zero);
+                Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>().Single().text, Is.EqualTo("강철 검"));
                 string shieldId = Bag().Single(view => view.Data == shield).InstanceId;
                 _controller.TryToggleFusionLock(shieldId);
                 Assert.That(_controller.GetReadyFusions(), Is.Empty);
+                Assert.That(Overlay.GetComponentsInChildren<UnityEngine.UI.Text>().Single().text, Is.EqualTo("강철 검\n2 / 3"));
                 _controller.TryToggleFusionLock(shieldId);
                 _controller.TryStartBattle(); Win(); _controller.AdvanceRound(); _controller.TickFusionPresentation(5f); yield return null;
                 Assert.That(Bag().Select(view => view.Data.ItemId), Is.EquivalentTo(new[] { "swift_charm" }));

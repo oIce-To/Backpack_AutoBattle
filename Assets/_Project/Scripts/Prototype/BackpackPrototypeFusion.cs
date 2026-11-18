@@ -41,9 +41,12 @@ namespace BackpackAutoBattle.Prototype
         {
             if (_draggingItem != null) return Array.Empty<FusionPlan>();
             var items = _itemViews.Values.Where(view => _grid.TryGetOccupiedCells(view.InstanceId, out _))
-                .Select(view => new FusionItem(view.InstanceId, view.Data, view.Origin, view.Rotation, IsFusionLocked(view.InstanceId)));
+                .Select(ToFusionItem);
             return FusionPlanner.Plan(GridSize, GridSize, items, _fusionRecipes);
         }
+
+        private FusionItem ToFusionItem(BackpackItemView view) =>
+            new(view.InstanceId, view.Data, view.Origin, view.Rotation, IsFusionLocked(view.InstanceId));
 
         private void CapturePendingFusions() => _pendingFusions = GetReadyFusions();
 
@@ -185,10 +188,14 @@ namespace BackpackAutoBattle.Prototype
                 (plan.Center.Id == first && plan.Materials.Skip(1).Any(item => item.Id == second))
                 || (plan.Center.Id == second && plan.Materials.Skip(1).Any(item => item.Id == first)));
             if (hovered.owner != null)
+            {
                 foreach (var node in nodes)
                     if (node.owner != hovered.owner && !ReadyPair(hovered.id, node.id)
-                        && _fusionRecipes.Any(recipe => IsRecipePair(recipe, hovered.data, node.data)))
+                        && _fusionRecipes.Any(recipe => IsCenterIngredientPair(recipe, hovered.data, node.data)))
                         _fusionOverlay.AddLink(Point(hovered.rect), Point(node.rect), false, hovered.owner.GetInstanceID(), node.owner.GetInstanceID());
+                if (hovered.owner is BackpackItemView center && !IsFusionLocked(center.InstanceId))
+                    ShowIncompleteFusion(center, Point(center.RectTransform), plans);
+            }
             foreach (var plan in plans)
             {
                 Vector2 center = Point(_itemViews[plan.Center.Id].RectTransform), label = Vector2.zero;
@@ -203,13 +210,23 @@ namespace BackpackAutoBattle.Prototype
             _fusionOverlay.End();
         }
 
-        private static bool IsRecipePair(FusionRecipeData recipe, ItemData first, ItemData second)
+        private static bool IsCenterIngredientPair(FusionRecipeData recipe, ItemData first, ItemData second)
         {
-            if (recipe == null || !recipe.Contains(first) || !recipe.Contains(second)) return false;
-            if (first != second) return true;
-            long count = recipe.CenterItem == first ? 1 : 0;
-            foreach (var ingredient in recipe.Ingredients) if (ingredient.Item == first) count += ingredient.Quantity;
-            return count >= 2;
+            if (recipe == null || recipe.ValidationError != null) return false;
+            return (recipe.CenterItem == first && recipe.Ingredients.Any(ingredient => ingredient.Item == second))
+                || (recipe.CenterItem == second && recipe.Ingredients.Any(ingredient => ingredient.Item == first));
+        }
+
+        private void ShowIncompleteFusion(BackpackItemView center, Vector2 position, IReadOnlyList<FusionPlan> plans)
+        {
+            var reserved = new HashSet<string>(plans.SelectMany(plan => plan.Materials).Select(item => item.Id));
+            if (reserved.Contains(center.InstanceId)) return;
+            var adjacent = _grid.GetAdjacentItemIds(center.InstanceId)
+                .Where(id => !reserved.Contains(id) && !IsFusionLocked(id))
+                .Select(id => ToFusionItem(_itemViews[id])).ToArray();
+            if (adjacent.Length == 0) return;
+            var (recipe, prepared, required) = FusionPlanner.FindIncompleteRecipe(center.Data, adjacent, _fusionRecipes);
+            if (recipe != null) _fusionOverlay.AddProgressLabel(center.RectTransform, position, recipe.ResultItem.DisplayName, prepared, required);
         }
     }
 }

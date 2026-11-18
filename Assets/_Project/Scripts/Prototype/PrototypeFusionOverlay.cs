@@ -16,7 +16,12 @@ namespace BackpackAutoBattle.Prototype
         }
         private readonly List<Link> _links = new();
         private readonly List<Text> _labels = new();
+        private const int MaxSegments = 64;
+        private readonly Vector2[] _cordPoints = new Vector2[MaxSegments + 1];
+        private readonly Vector2[] _wispPoints = new Vector2[MaxSegments + 1];
         private int _labelCount;
+        private Transform _hiddenItemName;
+        private Transform _itemNameToHide;
         public int ReadyLinkCount { get; private set; }
         public int HintLinkCount { get; private set; }
         public PrototypeFusionOverlay() { useLegacyMeshGeneration = false; }
@@ -24,6 +29,7 @@ namespace BackpackAutoBattle.Prototype
         {
             foreach (var link in _links) link.Requested = false;
             _labelCount = ReadyLinkCount = HintLinkCount = 0;
+            _itemNameToHide = null;
         }
         public void Clear()
         {
@@ -43,21 +49,30 @@ namespace BackpackAutoBattle.Prototype
         }
         public void AddLabel(Vector2 position, string name)
         {
+            AddLabel(position + Vector2.down * 16f, new Vector2(180, 26), name, new Color(1f, .86f, .12f));
+        }
+        public void AddProgressLabel(RectTransform item, Vector2 position, string name, int prepared, long required)
+        {
+            _itemNameToHide = item.Find("Label");
+            AddLabel(position + Vector2.down * 9f, new Vector2(200, 46), $"{name}\n{prepared} / {required}", Color.white);
+        }
+        private void AddLabel(Vector2 position, Vector2 size, string content, Color color)
+        {
             if (_labelCount == _labels.Count)
             {
                 var label = BackpackPrototypeController.CreateText(transform, "Fusion Result", "", 16, FontStyle.Bold, TextAnchor.MiddleCenter);
                 label.raycastTarget = false;
-                label.color = new Color(1f, .86f, .12f);
                 label.gameObject.AddComponent<Outline>().effectColor = new Color(.04f, .05f, .08f, .95f);
                 _labels.Add(label);
             }
             var text = _labels[_labelCount++];
-            text.gameObject.SetActive(true); text.text = name;
-            BackpackPrototypeController.SetRect(text.rectTransform, Vector2.one * .5f, position + Vector2.down * 16f, new Vector2(180, 26));
+            text.gameObject.SetActive(true); text.text = content; text.color = color;
+            BackpackPrototypeController.SetRect(text.rectTransform, Vector2.one * .5f, position, size);
         }
         public void End()
         {
             for (int i = _labelCount; i < _labels.Count; i++) _labels[i].gameObject.SetActive(false);
+            SetHiddenItemName(_itemNameToHide);
             foreach (var link in _links)
                 link.Opacity = link.Ready && !link.Requested ? 0f
                     : Mathf.MoveTowards(link.Opacity, link.Requested ? 1f : 0f, Time.unscaledDeltaTime / .12f);
@@ -65,65 +80,87 @@ namespace BackpackAutoBattle.Prototype
             SetVerticesDirty();
         }
 
+        protected override void OnDisable()
+        {
+            SetHiddenItemName(null);
+            base.OnDisable();
+        }
+
+        private void SetHiddenItemName(Transform itemName)
+        {
+            if (_hiddenItemName == itemName) return;
+            if (_hiddenItemName != null) _hiddenItemName.gameObject.SetActive(true);
+            _hiddenItemName = itemName;
+            if (itemName != null) itemName.gameObject.SetActive(false);
+        }
+
         public static Vector2 CurvePoint(Vector2 from, Vector2 to, float t)
         {
             Vector2 delta = to - from;
-            Vector2 normal = new Vector2(-delta.y, delta.x).normalized;
-            if (normal.y < 0f || (Mathf.Approximately(normal.y, 0f) && normal.x < 0f)) normal = -normal;
-            float bend = Mathf.Min(delta.magnitude * .26f, Mathf.Clamp(delta.magnitude * .16f, 12f, 38f));
-            return Vector2.Lerp(from, to, t) + normal * (4 * t * (1 - t) * bend);
+            return Vector2.Lerp(from, to, t) + BendNormal(delta) * (4f * t * (1f - t) * Bend(delta.magnitude));
         }
+
+        private static Vector2 BendNormal(Vector2 delta)
+        {
+            Vector2 normal = new Vector2(-delta.y, delta.x).normalized;
+            return normal.y < 0f || (Mathf.Approximately(normal.y, 0f) && normal.x < 0f) ? -normal : normal;
+        }
+
+        private static float Bend(float length) => Mathf.Min(length * .26f, Mathf.Clamp(length * .16f, 12f, 38f));
+
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
-            foreach (var link in _links)
-            {
-                SmoothCord(vh, link);
-            }
+            float cycle = (float)(Time.unscaledTimeAsDouble % 3.4 / 3.4);
+            foreach (var link in _links) SmoothCord(vh, link, cycle);
         }
 
-        private static void SmoothCord(VertexHelper vh, Link link)
+        private void SmoothCord(VertexHelper vh, Link link, float cycle)
         {
-            float length = Vector2.Distance(link.From, link.To);
-            if (length < 1 || link.Opacity <= 0) return;
-            Color tint = PrototypePixelSkin.Hex(link.Ready ? 0xe8c46au : 0xd4d3c1u);
-            tint.a = link.Opacity * (link.Ready ? 1 : .8f);
-            Color shadow = PrototypePixelSkin.Hex(0x30271d); shadow.a = tint.a;
-            Color highlight = PrototypePixelSkin.Hex(link.Ready ? 0xffeab2u : 0xf5efe0u); highlight.a = tint.a;
-            // Connected ribbon geometry follows the curve without pixel snapping or gaps.
-            shadow.a *= .35f;
-            Stroke(vh, link, link.Ready ? 2.2f : 1.3f, shadow, .8f);
-            Stroke(vh, link, link.Ready ? 1.4f : .75f, tint, .85f);
-            shadow.a = tint.a;
-            Vector2 Snap(Vector2 p) => new(Mathf.Round(p.x / 2) * 2, Mathf.Round(p.y / 2) * 2);
-            void Dot(Vector2 p, float size, Color c) => PrototypeFantasyTrim.Quad(vh, new Rect(p - Vector2.one * size * .5f, Vector2.one * size), c);
-            void Rune(Vector2 center, int radius)
+            Vector2 delta = link.To - link.From;
+            float length = delta.magnitude;
+            if (length < 1f || link.Opacity <= 0f) return;
+
+            Vector2 normal = BendNormal(delta);
+            float bend = Bend(length);
+            float amplitude = Mathf.Clamp01(length / 48f);
+            int segments = Mathf.Clamp(Mathf.CeilToInt(length / 10f), 16, MaxSegments);
+            _cordPoints[0] = _wispPoints[0] = link.From;
+            _cordPoints[segments] = _wispPoints[segments] = link.To;
+            for (int i = 1; i < segments; i++)
             {
-                center = Snap(center);
-                for (int row = -radius; row <= radius; row++)
-                {
-                    int width = radius - Mathf.Abs(row);
-                    for (int col = -width; col <= width; col++)
-                        Dot(center + new Vector2(col * 2, row * 2), 2,
-                            Mathf.Abs(col) == width ? shadow : row > 0 ? highlight : tint);
-                }
+                float t = (float)i / segments;
+                float envelope = Mathf.Sin(Mathf.PI * t) * amplitude;
+                float phase = 2f * Mathf.PI * (1.24f * t - cycle);
+                float ripple = Mathf.Sin(phase) * (link.Ready ? 2.4f : 1.8f) + .6f * Mathf.Sin(2f * phase + .7f);
+                float lift = 4f * t * (1f - t) * bend + envelope * ripple;
+                _cordPoints[i] = link.From + delta * t + normal * lift;
+                float separation = Mathf.Sin(phase + .95f) * (link.Ready ? 4.1f : 3.1f);
+                _wispPoints[i] = _cordPoints[i] + normal * (envelope * separation);
             }
-            Rune(CurvePoint(link.From, link.To, .5f), link.Ready ? 4 : 3);
+
+            bool gold = link.Ready;
+            Color Tint(uint rgb, float alpha)
+            {
+                Color tint = PrototypePixelSkin.Hex(rgb);
+                tint.a = link.Opacity * alpha;
+                return tint;
+            }
+
+            Stroke(vh, _cordPoints, segments, gold ? 1.8f : .9f, Tint(gold ? 0xffb32fu : 0xd3e7eeu, gold ? .60f : .32f), gold ? 4.8f : 3.1f);
+            Stroke(vh, _cordPoints, segments, gold ? 1.55f : .65f, Tint(gold ? 0xffbf48u : 0xccd8dcu, .89f), .5f);
+            Stroke(vh, _cordPoints, segments, gold ? .6f : .25f, Tint(gold ? 0xfff1bau : 0xfffaf2u, 1f), gold ? .45f : .35f);
+            Stroke(vh, _wispPoints, segments, gold ? .3f : .13f, Tint(gold ? 0xffd777u : 0xe2eff4u, gold ? .72f : .5f), .4f);
         }
 
-        private static void Stroke(VertexHelper vh, Link link, float radius, Color tint, float feather)
+        private static void Stroke(VertexHelper vh, Vector2[] points, int segments, float radius, Color tint, float feather)
         {
-            float length = Vector2.Distance(link.From, link.To);
-            if (length < .01f || tint.a <= 0f) return;
-            int segments = Mathf.Clamp(Mathf.CeilToInt(length / 6f), 8, 160);
             Color transparent = tint; transparent.a = 0f;
             int start = vh.currentVertCount;
             for (int i = 0; i <= segments; i++)
             {
-                float t = (float)i / segments;
-                Vector2 point = CurvePoint(link.From, link.To, t);
-                Vector2 tangent = (CurvePoint(link.From, link.To, Mathf.Min(1f, t + .01f))
-                    - CurvePoint(link.From, link.To, Mathf.Max(0f, t - .01f))).normalized;
+                Vector2 point = points[i];
+                Vector2 tangent = (points[Mathf.Min(i + 1, segments)] - points[Mathf.Max(i - 1, 0)]).normalized;
                 Vector2 normal = new(-tangent.y, tangent.x);
                 vh.AddVert(point - normal * (radius + feather), transparent, Vector2.zero);
                 vh.AddVert(point - normal * radius, tint, Vector2.zero);
@@ -136,8 +173,8 @@ namespace BackpackAutoBattle.Prototype
                     vh.AddTriangle(previous, next, next + 1); vh.AddTriangle(previous, next + 1, previous + 1);
                 }
             }
-            Cap(vh, link.From, (link.From - CurvePoint(link.From, link.To, .01f)).normalized, radius, feather, tint);
-            Cap(vh, link.To, (link.To - CurvePoint(link.From, link.To, .99f)).normalized, radius, feather, tint);
+            Cap(vh, points[0], (points[0] - points[1]).normalized, radius, feather, tint);
+            Cap(vh, points[segments], (points[segments] - points[segments - 1]).normalized, radius, feather, tint);
         }
 
         private static void Cap(VertexHelper vh, Vector2 center, Vector2 outward, float radius, float feather, Color tint)
